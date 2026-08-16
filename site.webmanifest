@@ -1,0 +1,22 @@
+{
+  "name": "LUEN",
+  "short_name": "LUEN",
+  "description": "한국과 일본을 콘텐츠로 연결하는 크리에이터 마케팅 에이전시 LUEN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#0d0805",
+  "theme_color": "#0d0805",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
