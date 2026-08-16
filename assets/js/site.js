@@ -1,4 +1,24 @@
 (function(){
+  const track=(eventName,params={})=>{
+    if(typeof window.gtag==='function'){
+      window.gtag('event',eventName,params);
+    }
+  };
+
+  // LUEN V10.8 — GA4 funnel tracking. No form field values or personal data are sent.
+  document.querySelectorAll('a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]').forEach(link=>{
+    link.addEventListener('click',()=>{
+      const href=link.getAttribute('href');
+      if(!href||href==='#') return;
+      const label=(link.textContent||'').replace(/\s+/g,' ').trim().slice(0,80);
+      track('cta_click',{
+        cta_label:label,
+        target_section:href,
+        page_path:window.location.pathname
+      });
+    });
+  });
+
   const nav=document.getElementById('nav');
   const floatCta=document.getElementById('floatCta');
   const scrollProgress=document.getElementById('scrollProgress');
@@ -98,6 +118,15 @@
   const submitLabel=form?.querySelector('.form-submit-label');
 
   if(form){
+    let analyticsFormStarted=false;
+    const markFormStarted=()=>{
+      if(analyticsFormStarted) return;
+      analyticsFormStarted=true;
+      track('contact_form_start',{form_id:'contactForm',page_path:window.location.pathname});
+    };
+    form.addEventListener('focusin',markFormStarted,{once:true});
+    form.addEventListener('input',markFormStarted,{once:true});
+
     const defaultSubmitLabel=submitLabel?.textContent || '프로젝트 문의하기 →';
     const setSubmitting=(isSubmitting)=>{
       form.classList.toggle('is-submitting',isSubmitting);
@@ -129,6 +158,11 @@
         });
 
         if(response.ok){
+          track('generate_lead',{
+            method:'website_form',
+            form_id:'contactForm',
+            page_path:window.location.pathname
+          });
           form.classList.add('is-success');
           form.reset();
           if(success) success.focus?.();
