@@ -92,29 +92,69 @@
 
   const form=document.getElementById('contactForm');
   const status=document.getElementById('copyStatus');
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    if(!form.reportValidity()) return;
+  const success=document.getElementById('formSuccess');
+  const resetButton=document.getElementById('formReset');
+  const submitButton=form?.querySelector('.form-submit');
+  const submitLabel=form?.querySelector('.form-submit-label');
 
-    const data=new FormData(form);
-    const subject='[LUEN 홈페이지 문의] '+(data.get('company')||'프로젝트 문의');
-    const body=[
-      '브랜드 / 회사명: '+data.get('company'),
-      '담당자명: '+data.get('name'),
-      '이메일: '+data.get('email'),
-      '연락처: '+(data.get('phone')||'미입력'),
-      '목표 시장: '+data.get('market'),
-      '관심 플랫폼: '+data.get('platform'),
-      '예산 범위: '+(data.get('budget')||'미입력'),
-      '',
-      '프로젝트 내용',
-      data.get('message')
-    ].join('\\n');
+  if(form){
+    const defaultSubmitLabel=submitLabel?.textContent || '프로젝트 문의하기 →';
+    const setSubmitting=(isSubmitting)=>{
+      form.classList.toggle('is-submitting',isSubmitting);
+      if(submitButton) submitButton.disabled=isSubmitting;
+      if(submitLabel) submitLabel.textContent=isSubmitting?'문의 전송 중...':defaultSubmitLabel;
+    };
 
-    const mailto='mailto:Marketingbro.company@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-    status.textContent='문의 내용을 작성한 메일 창을 열고 있습니다. 전송 전 이메일과 연락처를 다시 확인해주세요.';
-    window.location.href=mailto;
-  });
+    form.addEventListener('submit',async e=>{
+      e.preventDefault();
+      if(!form.reportValidity()) return;
+
+      status.textContent='';
+      status.className='form-feedback';
+      setSubmitting(true);
+
+      const data=new FormData(form);
+      const company=(data.get('company')||'프로젝트 문의').toString().trim();
+      data.set('_subject','[LUEN 홈페이지 문의] '+company);
+      data.set('_replyto',(data.get('email')||'').toString());
+      data.set('page_url',window.location.href);
+      data.set('submitted_at',new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}));
+
+      try{
+        const response=await fetch(form.action,{
+          method:'POST',
+          body:data,
+          headers:{Accept:'application/json'}
+        });
+
+        if(response.ok){
+          form.classList.add('is-success');
+          form.reset();
+          if(success) success.focus?.();
+        }else{
+          let message='문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+          try{
+            const result=await response.json();
+            if(result?.errors?.length){message=result.errors.map(err=>err.message).filter(Boolean).join(' ');}
+          }catch(_err){}
+          status.textContent=message;
+          status.className='form-feedback is-error';
+        }
+      }catch(_err){
+        status.textContent='네트워크 연결을 확인한 뒤 다시 시도해주세요.';
+        status.className='form-feedback is-error';
+      }finally{
+        setSubmitting(false);
+      }
+    });
+
+    resetButton?.addEventListener('click',()=>{
+      form.classList.remove('is-success');
+      status.textContent='';
+      status.className='form-feedback';
+      form.querySelector('input,select,textarea')?.focus();
+    });
+  }
 
   const voiceStage=document.querySelector('[data-voice-stage]');
   if(voiceStage){

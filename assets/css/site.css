@@ -3063,3 +3063,20 @@ label{font-size:12.5px}
   #platforms .kr-naver{grid-column:2!important;grid-row:8!important}
   #platforms .market-map::before{left:50%!important;transform:translateX(-50%)!important}
 }
+
+
+/* V10.5 — Formspree inquiry submission states */
+.form-honeypot{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
+.form-submit{transition:transform .22s ease,filter .22s ease,opacity .22s ease!important}
+.form-submit:disabled{cursor:wait!important;opacity:.72!important;transform:none!important;filter:saturate(.7)!important}
+.form-feedback{min-height:20px;margin:13px 2px 0;font-size:12px;line-height:1.55;color:rgba(248,229,207,.58)}
+.form-feedback.is-error{color:#ff9b71}
+.form-success{display:none;min-height:330px;padding:34px;border:1px solid rgba(244,125,53,.26);border-radius:20px;background:radial-gradient(circle at 50% 15%,rgba(244,125,53,.13),transparent 42%),rgba(20,11,7,.46);align-content:center;justify-items:start}
+.form-success-kicker{font:750 10px/1.2 var(--type-ui);letter-spacing:.16em;color:var(--orange-2)}
+.form-success strong{display:block;margin-top:18px;font-size:clamp(28px,3vw,40px);line-height:1.15;letter-spacing:-.045em;color:var(--cream)}
+.form-success p{max-width:460px;margin-top:16px;font-size:13px;line-height:1.75;color:rgba(248,229,207,.58);word-break:keep-all}
+.form-reset{margin-top:26px;padding:12px 16px;border:1px solid rgba(248,229,207,.16);border-radius:999px;background:transparent;color:rgba(248,229,207,.72);font:650 11px/1 var(--type-ui);cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease}
+.form-reset:hover{border-color:rgba(244,125,53,.5);color:var(--cream);background:rgba(244,125,53,.06)}
+.contact-form.is-success .form-grid,.contact-form.is-success .form-submit,.contact-form.is-success .form-feedback{display:none!important}
+.contact-form.is-success .form-success{display:grid!important}
+@media(max-width:767px){.form-success{min-height:280px;padding:26px 22px}.form-success strong{font-size:30px}.form-success p{font-size:12.5px}}

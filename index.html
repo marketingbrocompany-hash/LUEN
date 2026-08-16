@@ -628,7 +628,9 @@
 <h2 class="section-title">프로젝트에 대해<br/><em>알려주세요.</em></h2>
 <p class="contact-copy">브랜드, 목표 시장, 관심 플랫폼과 현재 고민을 알려주세요. 회신받을 연락처를 남겨주시면 확인 후 캠페인 방향과 필요한 크리에이터 구조를 함께 논의합니다.</p>
 </div>
-<form class="contact-form sr d1" id="contactForm">
+<form action="https://formspree.io/f/xaewddev" class="contact-form sr d1" id="contactForm" method="POST">
+<input name="source" type="hidden" value="LUEN Website"/>
+<div aria-hidden="true" class="form-honeypot"><label for="website">웹사이트</label><input autocomplete="off" id="website" name="_gotcha" tabindex="-1" type="text"/></div>
 <div class="form-grid">
 <div class="field">
 <label for="company">브랜드 / 회사명</label>
@@ -669,8 +671,14 @@
 <textarea id="message" name="message" placeholder="브랜드, 목표, 일정, 원하는 크리에이터 유형 등을 자유롭게 적어주세요." required=""></textarea>
 </div>
 </div>
-<button class="btn btn-primary form-submit" type="submit">프로젝트 문의하기 →</button>
-<p aria-live="polite" class="copy-status" id="copyStatus"></p>
+<button class="btn btn-primary form-submit" type="submit"><span class="form-submit-label">프로젝트 문의하기 →</span></button>
+<p aria-live="polite" class="form-feedback" id="copyStatus"></p>
+<div aria-live="polite" class="form-success" id="formSuccess" role="status">
+<span class="form-success-kicker">INQUIRY RECEIVED</span>
+<strong>문의가 접수되었습니다.</strong>
+<p>내용을 확인 후 담당자가 입력해주신 연락처로 회신드리겠습니다.</p>
+<button class="form-reset" id="formReset" type="button">추가 문의 작성하기</button>
+</div>
 </form>
 </div>
 </section>
