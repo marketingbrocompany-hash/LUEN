@@ -119,6 +119,7 @@
       data.set('_replyto',(data.get('email')||'').toString());
       data.set('page_url',window.location.href);
       data.set('submitted_at',new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}));
+      data.set('privacy_notice_version','LUEN Website Privacy Notice v1.0 / 2026-08-16');
 
       try{
         const response=await fetch(form.action,{

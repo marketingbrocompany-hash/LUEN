@@ -3080,3 +3080,98 @@ label{font-size:12.5px}
 .contact-form.is-success .form-grid,.contact-form.is-success .form-submit,.contact-form.is-success .form-feedback{display:none!important}
 .contact-form.is-success .form-success{display:grid!important}
 @media(max-width:767px){.form-success{min-height:280px;padding:26px 22px}.form-success strong{font-size:30px}.form-success p{font-size:12.5px}}
+
+
+/* V10.6 — privacy consent + overseas transfer disclosure */
+.privacy-consent-group{display:grid;gap:10px;margin-top:4px;margin-bottom:16px}
+.privacy-consent-item{border:1px solid rgba(248,229,207,.12);border-radius:16px;background:rgba(255,255,255,.018);overflow:hidden;transition:border-color .2s ease,background .2s ease}
+.privacy-consent-item:focus-within{border-color:rgba(244,125,53,.42);background:rgba(244,125,53,.035)}
+.privacy-check{display:grid;grid-template-columns:20px 1fr;gap:12px;align-items:start;padding:15px 16px;cursor:pointer;position:relative}
+.privacy-check input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.privacy-checkmark{width:18px;height:18px;margin-top:1px;border:1px solid rgba(248,229,207,.32);border-radius:5px;background:rgba(8,5,4,.5);position:relative;transition:.2s ease}
+.privacy-checkmark::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;border-right:2px solid #140b07;border-bottom:2px solid #140b07;transform:rotate(45deg) scale(0);transform-origin:center;transition:transform .16s ease}
+.privacy-check input:checked+.privacy-checkmark{border-color:var(--orange);background:var(--orange)}
+.privacy-check input:checked+.privacy-checkmark::after{transform:rotate(45deg) scale(1)}
+.privacy-check input:focus-visible+.privacy-checkmark{outline:2px solid rgba(255,155,93,.65);outline-offset:3px}
+.privacy-check-copy{display:grid;gap:5px;min-width:0}
+.privacy-check-copy b{font:650 12px/1.45 var(--type-body);color:rgba(248,229,207,.88);letter-spacing:-.015em;word-break:keep-all}
+.privacy-check-copy small{font:450 10.5px/1.55 var(--type-body);color:rgba(248,229,207,.48);word-break:keep-all}
+.privacy-details{border-top:1px solid rgba(248,229,207,.08)}
+.privacy-details summary{list-style:none;cursor:pointer;padding:11px 16px;font:650 10px/1.4 var(--type-ui);letter-spacing:.03em;color:rgba(255,155,93,.78);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.privacy-details summary::-webkit-details-marker{display:none}
+.privacy-details summary::after{content:"+";font:500 16px/1 var(--type-ui);color:rgba(248,229,207,.48);transition:transform .18s ease}
+.privacy-details[open] summary::after{transform:rotate(45deg)}
+.privacy-detail-body{padding:2px 16px 15px}
+.privacy-detail-body dl{display:grid;gap:0;margin:0;border-top:1px solid rgba(248,229,207,.07)}
+.privacy-detail-body dl>div{display:grid;grid-template-columns:112px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid rgba(248,229,207,.07)}
+.privacy-detail-body dt{font:650 9.5px/1.5 var(--type-ui);letter-spacing:.025em;color:rgba(248,229,207,.5)}
+.privacy-detail-body dd{margin:0;font:450 10.5px/1.62 var(--type-body);color:rgba(248,229,207,.66);word-break:keep-all}
+.privacy-external{display:inline-flex;margin-top:12px;font:650 10px/1.4 var(--type-ui);color:var(--orange-2);text-decoration:underline;text-decoration-color:rgba(244,125,53,.32);text-underline-offset:4px}
+.contact-form.is-success .privacy-consent-group{display:none!important}
+@media(max-width:767px){
+  .privacy-consent-group{gap:9px;margin-top:2px;margin-bottom:14px}
+  .privacy-check{grid-template-columns:19px 1fr;gap:10px;padding:14px 13px}
+  .privacy-checkmark{width:17px;height:17px}
+  .privacy-checkmark::after{left:4px;top:2px}
+  .privacy-check-copy b{font-size:11.5px}
+  .privacy-check-copy small{font-size:10px}
+  .privacy-details summary{padding:10px 13px}
+  .privacy-detail-body{padding:1px 13px 14px}
+  .privacy-detail-body dl>div{grid-template-columns:1fr;gap:3px;padding:9px 0}
+  .privacy-detail-body dt{font-size:9px}
+  .privacy-detail-body dd{font-size:10px}
+}
+
+
+/* V10.6.1 — contact privacy consent visibility fix on cream background */
+.contact .privacy-consent-group{margin-top:10px!important;margin-bottom:18px!important;gap:12px!important}
+.contact .privacy-consent-item{
+  border:1px solid rgba(55,34,22,.16)!important;
+  background:rgba(255,255,255,.44)!important;
+  box-shadow:0 8px 28px rgba(67,37,18,.035)!important;
+}
+.contact .privacy-consent-item:focus-within{
+  border-color:rgba(205,91,30,.46)!important;
+  background:rgba(255,255,255,.62)!important;
+}
+.contact .privacy-check{grid-template-columns:24px 1fr!important;gap:13px!important;padding:17px 18px!important}
+.contact .privacy-checkmark{
+  width:20px!important;height:20px!important;margin-top:0!important;
+  border:1.5px solid rgba(66,42,29,.55)!important;
+  border-radius:6px!important;background:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.75)!important;
+}
+.contact .privacy-checkmark::after{
+  left:6px!important;top:3px!important;width:5px!important;height:9px!important;
+  border-right:2px solid #1c100a!important;border-bottom:2px solid #1c100a!important;
+}
+.contact .privacy-check input:checked+.privacy-checkmark{
+  border-color:var(--orange)!important;background:var(--orange)!important;
+  box-shadow:0 0 0 3px rgba(244,125,53,.12)!important;
+}
+.contact .privacy-check-copy{gap:6px!important}
+.contact .privacy-check-copy b{
+  color:#2c1b12!important;font-size:12.5px!important;font-weight:700!important;line-height:1.5!important;
+}
+.contact .privacy-check-copy small{
+  color:#766457!important;font-size:10.8px!important;font-weight:500!important;line-height:1.55!important;
+}
+.contact .privacy-details{border-top:1px solid rgba(55,34,22,.10)!important}
+.contact .privacy-details summary{
+  color:#b74f18!important;padding:12px 18px!important;font-size:10.5px!important;font-weight:700!important;
+}
+.contact .privacy-details summary::after{color:#a85227!important}
+.contact .privacy-detail-body{padding:2px 18px 16px!important}
+.contact .privacy-detail-body dl{border-top:1px solid rgba(55,34,22,.09)!important}
+.contact .privacy-detail-body dl>div{border-bottom:1px solid rgba(55,34,22,.08)!important}
+.contact .privacy-detail-body dt{color:#6f5b4e!important;font-weight:700!important}
+.contact .privacy-detail-body dd{color:#49382e!important}
+.contact .privacy-external{color:#b74f18!important;text-decoration-color:rgba(183,79,24,.28)!important}
+@media(max-width:767px){
+  .contact .privacy-check{grid-template-columns:23px 1fr!important;gap:12px!important;padding:16px 14px!important}
+  .contact .privacy-checkmark{width:20px!important;height:20px!important}
+  .contact .privacy-check-copy b{font-size:12px!important}
+  .contact .privacy-check-copy small{font-size:10.5px!important}
+  .contact .privacy-details summary{padding:11px 14px!important}
+  .contact .privacy-detail-body{padding:1px 14px 15px!important}
+}

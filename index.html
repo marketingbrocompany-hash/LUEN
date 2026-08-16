@@ -671,6 +671,49 @@
 <textarea id="message" name="message" placeholder="브랜드, 목표, 일정, 원하는 크리에이터 유형 등을 자유롭게 적어주세요." required=""></textarea>
 </div>
 </div>
+<div class="privacy-consent-group" aria-label="개인정보 동의">
+  <div class="privacy-consent-item">
+    <label class="privacy-check" for="privacyConsent">
+      <input id="privacyConsent" name="privacy_consent" required type="checkbox" value="동의"/>
+      <span class="privacy-checkmark" aria-hidden="true"></span>
+      <span class="privacy-check-copy"><b>[필수] 개인정보 수집·이용에 동의합니다.</b><small>프로젝트 문의 접수와 회신을 위해 필요한 정보만 수집합니다.</small></span>
+    </label>
+    <details class="privacy-details">
+      <summary>수집·이용 내용 보기</summary>
+      <div class="privacy-detail-body">
+        <dl>
+          <div><dt>수집·이용 목적</dt><dd>프로젝트 문의 접수, 상담 및 회신, 캠페인 제안과 관련 업무 협의</dd></div>
+          <div><dt>필수 항목</dt><dd>브랜드/회사명, 담당자명, 이메일, 목표 시장, 관심 플랫폼, 프로젝트 내용</dd></div>
+          <div><dt>선택 항목</dt><dd>연락처, 예산 범위</dd></div>
+          <div><dt>보유·이용 기간</dt><dd>문의 처리 및 상담 종료 후 1년. 단, 관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관할 수 있습니다.</dd></div>
+          <div><dt>동의 거부</dt><dd>동의를 거부할 권리가 있으나, 필수 개인정보 수집·이용에 동의하지 않으면 홈페이지 문의폼을 통한 접수가 어렵습니다.</dd></div>
+        </dl>
+      </div>
+    </details>
+  </div>
+  <div class="privacy-consent-item">
+    <label class="privacy-check" for="overseasConsent">
+      <input id="overseasConsent" name="overseas_transfer_consent" required type="checkbox" value="동의"/>
+      <span class="privacy-checkmark" aria-hidden="true"></span>
+      <span class="privacy-check-copy"><b>[필수] 문의 처리를 위한 개인정보 국외 이전에 동의합니다.</b><small>Formspree(미국)를 통해 문의 내용을 전송·저장하기 때문에 필요한 동의입니다.</small></span>
+    </label>
+    <details class="privacy-details">
+      <summary>국외 이전 내용 보기</summary>
+      <div class="privacy-detail-body">
+        <dl>
+          <div><dt>이전받는 자</dt><dd>Formspree, Inc. · team@formspree.io</dd></div>
+          <div><dt>이전 국가</dt><dd>미국</dd></div>
+          <div><dt>이전 시기·방법</dt><dd>문의 제출 시 암호화된 HTTPS/TLS 통신을 통해 전송</dd></div>
+          <div><dt>이전 항목</dt><dd>문의폼에 입력한 정보 및 전송 과정에서 처리될 수 있는 IP 주소, 브라우저·접속 정보</dd></div>
+          <div><dt>이용 목적</dt><dd>문의 전송 처리, 제출 내용 저장, 이메일 알림, 서비스 보안 및 스팸 방지</dd></div>
+          <div><dt>보유·이용 기간</dt><dd>LUEN은 문의 처리 및 상담 종료 후 1년 내 제출 데이터를 삭제합니다. Formspree는 법적 의무, 보안 및 분쟁 해결 등에 필요한 범위에서 일부 정보를 추가 보관할 수 있습니다.</dd></div>
+          <div><dt>동의 거부</dt><dd>국외 이전 동의를 거부할 권리가 있으나, Formspree를 이용하는 홈페이지 문의폼 접수는 진행할 수 없습니다.</dd></div>
+        </dl>
+        <a class="privacy-external" href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Formspree 개인정보 처리 안내 ↗</a>
+      </div>
+    </details>
+  </div>
+</div>
 <button class="btn btn-primary form-submit" type="submit"><span class="form-submit-label">프로젝트 문의하기 →</span></button>
 <p aria-live="polite" class="form-feedback" id="copyStatus"></p>
 <div aria-live="polite" class="form-success" id="formSuccess" role="status">
