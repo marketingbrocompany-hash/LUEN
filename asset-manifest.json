@@ -1,0 +1,254 @@
+[
+  {
+    "index": 1,
+    "path": "assets/images/selected-work/longform-01.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 194057,
+    "optimized_bytes": 159216
+  },
+  {
+    "index": 2,
+    "path": "assets/images/selected-work/longform-02.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 277949,
+    "optimized_bytes": 217888
+  },
+  {
+    "index": 3,
+    "path": "assets/images/selected-work/longform-03.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 135194,
+    "optimized_bytes": 90644
+  },
+  {
+    "index": 4,
+    "path": "assets/images/selected-work/longform-04.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 199428,
+    "optimized_bytes": 125634
+  },
+  {
+    "index": 5,
+    "path": "assets/images/selected-work/longform-05.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 231463,
+    "optimized_bytes": 187188
+  },
+  {
+    "index": 6,
+    "path": "assets/images/selected-work/longform-06.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 131609,
+    "optimized_bytes": 88462
+  },
+  {
+    "index": 7,
+    "path": "assets/images/selected-work/longform-07.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 248052,
+    "optimized_bytes": 111652
+  },
+  {
+    "index": 8,
+    "path": "assets/images/selected-work/longform-08.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 119608,
+    "optimized_bytes": 70958
+  },
+  {
+    "index": 9,
+    "path": "assets/images/selected-work/longform-09.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 200266,
+    "optimized_bytes": 90094
+  },
+  {
+    "index": 10,
+    "path": "assets/images/selected-work/longform-10.webp",
+    "source_mime": "jpeg",
+    "width": 1280,
+    "height": 720,
+    "original_bytes": 182898,
+    "optimized_bytes": 104804
+  },
+  {
+    "index": 11,
+    "path": "assets/images/selected-work/reels-01.webp",
+    "source_mime": "jpeg",
+    "width": 640,
+    "height": 1136,
+    "original_bytes": 57356,
+    "optimized_bytes": 50232
+  },
+  {
+    "index": 12,
+    "path": "assets/images/selected-work/reels-02.webp",
+    "source_mime": "jpeg",
+    "width": 640,
+    "height": 1136,
+    "original_bytes": 158902,
+    "optimized_bytes": 187032
+  },
+  {
+    "index": 13,
+    "path": "assets/images/selected-work/reels-03.webp",
+    "source_mime": "jpeg",
+    "width": 640,
+    "height": 1136,
+    "original_bytes": 29739,
+    "optimized_bytes": 24824
+  },
+  {
+    "index": 14,
+    "path": "assets/images/selected-work/reels-04.webp",
+    "source_mime": "jpeg",
+    "width": 481,
+    "height": 787,
+    "original_bytes": 144556,
+    "optimized_bytes": 13776
+  },
+  {
+    "index": 15,
+    "path": "assets/images/selected-work/reels-05.webp",
+    "source_mime": "jpeg",
+    "width": 1152,
+    "height": 2048,
+    "original_bytes": 382947,
+    "optimized_bytes": 124174
+  },
+  {
+    "index": 16,
+    "path": "assets/images/selected-work/reels-06.webp",
+    "source_mime": "jpeg",
+    "width": 507,
+    "height": 863,
+    "original_bytes": 223780,
+    "optimized_bytes": 31604
+  },
+  {
+    "index": 17,
+    "path": "assets/images/selected-work/reels-07.webp",
+    "source_mime": "jpeg",
+    "width": 513,
+    "height": 866,
+    "original_bytes": 268231,
+    "optimized_bytes": 39086
+  },
+  {
+    "index": 18,
+    "path": "assets/images/selected-work/reels-08.webp",
+    "source_mime": "jpeg",
+    "width": 514,
+    "height": 865,
+    "original_bytes": 292372,
+    "optimized_bytes": 44668
+  },
+  {
+    "index": 19,
+    "path": "assets/images/selected-work/reels-09.webp",
+    "source_mime": "jpeg",
+    "width": 513,
+    "height": 869,
+    "original_bytes": 288179,
+    "optimized_bytes": 42864
+  },
+  {
+    "index": 20,
+    "path": "assets/images/selected-work/reels-10.webp",
+    "source_mime": "jpeg",
+    "width": 508,
+    "height": 876,
+    "original_bytes": 226326,
+    "optimized_bytes": 29374
+  },
+  {
+    "index": 21,
+    "path": "assets/images/deliverable/guide-01.webp",
+    "source_mime": "png",
+    "width": 935,
+    "height": 1210,
+    "original_bytes": 177934,
+    "optimized_bytes": 55150
+  },
+  {
+    "index": 22,
+    "path": "assets/images/deliverable/guide-02.webp",
+    "source_mime": "png",
+    "width": 935,
+    "height": 1210,
+    "original_bytes": 102149,
+    "optimized_bytes": 38248
+  },
+  {
+    "index": 23,
+    "path": "assets/images/cases/case-01.webp",
+    "source_mime": "png",
+    "width": 505,
+    "height": 280,
+    "original_bytes": 218012,
+    "optimized_bytes": 148174
+  },
+  {
+    "index": 24,
+    "path": "assets/images/cases/case-02.webp",
+    "source_mime": "png",
+    "width": 505,
+    "height": 280,
+    "original_bytes": 264018,
+    "optimized_bytes": 190152
+  },
+  {
+    "index": 25,
+    "path": "assets/images/cases/case-03.webp",
+    "source_mime": "png",
+    "width": 505,
+    "height": 280,
+    "original_bytes": 245093,
+    "optimized_bytes": 174036
+  },
+  {
+    "index": 26,
+    "path": "assets/images/cases/case-04.webp",
+    "source_mime": "png",
+    "width": 505,
+    "height": 280,
+    "original_bytes": 196196,
+    "optimized_bytes": 138818
+  },
+  {
+    "index": 27,
+    "path": "assets/images/cases/case-05.webp",
+    "source_mime": "png",
+    "width": 505,
+    "height": 280,
+    "original_bytes": 142260,
+    "optimized_bytes": 99354
+  },
+  {
+    "index": 28,
+    "path": "assets/images/cases/case-06.webp",
+    "source_mime": "png",
+    "width": 505,
+    "height": 280,
+    "original_bytes": 194754,
+    "optimized_bytes": 131064
+  }
+]
