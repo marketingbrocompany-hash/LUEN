@@ -3175,3 +3175,21 @@ label{font-size:12.5px}
   .contact .privacy-details summary{padding:11px 14px!important}
   .contact .privacy-detail-body{padding:1px 14px 15px!important}
 }
+
+/* Case Study 이미지 위치 조정 */
+.case-01 .case-image img {
+  object-position: 60% center;
+}
+
+.case-02 .case-image img {
+  object-position: 50% center;
+}
+
+.case-03 .case-image img {
+  object-position: 55% center;
+}
+
+.case-04 .case-image img {
+  object-position: 50% center;
+}
+
