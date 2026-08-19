@@ -63,6 +63,43 @@
     heroCtas[1].innerHTML='대표 캠페인 사례 보기 <span>↓</span>';
   }
 
+  /* GA4 CTA attribution: enrich the existing site-core cta_click event without sending personal data. */
+  const ctaSelector='a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]';
+  const getCtaPosition=link=>{
+    if(link.classList.contains('float-cta')) return 'floating';
+    if(link.closest('.mobile-menu')) return 'mobile_menu';
+    if(link.closest('.hero')) return 'hero';
+    if(link.closest('nav')) return 'nav';
+    if(link.closest('.case-studies')) return 'case';
+    if(link.closest('.faq')) return 'faq';
+    if(link.closest('.final-scene')) return 'final';
+    return 'other';
+  };
+  document.addEventListener('click',event=>{
+    const link=event.target?.closest?.(ctaSelector);
+    if(!link) return;
+    const context={
+      position:getCtaPosition(link),
+      label:(link.dataset.analyticsLabel||link.getAttribute('aria-label')||link.textContent||'CTA').replace(/\s+/g,' ').trim().slice(0,80)
+    };
+    window.__luenLastCtaContext=context;
+    queueMicrotask(()=>{if(window.__luenLastCtaContext===context) window.__luenLastCtaContext=null;});
+  },true);
+  if(typeof window.gtag==='function'&&!window.gtag.__luenCtaPositionEnhanced){
+    const originalGtag=window.gtag;
+    const enhancedGtag=function(...args){
+      if(args[0]==='event'&&args[1]==='cta_click'){
+        const context=window.__luenLastCtaContext;
+        if(context){
+          args[2]={...(args[2]||{}),cta_label:context.label,cta_position:context.position};
+        }
+      }
+      return originalGtag.apply(this,args);
+    };
+    enhancedGtag.__luenCtaPositionEnhanced=true;
+    window.gtag=enhancedGtag;
+  }
+
   const old=document.querySelector('.luen-hero-network');
   if(old){
     old.outerHTML=`<div class="creator-network-showcase" aria-label="LUEN 크리에이터 네트워크">
