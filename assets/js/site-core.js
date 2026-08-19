@@ -5,6 +5,56 @@
     }
   };
 
+  // Step 9 — connect each Case Study directly to the inquiry form with context.
+  const caseContextStyle=document.createElement('style');
+  caseContextStyle.textContent=`
+    .case-studies .case-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(248,229,207,.11);color:var(--orange-2);font-size:12px;font-weight:700;line-height:1.4;transition:color .2s ease,gap .2s ease}
+    .case-studies .case-card-cta:hover{color:var(--cream);gap:11px}
+    .case-studies .case-card-cta i{font-style:normal}
+    @media(max-width:767px){.case-studies .case-card-cta{margin-top:16px;padding-top:14px;font-size:12px}}
+  `;
+  document.head.appendChild(caseContextStyle);
+
+  const inquiryFormForCase=document.getElementById('contactForm');
+  let sourceCaseInput=inquiryFormForCase?.querySelector('input[name="source_case"]');
+  if(inquiryFormForCase&&!sourceCaseInput){
+    sourceCaseInput=document.createElement('input');
+    sourceCaseInput.type='hidden';
+    sourceCaseInput.name='source_case';
+    sourceCaseInput.value='';
+    inquiryFormForCase.prepend(sourceCaseInput);
+  }
+
+  document.querySelectorAll('.case-studies .case-card').forEach((card,index)=>{
+    const body=card.querySelector('.case-body');
+    if(!body||body.querySelector('.case-card-cta')) return;
+    const caseName=(card.querySelector('h3')?.textContent||`Case ${index+1}`).replace(/\s+/g,' ').trim();
+    const link=document.createElement('a');
+    link.className='case-inquiry-btn case-card-cta';
+    link.href='#contact';
+    link.dataset.sourceCase=caseName;
+    link.dataset.analyticsLabel=`${caseName} 사례 기반 캠페인 상담`;
+    link.innerHTML='이 사례와 비슷한 캠페인 상담하기 <i aria-hidden="true">→</i>';
+    body.appendChild(link);
+  });
+
+  const generalCaseCta=document.querySelector('.case-inquiry-cta .case-inquiry-btn');
+  if(generalCaseCta){
+    generalCaseCta.dataset.sourceCase='case_studies_general';
+    generalCaseCta.dataset.analyticsLabel='Case Study 섹션 캠페인 상담';
+  }
+
+  document.querySelectorAll('a[href="#contact"][data-source-case]').forEach(link=>{
+    link.addEventListener('click',()=>{
+      if(sourceCaseInput) sourceCaseInput.value=link.dataset.sourceCase||'';
+    });
+  });
+  document.querySelectorAll('a[href="#contact"]:not([data-source-case])').forEach(link=>{
+    link.addEventListener('click',()=>{
+      if(sourceCaseInput) sourceCaseInput.value='';
+    });
+  });
+
   // LUEN V10.8 — GA4 funnel tracking. No form field values or personal data are sent.
   document.querySelectorAll('a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]').forEach(link=>{
     link.addEventListener('click',()=>{
@@ -172,6 +222,7 @@
           track('generate_lead',{
             method:'website_form',
             form_id:'contactForm',
+            source_case:(data.get('source_case')||'direct').toString().slice(0,80),
             page_path:window.location.pathname
           });
           form.classList.add('is-success');
