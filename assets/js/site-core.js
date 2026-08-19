@@ -5,6 +5,47 @@
     }
   };
 
+  // Step 9 — connect each Case Study directly to the inquiry form with context.
+  const inquiryFormForCase=document.getElementById('contactForm');
+  let sourceCaseInput=inquiryFormForCase?.querySelector('input[name="source_case"]');
+  if(inquiryFormForCase&&!sourceCaseInput){
+    sourceCaseInput=document.createElement('input');
+    sourceCaseInput.type='hidden';
+    sourceCaseInput.name='source_case';
+    sourceCaseInput.value='';
+    inquiryFormForCase.prepend(sourceCaseInput);
+  }
+
+  document.querySelectorAll('.case-studies .case-card').forEach((card,index)=>{
+    const body=card.querySelector('.case-body');
+    if(!body||body.querySelector('.case-card-cta')) return;
+    const caseName=(card.querySelector('h3')?.textContent||`Case ${index+1}`).replace(/\s+/g,' ').trim();
+    const link=document.createElement('a');
+    link.className='case-inquiry-btn case-card-cta';
+    link.href='#contact';
+    link.dataset.sourceCase=caseName;
+    link.dataset.analyticsLabel=`${caseName} 사례 기반 캠페인 상담`;
+    link.innerHTML='이 사례와 비슷한 캠페인 상담하기 <i aria-hidden="true">→</i>';
+    body.appendChild(link);
+  });
+
+  const generalCaseCta=document.querySelector('.case-inquiry-cta .case-inquiry-btn');
+  if(generalCaseCta){
+    generalCaseCta.dataset.sourceCase='case_studies_general';
+    generalCaseCta.dataset.analyticsLabel='Case Study 섹션 캠페인 상담';
+  }
+
+  document.querySelectorAll('a[href="#contact"][data-source-case]').forEach(link=>{
+    link.addEventListener('click',()=>{
+      if(sourceCaseInput) sourceCaseInput.value=link.dataset.sourceCase||'';
+    });
+  });
+  document.querySelectorAll('a[href="#contact"]:not([data-source-case])').forEach(link=>{
+    link.addEventListener('click',()=>{
+      if(sourceCaseInput) sourceCaseInput.value='';
+    });
+  });
+
   // LUEN V10.8 — GA4 funnel tracking. No form field values or personal data are sent.
   document.querySelectorAll('a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]').forEach(link=>{
     link.addEventListener('click',()=>{
@@ -41,17 +82,45 @@
   const hamburger=document.getElementById('hamburger');
   const mobileMenu=document.getElementById('mobileMenu');
   const mobileClose=document.getElementById('mobileClose');
+  let lastMenuFocus=null;
 
-  function setMenu(open){
+  if(hamburger&&mobileMenu){
+    hamburger.setAttribute('aria-controls','mobileMenu');
+    mobileMenu.setAttribute('role','dialog');
+    mobileMenu.setAttribute('aria-modal','true');
+  }
+
+  const getMenuFocusable=()=>mobileMenu?[...mobileMenu.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')]:[];
+  function setMenu(open,{restoreFocus=true}={}){
+    if(!mobileMenu||!hamburger)return;
+    if(open) lastMenuFocus=document.activeElement;
     mobileMenu.classList.toggle('open',open);
     mobileMenu.setAttribute('aria-hidden',String(!open));
     hamburger.setAttribute('aria-expanded',String(open));
     document.body.style.overflow=open?'hidden':'';
+    if(open){
+      requestAnimationFrame(()=>{(mobileClose||getMenuFocusable()[0])?.focus();});
+    }else if(restoreFocus&&lastMenuFocus instanceof HTMLElement){
+      lastMenuFocus.focus();
+    }
   }
-  hamburger.addEventListener('click',()=>setMenu(true));
-  mobileClose.addEventListener('click',()=>setMenu(false));
-  document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
+  hamburger?.addEventListener('click',()=>setMenu(true));
+  mobileClose?.addEventListener('click',()=>setMenu(false));
+  document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>setMenu(false,{restoreFocus:false})));
+  document.addEventListener('keydown',e=>{
+    if(!mobileMenu?.classList.contains('open'))return;
+    if(e.key==='Escape'){
+      e.preventDefault();
+      setMenu(false);
+      return;
+    }
+    if(e.key!=='Tab')return;
+    const focusable=getMenuFocusable();
+    if(!focusable.length)return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  });
 
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(entries=>{
@@ -66,7 +135,6 @@
   }else{
     document.querySelectorAll('.sr').forEach(el=>el.classList.add('in'));
   }
-
 
   document.querySelectorAll('.faq-q').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -88,30 +156,60 @@
   });
   document.querySelectorAll('.faq-item.open .faq-a').forEach(a=>a.style.maxHeight=a.scrollHeight+'px');
 
-
-
   const loopControllers=new Map();
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const startLoop=viewport=>{
+    const controller=loopControllers.get(viewport);
+    if(!controller||controller.raf||!controller.visible||document.hidden||reducedMotion.matches)return;
+    controller.last=performance.now();
+    controller.raf=requestAnimationFrame(controller.tick);
+  };
+  const stopLoop=viewport=>{
+    const controller=loopControllers.get(viewport);
+    if(!controller?.raf)return;
+    cancelAnimationFrame(controller.raf);
+    controller.raf=0;
+  };
+  const loopVisibilityObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      const controller=loopControllers.get(entry.target);
+      if(!controller)return;
+      controller.visible=entry.isIntersecting;
+      if(controller.visible)startLoop(entry.target);else stopLoop(entry.target);
+    });
+  },{rootMargin:'180px 0px',threshold:0}):null;
+
   function setupLoopStrip(viewport){
     const track=viewport.querySelector('.loop-track');
     const source=viewport.querySelector('.loop-set:not(.loop-clone)');
     if(!track||!source)return;
-    const old=loopControllers.get(viewport);if(old&&old.raf)cancelAnimationFrame(old.raf);
+    stopLoop(viewport);
+    loopVisibilityObserver?.unobserve(viewport);
     track.querySelectorAll('.loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
     const baseWidth=source.getBoundingClientRect().width;if(!baseWidth)return;
     const copies=Math.max(2,Math.ceil((viewport.clientWidth+baseWidth*2)/baseWidth));
     for(let i=0;i<copies;i++){const clone=source.cloneNode(true);clone.classList.add('loop-clone');clone.setAttribute('aria-hidden','true');track.appendChild(clone);}
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){loopControllers.set(viewport,{raf:0});return;}
-    let offset=0,last=performance.now();const speed=Math.max(10,Number(viewport.dataset.speed||45));
-    const tick=now=>{const dt=Math.min(.05,(now-last)/1000);last=now;offset+=speed*dt;if(offset>=baseWidth)offset-=baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;const raf=requestAnimationFrame(tick);loopControllers.set(viewport,{raf});};
-    const raf=requestAnimationFrame(tick);loopControllers.set(viewport,{raf});
+    if(reducedMotion.matches){loopControllers.set(viewport,{raf:0,visible:false});return;}
+    const controller={raf:0,visible:!loopVisibilityObserver,offset:0,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
+    controller.tick=now=>{
+      controller.raf=0;
+      if(!controller.visible||document.hidden||reducedMotion.matches)return;
+      const dt=Math.min(.05,(now-controller.last)/1000);controller.last=now;
+      controller.offset+=controller.speed*dt;
+      if(controller.offset>=controller.baseWidth)controller.offset-=controller.baseWidth;
+      controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
+      controller.raf=requestAnimationFrame(controller.tick);
+    };
+    loopControllers.set(viewport,controller);
+    if(loopVisibilityObserver)loopVisibilityObserver.observe(viewport);else startLoop(viewport);
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
+  document.addEventListener('visibilitychange',()=>{
+    loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
+  });
 
-  // Mobile browsers fire resize while the address/navigation bars show and hide during vertical scrolling.
-  // Rebuilding the infinite-loop strips on those height-only resizes resets the thumbnails and can glitch
-  // when the user scrolls away from Selected Work and comes back. Only rebuild when viewport width changes.
   let lastLoopViewportWidth=document.documentElement.clientWidth;
   window.addEventListener('resize',()=>{
     const nextWidth=document.documentElement.clientWidth;
@@ -129,6 +227,23 @@
   const submitLabel=form?.querySelector('.form-submit-label');
 
   if(form){
+    const email=form.querySelector('#email');
+    const phone=form.querySelector('#phone');
+    const clearContactValidity=()=>{email?.setCustomValidity('');phone?.setCustomValidity('');};
+    email?.addEventListener('input',clearContactValidity);
+    phone?.addEventListener('input',clearContactValidity);
+    form.addEventListener('submit',event=>{
+      const hasEmail=Boolean(email?.value.trim());
+      const hasPhone=Boolean(phone?.value.trim());
+      clearContactValidity();
+      if(hasEmail||hasPhone)return;
+      email?.setCustomValidity('이메일 또는 연락처 중 하나를 입력해주세요.');
+      email?.reportValidity();
+      email?.focus();
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    },true);
+
     let analyticsFormStarted=false;
     const markFormStarted=()=>{
       if(analyticsFormStarted) return;
@@ -172,6 +287,7 @@
           track('generate_lead',{
             method:'website_form',
             form_id:'contactForm',
+            source_case:(data.get('source_case')||'direct').toString().slice(0,80),
             page_path:window.location.pathname
           });
           form.classList.add('is-success');
@@ -206,17 +322,42 @@
   if(voiceStage){
     const items=[...voiceStage.querySelectorAll('.voice-item')];
     const dots=[...voiceStage.querySelectorAll('.voice-dots button')];
-    let voiceIndex=0,voiceTimer=null;
+    const toggle=document.createElement('button');
+    toggle.type='button';
+    toggle.className='voice-toggle';
+    toggle.setAttribute('aria-pressed','false');
+    toggle.textContent='자동 전환 일시정지';
+    voiceStage.appendChild(toggle);
+    let voiceIndex=0,voiceTimer=null,userPaused=false,hoverPaused=false,focusPaused=false,voiceVisible=true;
     const showVoice=(idx)=>{
       voiceIndex=(idx+items.length)%items.length;
       items.forEach((el,i)=>el.classList.toggle('active',i===voiceIndex));
       dots.forEach((el,i)=>el.classList.toggle('active',i===voiceIndex));
     };
-    const startVoice=()=>{ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return; clearInterval(voiceTimer); voiceTimer=setInterval(()=>showVoice(voiceIndex+1),5200); };
-    dots.forEach((btn,i)=>btn.addEventListener('click',()=>{showVoice(i);startVoice();}));
-    voiceStage.addEventListener('mouseenter',()=>clearInterval(voiceTimer));
-    voiceStage.addEventListener('mouseleave',startVoice);
-    startVoice();
+    const stopVoice=()=>{clearInterval(voiceTimer);voiceTimer=null;};
+    const syncVoice=()=>{
+      stopVoice();
+      if(reducedMotion.matches||document.hidden||userPaused||hoverPaused||focusPaused||!voiceVisible)return;
+      voiceTimer=setInterval(()=>showVoice(voiceIndex+1),5200);
+    };
+    const setUserPaused=paused=>{
+      userPaused=paused;
+      toggle.setAttribute('aria-pressed',String(paused));
+      toggle.textContent=paused?'자동 전환 다시 시작':'자동 전환 일시정지';
+      syncVoice();
+    };
+    dots.forEach((btn,i)=>btn.addEventListener('click',()=>{showVoice(i);syncVoice();}));
+    toggle.addEventListener('click',()=>setUserPaused(!userPaused));
+    voiceStage.addEventListener('mouseenter',()=>{hoverPaused=true;syncVoice();});
+    voiceStage.addEventListener('mouseleave',()=>{hoverPaused=false;syncVoice();});
+    voiceStage.addEventListener('focusin',()=>{focusPaused=true;syncVoice();});
+    voiceStage.addEventListener('focusout',()=>requestAnimationFrame(()=>{focusPaused=voiceStage.contains(document.activeElement);syncVoice();}));
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(entries=>{voiceVisible=Boolean(entries[0]?.isIntersecting);syncVoice();},{rootMargin:'120px 0px',threshold:0}).observe(voiceStage);
+    }
+    document.addEventListener('visibilitychange',syncVoice);
+    reducedMotion.addEventListener?.('change',syncVoice);
+    syncVoice();
   }
 
 })();
