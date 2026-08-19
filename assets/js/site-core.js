@@ -11,7 +11,9 @@
     .case-studies .case-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(248,229,207,.11);color:var(--orange-2);font-size:12px;font-weight:700;line-height:1.4;transition:color .2s ease,gap .2s ease}
     .case-studies .case-card-cta:hover{color:var(--cream);gap:11px}
     .case-studies .case-card-cta i{font-style:normal}
-    @media(max-width:767px){.case-studies .case-card-cta{margin-top:16px;padding-top:14px;font-size:12px}}
+    .client-voice .voice-toggle{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:8px 11px;border:1px solid rgba(248,229,207,.16);border-radius:999px;background:rgba(248,229,207,.04);color:rgba(248,229,207,.72);font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.04em;cursor:pointer}
+    .client-voice .voice-toggle:hover,.client-voice .voice-toggle:focus-visible{border-color:rgba(244,125,53,.45);color:var(--cream);outline:none}
+    @media(max-width:767px){.case-studies .case-card-cta{margin-top:16px;padding-top:14px;font-size:12px}.client-voice .voice-toggle{min-height:36px;margin-top:12px;padding:9px 12px}}
   `;
   document.head.appendChild(caseContextStyle);
 
@@ -91,17 +93,45 @@
   const hamburger=document.getElementById('hamburger');
   const mobileMenu=document.getElementById('mobileMenu');
   const mobileClose=document.getElementById('mobileClose');
+  let lastMenuFocus=null;
 
-  function setMenu(open){
+  if(hamburger&&mobileMenu){
+    hamburger.setAttribute('aria-controls','mobileMenu');
+    mobileMenu.setAttribute('role','dialog');
+    mobileMenu.setAttribute('aria-modal','true');
+  }
+
+  const getMenuFocusable=()=>mobileMenu?[...mobileMenu.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')]:[];
+  function setMenu(open,{restoreFocus=true}={}){
+    if(!mobileMenu||!hamburger)return;
+    if(open) lastMenuFocus=document.activeElement;
     mobileMenu.classList.toggle('open',open);
     mobileMenu.setAttribute('aria-hidden',String(!open));
     hamburger.setAttribute('aria-expanded',String(open));
     document.body.style.overflow=open?'hidden':'';
+    if(open){
+      requestAnimationFrame(()=>{(mobileClose||getMenuFocusable()[0])?.focus();});
+    }else if(restoreFocus&&lastMenuFocus instanceof HTMLElement){
+      lastMenuFocus.focus();
+    }
   }
-  hamburger.addEventListener('click',()=>setMenu(true));
-  mobileClose.addEventListener('click',()=>setMenu(false));
-  document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
+  hamburger?.addEventListener('click',()=>setMenu(true));
+  mobileClose?.addEventListener('click',()=>setMenu(false));
+  document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>setMenu(false,{restoreFocus:false})));
+  document.addEventListener('keydown',e=>{
+    if(!mobileMenu?.classList.contains('open'))return;
+    if(e.key==='Escape'){
+      e.preventDefault();
+      setMenu(false);
+      return;
+    }
+    if(e.key!=='Tab')return;
+    const focusable=getMenuFocusable();
+    if(!focusable.length)return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  });
 
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(entries=>{
@@ -141,23 +171,58 @@
 
 
   const loopControllers=new Map();
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const startLoop=viewport=>{
+    const controller=loopControllers.get(viewport);
+    if(!controller||controller.raf||!controller.visible||document.hidden||reducedMotion.matches)return;
+    controller.last=performance.now();
+    controller.raf=requestAnimationFrame(controller.tick);
+  };
+  const stopLoop=viewport=>{
+    const controller=loopControllers.get(viewport);
+    if(!controller?.raf)return;
+    cancelAnimationFrame(controller.raf);
+    controller.raf=0;
+  };
+  const loopVisibilityObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      const controller=loopControllers.get(entry.target);
+      if(!controller)return;
+      controller.visible=entry.isIntersecting;
+      if(controller.visible)startLoop(entry.target);else stopLoop(entry.target);
+    });
+  },{rootMargin:'180px 0px',threshold:0}):null;
+
   function setupLoopStrip(viewport){
     const track=viewport.querySelector('.loop-track');
     const source=viewport.querySelector('.loop-set:not(.loop-clone)');
     if(!track||!source)return;
-    const old=loopControllers.get(viewport);if(old&&old.raf)cancelAnimationFrame(old.raf);
+    stopLoop(viewport);
+    loopVisibilityObserver?.unobserve(viewport);
     track.querySelectorAll('.loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
     const baseWidth=source.getBoundingClientRect().width;if(!baseWidth)return;
     const copies=Math.max(2,Math.ceil((viewport.clientWidth+baseWidth*2)/baseWidth));
     for(let i=0;i<copies;i++){const clone=source.cloneNode(true);clone.classList.add('loop-clone');clone.setAttribute('aria-hidden','true');track.appendChild(clone);}
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){loopControllers.set(viewport,{raf:0});return;}
-    let offset=0,last=performance.now();const speed=Math.max(10,Number(viewport.dataset.speed||45));
-    const tick=now=>{const dt=Math.min(.05,(now-last)/1000);last=now;offset+=speed*dt;if(offset>=baseWidth)offset-=baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;const raf=requestAnimationFrame(tick);loopControllers.set(viewport,{raf});};
-    const raf=requestAnimationFrame(tick);loopControllers.set(viewport,{raf});
+    if(reducedMotion.matches){loopControllers.set(viewport,{raf:0,visible:false});return;}
+    const controller={raf:0,visible:!loopVisibilityObserver,offset:0,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
+    controller.tick=now=>{
+      controller.raf=0;
+      if(!controller.visible||document.hidden||reducedMotion.matches)return;
+      const dt=Math.min(.05,(now-controller.last)/1000);controller.last=now;
+      controller.offset+=controller.speed*dt;
+      if(controller.offset>=controller.baseWidth)controller.offset-=controller.baseWidth;
+      controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
+      controller.raf=requestAnimationFrame(controller.tick);
+    };
+    loopControllers.set(viewport,controller);
+    if(loopVisibilityObserver)loopVisibilityObserver.observe(viewport);else startLoop(viewport);
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
+  document.addEventListener('visibilitychange',()=>{
+    loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
+  });
 
   // Mobile browsers fire resize while the address/navigation bars show and hide during vertical scrolling.
   // Rebuilding the infinite-loop strips on those height-only resizes resets the thumbnails and can glitch
@@ -257,17 +322,42 @@
   if(voiceStage){
     const items=[...voiceStage.querySelectorAll('.voice-item')];
     const dots=[...voiceStage.querySelectorAll('.voice-dots button')];
-    let voiceIndex=0,voiceTimer=null;
+    const toggle=document.createElement('button');
+    toggle.type='button';
+    toggle.className='voice-toggle';
+    toggle.setAttribute('aria-pressed','false');
+    toggle.textContent='자동 전환 일시정지';
+    voiceStage.appendChild(toggle);
+    let voiceIndex=0,voiceTimer=null,userPaused=false,hoverPaused=false,focusPaused=false,voiceVisible=true;
     const showVoice=(idx)=>{
       voiceIndex=(idx+items.length)%items.length;
       items.forEach((el,i)=>el.classList.toggle('active',i===voiceIndex));
       dots.forEach((el,i)=>el.classList.toggle('active',i===voiceIndex));
     };
-    const startVoice=()=>{ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return; clearInterval(voiceTimer); voiceTimer=setInterval(()=>showVoice(voiceIndex+1),5200); };
-    dots.forEach((btn,i)=>btn.addEventListener('click',()=>{showVoice(i);startVoice();}));
-    voiceStage.addEventListener('mouseenter',()=>clearInterval(voiceTimer));
-    voiceStage.addEventListener('mouseleave',startVoice);
-    startVoice();
+    const stopVoice=()=>{clearInterval(voiceTimer);voiceTimer=null;};
+    const syncVoice=()=>{
+      stopVoice();
+      if(reducedMotion.matches||document.hidden||userPaused||hoverPaused||focusPaused||!voiceVisible)return;
+      voiceTimer=setInterval(()=>showVoice(voiceIndex+1),5200);
+    };
+    const setUserPaused=paused=>{
+      userPaused=paused;
+      toggle.setAttribute('aria-pressed',String(paused));
+      toggle.textContent=paused?'자동 전환 다시 시작':'자동 전환 일시정지';
+      syncVoice();
+    };
+    dots.forEach((btn,i)=>btn.addEventListener('click',()=>{showVoice(i);syncVoice();}));
+    toggle.addEventListener('click',()=>setUserPaused(!userPaused));
+    voiceStage.addEventListener('mouseenter',()=>{hoverPaused=true;syncVoice();});
+    voiceStage.addEventListener('mouseleave',()=>{hoverPaused=false;syncVoice();});
+    voiceStage.addEventListener('focusin',()=>{focusPaused=true;syncVoice();});
+    voiceStage.addEventListener('focusout',()=>requestAnimationFrame(()=>{focusPaused=voiceStage.contains(document.activeElement);syncVoice();}));
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(entries=>{voiceVisible=Boolean(entries[0]?.isIntersecting);syncVoice();},{rootMargin:'120px 0px',threshold:0}).observe(voiceStage);
+    }
+    document.addEventListener('visibilitychange',syncVoice);
+    reducedMotion.addEventListener?.('change',syncVoice);
+    syncVoice();
   }
 
 })();
