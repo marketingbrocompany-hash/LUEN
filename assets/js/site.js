@@ -33,8 +33,8 @@
   if(old){
     old.outerHTML=`<div class="creator-network-showcase" aria-label="LUEN 크리에이터 네트워크">
       <div class="creator-network-head"><span>CREATOR NETWORK</span><strong>KOREA × JAPAN</strong><p>YOUTUBE CREATOR PROFILE</p></div>
-      <div class="creator-profile-viewport" data-loop-strip="" data-speed="32" aria-label="크리에이터 프로필 슬라이드">
-        <div class="creator-profile-track loop-track"><div class="creator-profile-set loop-set">
+      <div class="creator-profile-viewport" aria-label="크리에이터 프로필 슬라이드">
+        <div class="creator-profile-track"><div class="creator-profile-set">
           <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-03.webp" alt="LUEN 크리에이터 프로필 1" width="320" height="320" decoding="async"></figure>
           <figure class="creator-profile-card"><img src="assets/images/cases/case-04.webp" alt="LUEN 크리에이터 프로필 2" width="320" height="320" decoding="async"></figure>
           <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 3" width="320" height="320" decoding="async"></figure>
@@ -49,7 +49,24 @@
     </div>`;
   }
 
+  const viewport=document.querySelector('.creator-profile-viewport');
+  const track=viewport?.querySelector('.creator-profile-track');
+  const source=viewport?.querySelector('.creator-profile-set');
+  if(viewport&&track&&source&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const clone=source.cloneNode(true);
+    clone.setAttribute('aria-hidden','true');
+    track.appendChild(clone);
+    let offset=0,last=performance.now(),baseWidth=source.getBoundingClientRect().width;
+    const tick=now=>{
+      const dt=Math.min(.05,(now-last)/1000);last=now;
+      if(baseWidth>0){offset=(offset+32*dt)%baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;}
+      requestAnimationFrame(tick);
+    };
+    new ResizeObserver(()=>{baseWidth=source.getBoundingClientRect().width||baseWidth}).observe(viewport);
+    requestAnimationFrame(tick);
+  }
+
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819';
+  core.src='assets/js/site-core.js?v=20260819b';
   document.body.appendChild(core);
 })();
