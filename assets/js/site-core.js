@@ -6,17 +6,6 @@
   };
 
   // Step 9 — connect each Case Study directly to the inquiry form with context.
-  const caseContextStyle=document.createElement('style');
-  caseContextStyle.textContent=`
-    .case-studies .case-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(248,229,207,.11);color:var(--orange-2);font-size:12px;font-weight:700;line-height:1.4;transition:color .2s ease,gap .2s ease}
-    .case-studies .case-card-cta:hover{color:var(--cream);gap:11px}
-    .case-studies .case-card-cta i{font-style:normal}
-    .client-voice .voice-toggle{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:8px 11px;border:1px solid rgba(248,229,207,.16);border-radius:999px;background:rgba(248,229,207,.04);color:rgba(248,229,207,.72);font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.04em;cursor:pointer}
-    .client-voice .voice-toggle:hover,.client-voice .voice-toggle:focus-visible{border-color:rgba(244,125,53,.45);color:var(--cream);outline:none}
-    @media(max-width:767px){.case-studies .case-card-cta{margin-top:16px;padding-top:14px;font-size:12px}.client-voice .voice-toggle{min-height:36px;margin-top:12px;padding:9px 12px}}
-  `;
-  document.head.appendChild(caseContextStyle);
-
   const inquiryFormForCase=document.getElementById('contactForm');
   let sourceCaseInput=inquiryFormForCase?.querySelector('input[name="source_case"]');
   if(inquiryFormForCase&&!sourceCaseInput){
@@ -147,7 +136,6 @@
     document.querySelectorAll('.sr').forEach(el=>el.classList.add('in'));
   }
 
-
   document.querySelectorAll('.faq-q').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const item=btn.closest('.faq-item');
@@ -167,8 +155,6 @@
     });
   });
   document.querySelectorAll('.faq-item.open .faq-a').forEach(a=>a.style.maxHeight=a.scrollHeight+'px');
-
-
 
   const loopControllers=new Map();
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -224,9 +210,6 @@
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
   });
 
-  // Mobile browsers fire resize while the address/navigation bars show and hide during vertical scrolling.
-  // Rebuilding the infinite-loop strips on those height-only resizes resets the thumbnails and can glitch
-  // when the user scrolls away from Selected Work and comes back. Only rebuild when viewport width changes.
   let lastLoopViewportWidth=document.documentElement.clientWidth;
   window.addEventListener('resize',()=>{
     const nextWidth=document.documentElement.clientWidth;
@@ -244,6 +227,23 @@
   const submitLabel=form?.querySelector('.form-submit-label');
 
   if(form){
+    const email=form.querySelector('#email');
+    const phone=form.querySelector('#phone');
+    const clearContactValidity=()=>{email?.setCustomValidity('');phone?.setCustomValidity('');};
+    email?.addEventListener('input',clearContactValidity);
+    phone?.addEventListener('input',clearContactValidity);
+    form.addEventListener('submit',event=>{
+      const hasEmail=Boolean(email?.value.trim());
+      const hasPhone=Boolean(phone?.value.trim());
+      clearContactValidity();
+      if(hasEmail||hasPhone)return;
+      email?.setCustomValidity('이메일 또는 연락처 중 하나를 입력해주세요.');
+      email?.reportValidity();
+      email?.focus();
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    },true);
+
     let analyticsFormStarted=false;
     const markFormStarted=()=>{
       if(analyticsFormStarted) return;
