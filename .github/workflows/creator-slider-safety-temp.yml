@@ -40,3 +40,4 @@ jobs:
           git add assets/js/site.js index.html
           git commit -m 'Harden creator slider image loading'
           git push origin main
+# trigger
