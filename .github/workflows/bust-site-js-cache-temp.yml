@@ -1,0 +1,41 @@
+name: Bust site.js cache
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bust-site-js-cache-temp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Bust cache for site.js
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old='<script src="assets/js/site.js"></script>'
+          new='<script src="assets/js/site.js?v=20260819-1305"></script>'
+          if old not in s:
+              import re
+              s=re.sub(r'<script src="assets/js/site\.js(?:\?v=[^"]*)?"></script>',new,s,count=1)
+          else:
+              s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Bust site.js cache for creator slider update'
+          git push origin main
