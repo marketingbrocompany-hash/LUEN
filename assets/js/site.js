@@ -30,12 +30,38 @@
     .case-studies .case-image::after{display:none!important}
     .case-studies .case-body{min-height:0!important;padding:26px 26px 28px!important}
 
+    /* P0 accessibility stability fixes */
+    .client-voice .voice-item>p{font-size:var(--luen-label)!important}
+
     @media(max-width:1180px){.creator-network-showcase{width:min(100%,760px);min-height:540px;justify-self:center}.creator-profile-card{flex-basis:235px;width:235px;height:235px}}
     @media(max-width:767px){.creator-network-showcase{min-height:430px;border-radius:28px}.creator-network-head{padding:26px 20px 14px}.creator-network-head strong{font-size:28px}.creator-network-head p{font-size:8px}.creator-profile-viewport{padding:14px 0 26px}.creator-profile-viewport::before,.creator-profile-viewport::after{width:32px}.creator-profile-set{gap:12px;padding-right:12px}.creator-profile-card{flex-basis:190px;width:190px;height:190px;border-radius:18px}.creator-network-foot{flex-wrap:wrap;padding:0 20px 24px;gap:9px;font-size:7.5px}.case-studies .case-image{aspect-ratio:4/3!important;padding:8px!important}.case-studies .case-image img{border-radius:12px!important}.case-studies .case-body{padding:22px 18px 22px!important}}
     @media(max-width:480px){.creator-network-showcase{min-height:402px}.creator-profile-card{flex-basis:174px;width:174px;height:174px}.creator-network-head>span{font-size:9px}}
-    @media(prefers-reduced-motion:reduce){.creator-profile-viewport{overflow-x:auto;scrollbar-width:none}.creator-profile-viewport::-webkit-scrollbar{display:none}.creator-profile-track{transform:none!important}}
+    @media(prefers-reduced-motion:reduce){
+      .creator-profile-viewport{overflow-x:auto;scrollbar-width:none}
+      .creator-profile-viewport::-webkit-scrollbar{display:none}
+      .creator-profile-track{transform:none!important}
+      .lhn-glow,.lcs-node,.lcs-scene,.lcs-node:not(.lcs-action)::after{animation:none!important;transition:none!important}
+    }
   `;
   document.head.appendChild(style);
+
+  /* Conversion-first hero copy and CTA hierarchy */
+  const heroDesc=document.querySelector('.hero-desc');
+  if(heroDesc){
+    const line=heroDesc.querySelector('.hero-desc-line');
+    const strong=heroDesc.querySelector('strong');
+    if(line) line.textContent='한국과 일본의 크리에이터 마케팅을 한 팀에서 운영합니다.';
+    if(strong) strong.textContent='크리에이터 발굴·섭외부터 콘텐츠 기획, 현지 커뮤니케이션, 업로드 관리, 성과 분석까지 캠페인 전 과정을 연결합니다.';
+  }
+  const heroCtas=document.querySelectorAll('.hero-cta a');
+  if(heroCtas[0]){
+    heroCtas[0].setAttribute('href','#contact');
+    heroCtas[0].innerHTML='캠페인 상담하기 <span>→</span>';
+  }
+  if(heroCtas[1]){
+    heroCtas[1].setAttribute('href','#work');
+    heroCtas[1].innerHTML='대표 캠페인 사례 보기 <span>↓</span>';
+  }
 
   const old=document.querySelector('.luen-hero-network');
   if(old){
