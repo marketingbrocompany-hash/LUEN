@@ -1,57 +1,12 @@
 (()=>{
-  const style=document.createElement('style');
-  style.textContent=`
-    .creator-network-showcase{position:relative;min-width:0;width:100%;min-height:650px;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:center;border:1px solid rgba(248,229,207,.14);border-radius:38px;background:radial-gradient(circle at 82% 16%,rgba(244,125,53,.18),transparent 30%),radial-gradient(circle at 42% 72%,rgba(244,125,53,.08),transparent 34%),linear-gradient(145deg,rgba(31,18,12,.98),rgba(13,8,5,.98));box-shadow:0 34px 100px rgba(0,0,0,.26)}
-    .creator-network-showcase::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.23;background-image:linear-gradient(rgba(248,229,207,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(248,229,207,.055) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,.35) 72%,transparent)}
-    .creator-network-showcase::after{content:"";position:absolute;right:-16%;top:8%;width:74%;aspect-ratio:1;border:1px solid rgba(244,125,53,.16);border-radius:50%;box-shadow:0 0 0 42px rgba(244,125,53,.025),0 0 80px rgba(244,125,53,.08);pointer-events:none}
-    .creator-network-head{position:relative;z-index:3;padding:38px 38px 22px}
-    .creator-network-head>span{display:flex;align-items:center;gap:9px;margin-bottom:13px;color:var(--orange-2);font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.17em}
-    .creator-network-head>span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px rgba(244,125,53,.72)}
-    .creator-network-head strong{display:block;color:var(--cream);font:700 clamp(28px,2.7vw,40px)/1 "Inter","Pretendard",sans-serif;letter-spacing:-.035em}
-    .creator-network-head p{margin-top:10px;color:rgba(248,229,207,.44);font:600 9px/1 "Inter","Pretendard",sans-serif;letter-spacing:.18em}
-    .creator-profile-viewport{position:relative;z-index:3;width:100%;overflow:hidden;padding:18px 0 34px}
-    .creator-profile-viewport::before,.creator-profile-viewport::after{content:"";position:absolute;z-index:5;top:0;bottom:0;width:58px;pointer-events:none}
-    .creator-profile-viewport::before{left:0;background:linear-gradient(90deg,#140b07 0,rgba(20,11,7,.72) 24%,rgba(20,11,7,0) 100%)}
-    .creator-profile-viewport::after{right:0;background:linear-gradient(270deg,#130a06 0,rgba(19,10,6,.72) 24%,rgba(19,10,6,0) 100%)}
-    .creator-profile-track{display:flex;width:max-content;will-change:transform}
-    .creator-profile-set{display:flex;flex:0 0 auto;align-items:center;gap:16px;padding-right:16px}
-    .creator-profile-card{position:relative;flex:0 0 270px;width:270px;height:270px;overflow:hidden;border:1px solid rgba(248,229,207,.16);border-radius:22px;background:#0e0906;box-shadow:0 18px 48px rgba(0,0,0,.28);transform:none!important}
-    .creator-profile-card img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#0e0906;transform:none!important;filter:none!important}
-    .creator-profile-card::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(248,229,207,.035)}
-    .creator-network-foot{position:relative;z-index:3;display:flex;align-items:center;gap:11px;padding:2px 38px 34px;color:rgba(248,229,207,.38);font:700 8px/1 "Inter","Pretendard",sans-serif;letter-spacing:.14em}
-    .creator-network-foot i{width:3px;height:3px;border-radius:50%;background:var(--orange);opacity:.8}
-
-    .case-studies .case-grid{align-items:start!important}
-    .case-studies .case-card,.case-studies .case-05,.case-studies .case-06{display:flex!important;flex-direction:column!important;grid-template-columns:1fr!important;min-height:0!important;transform:none!important;overflow:hidden!important}
-    .case-studies .case-card:hover{transform:none!important}
-    .case-studies .case-image{width:100%!important;aspect-ratio:16/10!important;min-height:0!important;display:grid!important;place-items:center!important;padding:12px!important;background:radial-gradient(circle at 50% 45%,rgba(244,125,53,.055),transparent 48%),#090604!important;overflow:hidden!important}
-    .case-studies .case-image img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;border-radius:14px!important;filter:none!important;transform:none!important;background:#090604!important}
-    .case-studies .case-card:hover .case-image img{transform:none!important}
-    .case-studies .case-image::after{display:none!important}
-    .case-studies .case-body{min-height:0!important;padding:26px 26px 28px!important}
-
-    /* P0 accessibility stability fixes */
-    .client-voice .voice-item>p{font-size:var(--luen-label)!important}
-
-    /* Inquiry form: reduce friction while keeping one reply channel required. */
-    .contact .form-contact-hint{grid-column:1/-1;margin:-5px 0 2px;color:#7a6658;font-size:12px;line-height:1.55}
-    .contact .field label .field-note{font-weight:500;color:#8c7869}
-    .contact .inquiry-reassurance{margin:0 0 22px;padding:16px 18px;border:1px solid rgba(164,70,16,.18);border-radius:16px;background:rgba(244,125,53,.07)}
-    .contact .inquiry-reassurance>span{display:block;margin-bottom:7px;color:#a74610;font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.13em}
-    .contact .inquiry-reassurance strong{display:block;color:#2c1b12;font-size:14px;line-height:1.5}
-    .contact .inquiry-reassurance p{margin-top:5px;color:#6e5d50;font-size:12.5px;line-height:1.65}
-
-    @media(max-width:1180px){.creator-network-showcase{width:min(100%,760px);min-height:540px;justify-self:center}.creator-profile-card{flex-basis:235px;width:235px;height:235px}}
-    @media(max-width:767px){.creator-network-showcase{min-height:430px;border-radius:28px}.creator-network-head{padding:26px 20px 14px}.creator-network-head strong{font-size:28px}.creator-network-head p{font-size:8px}.creator-profile-viewport{padding:14px 0 26px}.creator-profile-viewport::before,.creator-profile-viewport::after{width:32px}.creator-profile-set{gap:12px;padding-right:12px}.creator-profile-card{flex-basis:190px;width:190px;height:190px;border-radius:18px}.creator-network-foot{flex-wrap:wrap;padding:0 20px 24px;gap:9px;font-size:7.5px}.case-studies .case-image{aspect-ratio:4/3!important;padding:8px!important}.case-studies .case-image img{border-radius:12px!important}.case-studies .case-body{padding:22px 18px 22px!important}.contact .inquiry-reassurance{padding:15px 16px;margin-bottom:18px}.contact .inquiry-reassurance strong{font-size:13.5px}.contact .inquiry-reassurance p{font-size:12px}}
-    @media(max-width:480px){.creator-network-showcase{min-height:402px}.creator-profile-card{flex-basis:174px;width:174px;height:174px}.creator-network-head>span{font-size:9px}}
-    @media(prefers-reduced-motion:reduce){
-      .creator-profile-viewport{overflow-x:auto;scrollbar-width:none}
-      .creator-profile-viewport::-webkit-scrollbar{display:none}
-      .creator-profile-track{transform:none!important}
-      .lhn-glow,.lcs-node,.lcs-scene,.lcs-node:not(.lcs-action)::after{animation:none!important;transition:none!important}
-    }
-  `;
-  document.head.appendChild(style);
+  /* Step 11 — current production styling now lives in assets/css/site-current.css. */
+  if(!document.querySelector('link[data-luen-current-styles]')){
+    const currentStyles=document.createElement('link');
+    currentStyles.rel='stylesheet';
+    currentStyles.href='assets/css/site-current.css?v=20260819-1';
+    currentStyles.dataset.luenCurrentStyles='true';
+    document.head.appendChild(currentStyles);
+  }
 
   /* Conversion-first hero copy and CTA hierarchy */
   const heroDesc=document.querySelector('.hero-desc');
@@ -108,7 +63,7 @@
     window.gtag=enhancedGtag;
   }
 
-  /* Step 4 — simplify the inquiry form before site-core attaches submit handling. */
+  /* Step 4/5 — simplify the inquiry form before site-core attaches submit handling. */
   const inquiryForm=document.getElementById('contactForm');
   if(inquiryForm){
     const contactCopy=document.querySelector('.contact-copy');
@@ -223,6 +178,6 @@
   if(portfolioLoops[1]) portfolioLoops[1].dataset.speed='84';
 
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819j';
+  core.src='assets/js/site-core.js?v=20260819k';
   document.body.appendChild(core);
 })();
