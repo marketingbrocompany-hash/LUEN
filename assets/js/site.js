@@ -43,13 +43,13 @@
       <div class="creator-network-head"><span>CREATOR NETWORK</span><strong>KOREA × JAPAN</strong><p>YOUTUBE CREATOR PROFILE</p></div>
       <div class="creator-profile-viewport" aria-label="크리에이터 프로필 슬라이드">
         <div class="creator-profile-track"><div class="creator-profile-set">
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 1"><span class="creator-profile-photo" style="--i:0"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 2"><span class="creator-profile-photo" style="--i:1"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 3"><span class="creator-profile-photo" style="--i:2"></span></figure>
           <figure class="creator-profile-card" aria-label="크리에이터 이미지 4"><span class="creator-profile-photo" style="--i:3"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 5"><span class="creator-profile-photo" style="--i:4"></span></figure>
+          <figure class="creator-profile-card" aria-label="크리에이터 이미지 1"><span class="creator-profile-photo" style="--i:0"></span></figure>
           <figure class="creator-profile-card" aria-label="크리에이터 이미지 6"><span class="creator-profile-photo" style="--i:5"></span></figure>
+          <figure class="creator-profile-card" aria-label="크리에이터 이미지 3"><span class="creator-profile-photo" style="--i:2"></span></figure>
           <figure class="creator-profile-card" aria-label="크리에이터 이미지 7"><span class="creator-profile-photo" style="--i:6"></span></figure>
+          <figure class="creator-profile-card" aria-label="크리에이터 이미지 2"><span class="creator-profile-photo" style="--i:1"></span></figure>
+          <figure class="creator-profile-card" aria-label="크리에이터 이미지 5"><span class="creator-profile-photo" style="--i:4"></span></figure>
         </div></div>
       </div>
       <div class="creator-network-foot" aria-hidden="true"><span>YOUTUBE</span><i></i><span>INSTAGRAM</span><i></i><span>KOREA</span><i></i><span>JAPAN</span></div>
@@ -67,7 +67,7 @@
       let offset=0,last=performance.now(),baseWidth=source.getBoundingClientRect().width;
       const tick=now=>{
         const dt=Math.min(.05,(now-last)/1000);last=now;
-        if(baseWidth>0){offset=(offset+32*dt)%baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;}
+        if(baseWidth>0){offset=(offset+40*dt)%baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;}
         requestAnimationFrame(tick);
       };
       new ResizeObserver(()=>{baseWidth=source.getBoundingClientRect().width||baseWidth}).observe(viewport);
@@ -75,7 +75,13 @@
     }
   }
 
+  // Selected Work: keep both portfolio lanes slightly faster without affecting other marquees.
+  document.querySelectorAll('.portfolio-viewport[data-loop-strip]').forEach(loop=>{
+    const current=Number(loop.dataset.speed)||46;
+    loop.dataset.speed=String(current+8);
+  });
+
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819e';
+  core.src='assets/js/site-core.js?v=20260819f';
   document.body.appendChild(core);
 })();
