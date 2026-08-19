@@ -76,13 +76,11 @@
     const phone=inquiryForm.querySelector('#phone');
     const emailLabel=inquiryForm.querySelector('label[for="email"]');
     const phoneLabel=inquiryForm.querySelector('label[for="phone"]');
-    if(emailLabel) emailLabel.innerHTML='이메일 <span class="field-note">(연락처와 둘 중 하나)</span>';
-    if(phoneLabel) phoneLabel.innerHTML='연락처 <span class="field-note">(이메일과 둘 중 하나)</span>';
-    if(email){email.required=false;email.setAttribute('aria-describedby','contactMethodHint');}
-    if(phone){phone.required=false;phone.setAttribute('aria-describedby','contactMethodHint');}
-    if(phone?.closest('.field')&&!document.getElementById('contactMethodHint')){
-      phone.closest('.field').insertAdjacentHTML('afterend','<p class="form-contact-hint" id="contactMethodHint">회신받을 이메일 또는 연락처 중 하나만 입력해주세요.</p>');
-    }
+    if(emailLabel) emailLabel.textContent='이메일';
+    if(phoneLabel) phoneLabel.textContent='연락처';
+    if(email){email.required=false;email.removeAttribute('aria-describedby');}
+    if(phone){phone.required=false;phone.removeAttribute('aria-describedby');}
+    document.getElementById('contactMethodHint')?.remove();
 
     const budget=inquiryForm.querySelector('#budget');
     if(budget&&budget.tagName!=='SELECT'){
@@ -169,6 +167,6 @@
   if(portfolioLoops[1]) portfolioLoops[1].dataset.speed='84';
 
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819n';
+  core.src='assets/js/site-core.js?v=20260819p';
   document.body.appendChild(core);
 })();
