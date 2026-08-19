@@ -43,13 +43,13 @@
       <div class="creator-network-head"><span>CREATOR NETWORK</span><strong>KOREA × JAPAN</strong><p>YOUTUBE CREATOR PROFILE</p></div>
       <div class="creator-profile-viewport" aria-label="크리에이터 프로필 슬라이드">
         <div class="creator-profile-track"><div class="creator-profile-set">
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-03.jpg" alt="LUEN 크리에이터 프로필 1" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-03.webp" alt="LUEN 크리에이터 프로필 1" decoding="async"></figure>
           <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-02.webp" alt="LUEN 크리에이터 프로필 2" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-01.jpg" alt="LUEN 크리에이터 프로필 3" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-01.webp" alt="LUEN 크리에이터 프로필 3" decoding="async"></figure>
           <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 4" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-04.jpg" alt="LUEN 크리에이터 프로필 5" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-04.webp" alt="LUEN 크리에이터 프로필 5" decoding="async"></figure>
           <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-03.webp" alt="LUEN 크리에이터 프로필 6" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-02.jpg" alt="LUEN 크리에이터 프로필 7" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-02.webp" alt="LUEN 크리에이터 프로필 7" decoding="async"></figure>
         </div></div>
       </div>
       <div class="creator-network-foot" aria-hidden="true"><span>YOUTUBE</span><i></i><span>INSTAGRAM</span><i></i><span>KOREA</span><i></i><span>JAPAN</span></div>
@@ -80,6 +80,6 @@
   if(portfolioLoops[1]) portfolioLoops[1].dataset.speed='84';
 
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819h';
+  core.src='assets/js/site-core.js?v=20260819i';
   document.body.appendChild(core);
 })();
