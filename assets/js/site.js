@@ -16,7 +16,7 @@
     .creator-profile-track{display:flex;width:max-content;will-change:transform}
     .creator-profile-set{display:flex;flex:0 0 auto;align-items:center;gap:16px;padding-right:16px}
     .creator-profile-card{position:relative;flex:0 0 270px;width:270px;height:270px;overflow:hidden;border:1px solid rgba(248,229,207,.16);border-radius:22px;background:#0e0906;box-shadow:0 18px 48px rgba(0,0,0,.28);transform:none!important}
-    .creator-profile-photo{position:absolute;inset:0;display:block;background-image:url('assets/images/hero-creators/creator-provided-sprite.webp');background-repeat:no-repeat;background-size:700% 100%;background-position:calc(var(--i) * 16.6666667%) center}
+    .creator-profile-card img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#0e0906;transform:none!important;filter:none!important}
     .creator-profile-card::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(248,229,207,.035)}
     .creator-network-foot{position:relative;z-index:3;display:flex;align-items:center;gap:11px;padding:2px 38px 34px;color:rgba(248,229,207,.38);font:700 8px/1 "Inter","Pretendard",sans-serif;letter-spacing:.14em}
     .creator-network-foot i{width:3px;height:3px;border-radius:50%;background:var(--orange);opacity:.8}
@@ -43,13 +43,9 @@
       <div class="creator-network-head"><span>CREATOR NETWORK</span><strong>KOREA × JAPAN</strong><p>YOUTUBE CREATOR PROFILE</p></div>
       <div class="creator-profile-viewport" aria-label="크리에이터 프로필 슬라이드">
         <div class="creator-profile-track"><div class="creator-profile-set">
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 4"><span class="creator-profile-photo" style="--i:3"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 1"><span class="creator-profile-photo" style="--i:0"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 6"><span class="creator-profile-photo" style="--i:5"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 3"><span class="creator-profile-photo" style="--i:2"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 7"><span class="creator-profile-photo" style="--i:6"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 2"><span class="creator-profile-photo" style="--i:1"></span></figure>
-          <figure class="creator-profile-card" aria-label="크리에이터 이미지 5"><span class="creator-profile-photo" style="--i:4"></span></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-02.webp" alt="LUEN 크리에이터 프로필 1" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-03.webp" alt="LUEN 크리에이터 프로필 2" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 3" decoding="async"></figure>
         </div></div>
       </div>
       <div class="creator-network-foot" aria-hidden="true"><span>YOUTUBE</span><i></i><span>INSTAGRAM</span><i></i><span>KOREA</span><i></i><span>JAPAN</span></div>
@@ -67,7 +63,7 @@
       let offset=0,last=performance.now(),baseWidth=source.getBoundingClientRect().width;
       const tick=now=>{
         const dt=Math.min(.05,(now-last)/1000);last=now;
-        if(baseWidth>0){offset=(offset+40*dt)%baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;}
+        if(baseWidth>0){offset=(offset+60*dt)%baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;}
         requestAnimationFrame(tick);
       };
       new ResizeObserver(()=>{baseWidth=source.getBoundingClientRect().width||baseWidth}).observe(viewport);
@@ -75,13 +71,11 @@
     }
   }
 
-  // Selected Work: keep both portfolio lanes slightly faster without affecting other marquees.
-  document.querySelectorAll('.portfolio-viewport[data-loop-strip]').forEach(loop=>{
-    const current=Number(loop.dataset.speed)||46;
-    loop.dataset.speed=String(current+8);
-  });
+  const portfolioLoops=[...document.querySelectorAll('.portfolio-viewport[data-loop-strip]')];
+  if(portfolioLoops[0]) portfolioLoops[0].dataset.speed='70';
+  if(portfolioLoops[1]) portfolioLoops[1].dataset.speed='84';
 
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819f';
+  core.src='assets/js/site-core.js?v=20260819g';
   document.body.appendChild(core);
 })();
