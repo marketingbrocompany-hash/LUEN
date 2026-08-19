@@ -36,13 +36,8 @@
       <div class="creator-profile-viewport" aria-label="크리에이터 프로필 슬라이드">
         <div class="creator-profile-track"><div class="creator-profile-set">
           <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-03.webp" alt="LUEN 크리에이터 프로필 1" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/cases/case-04.webp" alt="LUEN 크리에이터 프로필 2" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 3" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/cases/case-01.webp" alt="LUEN 크리에이터 프로필 4" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-02.webp" alt="LUEN 크리에이터 프로필 5" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/cases/case-06.webp" alt="LUEN 크리에이터 프로필 6" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/cases/case-03.webp" alt="LUEN 크리에이터 프로필 7" width="320" height="320" decoding="async"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/cases/case-05.webp" alt="LUEN 크리에이터 프로필 8" width="320" height="320" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 2" width="320" height="320" decoding="async"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-02.webp" alt="LUEN 크리에이터 프로필 3" width="320" height="320" decoding="async"></figure>
         </div></div>
       </div>
       <div class="creator-network-foot" aria-hidden="true"><span>YOUTUBE</span><i></i><span>INSTAGRAM</span><i></i><span>KOREA</span><i></i><span>JAPAN</span></div>
@@ -67,6 +62,6 @@
   }
 
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819b';
+  core.src='assets/js/site-core.js?v=20260819c';
   document.body.appendChild(core);
 })();
