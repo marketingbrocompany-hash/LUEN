@@ -33,6 +33,10 @@
     /* P0 accessibility stability fixes */
     .client-voice .voice-item>p{font-size:var(--luen-label)!important}
 
+    /* Inquiry form: reduce friction while keeping one reply channel required. */
+    .contact .form-contact-hint{grid-column:1/-1;margin:-5px 0 2px;color:#7a6658;font-size:12px;line-height:1.55}
+    .contact .field label .field-note{font-weight:500;color:#8c7869}
+
     @media(max-width:1180px){.creator-network-showcase{width:min(100%,760px);min-height:540px;justify-self:center}.creator-profile-card{flex-basis:235px;width:235px;height:235px}}
     @media(max-width:767px){.creator-network-showcase{min-height:430px;border-radius:28px}.creator-network-head{padding:26px 20px 14px}.creator-network-head strong{font-size:28px}.creator-network-head p{font-size:8px}.creator-profile-viewport{padding:14px 0 26px}.creator-profile-viewport::before,.creator-profile-viewport::after{width:32px}.creator-profile-set{gap:12px;padding-right:12px}.creator-profile-card{flex-basis:190px;width:190px;height:190px;border-radius:18px}.creator-network-foot{flex-wrap:wrap;padding:0 20px 24px;gap:9px;font-size:7.5px}.case-studies .case-image{aspect-ratio:4/3!important;padding:8px!important}.case-studies .case-image img{border-radius:12px!important}.case-studies .case-body{padding:22px 18px 22px!important}}
     @media(max-width:480px){.creator-network-showcase{min-height:402px}.creator-profile-card{flex-basis:174px;width:174px;height:174px}.creator-network-head>span{font-size:9px}}
@@ -98,6 +102,73 @@
     };
     enhancedGtag.__luenCtaPositionEnhanced=true;
     window.gtag=enhancedGtag;
+  }
+
+  /* Step 4 — simplify the inquiry form before site-core attaches submit handling. */
+  const inquiryForm=document.getElementById('contactForm');
+  if(inquiryForm){
+    const contactCopy=document.querySelector('.contact-copy');
+    if(contactCopy) contactCopy.textContent='브랜드와 목표 시장, 현재 고민만 알려주세요. 이메일 또는 연락처 중 편한 방법 하나를 남겨주시면 확인 후 캠페인 방향과 필요한 크리에이터 구조를 함께 논의합니다.';
+
+    const email=inquiryForm.querySelector('#email');
+    const phone=inquiryForm.querySelector('#phone');
+    const emailLabel=inquiryForm.querySelector('label[for="email"]');
+    const phoneLabel=inquiryForm.querySelector('label[for="phone"]');
+    if(emailLabel) emailLabel.innerHTML='이메일 <span class="field-note">(연락처와 둘 중 하나)</span>';
+    if(phoneLabel) phoneLabel.innerHTML='연락처 <span class="field-note">(이메일과 둘 중 하나)</span>';
+    if(email){
+      email.required=false;
+      email.setAttribute('aria-describedby','contactMethodHint');
+    }
+    if(phone){
+      phone.required=false;
+      phone.setAttribute('aria-describedby','contactMethodHint');
+    }
+    if(phone?.closest('.field')&&!document.getElementById('contactMethodHint')){
+      phone.closest('.field').insertAdjacentHTML('afterend','<p class="form-contact-hint" id="contactMethodHint">회신받을 이메일 또는 연락처 중 하나만 입력해주세요.</p>');
+    }
+
+    const budget=inquiryForm.querySelector('#budget');
+    if(budget){
+      const select=document.createElement('select');
+      select.id='budget';
+      select.name='budget';
+      select.innerHTML='<option value="">아직 미정 / 상담 후 결정</option><option value="500만원 이하">500만원 이하</option><option value="500~1,000만원">500~1,000만원</option><option value="1,000~3,000만원">1,000~3,000만원</option><option value="3,000만원 이상">3,000만원 이상</option><option value="협의 필요">협의 필요</option>';
+      budget.replaceWith(select);
+      const budgetLabel=inquiryForm.querySelector('label[for="budget"]');
+      if(budgetLabel) budgetLabel.innerHTML='예산 범위 <span class="field-note">(선택)</span>';
+    }
+
+    const privacyDetails=[...inquiryForm.querySelectorAll('.privacy-detail-body dl')];
+    const collectionDetails=privacyDetails[0];
+    if(collectionDetails){
+      const rows=[...collectionDetails.querySelectorAll('div')];
+      rows.forEach(row=>{
+        const dt=row.querySelector('dt');
+        const dd=row.querySelector('dd');
+        if(!dt||!dd) return;
+        if(dt.textContent.trim()==='필수 항목') dd.textContent='브랜드/회사명, 담당자명, 목표 시장, 이메일 또는 연락처 중 1개';
+        if(dt.textContent.trim()==='선택 항목') dd.textContent='입력하지 않은 연락 수단, 관심 플랫폼, 예산 범위, 프로젝트 내용';
+      });
+    }
+
+    const clearContactValidity=()=>{
+      email?.setCustomValidity('');
+      phone?.setCustomValidity('');
+    };
+    email?.addEventListener('input',clearContactValidity);
+    phone?.addEventListener('input',clearContactValidity);
+    inquiryForm.addEventListener('submit',event=>{
+      const hasEmail=Boolean(email?.value.trim());
+      const hasPhone=Boolean(phone?.value.trim());
+      clearContactValidity();
+      if(hasEmail||hasPhone) return;
+      email?.setCustomValidity('이메일 또는 연락처 중 하나를 입력해주세요.');
+      email?.reportValidity();
+      email?.focus();
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    },true);
   }
 
   const old=document.querySelector('.luen-hero-network');
