@@ -1,0 +1,42 @@
+name: Fix creator slider safety
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/creator-slider-safety-temp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Remove broken image cards and bust cache
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('assets/js/site.js')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('decoding="async"></figure>', 'decoding="sync" loading="eager" onerror="this.closest(\'.creator-profile-card\').remove()"></figure>')
+          s=s.replace('site-core.js?v=20260819i','site-core.js?v=20260819j')
+          p.write_text(s,encoding='utf-8')
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r'<script src="assets/js/site\.js(?:\?v=[^"]*)?"></script>', '<script src="assets/js/site.js?v=20260819-1328"></script>', s, count=1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/js/site.js index.html
+          git commit -m 'Harden creator slider image loading'
+          git push origin main
