@@ -76,7 +76,7 @@
     const phone=inquiryForm.querySelector('#phone');
     const emailLabel=inquiryForm.querySelector('label[for="email"]');
     const phoneLabel=inquiryForm.querySelector('label[for="phone"]');
-    if(emailLabel) emailLabel.innerHTML='이메일 <span class="field-note">(연락처와 둘 중 하나)</span>';
+    if(emailLabel) emailLabel.textContent='이메일';
     if(phoneLabel) phoneLabel.innerHTML='연락처 <span class="field-note">(이메일과 둘 중 하나)</span>';
     if(email){email.required=false;email.setAttribute('aria-describedby','contactMethodHint');}
     if(phone){phone.required=false;phone.setAttribute('aria-describedby','contactMethodHint');}
