@@ -1,4 +1,4 @@
-name: Fix creator and selected work loops v2
+name: Apply LUEN typography readability pass
 
 on:
   push:
@@ -10,113 +10,113 @@ permissions:
   contents: write
 
 jobs:
-  fix-loops:
+  apply-typography:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Make creator and Selected Work loops deterministic
+      - name: Increase client-facing text readability
         shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('assets/js/site.js')
-          s=p.read_text(encoding='utf-8')
+          cat >> assets/css/site.css <<'CSS'
 
-          # Do not disable the creator carousel on mobile accessibility settings; this section is intentionally animated.
-          s=s.replace("    @media(prefers-reduced-motion:reduce){.creator-profile-viewport{overflow-x:auto;scrollbar-width:none}.creator-profile-viewport::-webkit-scrollbar{display:none}.creator-profile-track{transform:none!important}}\n", "")
+          /* === LUEN READABILITY OVERRIDE V11 START === */
+          /* Client-facing typography optimization. Large hero/section headlines intentionally untouched. */
+          :root{
+            --luen-text-lg:clamp(17px,1.05vw,19px);
+            --luen-text-md:clamp(16px,.92vw,17px);
+            --luen-text-sm:clamp(14px,.78vw,15px);
+            --luen-label:clamp(12px,.70vw,13px);
+            --luen-ui:clamp(14px,.82vw,16px);
+          }
+          body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
-          start=s.find("  const viewport=document.querySelector('.creator-profile-viewport');")
-          end=s.find("  const core=document.createElement('script');", start)
-          if start < 0 or end < 0:
-              raise SystemExit('loop block not found')
+          .hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.proof-item>p,.case-desc,.case-inquiry-copy>p,.guide-proof-note>p,.faq-a>p,.faq-conversion>p{
+            font-size:var(--luen-text-lg)!important;line-height:1.72!important;letter-spacing:-.018em;word-break:keep-all;overflow-wrap:break-word
+          }
+          .hero-kicker,.hero-meta span,.lhn-status span,.lhn-pills span{font-size:var(--luen-label)!important}
+          .hero-kicker{letter-spacing:.08em}.hero-meta span{line-height:1.4}
+          .lhn-card p{font-size:var(--luen-text-sm)!important;line-height:1.55!important}
+          .lhn-card h3{font-size:clamp(17px,1vw,20px)!important}.lhn-hub span{font-size:12px!important}
 
-          replacement=r'''  const loopStops=[];
+          .nav-links a,.nav-contact,.btn,.case-inquiry-btn,.faq-cta,.mobile-case-more,.form-reset{font-size:var(--luen-ui)!important;line-height:1.25}
+          .top-strip-set span,.top-strip-set b,.marquee-set span{font-size:clamp(11px,.66vw,13px)!important}
 
-  function runContinuousLoop(viewport, trackSelector, setSelector, speed){
-    if(!viewport)return ()=>{};
-    const track=viewport.querySelector(trackSelector);
-    const source=viewport.querySelector(setSelector);
-    if(!track||!source)return ()=>{};
+          .eyebrow,.proof-kicker,.work-lane-code,.final-kicker,.signature-label,.data-source-badge,.sample-badge,.form-success-kicker{font-size:var(--luen-label)!important;line-height:1.35!important}
 
-    track.querySelectorAll('.luen-runtime-clone').forEach(el=>el.remove());
-    track.style.transform='translate3d(0,0,0)';
+          .identity-side strong{font-size:clamp(20px,1.45vw,25px)!important;line-height:1.35!important}
+          .identity-side p{font-size:var(--luen-text-sm)!important;line-height:1.55!important}
+          .identity-core small{font-size:12px!important}
 
-    let raf=0;
-    let offset=0;
-    let last=performance.now();
-    let baseWidth=0;
+          .portfolio-head span,.portfolio-head small,.portfolio-country,.portfolio-meta span{font-size:var(--luen-label)!important;line-height:1.3!important}
+          .portfolio-head h3{font-size:clamp(20px,1.5vw,26px)!important;line-height:1.15!important}
+          .portfolio-meta b{font-size:clamp(14px,.85vw,16px)!important;line-height:1.25!important}
 
-    const rebuild=()=>{
-      track.querySelectorAll('.luen-runtime-clone').forEach(el=>el.remove());
-      baseWidth=source.getBoundingClientRect().width;
-      if(!baseWidth)return;
-      const copies=Math.max(2,Math.ceil((viewport.clientWidth+baseWidth)/baseWidth)+1);
-      for(let i=0;i<copies;i++){
-        const clone=source.cloneNode(true);
-        clone.classList.add('luen-runtime-clone');
-        clone.setAttribute('aria-hidden','true');
-        track.appendChild(clone);
-      }
-      offset%=baseWidth;
-    };
+          .brand-wall-head h3{font-size:clamp(22px,1.45vw,28px)!important}
+          .brand-wall-head p{font-size:var(--luen-text-md)!important;line-height:1.6!important}
+          .client-logo{font-size:clamp(15px,.95vw,18px)!important}
 
-    rebuild();
-    requestAnimationFrame(rebuild);
+          .market-side-label span{font-size:clamp(13px,.8vw,15px)!important}
+          .market-side-label small,.market-hub small,.market-map-caption span,.market-map-caption b{font-size:clamp(11px,.68vw,13px)!important}
+          .platform-node b{font-size:clamp(15px,.92vw,17px)!important}.platform-node span{font-size:clamp(12px,.72vw,14px)!important}
 
-    const tick=now=>{
-      const dt=Math.min(.05,(now-last)/1000);
-      last=now;
-      if(baseWidth>0){
-        offset=(offset+speed*dt)%baseWidth;
-        track.style.transform=`translate3d(${-offset}px,0,0)`;
-      }
-      raf=requestAnimationFrame(tick);
-    };
-    raf=requestAnimationFrame(tick);
+          .lcs-head span{font-size:clamp(13px,.78vw,15px)!important}.lcs-head small{font-size:clamp(11px,.67vw,13px)!important}
+          .lcs-node b{font-size:clamp(13px,.82vw,15px)!important}.lcs-node small{font-size:clamp(11px,.70vw,13px)!important}
+          .yt-action-flow article>span{font-size:var(--luen-label)!important}.yt-action-flow article>b{font-size:clamp(15px,.9vw,17px)!important}
+          .yt-action-flow article>p{font-size:var(--luen-text-sm)!important;line-height:1.62!important;word-break:keep-all}
+          .yt-thesis,.content-thesis{font-size:clamp(14px,.85vw,16px)!important;line-height:1.5!important}
 
-    let previousWidth=document.documentElement.clientWidth;
-    const onResize=()=>{
-      const nextWidth=document.documentElement.clientWidth;
-      if(Math.abs(nextWidth-previousWidth)<2)return;
-      previousWidth=nextWidth;
-      rebuild();
-    };
-    window.addEventListener('resize',onResize,{passive:true});
+          .guide-tags span{font-size:clamp(12px,.72vw,14px)!important}
+          .guide-proof-note b,.guide-page figcaption,.chart-head span,.chart-head b,.chart-labels span,.metric-row article span,.metric-row article small{font-size:clamp(11px,.68vw,13px)!important;line-height:1.35!important}
+          .growth-value{font-size:14px!important}
 
-    return ()=>{
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize',onResize);
-    };
-  }
+          .case-body>small,.case-cat,.case-metric span{font-size:var(--luen-text-sm)!important;line-height:1.5!important}
+          .case-body h3{font-size:clamp(22px,1.55vw,28px)!important;line-height:1.25!important}
+          .case-metric strong{font-size:clamp(19px,1.3vw,24px)!important;line-height:1.3!important}
+          .case-inquiry-copy>span{font-size:var(--luen-label)!important}.case-inquiry-copy>h3{font-size:clamp(20px,1.35vw,25px)!important}
 
-  // CREATOR NETWORK: all 7 supplied images, shuffled, continuously moving left.
-  loopStops.push(runContinuousLoop(
-    document.querySelector('.creator-profile-viewport'),
-    '.creator-profile-track',
-    '.creator-profile-set:not(.luen-runtime-clone)',
-    78
-  ));
+          .campaign-control article>i,.timeline-shell article>span,.campaign-control article>small,.campaign-output>span{font-size:var(--luen-label)!important;line-height:1.35!important}
+          .campaign-control article>b,.timeline-shell article>b{font-size:clamp(16px,.95vw,18px)!important;line-height:1.35!important}
+          .campaign-control article>p,.timeline-shell article>p{font-size:var(--luen-text-sm)!important;line-height:1.58!important;word-break:keep-all}
+          .campaign-output>b,.campaign-output>strong{font-size:clamp(13px,.78vw,15px)!important}
 
-  // Selected Work uses this runtime loop directly so its speed does not depend on site-core load timing.
-  const portfolioLoops=[...document.querySelectorAll('.portfolio-viewport')];
-  portfolioLoops.forEach(el=>el.removeAttribute('data-loop-strip'));
-  if(portfolioLoops[0]) loopStops.push(runContinuousLoop(portfolioLoops[0],'.portfolio-track','.portfolio-set:not(.luen-runtime-clone)',78));
-  if(portfolioLoops[1]) loopStops.push(runContinuousLoop(portfolioLoops[1],'.portfolio-track','.portfolio-set:not(.luen-runtime-clone)',92));
+          .voice-item>span,.voice-item>p{font-size:var(--luen-label)!important}
+          .voice-item blockquote{font-size:clamp(19px,1.35vw,24px)!important;line-height:1.65!important;letter-spacing:-.02em;word-break:keep-all}
 
-'''
-          s=s[:start]+replacement+s[end:]
-          s=s.replace("site-core.js?v=20260819h", "site-core.js?v=20260819j")
-          p.write_text(s,encoding='utf-8')
-          PY
+          .faq-q{font-size:clamp(17px,1.02vw,19px)!important;line-height:1.48!important}.faq-icon{font-size:22px!important}
+
+          .field label,.privacy-check-copy b,.privacy-details summary{font-size:clamp(14px,.82vw,16px)!important;line-height:1.45!important}
+          .field input,.field select,.field textarea{font-size:16px!important;line-height:1.5!important}
+          .field input::placeholder,.field textarea::placeholder{font-size:15px!important}
+          .privacy-check-copy small,.privacy-detail-body,.privacy-external,.form-feedback,.form-success p{font-size:clamp(13px,.76vw,15px)!important;line-height:1.62!important}
+          .form-success strong{font-size:clamp(20px,1.25vw,24px)!important}
+
+          .footer-brand p,.footer-links a,.footer-bottom p{font-size:clamp(13px,.76vw,15px)!important;line-height:1.45!important}
+
+          .section-copy,.case-desc,.faq-a p,.voice-item blockquote,.contact-copy,.campaign-control p,.timeline-shell p,.yt-action-flow p{max-width:68ch}
+
+          @media(max-width:900px){
+            :root{--luen-text-lg:clamp(16.5px,2.1vw,18px);--luen-text-md:clamp(15.5px,1.95vw,17px);--luen-text-sm:clamp(14px,1.8vw,15.5px);--luen-label:clamp(12px,1.55vw,13.5px);--luen-ui:clamp(14px,1.8vw,16px)}
+            .voice-item blockquote{font-size:clamp(18px,2.6vw,22px)!important}
+          }
+          @media(max-width:640px){
+            body{font-size:16px}
+            :root{--luen-text-lg:16.5px;--luen-text-md:16px;--luen-text-sm:14.5px;--luen-label:12px;--luen-ui:15px}
+            .hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.faq-a>p,.faq-conversion>p{line-height:1.68!important}
+            .faq-q{font-size:16.5px!important}.voice-item blockquote{font-size:18px!important;line-height:1.62!important}
+            .case-body h3{font-size:22px!important}.field input,.field select,.field textarea{font-size:16px!important}
+          }
+          /* === LUEN READABILITY OVERRIDE V11 END === */
+          CSS
 
       - name: Commit and push
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/js/site.js
-          git commit -m 'Fix creator carousel and Selected Work loop speeds'
+          git add assets/css/site.css
+          git diff --cached --quiet && exit 0
+          git commit -m 'Increase client-facing text readability'
           git push origin main
