@@ -36,9 +36,13 @@
     /* Inquiry form: reduce friction while keeping one reply channel required. */
     .contact .form-contact-hint{grid-column:1/-1;margin:-5px 0 2px;color:#7a6658;font-size:12px;line-height:1.55}
     .contact .field label .field-note{font-weight:500;color:#8c7869}
+    .contact .inquiry-reassurance{margin:0 0 22px;padding:16px 18px;border:1px solid rgba(164,70,16,.18);border-radius:16px;background:rgba(244,125,53,.07)}
+    .contact .inquiry-reassurance>span{display:block;margin-bottom:7px;color:#a74610;font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.13em}
+    .contact .inquiry-reassurance strong{display:block;color:#2c1b12;font-size:14px;line-height:1.5}
+    .contact .inquiry-reassurance p{margin-top:5px;color:#6e5d50;font-size:12.5px;line-height:1.65}
 
     @media(max-width:1180px){.creator-network-showcase{width:min(100%,760px);min-height:540px;justify-self:center}.creator-profile-card{flex-basis:235px;width:235px;height:235px}}
-    @media(max-width:767px){.creator-network-showcase{min-height:430px;border-radius:28px}.creator-network-head{padding:26px 20px 14px}.creator-network-head strong{font-size:28px}.creator-network-head p{font-size:8px}.creator-profile-viewport{padding:14px 0 26px}.creator-profile-viewport::before,.creator-profile-viewport::after{width:32px}.creator-profile-set{gap:12px;padding-right:12px}.creator-profile-card{flex-basis:190px;width:190px;height:190px;border-radius:18px}.creator-network-foot{flex-wrap:wrap;padding:0 20px 24px;gap:9px;font-size:7.5px}.case-studies .case-image{aspect-ratio:4/3!important;padding:8px!important}.case-studies .case-image img{border-radius:12px!important}.case-studies .case-body{padding:22px 18px 22px!important}}
+    @media(max-width:767px){.creator-network-showcase{min-height:430px;border-radius:28px}.creator-network-head{padding:26px 20px 14px}.creator-network-head strong{font-size:28px}.creator-network-head p{font-size:8px}.creator-profile-viewport{padding:14px 0 26px}.creator-profile-viewport::before,.creator-profile-viewport::after{width:32px}.creator-profile-set{gap:12px;padding-right:12px}.creator-profile-card{flex-basis:190px;width:190px;height:190px;border-radius:18px}.creator-network-foot{flex-wrap:wrap;padding:0 20px 24px;gap:9px;font-size:7.5px}.case-studies .case-image{aspect-ratio:4/3!important;padding:8px!important}.case-studies .case-image img{border-radius:12px!important}.case-studies .case-body{padding:22px 18px 22px!important}.contact .inquiry-reassurance{padding:15px 16px;margin-bottom:18px}.contact .inquiry-reassurance strong{font-size:13.5px}.contact .inquiry-reassurance p{font-size:12px}}
     @media(max-width:480px){.creator-network-showcase{min-height:402px}.creator-profile-card{flex-basis:174px;width:174px;height:174px}.creator-network-head>span{font-size:9px}}
     @media(prefers-reduced-motion:reduce){
       .creator-profile-viewport{overflow-x:auto;scrollbar-width:none}
@@ -109,6 +113,11 @@
   if(inquiryForm){
     const contactCopy=document.querySelector('.contact-copy');
     if(contactCopy) contactCopy.textContent='브랜드와 목표 시장, 현재 고민만 알려주세요. 이메일 또는 연락처 중 편한 방법 하나를 남겨주시면 확인 후 캠페인 방향과 필요한 크리에이터 구조를 함께 논의합니다.';
+
+    const formGrid=inquiryForm.querySelector('.form-grid');
+    if(formGrid&&!inquiryForm.querySelector('.inquiry-reassurance')){
+      formGrid.insertAdjacentHTML('beforebegin','<aside class="inquiry-reassurance" aria-label="상담 안내"><span>BEFORE YOU INQUIRE</span><strong>계약 전 단계에서도 상담 가능합니다.</strong><p>예산이나 크리에이터가 아직 정해지지 않아도 괜찮습니다. 현재 목표와 고민만 알려주세요.</p></aside>');
+    }
 
     const email=inquiryForm.querySelector('#email');
     const phone=inquiryForm.querySelector('#phone');
