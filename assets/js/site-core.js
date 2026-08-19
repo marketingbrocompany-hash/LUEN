@@ -322,42 +322,17 @@
   if(voiceStage){
     const items=[...voiceStage.querySelectorAll('.voice-item')];
     const dots=[...voiceStage.querySelectorAll('.voice-dots button')];
-    const toggle=document.createElement('button');
-    toggle.type='button';
-    toggle.className='voice-toggle';
-    toggle.setAttribute('aria-pressed','false');
-    toggle.textContent='자동 전환 일시정지';
-    voiceStage.appendChild(toggle);
-    let voiceIndex=0,voiceTimer=null,userPaused=false,hoverPaused=false,focusPaused=false,voiceVisible=true;
+    let voiceIndex=0,voiceTimer=null;
     const showVoice=(idx)=>{
       voiceIndex=(idx+items.length)%items.length;
       items.forEach((el,i)=>el.classList.toggle('active',i===voiceIndex));
       dots.forEach((el,i)=>el.classList.toggle('active',i===voiceIndex));
     };
-    const stopVoice=()=>{clearInterval(voiceTimer);voiceTimer=null;};
-    const syncVoice=()=>{
-      stopVoice();
-      if(reducedMotion.matches||document.hidden||userPaused||hoverPaused||focusPaused||!voiceVisible)return;
-      voiceTimer=setInterval(()=>showVoice(voiceIndex+1),5200);
-    };
-    const setUserPaused=paused=>{
-      userPaused=paused;
-      toggle.setAttribute('aria-pressed',String(paused));
-      toggle.textContent=paused?'자동 전환 다시 시작':'자동 전환 일시정지';
-      syncVoice();
-    };
-    dots.forEach((btn,i)=>btn.addEventListener('click',()=>{showVoice(i);syncVoice();}));
-    toggle.addEventListener('click',()=>setUserPaused(!userPaused));
-    voiceStage.addEventListener('mouseenter',()=>{hoverPaused=true;syncVoice();});
-    voiceStage.addEventListener('mouseleave',()=>{hoverPaused=false;syncVoice();});
-    voiceStage.addEventListener('focusin',()=>{focusPaused=true;syncVoice();});
-    voiceStage.addEventListener('focusout',()=>requestAnimationFrame(()=>{focusPaused=voiceStage.contains(document.activeElement);syncVoice();}));
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(entries=>{voiceVisible=Boolean(entries[0]?.isIntersecting);syncVoice();},{rootMargin:'120px 0px',threshold:0}).observe(voiceStage);
-    }
-    document.addEventListener('visibilitychange',syncVoice);
-    reducedMotion.addEventListener?.('change',syncVoice);
-    syncVoice();
+    const startVoice=()=>{ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return; clearInterval(voiceTimer); voiceTimer=setInterval(()=>showVoice(voiceIndex+1),5200); };
+    dots.forEach((btn,i)=>btn.addEventListener('click',()=>{showVoice(i);startVoice();}));
+    voiceStage.addEventListener('mouseenter',()=>clearInterval(voiceTimer));
+    voiceStage.addEventListener('mouseleave',startVoice);
+    startVoice();
   }
 
 })();
