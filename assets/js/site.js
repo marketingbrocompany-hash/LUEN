@@ -108,7 +108,18 @@
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
-  window.addEventListener('resize',()=>{clearTimeout(window.__luenLoopResize);window.__luenLoopResize=setTimeout(initLoopStrips,180);});
+
+  // Mobile browsers fire resize while the address/navigation bars show and hide during vertical scrolling.
+  // Rebuilding the infinite-loop strips on those height-only resizes resets the thumbnails and can glitch
+  // when the user scrolls away from Selected Work and comes back. Only rebuild when viewport width changes.
+  let lastLoopViewportWidth=document.documentElement.clientWidth;
+  window.addEventListener('resize',()=>{
+    const nextWidth=document.documentElement.clientWidth;
+    if(Math.abs(nextWidth-lastLoopViewportWidth)<2)return;
+    lastLoopViewportWidth=nextWidth;
+    clearTimeout(window.__luenLoopResize);
+    window.__luenLoopResize=setTimeout(initLoopStrips,180);
+  },{passive:true});
 
   const form=document.getElementById('contactForm');
   const status=document.getElementById('copyStatus');
