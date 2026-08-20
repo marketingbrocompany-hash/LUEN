@@ -1,0 +1,41 @@
+/* JP / KR market code emphasis */
+#platforms .market-side-label b{
+  color:var(--orange-2)!important;
+  font-size:50px!important;
+  line-height:.9!important;
+  letter-spacing:-.065em!important;
+  text-shadow:0 0 22px rgba(244,125,53,.22),0 0 48px rgba(244,125,53,.08)!important;
+  opacity:1!important;
+}
+#platforms .market-side-label span{
+  color:rgba(248,229,207,.72)!important;
+  font-size:11px!important;
+  letter-spacing:.09em!important;
+}
+#platforms .market-side-label small{
+  color:rgba(244,125,53,.72)!important;
+}
+
+@media(max-width:1024px) and (min-width:768px){
+  #platforms .market-side-label b{font-size:44px!important}
+}
+
+@media(max-width:767px){
+  #platforms .market-side-label{
+    align-items:center!important;
+  }
+  #platforms .market-side-label b{
+    font-size:30px!important;
+    line-height:.9!important;
+    text-shadow:0 0 18px rgba(244,125,53,.24)!important;
+  }
+  #platforms .market-side-label span{
+    font-size:8.5px!important;
+    color:rgba(248,229,207,.62)!important;
+  }
+}
+
+@media(max-width:420px){
+  #platforms .market-side-label b{font-size:28px!important}
+  #platforms .market-side-label span{font-size:8px!important}
+}
