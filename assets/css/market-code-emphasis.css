@@ -1,102 +1,156 @@
-/* JP / KR market code emphasis */
-/* Reserve a real header row so market labels never sit behind platform cards. */
-#platforms .market-map{
-  grid-template-rows:78px 58px 58px 58px auto!important;
+/* Final stabilization for Cross-border Platforms */
+body #platforms.market-network-v2 .market-map{
+  grid-template-rows:64px 58px 58px 58px 28px!important;
 }
-#platforms .market-side-label{
+
+body #platforms.market-network-v2 .market-side-label,
+body #platforms.market-network-v2 .market-side-label.jp,
+body #platforms.market-network-v2 .market-side-label.kr{
   position:relative!important;
-  z-index:7!important;
-  align-self:center!important;
+  display:flex!important;
+  grid-template-columns:none!important;
+  grid-template-rows:none!important;
+  align-items:center!important;
+  min-width:0!important;
+  min-height:64px!important;
+  margin:0!important;
+  padding:0 4px!important;
+  gap:14px!important;
   overflow:visible!important;
-  min-height:62px!important;
-}
-#platforms .market-side-label.jp{
-  grid-template-columns:84px minmax(0,1fr)!important;
-}
-#platforms .market-side-label.kr{
-  grid-template-columns:minmax(0,1fr) 84px!important;
-}
-#platforms .market-side-label b{
-  display:block!important;
-  position:relative!important;
   z-index:8!important;
-  min-width:72px!important;
-  width:max-content!important;
+}
+body #platforms.market-network-v2 .market-side-label.jp{
+  grid-column:1/3!important;
+  grid-row:1!important;
+  justify-content:flex-start!important;
+  flex-direction:row!important;
+  text-align:left!important;
+}
+body #platforms.market-network-v2 .market-side-label.kr{
+  grid-column:4/6!important;
+  grid-row:1!important;
+  justify-content:flex-start!important;
+  flex-direction:row-reverse!important;
+  text-align:right!important;
+}
+body #platforms.market-network-v2 .market-side-label b{
+  position:relative!important;
+  display:inline-block!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+  align-self:center!important;
+  flex:0 0 auto!important;
+  min-width:0!important;
+  width:auto!important;
+  margin:0!important;
   white-space:nowrap!important;
   word-break:keep-all!important;
   overflow-wrap:normal!important;
   color:var(--orange-2)!important;
-  font-size:50px!important;
-  line-height:1!important;
-  letter-spacing:-.045em!important;
-  text-shadow:0 0 22px rgba(244,125,53,.22),0 0 48px rgba(244,125,53,.08)!important;
+  font:800 44px/1 "Inter",sans-serif!important;
+  letter-spacing:-.035em!important;
+  text-shadow:0 0 18px rgba(244,125,53,.18)!important;
   opacity:1!important;
+  z-index:9!important;
 }
-#platforms .market-side-label span{
-  color:rgba(248,229,207,.72)!important;
-  font-size:11px!important;
-  letter-spacing:.09em!important;
+body #platforms.market-network-v2 .market-side-label span{
+  position:relative!important;
+  display:inline-block!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+  align-self:center!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+  margin:0!important;
   white-space:nowrap!important;
+  color:rgba(248,229,207,.68)!important;
+  font:800 10px/1 "Inter","Pretendard",sans-serif!important;
+  letter-spacing:.075em!important;
 }
-#platforms .market-side-label small{
-  color:rgba(244,125,53,.72)!important;
-  white-space:nowrap!important;
+body #platforms.market-network-v2 .market-side-label small{
+  display:none!important;
 }
-#platforms .market-node{z-index:2!important}
+body #platforms.market-network-v2 .market-node{
+  z-index:2!important;
+}
 
 @media(max-width:1024px) and (min-width:768px){
-  #platforms .market-map{grid-template-rows:70px 58px 58px 58px auto!important}
-  #platforms .market-side-label.jp{grid-template-columns:74px minmax(0,1fr)!important}
-  #platforms .market-side-label.kr{grid-template-columns:minmax(0,1fr) 74px!important}
-  #platforms .market-side-label b{font-size:44px!important;min-width:64px!important}
+  body #platforms.market-network-v2 .market-map{
+    grid-template-rows:58px 54px 54px 54px 26px!important;
+  }
+  body #platforms.market-network-v2 .market-side-label,
+  body #platforms.market-network-v2 .market-side-label.jp,
+  body #platforms.market-network-v2 .market-side-label.kr{
+    min-height:58px!important;
+    gap:10px!important;
+  }
+  body #platforms.market-network-v2 .market-side-label b{font-size:38px!important}
+  body #platforms.market-network-v2 .market-side-label span{font-size:9px!important}
 }
 
 @media(max-width:767px){
-  #platforms .market-map{
-    grid-template-rows:auto 44px repeat(5,38px) auto!important;
-  }
-  #platforms .market-side-label{
-    align-items:center!important;
-    min-height:44px!important;
-    z-index:7!important;
-  }
-  #platforms .market-side-label.jp,#platforms .market-side-label.kr{
-    grid-template-columns:none!important;
-  }
-  #platforms .market-side-label b{
-    display:inline-block!important;
-    min-width:auto!important;
-    width:auto!important;
-    flex:0 0 auto!important;
-    white-space:nowrap!important;
-    font-size:30px!important;
-    line-height:1!important;
-    letter-spacing:-.035em!important;
-    text-shadow:0 0 18px rgba(244,125,53,.24)!important;
-  }
-  #platforms .market-side-label span{
-    flex:0 1 auto!important;
-    min-width:0!important;
-    white-space:nowrap!important;
-    font-size:8.5px!important;
-    color:rgba(248,229,207,.62)!important;
+  body #platforms.market-network-v2 .market-map{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-rows:78px 42px repeat(5,36px) 20px!important;
+    column-gap:8px!important;
+    row-gap:7px!important;
   }
 
-  /* X must behave exactly like the other JP cards on mobile. */
-  #platforms .jp-x{
+  body #platforms.market-network-v2 .market-side-label,
+  body #platforms.market-network-v2 .market-side-label.jp,
+  body #platforms.market-network-v2 .market-side-label.kr{
+    min-height:42px!important;
+    gap:7px!important;
+    padding:0 3px!important;
+  }
+  body #platforms.market-network-v2 .market-side-label.jp{
     grid-column:1!important;
-    grid-row:6!important;
+    grid-row:2!important;
+    flex-direction:row!important;
+    justify-content:flex-start!important;
+  }
+  body #platforms.market-network-v2 .market-side-label.kr{
+    grid-column:2!important;
+    grid-row:2!important;
+    flex-direction:row-reverse!important;
+    justify-content:flex-start!important;
+  }
+  body #platforms.market-network-v2 .market-side-label b{
+    font-size:28px!important;
+    line-height:1!important;
+    letter-spacing:-.03em!important;
+  }
+  body #platforms.market-network-v2 .market-side-label span{
+    font-size:8.2px!important;
+    line-height:1!important;
+    letter-spacing:.045em!important;
+  }
+
+  body #platforms.market-network-v2 .market-node,
+  body #platforms.market-network-v2 .jp-x{
     width:100%!important;
     min-width:0!important;
-    max-width:none!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
     justify-self:stretch!important;
     align-self:stretch!important;
-    box-sizing:border-box!important;
+  }
+  body #platforms.market-network-v2 .jp-youtube{grid-column:1!important;grid-row:3!important}
+  body #platforms.market-network-v2 .jp-instagram{grid-column:1!important;grid-row:4!important}
+  body #platforms.market-network-v2 .jp-tiktok{grid-column:1!important;grid-row:5!important}
+  body #platforms.market-network-v2 .jp-x{grid-column:1!important;grid-row:6!important}
+  body #platforms.market-network-v2 .jp-ameba{grid-column:1!important;grid-row:7!important}
+  body #platforms.market-network-v2 .kr-youtube{grid-column:2!important;grid-row:3!important}
+  body #platforms.market-network-v2 .kr-instagram{grid-column:2!important;grid-row:4!important}
+  body #platforms.market-network-v2 .kr-naver{grid-column:2!important;grid-row:5!important}
+  body #platforms.market-network-v2 .kr-google{grid-column:2!important;grid-row:6!important}
+  body #platforms.market-network-v2 .market-map-caption{
+    grid-column:1/3!important;
+    grid-row:8!important;
   }
 }
 
 @media(max-width:420px){
-  #platforms .market-side-label b{font-size:28px!important}
-  #platforms .market-side-label span{font-size:8px!important}
-  #platforms .jp-x{width:100%!important;max-width:none!important}
+  body #platforms.market-network-v2 .market-side-label b{font-size:26px!important}
+  body #platforms.market-network-v2 .market-side-label span{font-size:7.8px!important}
 }
