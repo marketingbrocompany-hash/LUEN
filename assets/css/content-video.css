@@ -19,10 +19,9 @@
 /* Case study inquiry CTA removed */
 .case-inquiry-cta{display:none!important}
 
-/* Selected Work: corrected user-provided vlog assets + immediate visibility */
-.portfolio-set [data-selected-work="fnb-vlog"],
-.portfolio-set [data-selected-work="clinic-vlog"]{order:-1!important;background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important}
-.portfolio-set [data-selected-work="fnb-vlog"]{background-image:url("../images/selected-work/longform-fnb-vlog.webp?v=20260820-2")!important}
-.portfolio-set [data-selected-work="clinic-vlog"]{background-image:url("../images/selected-work/shortform-clinic-vlog.webp?v=20260820-2")!important}
-.portfolio-set [data-selected-work="fnb-vlog"]>img,
-.portfolio-set [data-selected-work="clinic-vlog"]>img{opacity:0!important;visibility:hidden!important}
+/* Selected Work: SEOUL YouTube Long Form thumbnail */
+.portfolio-set [data-selected-work="fnb-vlog"]{order:-1!important;background-image:url("../images/selected-work/longform-11.jpg?v=20260820-3")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important}
+.portfolio-set [data-selected-work="fnb-vlog"]>img{opacity:0!important;visibility:hidden!important}
+.portfolio-set [data-selected-work="fnb-vlog"]>.portfolio-country,
+.portfolio-set [data-selected-work="fnb-vlog"]>.portfolio-meta>span{display:none!important}
+.portfolio-set [data-selected-work="clinic-vlog"]{display:none!important}
