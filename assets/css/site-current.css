@@ -137,9 +137,9 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .contact .inquiry-reassurance p{margin-top:5px;color:#6e5d50;font-size:12.5px;line-height:1.65}
 
 /* Case-to-inquiry CTA + Client Voice controls */
-.case-studies .case-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(248,229,207,.11);color:var(--orange-2);font-size:12px;font-weight:700;line-height:1.4;transition:color .2s ease,gap .2s ease}
+.case-studies .case-card-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;margin-top:18px;padding:0 22px;border-top:0;color:var(--orange-2);font-size:12px;font-weight:700;line-height:1!important;text-align:center;transition:color .2s ease,gap .2s ease}
 .case-studies .case-card-cta:hover{color:var(--cream);gap:11px}
-.case-studies .case-card-cta i{font-style:normal}
+.case-studies .case-card-cta i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;line-height:1}
 .client-voice .voice-toggle{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:8px 11px;border:1px solid rgba(248,229,207,.16);border-radius:999px;background:rgba(248,229,207,.04);color:rgba(248,229,207,.72);font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.04em;cursor:pointer}
 .client-voice .voice-toggle:hover,.client-voice .voice-toggle:focus-visible{border-color:rgba(244,125,53,.45);color:var(--cream);outline:none}
 
@@ -163,7 +163,7 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .contact .inquiry-reassurance{padding:15px 16px;margin-bottom:18px}
   .contact .inquiry-reassurance strong{font-size:13.5px}
   .contact .inquiry-reassurance p{font-size:12px}
-  .case-studies .case-card-cta{margin-top:16px;padding-top:14px;font-size:12px}
+  .case-studies .case-card-cta{width:100%!important;min-height:56px!important;margin-top:16px!important;padding:0 20px!important;align-items:center!important;justify-content:center!important;font-size:12px;line-height:1!important}
   .client-voice .voice-toggle{min-height:36px;margin-top:12px;padding:9px 12px}
 }
 @media(max-width:480px){

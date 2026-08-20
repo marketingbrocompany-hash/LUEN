@@ -3,7 +3,7 @@
   if(!document.querySelector('link[data-luen-current-styles]')){
     const currentStyles=document.createElement('link');
     currentStyles.rel='stylesheet';
-    currentStyles.href='assets/css/site-current.css?v=20260819-2';
+    currentStyles.href='assets/css/site-current.css?v=20260820-1';
     currentStyles.dataset.luenCurrentStyles='true';
     document.head.appendChild(currentStyles);
   }
