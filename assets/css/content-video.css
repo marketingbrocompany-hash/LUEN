@@ -19,9 +19,9 @@
 /* Case study inquiry CTA removed */
 .case-inquiry-cta{display:none!important}
 
-/* Selected Work: SEOUL YouTube Long Form thumbnail */
-.portfolio-set [data-selected-work="fnb-vlog"]{order:-1!important;background-image:none!important}
-.portfolio-set [data-selected-work="fnb-vlog"]>img{opacity:1!important;visibility:visible!important;display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;image-rendering:auto}
+/* Selected Work: SEOUL YouTube Long Form thumbnail — HQ tiled asset */
+.portfolio-set [data-selected-work="fnb-vlog"]{order:-1!important;background-image:url("../images/selected-work/seoul-hq-tl.webp?v=20260820-1"),url("../images/selected-work/seoul-hq-tr.webp?v=20260820-1"),url("../images/selected-work/seoul-hq-bl.webp?v=20260820-1"),url("../images/selected-work/seoul-hq-br.webp?v=20260820-1")!important;background-repeat:no-repeat!important;background-size:50% 50%!important;background-position:left top,right top,left bottom,right bottom!important}
+.portfolio-set [data-selected-work="fnb-vlog"]>img{opacity:0!important;visibility:hidden!important}
 .portfolio-set [data-selected-work="fnb-vlog"]>.portfolio-country,
 .portfolio-set [data-selected-work="fnb-vlog"]>.portfolio-meta>span{display:none!important}
 .portfolio-set [data-selected-work="clinic-vlog"]{display:none!important}
