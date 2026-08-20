@@ -1,4 +1,15 @@
 /* JP / KR market code emphasis */
+/* Reserve a real header row so market labels never sit behind platform cards. */
+#platforms .market-map{
+  grid-template-rows:78px 58px 58px 58px auto!important;
+}
+#platforms .market-side-label{
+  position:relative!important;
+  z-index:7!important;
+  align-self:center!important;
+  overflow:visible!important;
+  min-height:62px!important;
+}
 #platforms .market-side-label.jp{
   grid-template-columns:84px minmax(0,1fr)!important;
 }
@@ -7,6 +18,8 @@
 }
 #platforms .market-side-label b{
   display:block!important;
+  position:relative!important;
+  z-index:8!important;
   min-width:72px!important;
   width:max-content!important;
   white-space:nowrap!important;
@@ -23,20 +36,29 @@
   color:rgba(248,229,207,.72)!important;
   font-size:11px!important;
   letter-spacing:.09em!important;
+  white-space:nowrap!important;
 }
 #platforms .market-side-label small{
   color:rgba(244,125,53,.72)!important;
+  white-space:nowrap!important;
 }
+#platforms .market-node{z-index:2!important}
 
 @media(max-width:1024px) and (min-width:768px){
+  #platforms .market-map{grid-template-rows:70px 58px 58px 58px auto!important}
   #platforms .market-side-label.jp{grid-template-columns:74px minmax(0,1fr)!important}
   #platforms .market-side-label.kr{grid-template-columns:minmax(0,1fr) 74px!important}
   #platforms .market-side-label b{font-size:44px!important;min-width:64px!important}
 }
 
 @media(max-width:767px){
+  #platforms .market-map{
+    grid-template-rows:auto 44px repeat(5,38px) auto!important;
+  }
   #platforms .market-side-label{
     align-items:center!important;
+    min-height:44px!important;
+    z-index:7!important;
   }
   #platforms .market-side-label.jp,#platforms .market-side-label.kr{
     grid-template-columns:none!important;
@@ -59,9 +81,22 @@
     font-size:8.5px!important;
     color:rgba(248,229,207,.62)!important;
   }
+
+  /* X must behave exactly like the other JP cards on mobile. */
+  #platforms .jp-x{
+    grid-column:1!important;
+    grid-row:6!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    justify-self:stretch!important;
+    align-self:stretch!important;
+    box-sizing:border-box!important;
+  }
 }
 
 @media(max-width:420px){
   #platforms .market-side-label b{font-size:28px!important}
   #platforms .market-side-label span{font-size:8px!important}
+  #platforms .jp-x{width:100%!important;max-width:none!important}
 }
