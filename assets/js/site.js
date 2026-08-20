@@ -170,3 +170,59 @@
   core.src='assets/js/site-core.js?v=20260819p';
   document.body.appendChild(core);
 })();
+
+(()=>{
+  const youtubeSection=document.querySelector('#youtube .container');
+  const youtubeHead=youtubeSection?.querySelector('.youtube-v2-head');
+  if(!youtubeSection||!youtubeHead||youtubeSection.querySelector('.luen-video-showcase')) return;
+
+  if(!document.querySelector('style[data-luen-video-showcase]')){
+    const style=document.createElement('style');
+    style.dataset.luenVideoShowcase='true';
+    style.textContent=`
+      .luen-video-showcase{display:grid;grid-template-columns:minmax(250px,.58fr) minmax(0,1.42fr);gap:34px;align-items:center;margin:64px 0 72px;padding:28px;border:1px solid rgba(248,229,207,.12);border-radius:28px;background:linear-gradient(135deg,rgba(244,125,53,.055),rgba(13,8,5,.52));box-shadow:0 24px 70px rgba(0,0,0,.12)}
+      .luen-video-copy{padding:8px 2px 8px 8px}.luen-video-copy>span{display:block;color:var(--orange-2);font:700 11px/1.3 "Inter","Pretendard",sans-serif;letter-spacing:.16em}.luen-video-copy h3{margin-top:16px;color:var(--cream);font-size:clamp(24px,2.4vw,36px);line-height:1.16;letter-spacing:-.04em}.luen-video-copy p{margin-top:17px;color:var(--muted);font-size:15px;line-height:1.75;word-break:keep-all}.luen-video-copy small{display:block;margin-top:22px;color:var(--muted-2);font:600 10px/1.5 "Inter","Pretendard",sans-serif;letter-spacing:.1em}
+      .luen-video-frame{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(248,229,207,.13);border-radius:20px;background:#080403;box-shadow:0 22px 60px rgba(0,0,0,.28)}
+      .luen-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+      .luen-video-poster{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#080403;cursor:pointer;overflow:hidden;color:var(--cream)}
+      .luen-video-poster img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.86) brightness(.72);transition:transform .45s ease,filter .35s ease}.luen-video-poster:hover img{transform:scale(1.025);filter:saturate(.95) brightness(.78)}
+      .luen-video-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,rgba(8,4,3,.68) 100%);pointer-events:none}
+      .luen-video-play{position:absolute;left:50%;top:50%;z-index:2;width:70px;height:70px;transform:translate(-50%,-50%);display:grid;place-items:center;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(13,8,5,.72);backdrop-filter:blur(12px);box-shadow:0 12px 38px rgba(0,0,0,.3);transition:transform .22s ease,background .22s ease}.luen-video-play::before{content:"";margin-left:4px;border-left:15px solid var(--orange-2);border-top:10px solid transparent;border-bottom:10px solid transparent}.luen-video-poster:hover .luen-video-play{transform:translate(-50%,-50%) scale(1.06);background:rgba(20,10,5,.86)}
+      .luen-video-caption{position:absolute;left:18px;bottom:16px;z-index:2;color:rgba(255,250,244,.9);font:700 10px/1.3 "Inter","Pretendard",sans-serif;letter-spacing:.11em}
+      @media(max-width:900px){.luen-video-showcase{grid-template-columns:1fr;gap:22px;margin:48px 0 58px;padding:22px}.luen-video-copy{padding:2px}.luen-video-copy p{font-size:14.5px}.luen-video-frame{border-radius:16px}}
+      @media(max-width:560px){.luen-video-showcase{margin:38px 0 48px;padding:14px;border-radius:20px}.luen-video-copy{padding:8px}.luen-video-copy h3{font-size:25px}.luen-video-play{width:58px;height:58px}.luen-video-caption{left:13px;bottom:12px;font-size:9px}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  const showcase=document.createElement('div');
+  showcase.className='luen-video-showcase sr d1';
+  showcase.innerHTML=`
+    <div class="luen-video-copy">
+      <span>CONTENT SAMPLE · YOUTUBE</span>
+      <h3>콘텐츠의 흐름을<br/>영상으로 확인해보세요.</h3>
+      <p>크리에이터의 평소 문법 안에서 제품과 브랜드 메시지가 어떤 장면으로 전달되는지 확인할 수 있습니다.</p>
+      <small>CLICK TO PLAY · LAZY LOADED</small>
+    </div>
+    <div class="luen-video-frame">
+      <button class="luen-video-poster" type="button" aria-label="콘텐츠 예시 영상 재생">
+        <img src="https://i.ytimg.com/vi/YHLOpZs1MKU/maxresdefault.jpg" alt="콘텐츠 예시 영상 미리보기" loading="lazy" decoding="async"/>
+        <span class="luen-video-play" aria-hidden="true"></span>
+        <span class="luen-video-caption">LUEN · CONTENT PREVIEW</span>
+      </button>
+    </div>`;
+  youtubeHead.insertAdjacentElement('afterend',showcase);
+
+  showcase.querySelector('.luen-video-poster')?.addEventListener('click',()=>{
+    const frame=showcase.querySelector('.luen-video-frame');
+    if(!frame) return;
+    const iframe=document.createElement('iframe');
+    iframe.src='https://www.youtube-nocookie.com/embed/YHLOpZs1MKU?autoplay=1&rel=0&playsinline=1';
+    iframe.title='LUEN 콘텐츠 예시 영상';
+    iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.referrerPolicy='strict-origin-when-cross-origin';
+    iframe.allowFullscreen=true;
+    frame.replaceChildren(iframe);
+    if(typeof window.gtag==='function') window.gtag('event','video_play',{video_provider:'youtube',video_id:'YHLOpZs1MKU',video_position:'content'});
+  },{once:true});
+})();
