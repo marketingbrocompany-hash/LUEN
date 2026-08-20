@@ -191,6 +191,25 @@
     },{once:true});
   }
 
+  /* Add the latest Selected Work before site-core clones the loop sets. */
+  const portfolioLanes=[...document.querySelectorAll('.portfolio-lane')];
+  const longFormSet=portfolioLanes[0]?.querySelector('.portfolio-set');
+  const shortFormSet=portfolioLanes[1]?.querySelector('.portfolio-set');
+  if(longFormSet&&!longFormSet.querySelector('[data-selected-work="fnb-vlog"]')){
+    longFormSet.insertAdjacentHTML('beforeend',`<article aria-label="JP F&B VLOG 캠페인 썸네일" class="portfolio-card" data-selected-work="fnb-vlog">
+      <img alt="JP F&B VLOG 캠페인 썸네일" src="assets/images/selected-work/longform-11.jpg" width="1280" height="720" loading="lazy" decoding="async"/>
+      <span class="portfolio-country">JP</span>
+      <div class="portfolio-meta"><span>F&amp;B · VLOG</span><b>YouTube Long Form</b></div>
+    </article>`);
+  }
+  if(shortFormSet&&!shortFormSet.querySelector('[data-selected-work="clinic-vlog"]')){
+    shortFormSet.insertAdjacentHTML('beforeend',`<article aria-label="JP 클리닉 VLOG 캠페인 썸네일" class="portfolio-card portrait" data-selected-work="clinic-vlog">
+      <img alt="JP 클리닉 VLOG 캠페인 썸네일" src="assets/images/selected-work/shortform-11.jpg" width="1152" height="2048" loading="lazy" decoding="async"/>
+      <span class="portfolio-country">JP</span>
+      <div class="portfolio-meta"><span>CLINIC · VLOG</span><b>Instagram Reels</b></div>
+    </article>`);
+  }
+
   const portfolioLoops=[...document.querySelectorAll('.portfolio-viewport[data-loop-strip]')];
   if(portfolioLoops[0]) portfolioLoops[0].dataset.speed='70';
   if(portfolioLoops[1]) portfolioLoops[1].dataset.speed='84';
