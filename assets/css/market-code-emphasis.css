@@ -1,9 +1,21 @@
 /* JP / KR market code emphasis */
+#platforms .market-side-label.jp{
+  grid-template-columns:84px minmax(0,1fr)!important;
+}
+#platforms .market-side-label.kr{
+  grid-template-columns:minmax(0,1fr) 84px!important;
+}
 #platforms .market-side-label b{
+  display:block!important;
+  min-width:72px!important;
+  width:max-content!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
   color:var(--orange-2)!important;
   font-size:50px!important;
-  line-height:.9!important;
-  letter-spacing:-.065em!important;
+  line-height:1!important;
+  letter-spacing:-.045em!important;
   text-shadow:0 0 22px rgba(244,125,53,.22),0 0 48px rgba(244,125,53,.08)!important;
   opacity:1!important;
 }
@@ -17,19 +29,33 @@
 }
 
 @media(max-width:1024px) and (min-width:768px){
-  #platforms .market-side-label b{font-size:44px!important}
+  #platforms .market-side-label.jp{grid-template-columns:74px minmax(0,1fr)!important}
+  #platforms .market-side-label.kr{grid-template-columns:minmax(0,1fr) 74px!important}
+  #platforms .market-side-label b{font-size:44px!important;min-width:64px!important}
 }
 
 @media(max-width:767px){
   #platforms .market-side-label{
     align-items:center!important;
   }
+  #platforms .market-side-label.jp,#platforms .market-side-label.kr{
+    grid-template-columns:none!important;
+  }
   #platforms .market-side-label b{
+    display:inline-block!important;
+    min-width:auto!important;
+    width:auto!important;
+    flex:0 0 auto!important;
+    white-space:nowrap!important;
     font-size:30px!important;
-    line-height:.9!important;
+    line-height:1!important;
+    letter-spacing:-.035em!important;
     text-shadow:0 0 18px rgba(244,125,53,.24)!important;
   }
   #platforms .market-side-label span{
+    flex:0 1 auto!important;
+    min-width:0!important;
+    white-space:nowrap!important;
     font-size:8.5px!important;
     color:rgba(248,229,207,.62)!important;
   }
