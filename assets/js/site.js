@@ -199,3 +199,28 @@
   core.src='assets/js/site-core.js?v=20260819p';
   document.body.appendChild(core);
 })();
+
+(()=>{
+  const footer=document.querySelector('footer .container');
+  if(!footer||footer.querySelector('.footer-business-info')) return;
+
+  if(!document.querySelector('style[data-luen-footer-business]')){
+    const style=document.createElement('style');
+    style.dataset.luenFooterBusiness='true';
+    style.textContent=`
+      .footer-business-info{display:flex;flex-wrap:wrap;align-items:center;gap:7px 12px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(248,229,207,.1);color:rgba(248,229,207,.48);font-size:12px;line-height:1.6}
+      .footer-business-info span{display:inline-flex;align-items:center;gap:7px}
+      .footer-business-info span+span::before{content:"";width:3px;height:3px;border-radius:50%;background:rgba(244,125,53,.62)}
+      .footer-business-info a{color:rgba(248,229,207,.68);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(248,229,207,.24)}
+      .footer-business-info a:hover,.footer-business-info a:focus-visible{color:var(--cream);border-color:var(--orange-2);outline:none}
+      @media(max-width:640px){.footer-business-info{align-items:flex-start;flex-direction:column;gap:5px;font-size:11.5px}.footer-business-info span+span::before{display:none}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  const info=document.createElement('div');
+  info.className='footer-business-info';
+  info.setAttribute('aria-label','LUEN 사업자 정보');
+  info.innerHTML='<span>루엔</span><span>대표 이호규</span><span>사업자등록번호 412-43-01039</span><span>서울특별시 마포구 동교로17안길 10, 3층(서교동)</span><span><a href="privacy.html">개인정보처리방침</a></span>';
+  footer.appendChild(info);
+})();
