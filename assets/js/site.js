@@ -7,6 +7,13 @@
     currentStyles.dataset.luenCurrentStyles='true';
     document.head.appendChild(currentStyles);
   }
+  if(!document.querySelector('link[data-luen-content-video-styles]')){
+    const videoStyles=document.createElement('link');
+    videoStyles.rel='stylesheet';
+    videoStyles.href='assets/css/content-video.css?v=20260820-1';
+    videoStyles.dataset.luenContentVideoStyles='true';
+    document.head.appendChild(videoStyles);
+  }
 
   /* Conversion-first hero copy and CTA hierarchy. */
   const heroDesc=document.querySelector('.hero-desc');
@@ -160,6 +167,28 @@
     document.addEventListener('visibilitychange',sync);
     reducedMotion.addEventListener?.('change',sync);
     sync();
+  }
+
+  const contentHead=document.querySelector('#youtube .youtube-v2-head');
+  if(contentHead&&!document.querySelector('.luen-content-video')){
+    contentHead.insertAdjacentHTML('afterend',`<article class="luen-content-video sr d1" aria-label="실제 크리에이터 콘텐츠 예시">
+      <div class="luen-content-video-copy">
+        <span>REAL CREATOR CONTENT</span>
+        <h3>브랜드 메시지가<br/>실제 콘텐츠 안에서<br/>어떻게 이어지는지 확인해보세요.</h3>
+        <p>제품 소개, 사용 장면, 크리에이터의 언어가 하나의 흐름으로 연결되는 실제 편집 콘텐츠 예시입니다.</p>
+        <div class="luen-content-video-meta" aria-hidden="true"><span>EDITED CONTENT</span><span>DIRECT MP4</span><span>KOREA × JAPAN</span></div>
+      </div>
+      <div class="luen-content-video-frame">
+        <video controls playsinline preload="metadata" aria-label="LUEN 실제 크리에이터 콘텐츠 예시 영상">
+          <source src="assets/video/luen-content-trim.mp4" type="video/mp4"/>
+          현재 브라우저에서는 영상을 재생할 수 없습니다.
+        </video>
+      </div>
+    </article>`);
+    const contentVideo=document.querySelector('.luen-content-video video');
+    contentVideo?.addEventListener('play',()=>{
+      if(typeof window.gtag==='function') window.gtag('event','video_play',{video_provider:'self_hosted',video_asset:'luen-content-trim.mp4',video_position:'content'});
+    },{once:true});
   }
 
   const portfolioLoops=[...document.querySelectorAll('.portfolio-viewport[data-loop-strip]')];
