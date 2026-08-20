@@ -67,7 +67,6 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 .voice-item>span,.voice-item>p{font-size:var(--luen-label)!important}
 .voice-item blockquote{font-size:clamp(19px,1.35vw,24px)!important;line-height:1.65!important;letter-spacing:-.02em;word-break:keep-all}
-
 .faq-q{font-size:clamp(17px,1.02vw,19px)!important;line-height:1.48!important}.faq-icon{font-size:22px!important}
 
 .field label,.privacy-check-copy b,.privacy-details summary{font-size:clamp(14px,.82vw,16px)!important;line-height:1.45!important}
@@ -137,9 +136,9 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .contact .inquiry-reassurance p{margin-top:5px;color:#6e5d50;font-size:12.5px;line-height:1.65}
 
 /* Case-to-inquiry CTA + Client Voice controls */
-.case-studies .case-card-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;margin-top:18px;padding:0 22px;border-top:0;color:var(--orange-2);font-size:12px;font-weight:700;line-height:1!important;text-align:center;transition:color .2s ease,gap .2s ease}
-.case-studies .case-card-cta:hover{color:var(--cream);gap:11px}
-.case-studies .case-card-cta i{display:inline-flex;align-items:center;justify-content:center;font-style:normal;line-height:1}
+.case-studies .case-card-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;margin-top:18px;padding:0 22px;border-top:0;color:#1a0c04!important;opacity:1!important;font-size:12px;font-weight:700;line-height:1!important;text-align:center;text-shadow:none!important;transition:gap .2s ease,background .2s ease}
+.case-studies .case-card-cta:hover{color:#1a0c04!important;opacity:1!important;gap:11px}
+.case-studies .case-card-cta i{display:inline-flex;align-items:center;justify-content:center;color:inherit!important;opacity:1!important;font-style:normal;line-height:1}
 .client-voice .voice-toggle{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:8px 11px;border:1px solid rgba(248,229,207,.16);border-radius:999px;background:rgba(248,229,207,.04);color:rgba(248,229,207,.72);font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.04em;cursor:pointer}
 .client-voice .voice-toggle:hover,.client-voice .voice-toggle:focus-visible{border-color:rgba(244,125,53,.45);color:var(--cream);outline:none}
 
