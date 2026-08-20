@@ -13,3 +13,6 @@
 .luen-content-video-frame video:focus-visible{outline:2px solid var(--orange-2);outline-offset:-3px}
 @media(max-width:900px){.luen-content-video{grid-template-columns:1fr;gap:22px;margin:44px 0 42px;padding:22px}.luen-content-video-copy{padding:2px}.luen-content-video-copy p{max-width:58ch}.luen-content-video-frame{border-radius:17px}}
 @media(max-width:560px){.luen-content-video{margin:34px 0 38px;padding:14px;border-radius:20px}.luen-content-video-copy{padding:8px 6px 2px}.luen-content-video-copy h3{font-size:24px}.luen-content-video-copy p{font-size:14px}.luen-content-video-meta{margin-top:18px}.luen-content-video-frame{border-radius:14px}}
+
+/* Market hub secondary label */
+.market-hub small{font-size:clamp(8px,.52vw,10px)!important}
