@@ -1,146 +1,187 @@
 /* =========================================================
-   CROSS-BORDER PLATFORM NETWORK
-   Focused desktop + compact mobile composition.
-   Loaded after the legacy/current style layers.
+   CROSS-BORDER PLATFORM NETWORK — CONSOLIDATED
+   Single authoritative layout for desktop / tablet / mobile.
    ========================================================= */
 
 #platforms.market-network-v2{
   padding:112px 0 118px!important;
 }
+
 #platforms .market-map{
   position:relative!important;
   display:grid!important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 196px minmax(0,1fr) minmax(0,1fr)!important;
-  grid-template-rows:auto 58px 58px 58px auto!important;
-  gap:12px 14px!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 188px minmax(0,1fr) minmax(0,1fr)!important;
+  grid-template-rows:72px 58px 58px 58px 28px!important;
+  column-gap:12px!important;
+  row-gap:10px!important;
   align-items:stretch!important;
   width:100%!important;
   min-height:0!important;
   height:auto!important;
   margin:52px auto 0!important;
-  padding:28px 34px 22px!important;
-  border-radius:28px!important;
+  padding:24px 28px 20px!important;
   overflow:hidden!important;
+  border-radius:28px!important;
   background:
-    radial-gradient(circle at 50% 48%,rgba(244,125,53,.075),transparent 24%),
+    radial-gradient(circle at 50% 47%,rgba(244,125,53,.075),transparent 25%),
     linear-gradient(180deg,rgba(18,10,6,.98),rgba(9,6,4,.98))!important;
 }
 #platforms .market-map::before{content:none!important}
-#platforms .market-map-grid{z-index:0!important;opacity:.11!important;mask-image:linear-gradient(to bottom,rgba(0,0,0,.78),rgba(0,0,0,.12))!important}
+#platforms .market-map-grid{z-index:0!important;opacity:.09!important;mask-image:linear-gradient(to bottom,rgba(0,0,0,.72),rgba(0,0,0,.08))!important}
 #platforms .market-map-lines{display:none!important}
 #platforms .market-map>*{z-index:1}
 
-/* Market labels become the two primary groups. */
+/* Market headers: reserved first row, never overlap platform cards. */
 #platforms .market-side-label{
   position:relative!important;
   left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
   transform:none!important;
-  display:grid!important;
-  align-items:center!important;
-  gap:3px 10px!important;
-  padding:0 2px 8px!important;
+  align-self:center!important;
+  min-width:0!important;
+  min-height:0!important;
   margin:0!important;
+  padding:0 4px!important;
+  overflow:visible!important;
+  z-index:4!important;
 }
 #platforms .market-side-label.jp{
-  grid-column:1/3!important;grid-row:1!important;
-  grid-template-columns:48px minmax(0,1fr)!important;
+  grid-column:1/3!important;
+  grid-row:1!important;
+  display:grid!important;
+  grid-template-columns:76px minmax(0,1fr)!important;
+  grid-template-rows:1fr 1fr!important;
+  column-gap:14px!important;
   text-align:left!important;
 }
 #platforms .market-side-label.kr{
-  grid-column:4/6!important;grid-row:1!important;
-  grid-template-columns:minmax(0,1fr) 48px!important;
+  grid-column:4/6!important;
+  grid-row:1!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 76px!important;
+  grid-template-rows:1fr 1fr!important;
+  column-gap:14px!important;
   text-align:right!important;
 }
 #platforms .market-side-label b{
+  display:block!important;
+  position:relative!important;
   grid-row:1/3!important;
+  align-self:center!important;
+  min-width:0!important;
+  width:auto!important;
   margin:0!important;
-  color:rgba(248,229,207,.16)!important;
-  font:800 38px/.9 "Inter",sans-serif!important;
-  letter-spacing:-.055em!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+  color:var(--orange-2)!important;
+  font:800 46px/1 "Inter",sans-serif!important;
+  letter-spacing:-.04em!important;
+  text-shadow:0 0 20px rgba(244,125,53,.16)!important;
+  opacity:1!important;
 }
-#platforms .market-side-label.jp b{grid-column:1!important}
-#platforms .market-side-label.kr b{grid-column:2!important}
+#platforms .market-side-label.jp b{grid-column:1!important;justify-self:start!important}
+#platforms .market-side-label.kr b{grid-column:2!important;justify-self:end!important}
 #platforms .market-side-label span{
+  display:block!important;
   align-self:end!important;
-  color:var(--cream)!important;
-  font:800 12px/1.1 "Inter","Pretendard",sans-serif!important;
-  letter-spacing:.1em!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+  color:rgba(248,229,207,.78)!important;
+  font:800 11px/1.15 "Inter","Pretendard",sans-serif!important;
+  letter-spacing:.085em!important;
 }
 #platforms .market-side-label small{
+  display:block!important;
   align-self:start!important;
-  color:var(--orange-2)!important;
-  font:700 8px/1.25 "Inter","Pretendard",sans-serif!important;
-  letter-spacing:.09em!important;
+  min-width:0!important;
+  margin-top:4px!important;
+  white-space:nowrap!important;
+  color:rgba(244,125,53,.72)!important;
+  font:700 8px/1.2 "Inter","Pretendard",sans-serif!important;
+  letter-spacing:.07em!important;
 }
-#platforms .market-side-label.jp span,#platforms .market-side-label.jp small{grid-column:2!important}
-#platforms .market-side-label.kr span,#platforms .market-side-label.kr small{grid-column:1!important}
+#platforms .market-side-label.jp span,#platforms .market-side-label.jp small{grid-column:2!important;justify-self:start!important}
+#platforms .market-side-label.kr span,#platforms .market-side-label.kr small{grid-column:1!important;justify-self:end!important}
 
-/* LUEN is the visual anchor, not one node among many. */
+/* LUEN is the visual anchor. */
 #platforms .market-hub{
   position:relative!important;
   left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
-  grid-column:3!important;grid-row:2/5!important;
-  align-self:center!important;justify-self:center!important;
-  width:176px!important;height:176px!important;
+  grid-column:3!important;
+  grid-row:2/5!important;
+  align-self:center!important;
+  justify-self:center!important;
+  width:168px!important;
+  height:168px!important;
   margin:0!important;
   transform:none!important;
-  border-radius:50%!important;
   border:1px solid rgba(244,125,53,.72)!important;
-  background:radial-gradient(circle at 50% 44%,rgba(244,125,53,.17),rgba(13,8,5,.98) 66%)!important;
-  box-shadow:0 0 0 14px rgba(244,125,53,.024),0 0 52px rgba(244,125,53,.075)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 44%,rgba(244,125,53,.16),rgba(13,8,5,.98) 66%)!important;
+  box-shadow:0 0 0 12px rgba(244,125,53,.022),0 0 46px rgba(244,125,53,.065)!important;
   z-index:3!important;
 }
 #platforms .market-hub span{
-  font:800 28px/1 "Inter",sans-serif!important;
+  font:800 27px/1 "Inter",sans-serif!important;
   letter-spacing:.13em!important;
 }
 #platforms .market-hub small{
-  margin-top:11px!important;
-  color:rgba(248,229,207,.48)!important;
-  font:700 8px/1.45 "Inter",sans-serif!important;
-  letter-spacing:.13em!important;
+  margin-top:10px!important;
+  color:rgba(248,229,207,.46)!important;
+  font:700 7.5px/1.4 "Inter",sans-serif!important;
+  letter-spacing:.12em!important;
 }
-#platforms .market-hub i{margin-top:10px!important}
+#platforms .market-hub i{margin-top:9px!important}
 #platforms .market-hub::before,#platforms .market-hub::after{
   content:""!important;
   position:absolute!important;
   top:50%!important;
-  width:58px!important;height:1px!important;
+  width:42px!important;
+  height:1px!important;
   inset-block:auto!important;
-  border:0!important;border-radius:0!important;
-  opacity:.9!important;
+  border:0!important;
+  border-radius:0!important;
+  opacity:.8!important;
   animation:none!important;
-  transform:none!important;
   pointer-events:none!important;
 }
 #platforms .market-hub::before{
-  left:-58px!important;right:auto!important;
-  background:linear-gradient(90deg,transparent,rgba(244,125,53,.62))!important;
+  left:-42px!important;right:auto!important;
+  background:linear-gradient(90deg,transparent,rgba(244,125,53,.55))!important;
 }
 #platforms .market-hub::after{
-  right:-58px!important;left:auto!important;
-  background:linear-gradient(90deg,rgba(244,125,53,.62),transparent)!important;
+  right:-42px!important;left:auto!important;
+  background:linear-gradient(90deg,rgba(244,125,53,.55),transparent)!important;
 }
 
-/* Platform cards are supporting evidence, not competing focal points. */
+/* Platform cards: fixed to their grid cells, no legacy absolute positioning. */
 #platforms .market-node{
   position:relative!important;
   left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
-  width:auto!important;min-width:0!important;max-width:none!important;
-  min-height:58px!important;height:auto!important;
-  padding:11px 13px!important;
-  display:flex!important;flex-direction:column!important;justify-content:center!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:58px!important;
+  height:58px!important;
+  margin:0!important;
+  padding:10px 13px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
   transform:none!important;
   animation:none!important;
+  border:1px solid rgba(248,229,207,.105)!important;
   border-radius:14px!important;
-  border-color:rgba(248,229,207,.105)!important;
   background:rgba(13,8,5,.58)!important;
   box-shadow:none!important;
   backdrop-filter:blur(8px)!important;
+  z-index:2!important;
 }
 #platforms .market-node:hover{
   transform:translateY(-2px)!important;
-  border-color:rgba(244,125,53,.34)!important;
+  border-color:rgba(244,125,53,.32)!important;
   background:rgba(244,125,53,.045)!important;
 }
 #platforms .market-node b{
@@ -150,13 +191,21 @@
 #platforms .market-node span{
   margin-top:6px!important;
   color:rgba(248,229,207,.43)!important;
-  font:600 9.5px/1.25 "Inter","Pretendard",sans-serif!important;
+  font:600 9.5px/1.2 "Inter","Pretendard",sans-serif!important;
 }
+
 #platforms .jp-youtube{grid-column:1!important;grid-row:2!important}
 #platforms .jp-ameba{grid-column:2!important;grid-row:2!important}
 #platforms .jp-instagram{grid-column:1!important;grid-row:3!important}
 #platforms .jp-tiktok{grid-column:2!important;grid-row:3!important}
-#platforms .jp-x{grid-column:1/3!important;grid-row:4!important;width:calc(50% - 7px)!important;justify-self:center!important}
+#platforms .jp-x{
+  grid-column:1/3!important;
+  grid-row:4!important;
+  width:calc(50% - 6px)!important;
+  min-width:0!important;
+  max-width:calc(50% - 6px)!important;
+  justify-self:center!important;
+}
 #platforms .kr-google{grid-column:4!important;grid-row:2!important}
 #platforms .kr-youtube{grid-column:5!important;grid-row:2!important}
 #platforms .kr-instagram{grid-column:4!important;grid-row:3!important}
@@ -165,110 +214,164 @@
 #platforms .market-map-caption{
   position:relative!important;
   left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
-  grid-column:1/6!important;grid-row:5!important;
+  grid-column:1/6!important;
+  grid-row:5!important;
+  align-self:end!important;
   justify-self:center!important;
   display:flex!important;
-  gap:8px!important;
-  margin:7px 0 0!important;
+  gap:7px!important;
+  margin:0!important;
   transform:none!important;
-  color:rgba(248,229,207,.42)!important;
-  font:700 8.5px/1.3 "Inter","Pretendard",sans-serif!important;
-  letter-spacing:.11em!important;
   white-space:normal!important;
   text-align:center!important;
+  color:rgba(248,229,207,.4)!important;
+  font:700 8px/1.3 "Inter","Pretendard",sans-serif!important;
+  letter-spacing:.1em!important;
 }
-#platforms .market-map-caption b{color:var(--orange-2)!important;font-size:inherit!important}
-#platforms .market-map-caption span{font-size:inherit!important}
+#platforms .market-map-caption span,#platforms .market-map-caption b{font-size:inherit!important}
+#platforms .market-map-caption b{color:var(--orange-2)!important}
 
 @media(max-width:1024px) and (min-width:768px){
   #platforms.market-network-v2{padding:96px 0 104px!important}
   #platforms .market-map{
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 164px minmax(0,1fr) minmax(0,1fr)!important;
-    gap:10px 10px!important;
-    padding:24px 22px 20px!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 156px minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-rows:64px 54px 54px 54px 26px!important;
+    column-gap:9px!important;
+    row-gap:9px!important;
+    padding:22px 20px 18px!important;
   }
-  #platforms .market-hub{width:150px!important;height:150px!important}
-  #platforms .market-hub span{font-size:24px!important}
-  #platforms .market-hub::before{left:-34px!important;width:34px!important}
-  #platforms .market-hub::after{right:-34px!important;width:34px!important}
-  #platforms .market-node{padding:10px!important}
-  #platforms .market-node b{font-size:11px!important}
+  #platforms .market-side-label.jp{grid-template-columns:66px minmax(0,1fr)!important;column-gap:10px!important}
+  #platforms .market-side-label.kr{grid-template-columns:minmax(0,1fr) 66px!important;column-gap:10px!important}
+  #platforms .market-side-label b{font-size:40px!important}
+  #platforms .market-side-label span{font-size:9.5px!important}
+  #platforms .market-side-label small{font-size:7px!important}
+  #platforms .market-hub{width:142px!important;height:142px!important}
+  #platforms .market-hub span{font-size:23px!important}
+  #platforms .market-hub::before{left:-30px!important;width:30px!important}
+  #platforms .market-hub::after{right:-30px!important;width:30px!important}
+  #platforms .market-node{height:54px!important;min-height:54px!important;padding:9px 10px!important}
+  #platforms .market-node b{font-size:10.5px!important}
   #platforms .market-node span{font-size:8.5px!important}
+  #platforms .jp-x{width:calc(50% - 4.5px)!important;max-width:calc(50% - 4.5px)!important}
 }
 
-/* Mobile: LUEN first, then JP/KR in two columns at the same time. */
+/* Mobile: one compact LUEN hub + JP/KR side-by-side columns. */
 @media(max-width:767px){
   #platforms.market-network-v2{padding:72px 0 78px!important}
   #platforms .market-v2-head{display:block!important}
   #platforms .market-map{
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    grid-template-rows:auto auto repeat(5,38px) auto!important;
-    row-gap:7px!important;column-gap:8px!important;
-    min-height:0!important;height:auto!important;
+    grid-template-rows:78px 42px repeat(5,36px)!important;
+    column-gap:8px!important;
+    row-gap:7px!important;
+    min-height:0!important;
+    height:auto!important;
     margin-top:32px!important;
-    padding:18px 12px 16px!important;
+    padding:16px 12px 16px!important;
     border-radius:20px!important;
-    background:radial-gradient(circle at 50% 12%,rgba(244,125,53,.09),transparent 24%),#0a0604!important;
+    background:radial-gradient(circle at 50% 10%,rgba(244,125,53,.085),transparent 24%),#0a0604!important;
   }
-  #platforms .market-map-grid{opacity:.07!important}
+  #platforms .market-map-grid{opacity:.06!important}
 
   #platforms .market-hub{
-    grid-column:1/3!important;grid-row:1!important;
-    width:158px!important;height:84px!important;
-    margin:0 auto 5px!important;
-    border-radius:26px!important;
-    box-shadow:0 0 34px rgba(244,125,53,.06)!important;
+    grid-column:1/3!important;
+    grid-row:1!important;
+    align-self:center!important;
+    width:150px!important;
+    height:72px!important;
+    margin:0 auto!important;
+    border-radius:24px!important;
+    box-shadow:0 0 30px rgba(244,125,53,.055)!important;
   }
-  #platforms .market-hub span{font-size:22px!important;letter-spacing:.12em!important}
-  #platforms .market-hub small{margin-top:7px!important;font-size:7px!important;line-height:1.3!important;letter-spacing:.11em!important}
+  #platforms .market-hub span{font-size:21px!important;letter-spacing:.12em!important}
+  #platforms .market-hub small{margin-top:6px!important;font-size:6.5px!important;line-height:1.25!important;letter-spacing:.1em!important}
   #platforms .market-hub i{display:none!important}
   #platforms .market-hub::before,#platforms .market-hub::after{
-    top:auto!important;bottom:-11px!important;
-    width:44px!important;height:1px!important;
-    background:rgba(244,125,53,.42)!important;
+    top:auto!important;
+    bottom:-10px!important;
+    width:38px!important;
+    height:1px!important;
+    background:rgba(244,125,53,.38)!important;
     transform-origin:center!important;
   }
-  #platforms .market-hub::before{left:22px!important;right:auto!important;transform:rotate(18deg)!important}
-  #platforms .market-hub::after{right:22px!important;left:auto!important;transform:rotate(-18deg)!important}
+  #platforms .market-hub::before{left:24px!important;right:auto!important;transform:rotate(17deg)!important}
+  #platforms .market-hub::after{right:24px!important;left:auto!important;transform:rotate(-17deg)!important}
 
-  #platforms .market-side-label{
+  #platforms .market-side-label,
+  #platforms .market-side-label.jp,
+  #platforms .market-side-label.kr{
     display:flex!important;
-    align-items:baseline!important;
+    grid-template-columns:none!important;
+    grid-template-rows:none!important;
+    align-items:center!important;
+    min-width:0!important;
+    min-height:42px!important;
     gap:7px!important;
-    padding:4px 4px 5px!important;
+    padding:0 3px!important;
   }
-  #platforms .market-side-label.jp{grid-column:1!important;grid-row:2!important;text-align:left!important;justify-content:flex-start!important}
-  #platforms .market-side-label.kr{grid-column:2!important;grid-row:2!important;text-align:right!important;justify-content:flex-end!important}
+  #platforms .market-side-label.jp{
+    grid-column:1!important;
+    grid-row:2!important;
+    justify-content:flex-start!important;
+    text-align:left!important;
+  }
+  #platforms .market-side-label.kr{
+    grid-column:2!important;
+    grid-row:2!important;
+    flex-direction:row-reverse!important;
+    justify-content:flex-start!important;
+    text-align:right!important;
+  }
   #platforms .market-side-label b{
-    display:inline!important;
-    color:rgba(248,229,207,.2)!important;
-    font-size:22px!important;
+    display:inline-block!important;
+    flex:0 0 auto!important;
+    min-width:auto!important;
+    width:auto!important;
+    font-size:28px!important;
     line-height:1!important;
+    letter-spacing:-.035em!important;
+    white-space:nowrap!important;
+    text-shadow:0 0 14px rgba(244,125,53,.18)!important;
   }
   #platforms .market-side-label span{
-    display:inline!important;
-    font-size:9.5px!important;
-    line-height:1.2!important;
-    letter-spacing:.07em!important;
+    display:inline-block!important;
+    flex:0 1 auto!important;
+    min-width:0!important;
+    font-size:8.5px!important;
+    line-height:1!important;
+    letter-spacing:.055em!important;
+    white-space:nowrap!important;
   }
   #platforms .market-side-label small{display:none!important}
 
   #platforms .market-node{
-    min-height:38px!important;height:38px!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:36px!important;
+    height:36px!important;
     padding:0 10px!important;
     flex-direction:row!important;
     align-items:center!important;
     justify-content:flex-start!important;
-    border-radius:11px!important;
-    background:rgba(13,8,5,.64)!important;
+    border-radius:10px!important;
+    box-sizing:border-box!important;
   }
-  #platforms .market-node b{font-size:10.5px!important;line-height:1!important}
+  #platforms .market-node b{font-size:10px!important;line-height:1!important}
   #platforms .market-node span{display:none!important}
 
   #platforms .jp-youtube{grid-column:1!important;grid-row:3!important}
   #platforms .jp-instagram{grid-column:1!important;grid-row:4!important}
   #platforms .jp-tiktok{grid-column:1!important;grid-row:5!important}
-  #platforms .jp-x{grid-column:1!important;grid-row:6!important;width:auto!important;justify-self:stretch!important}
+  #platforms .jp-x{
+    grid-column:1!important;
+    grid-row:6!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    justify-self:stretch!important;
+    align-self:stretch!important;
+  }
   #platforms .jp-ameba{grid-column:1!important;grid-row:7!important}
 
   #platforms .kr-youtube{grid-column:2!important;grid-row:3!important}
@@ -276,25 +379,19 @@
   #platforms .kr-naver{grid-column:2!important;grid-row:5!important}
   #platforms .kr-google{grid-column:2!important;grid-row:6!important}
 
-  #platforms .market-map-caption{
-    grid-column:1/3!important;grid-row:8!important;
-    margin-top:7px!important;
-    gap:5px!important;
-    font-size:7.5px!important;
-    line-height:1.45!important;
-    letter-spacing:.08em!important;
-  }
+  #platforms .market-map-caption{display:none!important}
 }
 
 @media(max-width:420px){
   #platforms.market-network-v2{padding-top:66px!important;padding-bottom:70px!important}
-  #platforms .market-map{padding-left:10px!important;padding-right:10px!important;column-gap:7px!important}
-  #platforms .market-hub{width:148px!important;height:80px!important}
+  #platforms .market-map{column-gap:7px!important;padding-left:10px!important;padding-right:10px!important}
+  #platforms .market-hub{width:144px!important;height:70px!important}
   #platforms .market-side-label{gap:5px!important;padding-left:2px!important;padding-right:2px!important}
-  #platforms .market-side-label b{font-size:20px!important}
-  #platforms .market-side-label span{font-size:8.8px!important}
+  #platforms .market-side-label b{font-size:26px!important}
+  #platforms .market-side-label span{font-size:7.8px!important;letter-spacing:.04em!important}
   #platforms .market-node{padding:0 9px!important}
-  #platforms .market-node b{font-size:10px!important}
+  #platforms .market-node b{font-size:9.5px!important}
+  #platforms .jp-x{width:100%!important;max-width:100%!important}
 }
 
 @media(prefers-reduced-motion:reduce){
