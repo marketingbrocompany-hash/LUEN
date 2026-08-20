@@ -10,7 +10,7 @@
   if(!document.querySelector('link[data-luen-content-video-styles]')){
     const videoStyles=document.createElement('link');
     videoStyles.rel='stylesheet';
-    videoStyles.href='assets/css/content-video.css?v=20260820-1';
+    videoStyles.href='assets/css/content-video.css?v=20260820-2';
     videoStyles.dataset.luenContentVideoStyles='true';
     document.head.appendChild(videoStyles);
   }
