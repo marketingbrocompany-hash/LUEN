@@ -291,83 +291,201 @@
 })();
 
 (()=>{
-  /* Move the single strongest capability metric into Selected Work. */
+  /* Selected Work: connect network scale directly to content creation. */
   const proofStrip=document.querySelector('.proof-strip');
   const workHead=document.querySelector('#work .work-head');
-  if(!workHead){
-    proofStrip?.remove();
-    return;
-  }
+  proofStrip?.remove();
+  if(!workHead) return;
 
-  if(!document.querySelector('style[data-luen-work-network-proof]')){
+  document.querySelector('.work-network-proof')?.remove();
+
+  if(!document.querySelector('style[data-luen-work-network-feature]')){
     const style=document.createElement('style');
-    style.dataset.luenWorkNetworkProof='true';
+    style.dataset.luenWorkNetworkFeature='true';
     style.textContent=`
-      .work-network-proof{
-        margin-top:48px;
-        padding:22px 0;
-        border-top:1px solid var(--line);
-        border-bottom:1px solid var(--line);
+      .work-network-feature{
+        position:relative;
+        isolation:isolate;
+        overflow:hidden;
+        margin-top:54px;
+        min-height:286px;
         display:grid;
-        grid-template-columns:minmax(150px,180px) minmax(120px,160px) minmax(0,1fr);
-        align-items:center;
-        gap:28px;
+        grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr);
+        border:1px solid rgba(248,229,207,.13);
+        border-radius:28px;
+        background:
+          radial-gradient(circle at 22% 20%,rgba(244,125,53,.15),transparent 34%),
+          linear-gradient(135deg,rgba(13,8,5,.86),rgba(24,13,8,.72));
+        box-shadow:0 26px 70px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.018);
       }
-      .work-network-proof-label{
+      .work-network-feature::before{
+        content:"1300";
+        position:absolute;
+        right:-.04em;
+        top:-.22em;
+        z-index:-1;
+        font:800 clamp(120px,16vw,230px)/1 "Inter",sans-serif;
+        letter-spacing:-.09em;
+        color:rgba(248,229,207,.018);
+        pointer-events:none;
+        user-select:none;
+      }
+      .work-network-feature::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        z-index:-1;
+        opacity:.17;
+        background-image:
+          linear-gradient(rgba(248,229,207,.055) 1px,transparent 1px),
+          linear-gradient(90deg,rgba(248,229,207,.055) 1px,transparent 1px);
+        background-size:48px 48px;
+        mask-image:linear-gradient(90deg,#000,rgba(0,0,0,.35) 64%,transparent);
+        pointer-events:none;
+      }
+      .work-network-feature-stat{
+        padding:38px 42px 36px;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        border-right:1px solid rgba(248,229,207,.11);
+      }
+      .work-network-feature-kicker{
         display:flex;
         align-items:center;
         gap:10px;
-        color:var(--muted);
-        font:600 10px/1.3 "Inter","Pretendard",sans-serif;
+        color:var(--orange-2);
+        font:700 11px/1.2 "Inter","Pretendard",sans-serif;
         letter-spacing:.16em;
-        text-transform:uppercase;
       }
-      .work-network-proof-label::before{
+      .work-network-feature-kicker::before{
         content:"";
-        width:6px;
-        height:6px;
-        flex:0 0 6px;
+        width:7px;
+        height:7px;
+        flex:0 0 7px;
         border-radius:50%;
         background:var(--orange);
-        box-shadow:0 0 16px rgba(244,125,53,.48);
+        box-shadow:0 0 16px rgba(244,125,53,.45);
       }
-      .work-network-proof strong{
-        color:var(--orange);
-        font:700 clamp(30px,3.1vw,42px)/1 "Inter","Pretendard",sans-serif;
-        letter-spacing:-.045em;
+      .work-network-feature-number{
+        display:block;
+        margin-top:26px;
+        color:var(--orange-2);
+        font:750 clamp(68px,6.4vw,96px)/.88 "Inter","Pretendard",sans-serif;
+        letter-spacing:-.075em;
       }
-      .work-network-proof p{
-        justify-self:end;
-        max-width:440px;
-        color:var(--muted);
-        font-size:14px;
-        line-height:1.75;
+      .work-network-feature-market{
+        margin-top:24px;
+        color:rgba(248,229,207,.42);
+        font:650 10px/1.4 "Inter","Pretendard",sans-serif;
+        letter-spacing:.15em;
       }
-      @media(max-width:720px){
-        .work-network-proof{
-          margin-top:34px;
-          padding:20px 18px;
-          grid-template-columns:minmax(0,1fr) auto;
-          gap:11px 20px;
-          border:1px solid var(--line);
-          border-radius:16px;
-          background:rgba(13,8,5,.24);
+      .work-network-feature-copy{
+        padding:42px 48px 34px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        min-width:0;
+      }
+      .work-network-feature-copy>span{
+        color:rgba(248,229,207,.42);
+        font:700 10px/1.2 "Inter","Pretendard",sans-serif;
+        letter-spacing:.16em;
+      }
+      .work-network-feature-copy p{
+        margin-top:24px;
+        max-width:720px;
+        color:var(--cream);
+        font-size:clamp(23px,2vw,31px);
+        line-height:1.46;
+        letter-spacing:-.035em;
+        font-weight:570;
+        word-break:keep-all;
+      }
+      .work-network-feature-copy p strong{
+        color:var(--orange-2);
+        font-weight:650;
+      }
+      .work-network-feature-flow{
+        margin-top:32px;
+        padding-top:18px;
+        border-top:1px solid rgba(248,229,207,.1);
+        display:flex;
+        align-items:center;
+        gap:12px;
+        flex-wrap:wrap;
+        color:rgba(248,229,207,.42);
+        font:650 9px/1 "Inter","Pretendard",sans-serif;
+        letter-spacing:.12em;
+      }
+      .work-network-feature-flow b{
+        color:rgba(248,229,207,.72);
+        font-weight:650;
+      }
+      .work-network-feature-flow i{
+        width:34px;
+        height:1px;
+        background:linear-gradient(90deg,rgba(244,125,53,.16),var(--orange),rgba(244,125,53,.16));
+      }
+      @media(max-width:900px){
+        .work-network-feature{
+          grid-template-columns:minmax(235px,.72fr) minmax(0,1.28fr);
+          min-height:260px;
         }
-        .work-network-proof strong{font-size:32px;text-align:right}
-        .work-network-proof p{grid-column:1/-1;justify-self:start;max-width:none;font-size:13px;line-height:1.7}
+        .work-network-feature-stat{padding:32px 30px}
+        .work-network-feature-copy{padding:34px 34px 30px}
+        .work-network-feature-copy p{font-size:clamp(21px,2.6vw,28px)}
+      }
+      @media(max-width:700px){
+        .work-network-feature{
+          margin-top:38px;
+          display:block;
+          min-height:0;
+          border-radius:22px;
+        }
+        .work-network-feature::before{
+          top:.02em;
+          right:-.08em;
+          font-size:150px;
+        }
+        .work-network-feature::after{background-size:36px 36px;mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.18) 72%,transparent)}
+        .work-network-feature-stat{
+          padding:27px 24px 25px;
+          border-right:0;
+          border-bottom:1px solid rgba(248,229,207,.1);
+        }
+        .work-network-feature-kicker{font-size:10px}
+        .work-network-feature-number{margin-top:21px;font-size:58px}
+        .work-network-feature-market{margin-top:16px;font-size:9px}
+        .work-network-feature-copy{padding:27px 24px 25px}
+        .work-network-feature-copy>span{font-size:9px}
+        .work-network-feature-copy p{margin-top:17px;font-size:20px;line-height:1.5}
+        .work-network-feature-flow{margin-top:24px;padding-top:16px;gap:9px;font-size:8px}
+        .work-network-feature-flow i{width:20px}
       }
     `;
     document.head.appendChild(style);
   }
 
-  if(!document.querySelector('.work-network-proof')){
-    const metric=document.createElement('aside');
-    metric.className='work-network-proof';
-    metric.setAttribute('aria-label','LUEN 크리에이터 네트워크 규모');
-    metric.innerHTML='<span class="work-network-proof-label">CREATOR NETWORK</span><strong>1,300+</strong><p>한국과 일본을 연결하는 크리에이터 협업 네트워크</p>';
-    workHead.insertAdjacentElement('afterend',metric);
+  if(!document.querySelector('.work-network-feature')){
+    const feature=document.createElement('aside');
+    feature.className='work-network-feature';
+    feature.setAttribute('aria-label','LUEN 크리에이터 네트워크와 콘텐츠 설계');
+    feature.innerHTML=`
+      <div class="work-network-feature-stat">
+        <div>
+          <span class="work-network-feature-kicker">CREATOR NETWORK</span>
+          <strong class="work-network-feature-number">1,300+</strong>
+        </div>
+        <span class="work-network-feature-market">KOREA × JAPAN</span>
+      </div>
+      <div class="work-network-feature-copy">
+        <span>NETWORK TO CONTENT</span>
+        <p>한국과 일본의 크리에이터 네트워크를 기반으로<br/><strong>브랜드와 시장에 맞는 콘텐츠를 설계합니다.</strong></p>
+        <div class="work-network-feature-flow" aria-hidden="true">
+          <b>CREATOR NETWORK</b><i></i><b>BRAND FIT</b><i></i><b>CONTENT</b>
+        </div>
+      </div>`;
+    workHead.insertAdjacentElement('afterend',feature);
   }
-
-  /* Remove the old four-column capability strip, including CONTENT/CAMPAIGN/PLATFORM. */
-  proofStrip?.remove();
 })();
