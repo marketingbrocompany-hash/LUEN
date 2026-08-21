@@ -25,3 +25,9 @@
 .portfolio-set [data-selected-work="fnb-vlog"]>.portfolio-country,
 .portfolio-set [data-selected-work="fnb-vlog"]>.portfolio-meta>span{display:none!important}
 .portfolio-set [data-selected-work="clinic-vlog"]{display:none!important}
+
+/* Selected Work intro: keep the section label, remove the legacy headline and accent rule. */
+#work .work-story-title{display:none!important}
+#work .work-head::after{display:none!important;content:none!important}
+#work .work-network-feature{margin-top:24px!important}
+@media(max-width:700px){#work .work-network-feature{margin-top:20px!important}}
