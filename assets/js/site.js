@@ -15,6 +15,44 @@
     document.head.appendChild(videoStyles);
   }
 
+  /*
+   * iPhone / iPad Safari stability mode.
+   * iOS Safari has a comparatively small per-tab memory/GPU budget. The page contains
+   * several cloned image marquees plus continuous rAF/SVG animations, so keep the
+   * visual design but avoid duplicated DOM and continuous motion on iOS.
+   */
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||
+    (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(isIOS){
+    document.documentElement.classList.add('ios-safari');
+    const iosStyle=document.createElement('style');
+    iosStyle.dataset.luenIosStability='true';
+    iosStyle.textContent=`
+      .ios-safari [data-loop-strip] .loop-track,
+      .ios-safari .creator-profile-track{transform:none!important;will-change:auto!important;}
+      .ios-safari .lhn-dot,.ios-safari .chart-runner{display:none!important;}
+      .ios-safari .lhn-ring,.ios-safari .lcs-path-flow{animation:none!important;}
+      @media (max-width: 820px){
+        .ios-safari .portfolio-viewport{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+        .ios-safari .portfolio-viewport::-webkit-scrollbar{display:none;}
+        .ios-safari .portfolio-track{width:max-content!important;}
+        .ios-safari .creator-profile-viewport{overflow-x:auto!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+        .ios-safari .creator-profile-viewport::-webkit-scrollbar{display:none;}
+        .ios-safari .creator-profile-track{width:max-content!important;}
+      }
+    `;
+    document.head.appendChild(iosStyle);
+
+    /* site-core only initializes loop strips carrying this attribute. */
+    document.querySelectorAll('[data-loop-strip]').forEach(el=>{
+      el.dataset.iosLoopSpeed=el.dataset.speed||'';
+      el.removeAttribute('data-loop-strip');
+    });
+
+    /* SMIL animations are decorative and can contribute to GPU pressure in WebKit. */
+    document.querySelectorAll('animateMotion, animate').forEach(el=>el.remove());
+  }
+
   /* Conversion-first hero copy and CTA hierarchy. */
   const heroDesc=document.querySelector('.hero-desc');
   if(heroDesc){
@@ -53,7 +91,11 @@
       label:(link.dataset.analyticsLabel||link.getAttribute('aria-label')||link.textContent||'CTA').replace(/\s+/g,' ').trim().slice(0,80)
     };
     window.__luenLastCtaContext=context;
-    queueMicrotask(()=>{if(window.__luenLastCtaContext===context) window.__luenLastCtaContext=null;});
+    if(typeof queueMicrotask==='function'){
+      queueMicrotask(()=>{if(window.__luenLastCtaContext===context) window.__luenLastCtaContext=null;});
+    }else{
+      Promise.resolve().then(()=>{if(window.__luenLastCtaContext===context) window.__luenLastCtaContext=null;});
+    }
   },true);
   if(typeof window.gtag==='function'&&!window.gtag.__luenCtaPositionEnhanced){
     const originalGtag=window.gtag;
@@ -115,17 +157,19 @@
   /* Hero creator network visual. Styling lives in assets/css/site-current.css. */
   const old=document.querySelector('.luen-hero-network');
   if(old){
+    const imageLoading=isIOS?'lazy':'eager';
+    const imageDecoding=isIOS?'async':'sync';
     old.outerHTML=`<div class="creator-network-showcase" aria-label="LUEN 크리에이터 네트워크">
       <div class="creator-network-head"><span>CREATOR NETWORK</span><strong>KOREA × JAPAN</strong><p>YOUTUBE CREATOR PROFILE</p></div>
       <div class="creator-profile-viewport" aria-label="크리에이터 프로필 슬라이드">
         <div class="creator-profile-track"><div class="creator-profile-set">
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-03.webp" alt="LUEN 크리에이터 프로필 1" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-02.webp" alt="LUEN 크리에이터 프로필 2" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-01.webp" alt="LUEN 크리에이터 프로필 3" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 4" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-04.webp" alt="LUEN 크리에이터 프로필 5" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-03.webp" alt="LUEN 크리에이터 프로필 6" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
-          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-02.webp" alt="LUEN 크리에이터 프로필 7" decoding="sync" loading="eager" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-03.webp" alt="LUEN 크리에이터 프로필 1" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-02.webp" alt="LUEN 크리에이터 프로필 2" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-01.webp" alt="LUEN 크리에이터 프로필 3" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-01.webp" alt="LUEN 크리에이터 프로필 4" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-04.webp" alt="LUEN 크리에이터 프로필 5" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-profile-03.webp" alt="LUEN 크리에이터 프로필 6" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
+          <figure class="creator-profile-card"><img src="assets/images/hero-creators/creator-extra-v2-02.webp" alt="LUEN 크리에이터 프로필 7" decoding="${imageDecoding}" loading="${imageLoading}" onerror="this.closest('.creator-profile-card').remove()"></figure>
         </div></div>
       </div>
       <div class="creator-network-foot" aria-hidden="true"><span>YOUTUBE</span><i></i><span>INSTAGRAM</span><i></i><span>KOREA</span><i></i><span>JAPAN</span></div>
@@ -135,7 +179,7 @@
   const viewport=document.querySelector('.creator-profile-viewport');
   const track=viewport?.querySelector('.creator-profile-track');
   const source=viewport?.querySelector('.creator-profile-set');
-  if(viewport&&track&&source){
+  if(viewport&&track&&source&&!isIOS){
     const clone=source.cloneNode(true);
     clone.setAttribute('aria-hidden','true');
     track.appendChild(clone);
@@ -160,7 +204,9 @@
       if(document.hidden||!visible)stop();else start();
     };
 
-    new ResizeObserver(()=>{baseWidth=source.getBoundingClientRect().width||baseWidth}).observe(viewport);
+    if('ResizeObserver' in window){
+      new ResizeObserver(()=>{baseWidth=source.getBoundingClientRect().width||baseWidth}).observe(viewport);
+    }
     if('IntersectionObserver' in window){
       new IntersectionObserver(entries=>{visible=Boolean(entries[0]?.isIntersecting);sync();},{rootMargin:'160px 0px',threshold:0}).observe(viewport);
     }
@@ -215,7 +261,7 @@
   if(portfolioLoops[1]) portfolioLoops[1].dataset.speed='84';
 
   const core=document.createElement('script');
-  core.src='assets/js/site-core.js?v=20260819p';
+  core.src='assets/js/site-core.js?v=20260821-ios1';
   document.body.appendChild(core);
 })();
 
