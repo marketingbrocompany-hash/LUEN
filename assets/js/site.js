@@ -289,3 +289,85 @@
   info.innerHTML='<span>루엔</span><span>대표 이호규</span><span>사업자등록번호 412-43-01039</span><span>서울특별시 마포구 동교로17안길 10, 3층(서교동)</span><span><a href="privacy.html">개인정보처리방침</a></span>';
   footer.appendChild(info);
 })();
+
+(()=>{
+  /* Move the single strongest capability metric into Selected Work. */
+  const proofStrip=document.querySelector('.proof-strip');
+  const workHead=document.querySelector('#work .work-head');
+  if(!workHead){
+    proofStrip?.remove();
+    return;
+  }
+
+  if(!document.querySelector('style[data-luen-work-network-proof]')){
+    const style=document.createElement('style');
+    style.dataset.luenWorkNetworkProof='true';
+    style.textContent=`
+      .work-network-proof{
+        margin-top:48px;
+        padding:22px 0;
+        border-top:1px solid var(--line);
+        border-bottom:1px solid var(--line);
+        display:grid;
+        grid-template-columns:minmax(150px,180px) minmax(120px,160px) minmax(0,1fr);
+        align-items:center;
+        gap:28px;
+      }
+      .work-network-proof-label{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        color:var(--muted);
+        font:600 10px/1.3 "Inter","Pretendard",sans-serif;
+        letter-spacing:.16em;
+        text-transform:uppercase;
+      }
+      .work-network-proof-label::before{
+        content:"";
+        width:6px;
+        height:6px;
+        flex:0 0 6px;
+        border-radius:50%;
+        background:var(--orange);
+        box-shadow:0 0 16px rgba(244,125,53,.48);
+      }
+      .work-network-proof strong{
+        color:var(--orange);
+        font:700 clamp(30px,3.1vw,42px)/1 "Inter","Pretendard",sans-serif;
+        letter-spacing:-.045em;
+      }
+      .work-network-proof p{
+        justify-self:end;
+        max-width:440px;
+        color:var(--muted);
+        font-size:14px;
+        line-height:1.75;
+      }
+      @media(max-width:720px){
+        .work-network-proof{
+          margin-top:34px;
+          padding:20px 18px;
+          grid-template-columns:minmax(0,1fr) auto;
+          gap:11px 20px;
+          border:1px solid var(--line);
+          border-radius:16px;
+          background:rgba(13,8,5,.24);
+        }
+        .work-network-proof strong{font-size:32px;text-align:right}
+        .work-network-proof p{grid-column:1/-1;justify-self:start;max-width:none;font-size:13px;line-height:1.7}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  if(!document.querySelector('.work-network-proof')){
+    const metric=document.createElement('aside');
+    metric.className='work-network-proof';
+    metric.setAttribute('aria-label','LUEN 크리에이터 네트워크 규모');
+    metric.innerHTML='<span class="work-network-proof-label">CREATOR NETWORK</span><strong>1,300+</strong><p>한국과 일본을 연결하는 크리에이터 협업 네트워크</p>';
+    workHead.insertAdjacentElement('afterend',metric);
+  }
+
+  /* Remove the old four-column capability strip, including CONTENT/CAMPAIGN/PLATFORM. */
+  proofStrip?.remove();
+})();
