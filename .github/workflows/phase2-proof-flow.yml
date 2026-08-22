@@ -1,0 +1,92 @@
+name: Phase 2 proof flow
+
+on:
+  push:
+    branches:
+      - homepage-phase2-proof-flow
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: homepage-phase2-proof-flow
+          fetch-depth: 0
+      - name: Reorder proof flow
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('assets/js/site.js')
+          s=p.read_text(encoding='utf-8')
+          marker='/* Phase 2: explain why the outcomes happen before showing broader capability and work. */'
+          if marker in s:
+              raise SystemExit('Phase 2 block already exists')
+          required=[
+              "const cases=document.getElementById('cases');",
+              "const work=document.getElementById('work');",
+              "capability.insertAdjacentElement('afterend',work);",
+          ]
+          for needle in required:
+              if needle not in s:
+                  raise SystemExit(f'Missing phase 1 dependency: {needle}')
+
+          block=r'''
+
+/* Phase 2: explain why the outcomes happen before showing broader capability and work. */
+(()=>{
+  const cases=document.getElementById('cases');
+  const expertise=document.getElementById('youtube');
+  const deliverable=document.getElementById('guide-proof');
+  const capability=document.querySelector('.capability-strip');
+  const work=document.getElementById('work');
+  if(!cases||!expertise||!deliverable||!capability||!work) return;
+
+  cases.insertAdjacentElement('afterend',expertise);
+  expertise.insertAdjacentElement('afterend',deliverable);
+  deliverable.insertAdjacentElement('afterend',capability);
+  capability.insertAdjacentElement('afterend',work);
+
+  const workTitle=work.querySelector('.work-story-title');
+  if(workTitle){
+    workTitle.innerHTML='<span>실제 캠페인에서 제작한</span><br/><span><em>콘텐츠를 확인해보세요.</em></span>';
+  }
+})();
+'''
+          p.write_text(s.rstrip()+block+'\n',encoding='utf-8')
+          PY
+      - name: Validate JavaScript
+        shell: bash
+        run: |
+          node --check assets/js/site.js
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('assets/js/site.js').read_text(encoding='utf-8')
+          checks={
+            'phase2': '/* Phase 2: explain why the outcomes happen before showing broader capability and work. */',
+            'expertise': "const expertise=document.getElementById('youtube');",
+            'deliverable': "const deliverable=document.getElementById('guide-proof');",
+            'order1': "cases.insertAdjacentElement('afterend',expertise);",
+            'order2': "expertise.insertAdjacentElement('afterend',deliverable);",
+            'order3': "deliverable.insertAdjacentElement('afterend',capability);",
+            'workcopy': '실제 캠페인에서 제작한',
+          }
+          missing=[k for k,v in checks.items() if v not in s]
+          if missing: raise SystemExit(f'Missing validation markers: {missing}')
+          print('phase 2 validation passed')
+          PY
+      - name: Commit update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/js/site.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Reorder proof flow after case studies"
+          git push origin HEAD:homepage-phase2-proof-flow
