@@ -1,0 +1,64 @@
+name: Apply case study update
+
+on:
+  push:
+    branches:
+      - case-studies-outcome-focus
+
+permissions:
+  contents: write
+
+jobs:
+  update-homepage:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: case-studies-outcome-focus
+          fetch-depth: 0
+      - name: Update homepage copy and case studies
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+
+          # Remove the four operating-standard chips requested by the user.
+          s = s.replace('.brand-wall .brand-proof-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}\n', '')
+          s = s.replace('.brand-wall .brand-proof-meta span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted-2);font:700 10px/1 "Inter","Pretendard",sans-serif;letter-spacing:.08em}\n', '')
+          s = s.replace('@media(max-width:820px){.brand-wall .brand-wall-head{align-items:flex-start;gap:18px}.brand-wall .brand-proof-copy{max-width:none}.brand-wall .brand-proof-copy>p{font-size:15px}.brand-wall .brand-proof-meta{gap:6px}}\n', '@media(max-width:820px){.brand-wall .brand-wall-head{align-items:flex-start;gap:18px}.brand-wall .brand-proof-copy{max-width:none}.brand-wall .brand-proof-copy>p{font-size:15px}}\n')
+          s = re.sub(r'\n?<div class="brand-proof-meta" aria-label="기업 캠페인 운영 기준">.*?</div>', '', s, count=1)
+
+          # Keep only case studies that currently state an actual business outcome.
+          s = s.replace('.case-studies .case-card:nth-child(5)::after{content:"CAMPAIGN 05"}\n', '')
+          s = s.replace('.case-studies .case-card:nth-child(6)::after{content:"CAMPAIGN 06"}\n', '')
+          for cls in ('case-05', 'case-06'):
+              s, n = re.subn(rf'<article class="case-card {cls}">.*?</article>', '', s, count=1)
+              if n != 1:
+                  raise SystemExit(f'Expected one {cls} card, found {n}')
+
+          s = s.replace('\n<button class="mobile-case-more" type="button" aria-expanded="false">다른 사례 3개 더 보기 <span>↓</span></button>', '')
+
+          old_head = '<div class="case-head sr"><div><div class="eyebrow">Selected Case Studies</div><h2 class="section-title">캠페인 사례</h2></div></div>'
+          new_head = '<div class="case-head sr"><div><div class="eyebrow">Selected Case Studies</div><h2 class="section-title">캠페인 사례</h2><p class="section-copy">조회수만이 아니라 판매, 예약, 방문, 구매 관심 등 실제 비즈니스 반응으로 이어진 사례를 선별했습니다.</p></div></div>'
+          if old_head not in s:
+              raise SystemExit('Case study heading not found')
+          s = s.replace(old_head, new_head, 1)
+
+          path.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit homepage update
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- index.html
+          git commit -m "Focus case studies on business outcomes"
+          git push origin HEAD:case-studies-outcome-focus
