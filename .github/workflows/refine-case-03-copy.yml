@@ -1,0 +1,41 @@
+name: Refine case 03 copy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Update case 03 copy
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old='<div class="case-metric"><span>콘텐츠 공개 후</span><strong>실제 매장 방문</strong></div><p class="case-desc">한국 방문 콘텐츠가 일본 팬들의 실제 매장 방문과 방문 인증으로 이어졌습니다.</p>'
+          new='<div class="case-metric"><span>콘텐츠 공개 후</span><strong>팬들의 매장 성지순례</strong></div><p class="case-desc">해당 유튜버의 매장 POP까지 제작해 콘텐츠 경험을 오프라인으로 확장했고, 일본 팬들의 매장 방문과 인증이 이어졌습니다.</p>'
+          if old not in s:
+              raise SystemExit('Target case copy not found')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Commit update
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Refine case 03 store pilgrimage copy"
+          git push origin HEAD:main
