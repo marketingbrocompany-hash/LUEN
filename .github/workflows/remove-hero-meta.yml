@@ -1,0 +1,40 @@
+name: Remove hero meta
+
+on:
+  push:
+    branches:
+      - remove-hero-meta
+
+permissions:
+  contents: write
+
+jobs:
+  update-hero:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: remove-hero-meta
+          fetch-depth: 0
+      - name: Remove hero meta block
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old='''<div class="hero-meta">\n<span><i></i> Strategy</span>\n<span><i></i> Creator Fit</span>\n<span><i></i> Content</span>\n<span><i></i> Performance</span>\n</div>\n'''
+          if s.count(old) != 1:
+              raise SystemExit(f'Expected one hero-meta block, found {s.count(old)}')
+          p.write_text(s.replace(old,'',1),encoding='utf-8')
+          PY
+      - name: Commit update
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Remove hero meta labels"
+          git push origin HEAD:remove-hero-meta
