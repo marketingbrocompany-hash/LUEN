@@ -67,7 +67,7 @@
     heroCtas[0].innerHTML='캠페인 상담하기 <span>→</span>';
   }
   if(heroCtas[1]){
-    heroCtas[1].setAttribute('href','#work');
+    heroCtas[1].setAttribute('href','#cases');
     heroCtas[1].innerHTML='대표 캠페인 사례 보기 <span>↓</span>';
   }
 
@@ -488,4 +488,60 @@
       </div>`;
     workHead.insertAdjacentElement('afterend',feature);
   }
+})();
+
+/* Phase 1: lead with business outcomes, then trust and case evidence. */
+(()=>{
+  const main=document.querySelector('main');
+  const marquee=main?.querySelector('.marquee');
+  const brand=main?.querySelector('.brand-wall');
+  const cases=document.getElementById('cases');
+  const work=document.getElementById('work');
+  if(!main||!marquee||!brand||!cases||!work) return;
+
+  /* The previous Selected Work network feature duplicates capability proof after this restructure. */
+  document.querySelector('.work-network-feature')?.remove();
+
+  let outcomes=main.querySelector('.outcome-strip');
+  if(!outcomes){
+    outcomes=document.createElement('section');
+    outcomes.className='proof-strip outcome-strip';
+    outcomes.setAttribute('aria-label','LUEN 비즈니스 성과 사례');
+    outcomes.innerHTML=`<div class="container proof-grid">
+      <article class="proof-item"><span class="proof-kicker">PURCHASE</span><strong>라쿠텐 판매 랭킹 1위</strong><p>실사용 중심의 리뷰 콘텐츠로 제품의 기능과 구매 이유를 자연스럽게 전달한 사례</p></article>
+      <article class="proof-item"><span class="proof-kicker">RESERVATION</span><strong>실제 예약 300~1,000건+</strong><p>일본 소비자의 시술 전 불안과 궁금증을 해소해 예약으로 이어진 캠페인 사례</p></article>
+      <article class="proof-item"><span class="proof-kicker">STORE VISIT</span><strong>팬들의 매장 성지순례</strong><p>유튜버 매장 POP까지 제작해 콘텐츠 경험을 오프라인 방문과 인증으로 확장한 사례</p></article>
+      <article class="proof-item"><span class="proof-kicker">MARKET INTEREST</span><strong>인지도·구매 관심 확대</strong><p>한국 식품의 매력을 강한 체험 콘텐츠로 전달해 일본 시장의 관심을 넓힌 사례</p></article>
+    </div>`;
+  }
+
+  let capability=main.querySelector('.capability-strip');
+  if(!capability){
+    capability=document.createElement('section');
+    capability.className='proof-strip capability-strip';
+    capability.setAttribute('aria-label','LUEN capability snapshot');
+    capability.innerHTML=`<div class="container proof-grid proof-grid-numbers">
+      <article class="proof-item"><span class="proof-kicker">CREATOR NETWORK</span><strong>1,300+</strong><p>한국과 일본을 연결하는 크리에이터 협업 네트워크</p></article>
+      <article class="proof-item"><span class="proof-kicker">CONTENT</span><strong>600+</strong><p>YouTube · Reels · Short-form 기반 콘텐츠 제작·집행</p></article>
+      <article class="proof-item"><span class="proof-kicker">CAMPAIGN</span><strong>280+</strong><p>브랜드 목적과 시장에 맞춰 설계한 캠페인 프로젝트</p></article>
+      <article class="proof-item"><span class="proof-kicker">PLATFORM</span><strong>7</strong><p>YouTube · Instagram · TikTok · X · Ameba · Naver · Google</p></article>
+    </div>`;
+  }
+
+  if(!document.querySelector('style[data-luen-phase1-home]')){
+    const style=document.createElement('style');
+    style.dataset.luenPhase1Home='true';
+    style.textContent=`
+      .outcome-strip .proof-item strong{font-family:"Pretendard Variable","Pretendard",sans-serif;font-size:clamp(22px,2vw,31px);line-height:1.28;letter-spacing:-.035em;min-height:0}
+      .outcome-strip .proof-item p{min-height:0}
+      @media(max-width:767px){.outcome-strip .proof-item strong{font-size:23px;line-height:1.34}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  marquee.insertAdjacentElement('afterend',outcomes);
+  outcomes.insertAdjacentElement('afterend',brand);
+  brand.insertAdjacentElement('afterend',cases);
+  cases.insertAdjacentElement('afterend',capability);
+  capability.insertAdjacentElement('afterend',work);
 })();
