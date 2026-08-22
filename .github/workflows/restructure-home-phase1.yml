@@ -1,0 +1,207 @@
+name: Restructure homepage phase 1
+
+on:
+  push:
+    branches:
+      - restructure-home-phase1
+
+permissions:
+  contents: write
+
+jobs:
+  restructure:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: restructure-home-phase1
+          fetch-depth: 0
+      - name: Reorder evidence sections and align hero CTA
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          s = index.read_text(encoding='utf-8')
+
+          markers = [
+              '<!-- PROOF / CAPABILITY SNAPSHOT -->',
+              '<!-- WORK -->',
+              '<!-- SELECTED CLIENTS -->',
+              '<!-- IDENTITY -->',
+              '<!-- CASE STUDIES -->',
+              '<!-- SERVICES -->',
+          ]
+          for marker in markers:
+              count = s.count(marker)
+              if count != 1:
+                  raise SystemExit(f'Expected one marker {marker!r}, found {count}')
+          positions = [s.index(marker) for marker in markers]
+          if positions != sorted(positions):
+              raise SystemExit(f'Unexpected homepage section order: {positions}')
+
+          p_proof, p_work, p_brand, p_identity, p_case, p_services = positions
+          prefix = s[:p_proof]
+          capability = s[p_proof:p_work]
+          work = s[p_work:p_brand]
+          brand = s[p_brand:p_identity]
+          middle = s[p_identity:p_case]
+          cases = s[p_case:p_services]
+          suffix = s[p_services:]
+
+          capability = capability.replace(
+              '<!-- PROOF / CAPABILITY SNAPSHOT -->',
+              '<!-- CAPABILITY SNAPSHOT -->',
+              1,
+          )
+
+          outcomes = '''<!-- BUSINESS OUTCOMES -->
+<section aria-label="LUEN 비즈니스 성과 사례" class="proof-strip outcome-strip">
+<div class="container proof-grid">
+<article class="proof-item sr">
+<span class="proof-kicker">PURCHASE</span>
+<strong>라쿠텐 판매 랭킹 1위</strong>
+<p>실사용 중심의 리뷰 콘텐츠로 제품의 기능과 구매 이유를 자연스럽게 전달한 사례</p>
+</article>
+<article class="proof-item sr d1">
+<span class="proof-kicker">RESERVATION</span>
+<strong>실제 예약 300~1,000건+</strong>
+<p>일본 소비자의 시술 전 불안과 궁금증을 해소해 예약으로 이어진 캠페인 사례</p>
+</article>
+<article class="proof-item sr d2">
+<span class="proof-kicker">STORE VISIT</span>
+<strong>팬들의 매장 성지순례</strong>
+<p>유튜버 매장 POP까지 제작해 콘텐츠 경험을 오프라인 방문과 인증으로 확장한 사례</p>
+</article>
+<article class="proof-item sr d3">
+<span class="proof-kicker">MARKET INTEREST</span>
+<strong>인지도·구매 관심 확대</strong>
+<p>한국 식품의 매력을 강한 체험 콘텐츠로 전달해 일본 시장의 관심을 넓힌 사례</p>
+</article>
+</div>
+</section>
+'''
+
+          # Keep the hero HTML useful even before JS executes, and point the case CTA to the real case section.
+          old_ctas = '''<div class="hero-cta">\n<a class="btn btn-primary" href="#work">Selected Work 보기 <span>↓</span></a>\n<a class="btn btn-secondary" href="#platforms">서비스 구조 보기</a>\n</div>'''
+          new_ctas = '''<div class="hero-cta">\n<a class="btn btn-primary" href="#contact">캠페인 상담하기 <span>→</span></a>\n<a class="btn btn-secondary" href="#cases">대표 캠페인 사례 보기 <span>↓</span></a>\n</div>'''
+          if prefix.count(old_ctas) != 1:
+              raise SystemExit(f'Expected one static hero CTA block, found {prefix.count(old_ctas)}')
+          prefix = prefix.replace(old_ctas, new_ctas, 1)
+
+          old_script = 'assets/js/site.js?v=20260823-1'
+          new_script = 'assets/js/site.js?v=20260823-2'
+          if suffix.count(old_script) != 1:
+              raise SystemExit(f'Expected one site.js version reference, found {suffix.count(old_script)}')
+          suffix = suffix.replace(old_script, new_script, 1)
+
+          rebuilt = prefix + outcomes + brand + cases + capability + work + middle + suffix
+
+          # Structural sanity checks: no duplicated major sections or anchors introduced by the move.
+          checks = {
+              '<!-- BUSINESS OUTCOMES -->': 1,
+              '<!-- SELECTED CLIENTS -->': 1,
+              '<!-- CASE STUDIES -->': 1,
+              '<!-- CAPABILITY SNAPSHOT -->': 1,
+              '<!-- WORK -->': 1,
+              'id="cases"': 1,
+              'id="work"': 1,
+              'class="brand-wall"': 1,
+              'class="case-studies"': 1,
+              'class="proof-strip outcome-strip"': 1,
+              'class="proof-strip"': 2,
+          }
+          for needle, expected in checks.items():
+              actual = rebuilt.count(needle)
+              if actual != expected:
+                  raise SystemExit(f'Sanity check failed for {needle!r}: expected {expected}, found {actual}')
+
+          order_needles = [
+              '<!-- BUSINESS OUTCOMES -->',
+              '<!-- SELECTED CLIENTS -->',
+              '<!-- CASE STUDIES -->',
+              '<!-- CAPABILITY SNAPSHOT -->',
+              '<!-- WORK -->',
+              '<!-- IDENTITY -->',
+              '<!-- PERFORMANCE -->',
+              '<!-- SERVICES -->',
+          ]
+          order_positions = [rebuilt.index(x) for x in order_needles]
+          if order_positions != sorted(order_positions):
+              raise SystemExit(f'Final section order failed: {order_positions}')
+
+          index.write_text(rebuilt, encoding='utf-8')
+
+          js = Path('assets/js/site.js')
+          j = js.read_text(encoding='utf-8')
+          old_href = "heroCtas[1].setAttribute('href','#work');"
+          new_href = "heroCtas[1].setAttribute('href','#cases');"
+          if j.count(old_href) != 1:
+              raise SystemExit(f'Expected one runtime case CTA href, found {j.count(old_href)}')
+          j = j.replace(old_href, new_href, 1)
+          js.write_text(j, encoding='utf-8')
+          PY
+      - name: Validate HTML structure
+        shell: bash
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class BalanceParser(HTMLParser):
+              void = {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.stack=[]
+                  self.ids=[]
+                  self.errors=[]
+              def handle_starttag(self, tag, attrs):
+                  attrs=dict(attrs)
+                  if 'id' in attrs:
+                      self.ids.append(attrs['id'])
+                  if tag not in self.void:
+                      self.stack.append(tag)
+              def handle_startendtag(self, tag, attrs):
+                  attrs=dict(attrs)
+                  if 'id' in attrs:
+                      self.ids.append(attrs['id'])
+              def handle_endtag(self, tag):
+                  if not self.stack:
+                      self.errors.append(f'unexpected closing </{tag}>')
+                      return
+                  if self.stack[-1] == tag:
+                      self.stack.pop()
+                      return
+                  # HTML allows some implicit closes; record only if tag is not present at all.
+                  if tag not in self.stack:
+                      self.errors.append(f'closing </{tag}> without matching opener')
+                      return
+                  while self.stack and self.stack[-1] != tag:
+                      self.stack.pop()
+                  if self.stack:
+                      self.stack.pop()
+
+          text=Path('index.html').read_text(encoding='utf-8')
+          parser=BalanceParser(); parser.feed(text); parser.close()
+          dupes=sorted({x for x in parser.ids if parser.ids.count(x)>1})
+          if dupes:
+              raise SystemExit(f'Duplicate IDs: {dupes}')
+          if parser.errors:
+              raise SystemExit('HTML parser errors: ' + '; '.join(parser.errors[:10]))
+          required=['top','work','cases','about','platforms','youtube','performance','services','process','contact']
+          missing=[x for x in required if x not in parser.ids]
+          if missing:
+              raise SystemExit(f'Missing required anchors: {missing}')
+          print('HTML structure checks passed; unique IDs:', len(parser.ids))
+          PY
+      - name: Commit restructure
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html assets/js/site.js; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets/js/site.js
+          git commit -m "Reorder homepage around business outcomes"
+          git push origin HEAD:restructure-home-phase1
