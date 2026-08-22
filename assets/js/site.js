@@ -58,8 +58,8 @@
   if(heroDesc){
     const line=heroDesc.querySelector('.hero-desc-line');
     const strong=heroDesc.querySelector('strong');
-    if(line) line.textContent='한국과 일본의 크리에이터 마케팅을 한 팀에서 운영합니다.';
-    if(strong) strong.textContent='크리에이터 발굴·섭외부터 콘텐츠 기획, 현지 커뮤니케이션, 업로드 관리, 성과 분석까지 캠페인 전 과정을 연결합니다.';
+    if(line) line.textContent='LUEN은 크리에이터 콘텐츠를 검색·방문·구매·예약 같은';
+    if(strong) strong.textContent='실제 행동으로 연결합니다.';
   }
   const heroCtas=document.querySelectorAll('.hero-cta a');
   if(heroCtas[0]){
