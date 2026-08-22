@@ -316,3 +316,35 @@ body #platforms.market-network-v2 .market-map-caption b{color:var(--orange-2)!im
 @media(prefers-reduced-motion:reduce){
   body #platforms.market-network-v2 .market-node{transition:none!important;animation:none!important}
 }
+
+/* =========================================================
+   HOMEPAGE PHASE 2 — RESULT → METHOD → DELIVERABLE → PROOF
+   Reorder only; existing sections and interactions stay intact.
+   ========================================================= */
+main{display:flex;flex-direction:column}
+main>.hero{order:10}
+main>.marquee{order:20}
+main>.outcome-strip{order:30}
+main>.brand-wall{order:40}
+main>.case-studies{order:50}
+main>#youtube{order:60}
+main>#guide-proof{order:70}
+main>.proof-strip{order:80}
+main>.capability-strip{order:80}
+main>#work{order:90}
+main>#about{order:100}
+main>#platforms{order:110}
+main>#performance{order:120}
+main>#services{order:130}
+main>#client-voice{order:140}
+main>#process{order:150}
+main>.faq{order:160}
+main>.final-scene{order:170}
+main>#contact{order:180}
+
+/* Selected Work is supporting visual proof in the new hierarchy. */
+body #work.work{padding-top:104px!important;padding-bottom:112px!important}
+
+@media(max-width:767px){
+  body #work.work{padding-top:82px!important;padding-bottom:88px!important}
+}
