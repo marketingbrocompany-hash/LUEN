@@ -2431,7 +2431,7 @@ label{font-size:12.5px}
 .client-bibigo{font:700 24px/1 Georgia,"Times New Roman",serif;letter-spacing:-.035em}
 .client-eco{font:800 17px/1 "Inter",sans-serif;letter-spacing:.09em;min-width:224px}
 .client-confier{font:500 25px/1 Georgia,"Times New Roman",serif;letter-spacing:.015em}
-.client-quadthera{font:650 22px/1 "Inter",sans-serif;letter-spacing:-.035em;min-width:228px}
+.client-quadthera{font:650 22px/1 "Pretendard Variable","Pretendard",sans-serif;letter-spacing:-.035em;min-width:228px}
 @media(max-width:820px){.brand-wall-head{grid-template-columns:1fr;gap:16px}.brand-wall-head p{justify-self:start}.client-logo{min-width:176px;height:76px;padding:0 22px}.client-gangneung{min-width:220px}.client-eco,.client-quadthera{min-width:196px}}
 
 
