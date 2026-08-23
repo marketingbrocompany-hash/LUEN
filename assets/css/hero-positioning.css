@@ -158,3 +158,11 @@
   }
   #youtube .yt-flow-line{display:none!important}
 }
+
+/* CLIENT VOICE · make ACTUAL CLIENT FEEDBACK clearly readable on the Ivory canvas. */
+.client-voice .actual-voice-badge{
+  color:#D96532!important;
+  border-color:rgba(217,101,50,.55)!important;
+  background:rgba(217,101,50,.07)!important;
+  font-weight:750!important;
+}
