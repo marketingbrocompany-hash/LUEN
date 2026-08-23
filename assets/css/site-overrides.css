@@ -107,14 +107,79 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 .brand-wall .client-logo:hover{background-color:rgba(217,101,50,.075)!important}
 .brand-wall .client-quadthera::after{color:#171614!important}
 
+/* SELECTED CLIENTS · make the continuous rail read intentionally at both edges. */
+.brand-wall .brand-viewport{
+  box-sizing:border-box!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 2.8%,#000 97.2%,transparent 100%)!important;
+  mask-image:linear-gradient(90deg,transparent 0,#000 2.8%,#000 97.2%,transparent 100%)!important;
+}
+.brand-wall .brand-set{
+  gap:18px!important;
+  padding-right:18px!important;
+}
+.brand-wall .client-logo{
+  box-sizing:border-box!important;
+  flex:0 0 clamp(230px,15.5vw,286px)!important;
+  min-width:230px!important;
+  min-height:106px!important;
+  padding:22px 28px!important;
+  border-radius:18px!important;
+}
+
+/* REAL CREATOR CONTENT · rebalance copy/video proportions and reduce oversized type. */
+.luen-content-video{
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;
+  gap:44px!important;
+  align-items:center!important;
+}
+.luen-content-video-copy{
+  max-width:520px!important;
+}
+.luen-content-video-copy h3{
+  font-size:clamp(34px,3.15vw,50px)!important;
+  line-height:1.14!important;
+  letter-spacing:-.045em!important;
+}
+.luen-content-video-copy>p{
+  max-width:42ch!important;
+  font-size:16px!important;
+  line-height:1.72!important;
+}
+.luen-content-video-copy>span{
+  font-size:11px!important;
+  letter-spacing:.16em!important;
+}
+.luen-content-video-meta{
+  gap:9px!important;
+  margin-top:24px!important;
+}
+.luen-content-video-meta span{
+  padding:9px 14px!important;
+  font-size:10px!important;
+  letter-spacing:.09em!important;
+}
+
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
+  .brand-wall .client-logo{flex-basis:240px!important;min-width:240px!important;min-height:96px!important}
+  .luen-content-video{grid-template-columns:1fr!important;gap:30px!important}
+  .luen-content-video-copy{max-width:620px!important}
+  .luen-content-video-copy h3{font-size:clamp(32px,5vw,44px)!important}
 }
 @media(max-width:767px){
   .identity-platform-section .identity-signature{margin-top:32px!important}
   body #platforms.market-network-v2{margin-top:20px!important;padding:0!important}
+  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 5%,#000 95%,transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,#000 5%,#000 95%,transparent 100%)!important}
+  .brand-wall .client-logo{flex-basis:205px!important;min-width:205px!important;min-height:88px!important;padding:18px 20px!important;border-radius:16px!important}
+  .luen-content-video{gap:24px!important}
+  .luen-content-video-copy h3{font-size:clamp(29px,8.4vw,38px)!important;line-height:1.16!important}
+  .luen-content-video-copy>p{font-size:15px!important;line-height:1.68!important}
+  .luen-content-video-meta{margin-top:20px!important;gap:7px!important;flex-wrap:wrap!important}
+  .luen-content-video-meta span{padding:8px 11px!important;font-size:9px!important}
 }
 @media(max-width:420px){
   body #platforms.market-network-v2{margin-top:16px!important;padding:0!important}
+  .brand-wall .client-logo{flex-basis:190px!important;min-width:190px!important}
+  .luen-content-video-copy h3{font-size:29px!important}
 }
