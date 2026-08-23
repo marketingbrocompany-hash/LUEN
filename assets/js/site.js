@@ -133,11 +133,11 @@
     advantageGrid.id='platforms';
     advantageGrid.className='luen-advantage-grid sr d1';
     advantageGrid.innerHTML=`
-      <article><span>01</span><b>YouTube</b><p>이해 · 신뢰</p></article>
-      <article><span>02</span><b>Instagram</b><p>발견 · 경험</p></article>
-      <article><span>03</span><b>TikTok</b><p>트렌드 · 확산</p></article>
-      <article><span>04</span><b>X</b><p>화제 · 공유</p></article>
-      <article><span>05</span><b>Ameba Blog</b><p>검색 · 후기</p></article>`;
+      <article><span>01</span><b>YouTube</b><p>제품 이해와 신뢰 형성에 강한 롱폼 콘텐츠</p></article>
+      <article><span>02</span><b>Instagram</b><p>비주얼 중심의 발견과 브랜드 경험 확산</p></article>
+      <article><span>03</span><b>TikTok</b><p>짧고 강한 포맷으로 트렌드 참여와 빠른 확산</p></article>
+      <article><span>04</span><b>X</b><p>실시간 화제성과 공유를 통한 이슈 확산</p></article>
+      <article><span>05</span><b>Ameba Blog</b><p>검색에 오래 남는 후기형 콘텐츠로 정보 탐색 강화</p></article>`;
 
     const advantageSection=document.createElement('section');
     advantageSection.id='about';
