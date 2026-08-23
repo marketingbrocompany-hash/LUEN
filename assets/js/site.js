@@ -104,7 +104,7 @@
     });
   }
 
-  /* CROSS-BORDER ADVANTAGE · tangible LUEN capabilities live before Case Studies, while Platforms stays after Process. */
+  /* CROSS-BORDER ADVANTAGE · tangible LUEN capabilities live before Case Studies. */
   const identitySection=document.querySelector('.identity-platform-section');
   const identityShell=identitySection?.querySelector('.identity-platform-shell');
   const identityTop=identitySection?.querySelector('.identity-top');
@@ -145,16 +145,30 @@
     identitySection.setAttribute('aria-label','한국과 일본 플랫폼 네트워크');
   }
 
+  /* PLATFORM NETWORK · move it before Project Inquiry before site-core initializes. */
+  const contactSection=document.querySelector('#contact');
+  if(identitySection&&contactSection&&contactSection.parentNode){
+    contactSection.parentNode.insertBefore(identitySection,contactSection);
+  }
+
   /* CAMPAIGN PROCESS · refine the headline copy without altering the timeline. */
   const processTitle=document.querySelector('#process .process-v2-head .section-title');
   if(processTitle)processTitle.innerHTML='실행은 꼼꼼하고<br/><em>브랜드의 경험은 단순하게.</em>';
 
-  /* CASE 03 · load the visual proof block after case cards without touching the loop/runtime systems. */
+  /* FAQ · normalize the initial state before site-core binds accordion behavior. */
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.classList.remove('open');
+    item.querySelector('.faq-q')?.setAttribute('aria-expanded','false');
+    const answer=item.querySelector('.faq-a');
+    if(answer)answer.style.maxHeight='0px';
+  });
+
+  /* CASE 03 · load only the proof block core; visual stability is handled in CSS. */
   if(document.querySelector('#cases .case-grid')){
     const offlineScript=document.createElement('script');
-    offlineScript.src='assets/js/offline-activation.js?v=20260823-1';
+    offlineScript.src='assets/js/offline-activation-core.js?v=20260823-1';
     offlineScript.async=false;
-    offlineScript.dataset.offlineActivation='true';
+    offlineScript.dataset.offlineActivationCore='true';
     document.body.appendChild(offlineScript);
   }
 
