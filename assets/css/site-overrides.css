@@ -33,16 +33,16 @@ body #platforms.market-network-v2 .market-map{
 
 /* MEDIA EDGES · remove legacy dark matte around case thumbnails and real video. */
 .case-studies .case-image{
-  background:#FFFFFF!important;
+  background:#F0EDE6!important;
   background-image:none!important;
 }
 .case-studies .case-image img{
-  background:#FFFFFF!important;
+  background:#F0EDE6!important;
   border:0!important;
   box-shadow:none!important;
 }
 .luen-content-video-frame{
-  background:#FFFFFF!important;
+  background:#F0EDE6!important;
   border:0!important;
   box-shadow:none!important;
 }
@@ -52,7 +52,7 @@ body #platforms.market-network-v2 .market-map{
   box-shadow:none!important;
 }
 .luen-content-video-frame video{
-  background:#FFFFFF!important;
+  background:#F0EDE6!important;
   border:0!important;
   box-shadow:none!important;
 }
@@ -62,6 +62,50 @@ body #platforms.market-network-v2 .market-map{
   content:none!important;
   display:none!important;
 }
+
+/* WARM SURFACES · replace stark white UI panels with a softer stone-ivory tone. */
+.creator-network-showcase,
+.creator-profile-card,
+.case-studies .case-card,
+body #platforms.market-network-v2 .market-node,
+.luen-content-video,
+.yt-action-flow article,
+.content-design-flow article,
+.guide-proof-note,
+.performance-dashboard,
+.chart-shell,
+.metric-row article,
+.client-voice .voice-stage,
+.client-voice .voice-toggle,
+.data-source-badge{
+  background-color:#F0EDE6!important;
+  background-image:none!important;
+}
+.creator-profile-card img{background-color:#F0EDE6!important}
+body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!important}
+.case-studies .case-card{border-color:#D8D2C7!important}
+.luen-content-video,
+.yt-action-flow article,
+.content-design-flow article,
+.guide-proof-note,
+.performance-dashboard,
+.chart-shell,
+.metric-row article,
+.client-voice .voice-stage{
+  border-color:#D8D2C7!important;
+}
+
+/* SELECTED CLIENTS · main burnt-orange border with a restrained warm fill. */
+.brand-wall .client-logo,
+.brand-wall .client-logo:hover{
+  opacity:1!important;
+  border:1px solid #D96532!important;
+  background-color:rgba(217,101,50,.035)!important;
+  background-image:none!important;
+  color:#171614!important;
+}
+.brand-wall .client-logo:hover{background-color:rgba(217,101,50,.075)!important}
+.brand-wall .client-quadthera::after{color:#171614!important}
 
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
