@@ -24,3 +24,39 @@ main#top>.brand-wall .brand-viewport{
   main#top>.brand-wall{padding:12px 0 14px!important}
   main#top>.brand-wall .brand-viewport{padding:6px 0 8px!important}
 }
+
+/* SELECTED CLIENTS · add HAYNI wordmark to every loop set without changing loop mechanics. */
+main#top>.brand-wall .brand-set::after{
+  content:"HAYNI";
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  min-width:214px;
+  height:86px;
+  padding:0 28px;
+  border:1px solid #D96532;
+  border-radius:16px;
+  background:#F0EDE6;
+  color:#11100E;
+  font:800 22px/1 "Inter",sans-serif;
+  letter-spacing:.34em;
+  text-indent:.34em;
+  white-space:nowrap;
+}
+@media(max-width:820px){
+  main#top>.brand-wall .brand-set::after{
+    min-width:176px;
+    height:76px;
+    padding:0 22px;
+    font-size:19px;
+  }
+}
+@media(max-width:767px){
+  main#top>.brand-wall .brand-set::after{
+    min-width:160px;
+    height:68px;
+    padding:0 18px;
+    border-radius:14px;
+    font-size:17px;
+  }
+}
