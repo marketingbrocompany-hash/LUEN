@@ -93,17 +93,36 @@ html body main#top>.identity-platform-section{
 
 /* PROJECT INQUIRY · final conversion copy is render-ready before runtime helpers load. */
 html body #contact .section-title::after{
-  content:"일본 시장, 어떤 방식이 맞는지부터 확인하세요."!important;
+  content:"일본 시장, 어떤 방식이 맞는지 먼저 확인하세요."!important;
   white-space:normal!important;
 }
 html body #contact .contact-copy::after{
   content:"예산과 크리에이터가 아직 정해지지 않아도 괜찮습니다. 브랜드와 목표만 남겨주시면 가능한 방향부터 함께 정리해드립니다."!important;
 }
 
+/* REAL CREATOR CONTENT · use the LUEN orange edge on the video proof panel. */
+html body #youtube .luen-content-video{
+  border-color:#D96532!important;
+}
+
+/* ADVANTAGE CARDS · reduce empty vertical space while preserving the five-card structure. */
+@media(min-width:768px){
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid>article{
+    min-height:154px!important;
+    padding:20px 20px 18px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid>article b{
+    margin-top:26px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid>article p{
+    margin-top:9px!important;
+  }
+}
+
 /* TOUCH RAILS · preserve horizontal swipe without blocking normal vertical page scrolling. */
 @media(max-width:767px){
   html body #contact .section-title::after{
-    content:"일본 시장,\A어떤 방식이 맞는지부터\A확인하세요."!important;
+    content:"일본 시장,\A어떤 방식이 맞는지\A먼저 확인하세요."!important;
     white-space:pre-line!important;
   }
 
@@ -136,16 +155,16 @@ html body #contact .contact-copy::after{
     flex:0 0 84%!important;
     width:auto!important;
     min-width:0!important;
-    min-height:220px!important;
+    min-height:184px!important;
     height:auto!important;
-    padding:24px 22px!important;
+    padding:20px 18px!important;
     scroll-snap-align:start!important;
     scroll-snap-stop:always!important;
   }
   html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid>article b{
     display:block!important;
-    margin-top:42px!important;
-    font-size:20px!important;
+    margin-top:30px!important;
+    font-size:18px!important;
     line-height:1.25!important;
     letter-spacing:-.035em!important;
     white-space:normal!important;
@@ -153,9 +172,9 @@ html body #contact .contact-copy::after{
   }
   html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid>article p{
     max-width:none!important;
-    margin-top:14px!important;
-    font-size:14px!important;
-    line-height:1.65!important;
+    margin-top:10px!important;
+    font-size:13.5px!important;
+    line-height:1.6!important;
     letter-spacing:-.02em!important;
     white-space:normal!important;
     word-break:keep-all!important;
