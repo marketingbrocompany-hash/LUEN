@@ -1,0 +1,103 @@
+/* HERO POSITIONING · make LUEN's Korea-to-Japan service clear in the first screen. */
+.hero h1{
+  font-size:0!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+}
+.hero h1>span,
+.hero h1 .line-2,
+.hero h1 .line-2::before,
+.hero h1 .line-2::after{
+  display:none!important;
+  content:none!important;
+}
+.hero h1::before,
+.hero h1::after{
+  display:block!important;
+  font-family:"Pretendard Variable","Pretendard",sans-serif!important;
+  font-size:clamp(48px,3vw,54px)!important;
+  font-weight:700!important;
+  line-height:1.04!important;
+  letter-spacing:-.06em!important;
+  white-space:nowrap!important;
+}
+.hero h1::before{
+  content:"한국 브랜드의 일본 진출을"!important;
+  color:#11100E!important;
+}
+.hero h1::after{
+  content:"크리에이터 콘텐츠로 만듭니다."!important;
+  margin-top:7px!important;
+  color:#D96532!important;
+}
+.hero .hero-desc{
+  max-width:720px!important;
+  margin-top:32px!important;
+  font-size:0!important;
+  line-height:1!important;
+}
+.hero .hero-desc>*{display:none!important}
+.hero .hero-desc::before{
+  content:"일본 크리에이터 선정부터 콘텐츠 현지화,\A캠페인 운영, 성과 분석까지."!important;
+  display:block!important;
+  color:#77736C!important;
+  font-family:"Pretendard Variable","Pretendard",sans-serif!important;
+  font-size:17px!important;
+  font-weight:500!important;
+  line-height:1.72!important;
+  letter-spacing:-.025em!important;
+  white-space:pre-line!important;
+}
+.hero .hero-desc::after{
+  content:"조회수를 만드는 것과 구매를 만드는 것은 다릅니다."!important;
+  display:block!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin-top:18px!important;
+  padding-left:13px!important;
+  border-left:3px solid #D96532!important;
+  color:#171614!important;
+  font-family:"Pretendard Variable","Pretendard",sans-serif!important;
+  font-size:15px!important;
+  font-weight:700!important;
+  line-height:1.5!important;
+  letter-spacing:-.025em!important;
+}
+.hero .hero-cta{margin-top:34px!important}
+.hero .hero-cta .btn-secondary{
+  border-color:#CFC9BD!important;
+  color:#5F5B54!important;
+  background:transparent!important;
+}
+.hero .hero-cta .btn-secondary:hover{
+  border-color:#171614!important;
+  color:#171614!important;
+}
+@media(max-width:1180px){
+  .hero h1::before,
+  .hero h1::after{
+    white-space:normal!important;
+  }
+}
+@media(max-width:767px){
+  .hero h1::before,
+  .hero h1::after{
+    font-size:clamp(28px,8.8vw,35px)!important;
+    line-height:1.08!important;
+    letter-spacing:-.05em!important;
+  }
+  .hero h1::after{margin-top:4px!important}
+  .hero .hero-desc{margin-top:24px!important}
+  .hero .hero-desc::before{
+    font-size:14px!important;
+    line-height:1.7!important;
+  }
+  .hero .hero-desc::after{
+    width:auto!important;
+    margin-top:14px!important;
+    padding-left:11px!important;
+    font-size:13px!important;
+    line-height:1.55!important;
+  }
+  .hero .hero-cta{margin-top:26px!important}
+}
