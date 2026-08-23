@@ -16,7 +16,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
       - name: Consolidate final homepage source
-        run: python tools/consolidate_static.py
+        run: |
+          if grep -q 'creator-network-showcase' index.html && grep -q 'site-core.js?v=20260823-3' index.html; then
+            echo 'Static source already consolidated'
+          else
+            python tools/consolidate_static.py
+          fi
       - name: Validate runtime JavaScript
         run: node --check assets/js/site.js
       - name: Validate expected static markers
