@@ -380,3 +380,26 @@ body #platforms.market-network-v2 .market-hub{border-color:#D96532!important;bac
 body #platforms.market-network-v2 .market-hub span{color:#D96532!important}
 body #platforms.market-network-v2 .market-hub small{color:#9B968D!important}
 body #platforms.market-network-v2 .market-hub i{background-color:#D96532!important}
+
+/* CONTINUOUS LIGHT FLOW · no abrupt dark sections in the middle */
+.marquee{background-color:#FAF9F6!important;border-color:#DCD8D0!important}
+.marquee-track span,.marquee-set span{color:#171614!important}
+.marquee-track b,.marquee-set b{color:#D96532!important}
+
+#platforms,.market-network-v2,body #platforms.market-network-v2{background-color:#F5F3EE!important;color:#171614!important}
+body #platforms.market-network-v2 .market-v2-head,body #platforms.market-network-v2 .section-title{color:#11100E!important}
+body #platforms.market-network-v2 .eyebrow,body #platforms.market-network-v2 .section-title em{color:#D96532!important}
+body #platforms.market-network-v2 .market-map{border-color:#DCD8D0!important;background-color:#FAF9F6!important;background-image:radial-gradient(circle at 50% 46%,rgba(217,101,50,.035),transparent 25%),linear-gradient(180deg,#FAF9F6,#F5F3EE)!important}
+body #platforms.market-network-v2 .market-side-label b{color:#171614!important;text-shadow:0 0 18px rgba(217,101,50,.025)!important}
+body #platforms.market-network-v2 .market-side-label span,body #platforms.market-network-v2 .market-side-label small{color:#77736C!important}
+body #platforms.market-network-v2 .market-hub{border-color:#D96532!important;background-color:#FFFFFF!important;background-image:radial-gradient(circle at 50% 44%,rgba(217,101,50,.08),#FFFFFF 66%)!important;box-shadow:0 0 0 12px rgba(217,101,50,.01),0 0 44px rgba(17,16,14,.05)!important}
+body #platforms.market-network-v2 .market-hub span{color:#D96532!important}
+body #platforms.market-network-v2 .market-hub small{color:#77736C!important}
+body #platforms.market-network-v2 .market-hub i{background-color:#D96532!important}
+body #platforms.market-network-v2 .market-hub::before,body #platforms.market-network-v2 .market-hub::after{background-image:linear-gradient(90deg,transparent,#C9C4BA)!important}
+body #platforms.market-network-v2 .market-node{border-color:#DCD8D0!important;background-color:#FFFFFF!important}
+body #platforms.market-network-v2 .market-node:hover{border-color:rgba(217,101,50,.32)!important;background-color:#FAF9F6!important}
+body #platforms.market-network-v2 .market-node b{color:#171614!important}
+body #platforms.market-network-v2 .market-node span{color:#77736C!important}
+body #platforms.market-network-v2 .market-map-caption{color:#77736C!important}
+body #platforms.market-network-v2 .market-map-caption b{color:#D96532!important}
