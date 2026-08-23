@@ -46,3 +46,21 @@
     font-size:14px!important;
   }
 }
+
+/* MOBILE HERO · let the three-line promise use more of the available width. */
+@media(max-width:767px){
+  .hero h1{
+    --hero-line-size:clamp(28px,9vw,37px)!important;
+    font-size:var(--hero-line-size)!important;
+    width:100%!important;
+  }
+  .hero h1>span:first-child,
+  .hero h1 .line-2::before,
+  .hero h1 .line-2::after{
+    letter-spacing:-.045em!important;
+    white-space:nowrap!important;
+  }
+}
+@media(max-width:420px){
+  .hero h1{--hero-line-size:clamp(28px,8.8vw,35px)!important}
+}
