@@ -1,16 +1,16 @@
 name: Apply cream canvas
 
 on:
-  push:
-    branches:
-      - unify-project-inquiry-cream
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, ready_for_review]
 
 permissions:
   contents: write
 
 jobs:
   apply:
-    if: github.actor != 'github-actions[bot]'
+    if: github.event.pull_request.head.ref == 'unify-project-inquiry-cream' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,58 +18,7 @@ jobs:
           ref: unify-project-inquiry-cream
           fetch-depth: 0
       - name: Apply theme
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          css=Path('assets/css/platform-network.css')
-          s=css.read_text(encoding='utf-8')
-          marker='/* PROJECT INQUIRY CREAM CANVAS */'
-          block=r'''
-
-/* PROJECT INQUIRY CREAM CANVAS */
-html,body,main{background:#f8e5cf!important;color:#18100b!important}
-body::before{opacity:.015!important}
-main>section,main>.marquee{background:#f8e5cf!important;color:#18100b!important}
-.top-strip{background:#f8e5cf!important;border-color:rgba(24,16,11,.12)!important}
-.top-strip-set span{color:#6e5d50!important}.top-strip-set b{color:#a74610!important}
-nav{color:#18100b!important}nav.scrolled{background:rgba(248,229,207,.94)!important;border-color:rgba(24,16,11,.12)!important}
-.logo-word{color:#18100b!important}.nav-links a{color:#6e5d50!important}.nav-links a:hover{color:#18100b!important}
-.nav-contact{color:#18100b!important;border-color:rgba(24,16,11,.20)!important;background:rgba(255,255,255,.16)!important}.nav-contact:hover{color:#a74610!important;border-color:#bd4f13!important}
-.hamburger{border-color:rgba(24,16,11,.18)!important}.hamburger span{background:#18100b!important}
-.mobile-menu{background:rgba(248,229,207,.985)!important;color:#18100b!important}.mobile-menu a,.mobile-close{color:#18100b!important}.mobile-close{border-color:rgba(24,16,11,.18)!important}
-.hero{background:#f8e5cf!important;color:#18100b!important}.hero-grid{background-image:linear-gradient(rgba(24,16,11,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(24,16,11,.07) 1px,transparent 1px)!important}
-.hero h1{color:#18100b!important}.hero-desc{color:#6e5d50!important}.hero-desc strong{color:#18100b!important}
-.hero .btn-secondary{color:#18100b!important;border-color:rgba(24,16,11,.20)!important;background:rgba(255,255,255,.18)!important}.hero .btn-secondary:hover{color:#a74610!important;border-color:#bd4f13!important}
-.marquee{background:#f8e5cf!important;border-color:rgba(24,16,11,.12)!important}.marquee-track span,.marquee-set span{color:#6e5d50!important}.marquee-track b,.marquee-set b{color:#a74610!important}
-.proof-strip{background:#f8e5cf!important;border-color:rgba(24,16,11,.12)!important}.proof-item{border-color:rgba(24,16,11,.12)!important}.proof-kicker{color:#7a6658!important}.proof-item strong{color:#18100b!important}.proof-grid-numbers .proof-item strong{color:#a74610!important}.proof-item p{color:#6e5d50!important}
-.brand-wall{background:#f8e5cf!important;border-color:rgba(24,16,11,.12)!important}.brand-wall-head h3{color:#18100b!important}.brand-wall-head p,.brand-proof-copy>p{color:#6e5d50!important}
-.client-logo{color:rgba(24,16,11,.58)!important;border-color:rgba(24,16,11,.12)!important;background:rgba(255,255,255,.18)!important}.client-logo:hover{color:#18100b!important;border-color:rgba(24,16,11,.24)!important;background:rgba(255,255,255,.36)!important}
-.work,.identity,.market-network-v2,.youtube-v2,.guide-proof,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.final-scene,.contact{background:#f8e5cf!important;color:#18100b!important}
-.section-title,.identity-statement,.work-story-title,.brand-wall-head h3,.final-scene h2{color:#18100b!important}.section-title em,.identity-statement em,.final-scene h2 em{color:#bd4f13!important}.section-copy,.identity-purpose,.work-story-copy{color:#6e5d50!important}
-.identity-signature{border-color:rgba(24,16,11,.12)!important}.identity-side p{color:#6e5d50!important}
-.creator-network-showcase,.market-map,.yt-action-flow,.luen-content-system-v9,.performance-dashboard,.case-card,.campaign-control,.voice-stage{color:#f7eadc}
-.guide-proof-note{background:rgba(244,125,53,.06)!important}.guide-proof-note p{color:#6e5d50!important}
-.timeline-shell,.timeline-shell article{border-color:rgba(24,16,11,.14)!important}.timeline-shell article p{color:#6e5d50!important}
-.faq-list,.faq-item{border-color:rgba(24,16,11,.14)!important}.faq-q{color:#18100b!important}.faq-a p,.faq-conversion p{color:#6e5d50!important}
-.final-scene{border-color:rgba(24,16,11,.12)!important}.final-grid{background-image:linear-gradient(rgba(24,16,11,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(24,16,11,.06) 1px,transparent 1px)!important}.final-scene p{color:#6e5d50!important}
-footer{background:#f8e5cf!important;color:#18100b!important;border-color:rgba(24,16,11,.12)!important}footer .logo-word{color:#18100b!important}.footer-brand p,.footer-links a,.footer-bottom p,.footer-business-info{color:#6e5d50!important}.footer-links a:hover,.footer-business-info a{color:#18100b!important}.footer-business-info{border-color:rgba(24,16,11,.12)!important}.footer-business-info a{border-color:rgba(24,16,11,.24)!important}
-@media(max-width:767px){nav.scrolled{background:rgba(248,229,207,.97)!important}.client-logo{background:rgba(255,255,255,.20)!important}}
-'''
-          if marker not in s:
-              css.write_text(s.rstrip()+block+'\n',encoding='utf-8')
-          updated=css.read_text(encoding='utf-8')
-          if updated.count(marker)!=1: raise SystemExit('theme marker mismatch')
-          if updated.count('{')!=updated.count('}'): raise SystemExit('CSS brace mismatch')
-
-          index=Path('index.html')
-          h=index.read_text(encoding='utf-8')
-          old='assets/css/platform-network.css?v=20260820-4'
-          new='assets/css/platform-network.css?v=20260823-5'
-          if old in h: h=h.replace(old,new,1)
-          elif new not in h: raise SystemExit('stylesheet version mismatch')
-          index.write_text(h,encoding='utf-8')
-          PY
+        run: python .github/scripts/apply-cream-canvas.py
       - name: Commit
         shell: bash
         run: |
