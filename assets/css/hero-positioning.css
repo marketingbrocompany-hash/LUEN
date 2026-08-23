@@ -166,3 +166,18 @@
   background:rgba(217,101,50,.07)!important;
   font-weight:750!important;
 }
+
+/* CASE STUDIES · give cases 01–04 a consistent LUEN orange edge accent. */
+.case-studies .case-01,
+.case-studies .case-02,
+.case-studies .case-03,
+.case-studies .case-04{
+  border:1px solid rgba(217,101,50,.48)!important;
+  border-top:2px solid #D96532!important;
+}
+.case-studies .case-01:hover,
+.case-studies .case-02:hover,
+.case-studies .case-03:hover,
+.case-studies .case-04:hover{
+  border-color:#D96532!important;
+}
