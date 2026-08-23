@@ -62,3 +62,52 @@
     .hero{height:calc(100dvh - 112px)!important;min-height:calc(100dvh - 112px)!important}
   }
 }
+
+/* CASE STUDIES · make the thumbnail itself rounded and tighten media-to-copy spacing. */
+#cases.case-studies .case-card .case-image{
+  aspect-ratio:505/280!important;
+  padding:0!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  clip-path:inset(0 round 22px)!important;
+  background:#F0EDE6!important;
+}
+#cases.case-studies .case-card .case-image img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:22px!important;
+  clip-path:inset(0 round 22px)!important;
+}
+#cases.case-studies .case-card .case-body{
+  padding-top:14px!important;
+}
+
+/* REAL CREATOR CONTENT · exact requested three-line headline. */
+#youtube .luen-content-video .luen-content-video-copy h3{
+  font-size:0!important;
+  line-height:0!important;
+}
+#youtube .luen-content-video .luen-content-video-copy h3::before{
+  content:"브랜드 메시지가\A실제 컨텐츠 안에서 어떻게 이어지는지\A확인해보세요";
+  display:block!important;
+  white-space:pre!important;
+  font-size:28px!important;
+  line-height:1.24!important;
+  letter-spacing:-.04em!important;
+  color:#171614!important;
+  font-weight:700!important;
+}
+@media(max-width:767px){
+  #cases.case-studies .case-card .case-image,
+  #cases.case-studies .case-card .case-image img{
+    border-radius:16px!important;
+    clip-path:inset(0 round 16px)!important;
+  }
+  #cases.case-studies .case-card .case-body{padding-top:12px!important}
+  #youtube .luen-content-video .luen-content-video-copy h3::before{font-size:18px!important;line-height:1.28!important}
+}
+@media(max-width:420px){
+  #youtube .luen-content-video .luen-content-video-copy h3::before{font-size:17px!important}
+}
