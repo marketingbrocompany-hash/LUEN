@@ -110,3 +110,33 @@ body #platforms.market-network-v2 .market-map{
 @media(max-width:420px){
   .identity-platform-section{padding:22px 0 58px!important}
 }
+
+/* CREATOR NETWORK · make network size the primary proof. */
+.creator-network-head strong{
+  display:block!important;
+  font-size:0!important;
+  line-height:1!important;
+}
+.creator-network-head strong::before{
+  content:"+1,300";
+  display:block!important;
+  color:#11100E!important;
+  font-size:clamp(48px,4.2vw,72px)!important;
+  line-height:.95!important;
+  letter-spacing:-.055em!important;
+  font-weight:700!important;
+}
+.creator-network-head strong::after{
+  content:"KOREA × JAPAN";
+  display:block!important;
+  margin-top:14px!important;
+  color:#77736C!important;
+  font-size:12px!important;
+  line-height:1!important;
+  letter-spacing:.16em!important;
+  font-weight:700!important;
+}
+@media(max-width:767px){
+  .creator-network-head strong::before{font-size:clamp(34px,10vw,44px)!important}
+  .creator-network-head strong::after{margin-top:8px!important;font-size:10px!important;letter-spacing:.13em!important}
+}
