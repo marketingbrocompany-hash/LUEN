@@ -190,7 +190,7 @@ body #platforms.market-network-v2 .market-map{
 }
 .creator-network-head>strong::after{
   counter-reset:content-decimal var(--content-decimal);
-  content:"+2." counter(content-decimal) "K"!important;
+  content:"+6." counter(content-decimal) "K"!important;
   animation:luen-content-count 1s cubic-bezier(.2,.75,.25,1) both;
 }
 .creator-network-head>p::after{
@@ -199,11 +199,11 @@ body #platforms.market-network-v2 .market-map{
   animation:luen-campaign-count 1s cubic-bezier(.2,.75,.25,1) both;
 }
 @keyframes luen-network-count{from{--network-decimal:0}to{--network-decimal:3}}
-@keyframes luen-content-count{from{--content-decimal:0}to{--content-decimal:7}}
+@keyframes luen-content-count{from{--content-decimal:0}to{--content-decimal:4}}
 @keyframes luen-campaign-count{from{--campaign-decimal:0}to{--campaign-decimal:6}}
 @media(prefers-reduced-motion:reduce){
   .creator-network-head>span::after{--network-decimal:3;animation:none!important}
-  .creator-network-head>strong::after{--content-decimal:7;animation:none!important}
+  .creator-network-head>strong::after{--content-decimal:4;animation:none!important}
   .creator-network-head>p::after{--campaign-decimal:6;animation:none!important}
 }
 @media(max-width:767px){
