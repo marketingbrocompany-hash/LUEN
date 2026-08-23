@@ -130,7 +130,15 @@ html body #youtube .content-design-flow>article{
 @media(max-width:767px){
   html body #contact .section-title::after{
     content:"일본 시장,\A어떤 방식이 맞는지\A먼저 확인하세요."!important;
-    white-space:pre-line!important;
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    white-space:pre!important;
+    font-size:clamp(28px,8.2vw,34px)!important;
+    line-height:1.08!important;
+    letter-spacing:-.055em!important;
+    word-break:normal!important;
+    overflow-wrap:normal!important;
   }
 
   html body main#top>.luen-advantage-section.identity-advantage-ready .identity-platform-shell{
@@ -255,5 +263,11 @@ html body #youtube .content-design-flow>article{
     white-space:normal!important;
     word-break:keep-all!important;
     overflow-wrap:normal!important;
+  }
+}
+
+@media(max-width:360px){
+  html body #contact .section-title::after{
+    font-size:27px!important;
   }
 }
