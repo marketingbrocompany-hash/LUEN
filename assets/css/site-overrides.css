@@ -1,24 +1,24 @@
 @import url("./site-overrides-foundation.css?v=20260823-12");
 
 /* DESKTOP HERO · equal-height story and creator network, with a fuller wide-screen composition. */
-@media(min-width:1101px){
+@media(min-width:1181px){
   .hero>.container.hero-layout{
-    width:min(1500px,calc(100% - 96px))!important;
-    max-width:1500px!important;
-    grid-template-columns:minmax(0,1.08fr) minmax(560px,.92fr)!important;
-    gap:48px!important;
+    width:min(1680px,calc(100% - 96px))!important;
+    max-width:1680px!important;
+    grid-template-columns:minmax(0,1.12fr) minmax(580px,.88fr)!important;
+    gap:32px!important;
     align-items:stretch!important;
   }
   .hero>.container.hero-layout>div:first-child{
     min-width:0!important;
-    min-height:600px!important;
+    min-height:620px!important;
     display:flex!important;
     flex-direction:column!important;
     justify-content:center!important;
-    padding:34px 0!important;
+    padding:38px 0!important;
   }
   .hero .creator-network-showcase{
-    min-height:600px!important;
+    min-height:620px!important;
     height:auto!important;
     align-self:stretch!important;
   }
@@ -27,22 +27,22 @@
     margin-bottom:32px!important;
   }
   .hero h1{
-    --hero-line-size:clamp(54px,3.7vw,66px)!important;
+    --hero-line-size:clamp(56px,3.75vw,68px)!important;
     font-size:var(--hero-line-size)!important;
   }
   .hero .hero-desc{
-    max-width:710px!important;
-    margin-top:34px!important;
+    max-width:760px!important;
+    margin-top:36px!important;
     font-size:17px!important;
     line-height:1.82!important;
   }
   .hero .hero-cta{
-    margin-top:36px!important;
+    margin-top:38px!important;
     gap:12px!important;
   }
   .hero .hero-cta .btn{
-    min-height:54px!important;
-    padding:0 30px!important;
+    min-height:56px!important;
+    padding:0 32px!important;
     font-size:14px!important;
   }
 }
