@@ -1,0 +1,45 @@
+name: Prune legacy site CSS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prune-legacy-site-css.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prune dead legacy CSS
+        run: python tools/prune_legacy_site_css.py
+      - name: Validate production assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          css=Path('assets/css/site.css').read_text()
+          html=Path('index.html').read_text()
+          assert 'assets/css/site.css?v=20260823-6' in html
+          assert 'assets/css/site-overrides.css?v=20260823-5' in html
+          assert '.luen-hero-network' not in css
+          assert '.lhn-' not in css
+          assert '#networkCard' not in css
+          for selector in ('.hero-layout','.market-network-v2','.portfolio-card','.case-card','.faq-q','.contact-form','.brand-wall'):
+              assert selector in css, selector
+          print('site.css bytes:', len(css.encode()))
+          PY
+          node --check assets/js/site.js
+          node --check assets/js/site-core.js
+      - name: Commit cleaned production source
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189826+github-actions[bot]@users.noreply.github.com'
+          git rm tools/prune_legacy_site_css.py .github/workflows/prune-legacy-site-css.yml
+          git add assets/css/site.css index.html
+          git commit -m 'Prune unused legacy hero and decoration CSS'
+          git push origin HEAD:main
