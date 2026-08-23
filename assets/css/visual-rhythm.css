@@ -1,0 +1,280 @@
+/* =========================================================
+   LUEN VISUAL RHYTHM / CONTRAST REBALANCE
+   Softens functional panels, removes black case-image framing,
+   and normalizes section spacing across desktop and mobile.
+   Loaded after b2b-global.css via content-video.css.
+   ========================================================= */
+
+:root{
+  --luen-panel-soft:#4a3a31;
+  --luen-panel-soft-2:#5a473c;
+  --luen-panel-soft-text:#fff9f3;
+  --luen-panel-soft-muted:#e3d7cf;
+  --luen-thumb-bg:#ead8c6;
+  --luen-thumb-bg-2:#f2e4d6;
+  --luen-section-space:88px;
+  --luen-section-space-tight:64px;
+  --luen-section-space-small:44px;
+}
+
+/* ---------------------------------------------------------
+   1. Softer functional panels
+   --------------------------------------------------------- */
+body .creator-network-showcase,
+body .luen-content-system-v9,
+body .performance-dashboard,
+body .luen-content-video{
+  background:
+    radial-gradient(circle at 78% 18%,rgba(244,125,53,.12),transparent 30%),
+    linear-gradient(145deg,var(--luen-panel-soft-2),var(--luen-panel-soft))!important;
+  border-color:rgba(255,249,243,.16)!important;
+  box-shadow:0 20px 54px rgba(76,52,39,.14)!important;
+}
+
+body #platforms.market-network-v2 .market-map{
+  background:
+    radial-gradient(circle at 50% 46%,rgba(244,125,53,.12),transparent 30%),
+    linear-gradient(180deg,#5a473c,#46372f)!important;
+  border-color:rgba(255,249,243,.16)!important;
+  box-shadow:0 20px 54px rgba(76,52,39,.12)!important;
+}
+
+body #platforms.market-network-v2 .market-node{
+  background:rgba(255,249,243,.07)!important;
+  border-color:rgba(255,249,243,.15)!important;
+}
+body #platforms.market-network-v2 .market-node:hover{
+  background:rgba(244,125,53,.10)!important;
+  border-color:rgba(255,177,126,.42)!important;
+}
+body #platforms.market-network-v2 .market-hub{
+  background:radial-gradient(circle at 50% 42%,rgba(244,125,53,.22),#4a392f 72%)!important;
+  border-color:rgba(255,161,103,.78)!important;
+  box-shadow:0 0 0 10px rgba(244,125,53,.035),0 0 34px rgba(244,125,53,.10)!important;
+}
+
+body .creator-network-showcase h3,
+body .creator-network-showcase strong,
+body .luen-content-system-v9 h3,
+body .luen-content-system-v9 strong,
+body .performance-dashboard h3,
+body .performance-dashboard strong,
+body .luen-content-video h3,
+body .luen-content-video strong,
+body #platforms.market-network-v2 .market-map b,
+body #platforms.market-network-v2 .market-map strong{
+  color:var(--luen-panel-soft-text)!important;
+}
+
+body .creator-network-showcase p,
+body .creator-network-showcase small,
+body .luen-content-system-v9 p,
+body .luen-content-system-v9 small,
+body .performance-dashboard p,
+body .performance-dashboard small,
+body .luen-content-video p,
+body .luen-content-video small,
+body #platforms.market-network-v2 .market-map p,
+body #platforms.market-network-v2 .market-map small,
+body #platforms.market-network-v2 .market-map span{
+  color:var(--luen-panel-soft-muted)!important;
+}
+
+/* Video itself can stay dark, but its surrounding card should not read as black. */
+body .luen-content-video-frame,
+body .luen-content-video-frame video{
+  background:#2d241f!important;
+}
+body .luen-content-video-frame{
+  border-color:rgba(255,249,243,.16)!important;
+  box-shadow:0 16px 38px rgba(62,43,33,.18)!important;
+}
+
+/* ---------------------------------------------------------
+   2. Campaign case thumbnails: remove black framing
+   --------------------------------------------------------- */
+body .case-studies .case-image{
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,255,255,.54),transparent 52%),
+    linear-gradient(145deg,var(--luen-thumb-bg-2),var(--luen-thumb-bg))!important;
+  border-bottom:1px solid var(--luen-border)!important;
+  padding:14px!important;
+}
+body .case-studies .case-image img{
+  background:transparent!important;
+  border-radius:12px!important;
+  box-shadow:0 10px 28px rgba(78,53,38,.08)!important;
+}
+body .case-studies .case-image>span{
+  background:rgba(255,250,245,.88)!important;
+  color:#9f491b!important;
+  border-color:rgba(33,26,22,.12)!important;
+  backdrop-filter:blur(6px);
+}
+
+/* ---------------------------------------------------------
+   3. Unified vertical rhythm
+   --------------------------------------------------------- */
+body main>.hero{
+  padding-top:112px!important;
+  padding-bottom:96px!important;
+}
+body main>.marquee{margin:0!important}
+
+body main>.outcome-strip{
+  padding-top:36px!important;
+  padding-bottom:36px!important;
+}
+body main>.brand-wall{
+  padding-top:72px!important;
+  padding-bottom:72px!important;
+}
+body main>.case-studies,
+body main>#youtube,
+body main>#guide-proof,
+body main>#work,
+body main>#about,
+body main>#platforms,
+body main>#performance,
+body main>#services,
+body main>#client-voice,
+body main>#process,
+body main>.faq{
+  padding-top:var(--luen-section-space)!important;
+  padding-bottom:var(--luen-section-space)!important;
+}
+body main>.capability-strip{
+  padding-top:36px!important;
+  padding-bottom:36px!important;
+}
+body main>.final-scene{
+  padding-top:92px!important;
+  padding-bottom:92px!important;
+}
+body main>#contact{
+  padding-top:96px!important;
+  padding-bottom:104px!important;
+}
+
+/* Selected Work has a deliberately minimal intro; avoid an oversized empty top band. */
+body #work.work{
+  padding-top:68px!important;
+  padding-bottom:82px!important;
+}
+body #work .work-head{margin-bottom:28px!important}
+body #work .portfolio{margin-top:0!important}
+body #work .portfolio-lane+.portfolio-lane{margin-top:56px!important}
+
+/* Internal section title-to-content spacing */
+body .case-head,
+body .youtube-v2-head,
+body .market-v2-head,
+body .campaign-v2-head,
+body .process-v2-head,
+body .performance-copy,
+body .voice-left,
+body .faq-intro{
+  margin-bottom:40px!important;
+}
+body .guide-layout{gap:52px!important}
+body .identity-top{margin-bottom:44px!important}
+body .brand-wall-head{margin-bottom:34px!important}
+body .performance-layout{gap:52px!important}
+body .voice-layout{gap:52px!important}
+body .contact-layout{gap:56px!important}
+
+/* Prevent nested components from creating accidental extra vertical voids. */
+body .luen-content-video{margin-top:36px!important;margin-bottom:40px!important}
+body .luen-content-expertise-grid{margin-top:0!important}
+body .yt-thesis,body .content-thesis{margin-top:32px!important}
+body .performance-dashboard{margin-top:0!important}
+body .timeline-shell{margin-top:0!important}
+body .faq-list{margin-top:0!important}
+
+/* ---------------------------------------------------------
+   4. Mobile rhythm
+   --------------------------------------------------------- */
+@media(max-width:768px){
+  :root{
+    --luen-section-space:64px;
+    --luen-section-space-tight:52px;
+    --luen-section-space-small:32px;
+  }
+
+  body main>.hero{
+    padding-top:82px!important;
+    padding-bottom:64px!important;
+  }
+  body main>.outcome-strip,
+  body main>.capability-strip{
+    padding-top:28px!important;
+    padding-bottom:28px!important;
+  }
+  body main>.brand-wall{
+    padding-top:54px!important;
+    padding-bottom:54px!important;
+  }
+  body main>.case-studies,
+  body main>#youtube,
+  body main>#guide-proof,
+  body main>#work,
+  body main>#about,
+  body main>#platforms,
+  body main>#performance,
+  body main>#services,
+  body main>#client-voice,
+  body main>#process,
+  body main>.faq{
+    padding-top:64px!important;
+    padding-bottom:64px!important;
+  }
+  body main>.final-scene{
+    padding-top:68px!important;
+    padding-bottom:68px!important;
+  }
+  body main>#contact{
+    padding-top:68px!important;
+    padding-bottom:76px!important;
+  }
+  body #work.work{
+    padding-top:50px!important;
+    padding-bottom:60px!important;
+  }
+
+  body .case-head,
+  body .youtube-v2-head,
+  body .market-v2-head,
+  body .campaign-v2-head,
+  body .process-v2-head,
+  body .performance-copy,
+  body .voice-left,
+  body .faq-intro{
+    margin-bottom:28px!important;
+  }
+  body .brand-wall-head{margin-bottom:24px!important}
+  body .identity-top{margin-bottom:30px!important}
+  body .guide-layout,
+  body .performance-layout,
+  body .voice-layout,
+  body .contact-layout{gap:32px!important}
+  body #work .portfolio-lane+.portfolio-lane{margin-top:42px!important}
+  body .luen-content-video{margin-top:28px!important;margin-bottom:32px!important}
+  body .yt-thesis,body .content-thesis{margin-top:24px!important}
+
+  body .case-studies .case-image{padding:10px!important}
+}
+
+@media(max-width:420px){
+  body main>.hero{padding-top:74px!important;padding-bottom:58px!important}
+  body main>.case-studies,
+  body main>#youtube,
+  body main>#guide-proof,
+  body main>#work,
+  body main>#about,
+  body main>#platforms,
+  body main>#performance,
+  body main>#services,
+  body main>#client-voice,
+  body main>#process,
+  body main>.faq{padding-top:58px!important;padding-bottom:58px!important}
+}
