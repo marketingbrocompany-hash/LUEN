@@ -159,6 +159,22 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   letter-spacing:.09em!important;
 }
 
+/* CASE STUDIES · soften thumbnail and overlay geometry. */
+.case-studies .case-image{
+  border-radius:20px!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+.case-studies .case-image img{
+  display:block!important;
+  width:100%!important;
+  border-radius:20px!important;
+}
+.case-studies .case-image>span{
+  border-radius:999px!important;
+  overflow:hidden!important;
+}
+
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
@@ -177,6 +193,7 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   .luen-content-video-copy>p{font-size:15px!important;line-height:1.68!important}
   .luen-content-video-meta{margin-top:20px!important;gap:7px!important;flex-wrap:wrap!important}
   .luen-content-video-meta span{padding:8px 11px!important;font-size:9px!important}
+  .case-studies .case-image,.case-studies .case-image img{border-radius:16px!important}
 }
 @media(max-width:420px){
   body #platforms.market-network-v2{margin-top:16px!important;padding:0!important}
