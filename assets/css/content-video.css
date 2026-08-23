@@ -78,3 +78,18 @@
   .brand-wall .client-logo:hover{background-size:34px 2px!important}
   .brand-wall .client-quadthera::after{font-size:16px}
 }
+
+/* B2B theme compatibility: this file follows the imported global layer, so preserve the new light client-card palette here. */
+body .brand-wall .client-logo{
+  color:#51463f!important;
+  border-color:var(--luen-border)!important;
+  background-color:rgba(255,250,245,.66)!important;
+}
+body .brand-wall .client-logo:hover{
+  color:var(--luen-ink)!important;
+  border-color:rgba(244,125,53,.38)!important;
+  background-color:var(--luen-surface)!important;
+}
+body .brand-wall .client-quadthera{color:transparent!important}
+body .brand-wall .client-quadthera::after{color:#51463f!important}
+body .brand-wall .client-quadthera:hover::after{color:var(--luen-ink)!important}
