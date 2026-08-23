@@ -104,7 +104,7 @@
     });
   }
 
-  /* CROSS-BORDER ADVANTAGE · tangible LUEN capabilities live before Case Studies. */
+  /* CROSS-BORDER PLATFORM MIX · platform cards live before Case Studies. */
   const identitySection=document.querySelector('.identity-platform-section');
   const identityShell=identitySection?.querySelector('.identity-platform-shell');
   const identityTop=identitySection?.querySelector('.identity-top');
@@ -116,39 +116,32 @@
       <div class="eyebrow">Cross-border Advantage</div>
       <div class="luen-advantage-heading">
         <h2 class="section-title">한국과 일본 양쪽 시장을 이해하는<br/><em>Cross-border Creator Marketing Partner</em></h2>
-        <p>크리에이터 네트워크부터 현지 인사이트, 콘텐츠 현지화, 운영, 성과 분석까지 한 흐름으로 연결합니다.</p>
+        <p>YouTube부터 Instagram, TikTok, X, Ameba Blog까지 시장과 목적에 맞는 플랫폼을 연결합니다.</p>
       </div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
     const advantageGrid=document.createElement('div');
+    advantageGrid.id='platforms';
     advantageGrid.className='luen-advantage-grid sr d1';
     advantageGrid.innerHTML=`
-      <article><span>01</span><b>크리에이터 네트워크</b><p>한국·일본 크리에이터 네트워크</p></article>
-      <article><span>02</span><b>현지 인사이트</b><p>현지 소비자가 반응하는 포인트 분석</p></article>
-      <article><span>03</span><b>콘텐츠 현지화</b><p>광고 번역이 아닌 콘텐츠 현지화</p></article>
-      <article><span>04</span><b>캠페인 운영</b><p>섭외부터 일정·검수·업로드까지</p></article>
-      <article><span>05</span><b>성과 분석</b><p>조회수 이후 검색·방문·구매·예약 분석</p></article>`;
+      <article><span>01</span><b>YouTube</b><p>이해 · 신뢰</p></article>
+      <article><span>02</span><b>Instagram</b><p>발견 · 경험</p></article>
+      <article><span>03</span><b>TikTok</b><p>트렌드 · 확산</p></article>
+      <article><span>04</span><b>X</b><p>화제 · 공유</p></article>
+      <article><span>05</span><b>Ameba Blog</b><p>검색 · 후기</p></article>`;
 
     const advantageSection=document.createElement('section');
     advantageSection.id='about';
     advantageSection.className='luen-advantage-section identity-advantage-ready';
-    advantageSection.setAttribute('aria-label','LUEN cross-border creator marketing advantage');
+    advantageSection.setAttribute('aria-label','LUEN cross-border platform advantage');
     const advantageShell=document.createElement('div');
     advantageShell.className='container identity-platform-shell';
     advantageShell.append(identityTop,advantageGrid);
     advantageSection.appendChild(advantageShell);
     caseStudies.parentNode.insertBefore(advantageSection,caseStudies);
 
-    identitySignature.remove();
-    identitySection.removeAttribute('id');
-    identitySection.classList.remove('identity-advantage-ready');
-    identitySection.setAttribute('aria-label','한국과 일본 플랫폼 네트워크');
-  }
-
-  /* PLATFORM NETWORK · move it before Project Inquiry before site-core initializes. */
-  const contactSection=document.querySelector('#contact');
-  if(identitySection&&contactSection&&contactSection.parentNode){
-    contactSection.parentNode.insertBefore(identitySection,contactSection);
+    /* The old JP/KR platform map is intentionally removed after its content is consolidated above. */
+    identitySection.remove();
   }
 
   /* CAMPAIGN PROCESS · refine the headline copy without altering the timeline. */
