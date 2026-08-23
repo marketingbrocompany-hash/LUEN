@@ -95,15 +95,15 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   border-color:#D8D2C7!important;
 }
 
-/* SELECTED CLIENTS · continuous loop retained, with intentional soft edge treatment. */
+/* SELECTED CLIENTS · continuous rail, smaller cards and card-width edge fade. */
 .brand-wall .brand-viewport{
   box-sizing:border-box!important;
   width:100%!important;
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 2%,#000 7%,#000 93%,rgba(0,0,0,.18) 98%,transparent 100%)!important;
-  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 2%,#000 7%,#000 93%,rgba(0,0,0,.18) 98%,transparent 100%)!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 70px,#000 220px,#000 calc(100% - 220px),rgba(0,0,0,.18) calc(100% - 70px),transparent 100%)!important;
+  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 70px,#000 220px,#000 calc(100% - 220px),rgba(0,0,0,.18) calc(100% - 70px),transparent 100%)!important;
 }
 .brand-wall .brand-track{
   display:flex!important;
@@ -114,10 +114,10 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 .brand-wall .brand-set{
   display:flex!important;
   align-items:stretch!important;
-  gap:18px!important;
+  gap:14px!important;
   width:max-content!important;
   min-width:max-content!important;
-  padding:0 18px 0 0!important;
+  padding:0 14px 0 0!important;
   margin:0!important;
 }
 .brand-wall .brand-track>.loop-clone,
@@ -131,13 +131,13 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   align-items:center!important;
   justify-content:center!important;
   text-align:center!important;
-  flex:0 0 clamp(230px,15.5vw,286px)!important;
+  flex:0 0 clamp(190px,13.5vw,230px)!important;
   width:auto!important;
-  min-width:230px!important;
-  min-height:106px!important;
-  padding:22px 28px!important;
+  min-width:190px!important;
+  min-height:92px!important;
+  padding:18px 22px!important;
   border:1px solid #D96532!important;
-  border-radius:18px!important;
+  border-radius:16px!important;
   opacity:1!important;
   background-color:rgba(217,101,50,.035)!important;
   background-image:none!important;
@@ -212,7 +212,8 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
-  .brand-wall .client-logo{flex-basis:240px!important;min-width:240px!important;min-height:96px!important;padding:20px 18px!important}
+  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 56px,#000 170px,#000 calc(100% - 170px),rgba(0,0,0,.18) calc(100% - 56px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 56px,#000 170px,#000 calc(100% - 170px),rgba(0,0,0,.18) calc(100% - 56px),transparent 100%)!important}
+  .brand-wall .client-logo{flex-basis:205px!important;min-width:205px!important;min-height:88px!important;padding:17px 16px!important}
   .luen-content-video{grid-template-columns:1fr!important;gap:30px!important}
   .luen-content-video-copy{max-width:620px!important}
   .luen-content-video-copy h3{font-size:clamp(28px,4.2vw,36px)!important}
@@ -220,9 +221,9 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 @media(max-width:767px){
   .identity-platform-section .identity-signature{margin-top:32px!important}
   body #platforms.market-network-v2{margin-top:20px!important;padding:0!important}
-  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%)!important}
-  .brand-wall .brand-set{gap:12px!important;padding-right:12px!important}
-  .brand-wall .client-logo{flex-basis:205px!important;min-width:205px!important;min-height:88px!important;padding:18px 20px!important;border-radius:16px!important;white-space:normal!important}
+  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 34px,#000 92px,#000 calc(100% - 92px),rgba(0,0,0,.18) calc(100% - 34px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 34px,#000 92px,#000 calc(100% - 92px),rgba(0,0,0,.18) calc(100% - 34px),transparent 100%)!important}
+  .brand-wall .brand-set{gap:10px!important;padding-right:10px!important}
+  .brand-wall .client-logo{flex-basis:168px!important;min-width:168px!important;min-height:80px!important;padding:15px 14px!important;border-radius:14px!important;white-space:normal!important}
   .luen-content-video{gap:24px!important}
   .luen-content-video-copy h3{font-size:clamp(26px,7.2vw,32px)!important;line-height:1.2!important}
   .luen-content-video-copy>p{font-size:15px!important;line-height:1.68!important}
@@ -232,6 +233,7 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 }
 @media(max-width:420px){
   body #platforms.market-network-v2{margin-top:16px!important;padding:0!important}
-  .brand-wall .client-logo{flex-basis:190px!important;min-width:190px!important;min-height:82px!important;padding:16px 14px!important}
+  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 26px,#000 72px,#000 calc(100% - 72px),rgba(0,0,0,.18) calc(100% - 26px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 26px,#000 72px,#000 calc(100% - 72px),rgba(0,0,0,.18) calc(100% - 26px),transparent 100%)!important}
+  .brand-wall .client-logo{flex-basis:154px!important;min-width:154px!important;min-height:76px!important;padding:14px 12px!important}
   .luen-content-video-copy h3{font-size:26px!important}
 }
