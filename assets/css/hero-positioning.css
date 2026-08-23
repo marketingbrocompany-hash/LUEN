@@ -181,3 +181,134 @@
 .case-studies .case-04:hover{
   border-color:#D96532!important;
 }
+
+/* CASE 03 · OFFLINE ACTIVATION proof connects creator content to real store visits. */
+.case-studies .case-offline-activation{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr)!important;
+  min-height:390px!important;
+  margin-top:28px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(217,101,50,.42)!important;
+  border-top:2px solid #D96532!important;
+  border-radius:24px!important;
+  background:#F0EDE6!important;
+  color:#171614!important;
+  box-shadow:none!important;
+}
+.case-studies .case-offline-media{
+  min-width:0!important;
+  background:#ECE9E2!important;
+  overflow:hidden!important;
+}
+.case-studies .case-offline-media img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:390px!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  background:#ECE9E2!important;
+}
+.case-studies .case-offline-copy{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  min-width:0!important;
+  padding:42px 46px!important;
+}
+.case-studies .case-offline-copy>span{
+  color:#D96532!important;
+  font:700 10px/1.2 "Inter","Pretendard",sans-serif!important;
+  letter-spacing:.14em!important;
+}
+.case-studies .case-offline-copy h3{
+  margin-top:18px!important;
+  color:#11100E!important;
+  font-size:clamp(30px,2.5vw,42px)!important;
+  font-weight:700!important;
+  line-height:1.08!important;
+  letter-spacing:-.045em!important;
+}
+.case-studies .case-offline-copy>strong{
+  display:block!important;
+  margin-top:30px!important;
+  color:#171614!important;
+  font-size:18px!important;
+  line-height:1.35!important;
+}
+.case-studies .case-offline-copy>p{
+  max-width:54ch!important;
+  margin-top:12px!important;
+  color:#77736C!important;
+  font-size:14px!important;
+  line-height:1.75!important;
+  letter-spacing:-.02em!important;
+  word-break:keep-all!important;
+}
+.case-studies .case-offline-flow{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+  margin-top:28px!important;
+  padding-top:20px!important;
+  border-top:1px solid #D8D2C7!important;
+}
+.case-studies .case-offline-flow b{
+  color:#171614!important;
+  font:700 9px/1 "Inter",sans-serif!important;
+  letter-spacing:.08em!important;
+}
+.case-studies .case-offline-flow i{
+  color:#D96532!important;
+  font-style:normal!important;
+  font-size:12px!important;
+}
+@media(max-width:900px){
+  .case-studies .case-offline-activation{
+    grid-template-columns:minmax(260px,.9fr) minmax(0,1.1fr)!important;
+    min-height:340px!important;
+  }
+  .case-studies .case-offline-media img{min-height:340px!important}
+  .case-studies .case-offline-copy{padding:34px 32px!important}
+}
+@media(max-width:767px){
+  .case-studies .case-offline-activation{
+    grid-template-columns:1fr!important;
+    min-height:0!important;
+    margin-top:18px!important;
+    border-radius:18px!important;
+  }
+  .case-studies .case-offline-media{
+    aspect-ratio:1/1!important;
+  }
+  .case-studies .case-offline-media img{
+    height:100%!important;
+    min-height:0!important;
+    object-fit:cover!important;
+  }
+  .case-studies .case-offline-copy{
+    padding:26px 20px 24px!important;
+  }
+  .case-studies .case-offline-copy h3{
+    margin-top:14px!important;
+    font-size:28px!important;
+    line-height:1.12!important;
+  }
+  .case-studies .case-offline-copy>strong{
+    margin-top:22px!important;
+    font-size:16px!important;
+  }
+  .case-studies .case-offline-copy>p{
+    font-size:13px!important;
+    line-height:1.7!important;
+  }
+  .case-studies .case-offline-flow{
+    gap:7px!important;
+    margin-top:22px!important;
+    padding-top:16px!important;
+  }
+  .case-studies .case-offline-flow b{font-size:8px!important}
+}
