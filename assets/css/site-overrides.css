@@ -140,3 +140,25 @@ body #platforms.market-network-v2 .market-map{
   .creator-network-head strong::before{font-size:clamp(34px,10vw,44px)!important}
   .creator-network-head strong::after{margin-top:8px!important;font-size:10px!important;letter-spacing:.13em!important}
 }
+
+/* FAQ · show three questions first, remove the old conversion CTA, and reveal the rest on demand. */
+.faq .faq-conversion{display:none!important}
+.faq-more-toggle{
+  box-sizing:border-box;
+  width:100%;
+  min-height:52px;
+  margin-top:18px;
+  padding:0 22px;
+  border:1px solid #D8D2C7;
+  border-radius:999px;
+  background:transparent;
+  color:#171614;
+  font:700 13px/1 "Pretendard Variable","Pretendard",sans-serif;
+  letter-spacing:-.01em;
+  cursor:pointer;
+}
+.faq-more-toggle:hover{background:#F0EDE6}
+.faq-more-toggle:focus-visible{outline:2px solid #D96532;outline-offset:3px}
+@media(max-width:767px){
+  .faq-more-toggle{min-height:48px;margin-top:14px;font-size:12px}
+}
