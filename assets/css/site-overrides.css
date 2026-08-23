@@ -267,3 +267,18 @@ main#top>.brand-wall .brand-set::after{
   }
   .identity-advantage-ready #platforms.market-network-v2{margin-top:42px!important}
 }
+
+/* CROSS-BORDER ADVANTAGE · standalone placement directly before Case Studies. */
+main#top>.luen-advantage-section.identity-advantage-ready{
+  order:0!important;
+  padding:94px 0 82px!important;
+  background:#F5F3EE!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
+  display:block!important;
+  padding:0!important;
+  border:0!important;
+}
+@media(max-width:767px){
+  main#top>.luen-advantage-section.identity-advantage-ready{padding:72px 0 64px!important}
+}
