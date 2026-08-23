@@ -31,6 +31,32 @@ body #platforms.market-network-v2 .market-map{
   box-shadow:none!important;
 }
 
+/* MEDIA EDGES · remove legacy dark matte around case thumbnails and real video. */
+.case-studies .case-image{
+  background:#FFFFFF!important;
+  background-image:none!important;
+}
+.case-studies .case-image img{
+  background:#FFFFFF!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.luen-content-video-frame{
+  background:#FFFFFF!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.luen-content-video-frame::after{
+  content:none!important;
+  display:none!important;
+  box-shadow:none!important;
+}
+.luen-content-video-frame video{
+  background:#FFFFFF!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
