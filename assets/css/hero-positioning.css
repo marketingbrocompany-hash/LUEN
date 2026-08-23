@@ -332,3 +332,38 @@
     line-height:1.12!important;
   }
 }
+
+/* MOBILE CONTENT FLOW · turn 01–05 into a touch-friendly horizontal swipe rail. */
+@media(max-width:767px){
+  #youtube .yt-action-flow.content-design-flow,
+  #youtube .yt-action-flow.content-design-flow-v9,
+  #youtube .content-design-flow{
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-left:12px!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    padding:12px 20px 14px 12px!important;
+    scrollbar-width:none!important;
+    touch-action:pan-x!important;
+  }
+  #youtube .yt-action-flow.content-design-flow::-webkit-scrollbar,
+  #youtube .yt-action-flow.content-design-flow-v9::-webkit-scrollbar,
+  #youtube .content-design-flow::-webkit-scrollbar{
+    display:none!important;
+  }
+  #youtube .yt-action-flow article,
+  #youtube .content-design-flow article{
+    flex:0 0 86%!important;
+    width:auto!important;
+    min-width:0!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+    padding:20px 18px 22px 48px!important;
+  }
+}
