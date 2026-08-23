@@ -123,14 +123,11 @@
     const advantageGrid=document.createElement('div');
     advantageGrid.className='luen-advantage-grid sr d1';
     advantageGrid.innerHTML=`
-      <article><span>01</span><b>Creator Network</b><p>한국·일본 크리에이터 네트워크</p></article>
-      <article><span>02</span><b>Local Insight</b><p>현지 소비자가 반응하는 포인트 분석</p></article>
-      <article><span>03</span><b>Content Localization</b><p>광고 번역이 아닌 콘텐츠 현지화</p></article>
-      <article><span>04</span><b>Campaign Operation</b><p>섭외부터 일정·검수·업로드까지</p></article>
-      <article><span>05</span><b>Performance</b><p>조회수 이후 검색·방문·구매·예약 분석</p></article>`;
-
-    identitySignature.setAttribute('aria-label','브랜드 메시지와 소비자 관심을 연결하는 LUEN의 역할');
-    identitySignature.dataset.auxiliary='true';
+      <article><span>01</span><b>크리에이터 네트워크</b><p>한국·일본 크리에이터 네트워크</p></article>
+      <article><span>02</span><b>현지 인사이트</b><p>현지 소비자가 반응하는 포인트 분석</p></article>
+      <article><span>03</span><b>콘텐츠 현지화</b><p>광고 번역이 아닌 콘텐츠 현지화</p></article>
+      <article><span>04</span><b>캠페인 운영</b><p>섭외부터 일정·검수·업로드까지</p></article>
+      <article><span>05</span><b>성과 분석</b><p>조회수 이후 검색·방문·구매·예약 분석</p></article>`;
 
     const advantageSection=document.createElement('section');
     advantageSection.id='about';
@@ -138,10 +135,11 @@
     advantageSection.setAttribute('aria-label','LUEN cross-border creator marketing advantage');
     const advantageShell=document.createElement('div');
     advantageShell.className='container identity-platform-shell';
-    advantageShell.append(identityTop,advantageGrid,identitySignature);
+    advantageShell.append(identityTop,advantageGrid);
     advantageSection.appendChild(advantageShell);
     caseStudies.parentNode.insertBefore(advantageSection,caseStudies);
 
+    identitySignature.remove();
     identitySection.removeAttribute('id');
     identitySection.classList.remove('identity-advantage-ready');
     identitySection.setAttribute('aria-label','한국과 일본 플랫폼 네트워크');
