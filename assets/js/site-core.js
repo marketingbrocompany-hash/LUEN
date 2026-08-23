@@ -5,35 +5,9 @@
     }
   };
 
-  // Step 9 — connect each Case Study directly to the inquiry form with context.
+  // Case Study inquiry context is static in index.html; JS only updates selection state.
   const inquiryFormForCase=document.getElementById('contactForm');
-  let sourceCaseInput=inquiryFormForCase?.querySelector('input[name="source_case"]');
-  if(inquiryFormForCase&&!sourceCaseInput){
-    sourceCaseInput=document.createElement('input');
-    sourceCaseInput.type='hidden';
-    sourceCaseInput.name='source_case';
-    sourceCaseInput.value='';
-    inquiryFormForCase.prepend(sourceCaseInput);
-  }
-
-  document.querySelectorAll('.case-studies .case-card').forEach((card,index)=>{
-    const body=card.querySelector('.case-body');
-    if(!body||body.querySelector('.case-card-cta')) return;
-    const caseName=(card.querySelector('h3')?.textContent||`Case ${index+1}`).replace(/\s+/g,' ').trim();
-    const link=document.createElement('a');
-    link.className='case-inquiry-btn case-card-cta';
-    link.href='#contact';
-    link.dataset.sourceCase=caseName;
-    link.dataset.analyticsLabel=`${caseName} 사례 기반 캠페인 상담`;
-    link.innerHTML='이 사례와 비슷한 캠페인 상담하기 <i aria-hidden="true">→</i>';
-    body.appendChild(link);
-  });
-
-  const generalCaseCta=document.querySelector('.case-inquiry-cta .case-inquiry-btn');
-  if(generalCaseCta){
-    generalCaseCta.dataset.sourceCase='case_studies_general';
-    generalCaseCta.dataset.analyticsLabel='Case Study 섹션 캠페인 상담';
-  }
+  const sourceCaseInput=inquiryFormForCase?.querySelector('input[name="source_case"]');
 
   document.querySelectorAll('a[href="#contact"][data-source-case]').forEach(link=>{
     link.addEventListener('click',()=>{
@@ -387,15 +361,3 @@
   schedule();
 })();
 
-;
-
-(()=>{
-  const section=document.querySelector('.case-studies');
-  const button=document.querySelector('.mobile-case-more');
-  if(!section||!button)return;
-  button.addEventListener('click',()=>{
-    const open=section.classList.toggle('show-all-cases');
-    button.setAttribute('aria-expanded',String(open));
-    button.firstChild.nodeValue=open?'사례 접기 ':'다른 사례 3개 더 보기 ';
-  });
-})();
