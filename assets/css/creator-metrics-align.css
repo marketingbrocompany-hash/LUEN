@@ -1,4 +1,4 @@
-/* CREATOR METRICS · shared alignment for desktop and mobile. */
+/* CREATOR METRICS · labels only, shared alignment for desktop and mobile. */
 .creator-network-head{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -8,14 +8,13 @@
 .creator-network-head>strong,
 .creator-network-head>p{
   box-sizing:border-box!important;
-  display:grid!important;
-  grid-template-rows:18px 58px!important;
-  align-content:end!important;
-  align-items:end!important;
-  row-gap:14px!important;
-  min-height:144px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  min-width:0!important;
+  min-height:72px!important;
   margin:0!important;
-  padding:26px 28px!important;
+  padding:0 28px!important;
   border-right:1px solid #DCD8D0!important;
   font-size:0!important;
   line-height:1!important;
@@ -52,31 +51,16 @@
 .creator-network-head>span::after,
 .creator-network-head>strong::after,
 .creator-network-head>p::after{
-  position:static!important;
-  inset:auto!important;
-  transform:none!important;
-  align-self:end!important;
-  display:block!important;
-  width:100%!important;
-  height:auto!important;
-  margin:0!important;
-  padding:0!important;
-  color:#11100E!important;
-  font-family:"Pretendard Variable","Pretendard",sans-serif!important;
-  font-size:clamp(40px,3.4vw,58px)!important;
-  font-weight:700!important;
-  line-height:.92!important;
-  letter-spacing:-.055em!important;
-  text-align:left!important;
+  content:none!important;
+  display:none!important;
+  animation:none!important;
 }
 @media(max-width:767px){
   .creator-network-head>span,
   .creator-network-head>strong,
   .creator-network-head>p{
-    grid-template-rows:14px 34px!important;
-    row-gap:8px!important;
-    min-height:92px!important;
-    padding:15px 10px!important;
+    min-height:56px!important;
+    padding:0 10px!important;
   }
   .creator-network-head>span::before,
   .creator-network-head>strong::before,
@@ -88,17 +72,11 @@
     line-height:14px!important;
     letter-spacing:.055em!important;
   }
-  .creator-network-head>span::after,
-  .creator-network-head>strong::after,
-  .creator-network-head>p::after{
-    font-size:clamp(24px,8vw,34px)!important;
-    line-height:.94!important;
-  }
 }
 @media(max-width:380px){
   .creator-network-head>span,
   .creator-network-head>strong,
-  .creator-network-head>p{padding:14px 8px!important}
+  .creator-network-head>p{padding:0 8px!important}
   .creator-network-head>span::before,
   .creator-network-head>strong::before,
   .creator-network-head>p::before{font-size:7px!important;letter-spacing:.035em!important}
