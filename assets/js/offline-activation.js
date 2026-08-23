@@ -11,6 +11,13 @@
   closeFaq();
   requestAnimationFrame(closeFaq);
 
+  /* PLATFORM NETWORK · place JP/KR market network immediately above Project Inquiry. */
+  const platformSection=document.querySelector('.identity-platform-section');
+  const contactSection=document.querySelector('#contact');
+  if(platformSection&&contactSection&&contactSection.parentNode){
+    contactSection.parentNode.insertBefore(platformSection,contactSection);
+  }
+
   const core=document.createElement('script');
   core.src='assets/js/offline-activation-core.js?v=20260823-1';
   core.async=false;
