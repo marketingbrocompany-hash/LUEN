@@ -101,3 +101,60 @@
   }
   .hero .hero-cta{margin-top:26px!important}
 }
+
+/* SECTION RHYTHM · tighten Advantage → Cases and Cases → Core Expertise without changing section content. */
+@media(min-width:768px){
+  #cases.case-studies{padding-bottom:44px!important}
+  #youtube{padding-top:44px!important}
+}
+@media(max-width:767px){
+  main#top>.luen-advantage-section.identity-advantage-ready{padding-bottom:24px!important}
+  #cases.case-studies{
+    padding-top:28px!important;
+    padding-bottom:28px!important;
+  }
+  #youtube{padding-top:28px!important}
+
+  /* CONTENT FLOW · remove fixed-height/overflow constraints so all 01–05 steps stay visible. */
+  #youtube .luen-content-expertise-grid{
+    display:block!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  #youtube .yt-action-flow.content-design-flow,
+  #youtube .yt-action-flow.content-design-flow-v9,
+  #youtube .content-design-flow{
+    box-sizing:border-box!important;
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin-bottom:0!important;
+    padding:12px!important;
+    overflow:visible!important;
+  }
+  #youtube .yt-action-flow article,
+  #youtube .content-design-flow article{
+    box-sizing:border-box!important;
+    position:relative!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:18px 16px 18px 48px!important;
+    overflow:visible!important;
+  }
+  #youtube .yt-action-flow article>span,
+  #youtube .content-design-flow article>span{
+    left:14px!important;
+    top:20px!important;
+  }
+  #youtube .yt-flow-line{display:none!important}
+}
