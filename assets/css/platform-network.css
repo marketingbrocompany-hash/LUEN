@@ -325,8 +325,8 @@ main{display:flex;flex-direction:column}
 main>.hero{order:10}
 main>.marquee{order:20}
 main>.outcome-strip{order:30}
-main>.brand-wall{order:40}
 main>.case-studies{order:50}
+main>.brand-wall{order:55}
 main>#youtube{order:60}
 main>#guide-proof{order:70}
 main>.proof-strip{order:80}
