@@ -57,6 +57,12 @@ body #platforms.market-network-v2 .market-map{
   box-shadow:none!important;
 }
 
+/* CASE STUDIES · remove generated CAMPAIGN 01–04 labels. */
+.case-studies .case-card::after{
+  content:none!important;
+  display:none!important;
+}
+
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
