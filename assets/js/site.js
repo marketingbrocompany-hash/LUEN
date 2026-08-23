@@ -72,6 +72,15 @@
     startLightLoop(viewport);
   };
 
+  /* SELECTED CLIENTS · add EDITA as a real loop item using the shared client card styling. */
+  const selectedClientSet=document.querySelector('.brand-wall .brand-set');
+  if(selectedClientSet&&!selectedClientSet.querySelector('.client-edita')){
+    const edita=document.createElement('span');
+    edita.className='client-logo client-edita';
+    edita.textContent='EDITA.';
+    selectedClientSet.appendChild(edita);
+  }
+
   let iosLoopStrips=[];
   if(isIOS){
     document.documentElement.classList.add('ios-safari','ios-light-loops');
