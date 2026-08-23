@@ -60,7 +60,25 @@
     letter-spacing:-.045em!important;
     white-space:nowrap!important;
   }
+
+  /* MOBILE TYPOGRAPHY · all primary section titles share the Hero scale. */
+  .section-title,
+  .work-story-title,
+  .identity-statement,
+  .brand-wall .brand-wall-head h3,
+  .final-scene h2{
+    font-size:clamp(28px,9vw,37px)!important;
+    line-height:1.08!important;
+    letter-spacing:-.045em!important;
+  }
 }
 @media(max-width:420px){
   .hero h1{--hero-line-size:clamp(28px,8.8vw,35px)!important}
+  .section-title,
+  .work-story-title,
+  .identity-statement,
+  .brand-wall .brand-wall-head h3,
+  .final-scene h2{
+    font-size:clamp(28px,8.8vw,35px)!important;
+  }
 }
