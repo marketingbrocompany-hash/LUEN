@@ -1,0 +1,33 @@
+name: Bump iOS loop cache
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bump-ios-loop-cache.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bump site runtime version
+        run: |
+          sed -i 's#assets/js/site.js?v=20260823-3#assets/js/site.js?v=20260823-4#g' index.html
+          grep -q 'assets/js/site.js?v=20260823-4' index.html
+      - name: Commit cache bump
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes to commit'
+          else
+            git commit -m 'Bump iOS loop runtime cache version'
+            git push origin HEAD:main
+          fi
