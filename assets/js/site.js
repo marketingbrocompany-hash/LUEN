@@ -145,6 +145,10 @@
     identitySection.setAttribute('aria-label','한국과 일본 플랫폼 네트워크');
   }
 
+  /* CAMPAIGN PROCESS · refine the headline copy without altering the timeline. */
+  const processTitle=document.querySelector('#process .process-v2-head .section-title');
+  if(processTitle)processTitle.innerHTML='실행은 꼼꼼하고<br/><em>브랜드의 경험은 단순하게.</em>';
+
   /* CASE 03 · load the visual proof block after case cards without touching the loop/runtime systems. */
   if(document.querySelector('#cases .case-grid')){
     const offlineScript=document.createElement('script');
