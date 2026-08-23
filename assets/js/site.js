@@ -168,4 +168,35 @@
   document.querySelector('.luen-content-video video')?.addEventListener('play',()=>{
     if(typeof window.gtag==='function')window.gtag('event','video_play',{video_provider:'self_hosted',video_asset:'luen-content-trim.mp4',video_position:'content'});
   },{once:true});
+
+  /* FAQ · keep the first three questions visible and reveal the remainder on demand. */
+  const faqList=document.querySelector('.faq-list');
+  if(faqList){
+    faqList.querySelector('.faq-conversion')?.remove();
+    const faqItems=[...faqList.querySelectorAll(':scope > .faq-item')];
+    const extraItems=faqItems.slice(3);
+    if(extraItems.length){
+      extraItems.forEach(item=>{item.hidden=true;});
+      const toggle=document.createElement('button');
+      toggle.type='button';
+      toggle.className='faq-more-toggle';
+      toggle.setAttribute('aria-expanded','false');
+      toggle.textContent=`질문 더보기 +${extraItems.length}`;
+      faqList.appendChild(toggle);
+      toggle.addEventListener('click',()=>{
+        const nextExpanded=toggle.getAttribute('aria-expanded')!=='true';
+        toggle.setAttribute('aria-expanded',String(nextExpanded));
+        extraItems.forEach(item=>{item.hidden=!nextExpanded;});
+        toggle.textContent=nextExpanded?'질문 접기':`질문 더보기 +${extraItems.length}`;
+        if(!nextExpanded){
+          extraItems.forEach(item=>{
+            item.classList.remove('open');
+            item.querySelector('.faq-q')?.setAttribute('aria-expanded','false');
+            const answer=item.querySelector('.faq-a');
+            if(answer)answer.style.maxHeight='0px';
+          });
+        }
+      });
+    }
+  }
 })();
