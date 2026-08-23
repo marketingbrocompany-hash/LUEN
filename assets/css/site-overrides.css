@@ -126,3 +126,8 @@
     white-space:nowrap!important;
   }
 }
+
+/* CASE STUDIES · increase supporting metric label contrast. */
+#cases.case-studies .case-card .case-metric span{
+  color:#171614!important;
+}
