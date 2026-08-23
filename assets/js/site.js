@@ -3,9 +3,6 @@
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* Selected Clients is a fixed responsive grid; keep it out of all loop engines. */
-  document.querySelector('.brand-viewport')?.removeAttribute('data-loop-strip');
-
   const lightLoopControllers=new Map();
   const stopLightLoop=viewport=>{
     const controller=lightLoopControllers.get(viewport);
