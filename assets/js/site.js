@@ -145,6 +145,15 @@
     identitySection.setAttribute('aria-label','한국과 일본 플랫폼 네트워크');
   }
 
+  /* CASE 03 · load the visual proof block after case cards without touching the loop/runtime systems. */
+  if(document.querySelector('#cases .case-grid')){
+    const offlineScript=document.createElement('script');
+    offlineScript.src='assets/js/offline-activation.js?v=20260823-1';
+    offlineScript.async=false;
+    offlineScript.dataset.offlineActivation='true';
+    document.body.appendChild(offlineScript);
+  }
+
   const ctaSelector='a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]';
   const getCtaPosition=link=>link.classList.contains('float-cta')?'floating':link.closest('.mobile-menu')?'mobile_menu':link.closest('.hero')?'hero':link.closest('nav')?'nav':link.closest('.case-studies')?'case':link.closest('.faq')?'faq':link.closest('.final-scene')?'final':'other';
   document.addEventListener('click',event=>{
