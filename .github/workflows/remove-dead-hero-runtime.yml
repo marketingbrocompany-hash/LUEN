@@ -1,0 +1,62 @@
+name: Remove dead hero runtime
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-dead-hero-runtime.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove obsolete hero pointer runtime
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          core_path=Path('assets/js/site-core.js')
+          core=core_path.read_text()
+          start_marker="\n;\n\n(()=>{\n  const root=document.querySelector('.luen-hero-network');"
+          end_marker="\n;\n\n(function(){\n  const map=document.querySelector('#platforms .market-map');"
+          start=core.index(start_marker)
+          end=core.index(end_marker,start)
+          core=core[:start]+core[end:]
+          assert '.luen-hero-network' not in core
+          assert '.lhn-grid' not in core
+          assert '.lhn-glow' not in core
+          assert "const map=document.querySelector('#platforms .market-map')" in core
+          assert "const section=document.querySelector('.case-studies')" in core
+          core_path.write_text(core)
+
+          index_path=Path('index.html')
+          html=index_path.read_text()
+          old='assets/js/site-core.js?v=20260823-3'
+          new='assets/js/site-core.js?v=20260823-4'
+          assert old in html
+          html=html.replace(old,new,1)
+          assert html.count(new)==1
+          index_path.write_text(html)
+          PY
+      - name: Validate runtime
+        run: |
+          node --check assets/js/site.js
+          node --check assets/js/site-core.js
+          grep -q 'assets/js/site-core.js?v=20260823-4' index.html
+          ! grep -q 'luen-hero-network' assets/js/site-core.js
+          ! grep -q 'lhn-grid' assets/js/site-core.js
+          ! grep -q 'lhn-glow' assets/js/site-core.js
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/remove-dead-hero-runtime.yml
+          git add assets/js/site-core.js index.html
+          git commit -m 'Remove obsolete hero pointer runtime'
+          git push origin HEAD:main
