@@ -104,6 +104,37 @@
     });
   }
 
+  /* CROSS-BORDER ADVANTAGE · rebuild the former Identity block around tangible LUEN capabilities. */
+  const identitySection=document.querySelector('.identity-platform-section');
+  const identityShell=identitySection?.querySelector('.identity-platform-shell');
+  const identityTop=identitySection?.querySelector('.identity-top');
+  const identitySignature=identitySection?.querySelector('.identity-signature');
+  const platformNetwork=identitySection?.querySelector('#platforms');
+  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork){
+    identitySection.classList.add('identity-advantage-ready');
+    identitySection.setAttribute('aria-label','LUEN cross-border creator marketing advantage');
+    identityTop.innerHTML=`
+      <div class="eyebrow">Cross-border Advantage</div>
+      <div class="luen-advantage-heading">
+        <h2 class="section-title">한국과 일본 양쪽 시장을 이해하는<br/><em>Cross-border Creator Marketing Partner</em></h2>
+        <p>크리에이터 네트워크부터 현지 인사이트, 콘텐츠 현지화, 운영, 성과 분석까지 한 흐름으로 연결합니다.</p>
+      </div>`;
+
+    identitySection.querySelector('.luen-advantage-grid')?.remove();
+    const advantageGrid=document.createElement('div');
+    advantageGrid.className='luen-advantage-grid sr d1';
+    advantageGrid.innerHTML=`
+      <article><span>01</span><b>Creator Network</b><p>한국·일본 크리에이터 네트워크</p></article>
+      <article><span>02</span><b>Local Insight</b><p>현지 소비자가 반응하는 포인트 분석</p></article>
+      <article><span>03</span><b>Content Localization</b><p>광고 번역이 아닌 콘텐츠 현지화</p></article>
+      <article><span>04</span><b>Campaign Operation</b><p>섭외부터 일정·검수·업로드까지</p></article>
+      <article><span>05</span><b>Performance</b><p>조회수 이후 검색·방문·구매·예약 분석</p></article>`;
+    identityShell.insertBefore(advantageGrid,identitySignature);
+
+    identitySignature.setAttribute('aria-label','브랜드 메시지와 소비자 관심을 연결하는 LUEN의 역할');
+    identitySignature.dataset.auxiliary='true';
+  }
+
   const ctaSelector='a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]';
   const getCtaPosition=link=>link.classList.contains('float-cta')?'floating':link.closest('.mobile-menu')?'mobile_menu':link.closest('.hero')?'hero':link.closest('nav')?'nav':link.closest('.case-studies')?'case':link.closest('.faq')?'faq':link.closest('.final-scene')?'final':'other';
   document.addEventListener('click',event=>{
