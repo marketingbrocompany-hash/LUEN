@@ -1,0 +1,78 @@
+name: Final static homepage cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/final-static-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply final static cleanup
+        run: python tools/final_static_cleanup.py
+
+      - name: Validate final homepage source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          html=Path('index.html').read_text()
+          core=Path('assets/js/site-core.js').read_text()
+          css=Path('assets/css/site-overrides.css').read_text()
+
+          assert '<style id="case-campaign-label-override">' not in html
+          assert '.case-studies .case-card:nth-child(1)::after{content:"CAMPAIGN 01"}' in css
+          assert 'brand-wall .brand-wall-head' in css
+
+          assert html.count('name="source_case"') == 1
+          assert html.count('case-card-cta') == 4
+          assert html.count('data-source-case=') == 5
+          for name in ('池田真子','美容看護師 YUKI chan','ヘラヘラ三銃士','爆食ますぶちさちよ'):
+              assert f'data-source-case="{name}"' in html, name
+          assert 'data-source-case="case_studies_general"' in html
+
+          hidden_classes=(
+              'hero-grid','market-map-grid','market-map-caption','luen-content-system-v9',
+              'content-thesis','guide-signal','chart-gridline','chart-runner',
+              'campaign-rail','campaign-output','final-grid','final-orbit','final-lines'
+          )
+          for token in hidden_classes:
+              assert token not in html, token
+
+          assert '.mobile-case-more' not in core
+          assert "link.className='case-inquiry-btn case-card-cta'" not in core
+          assert "sourceCaseInput=document.createElement('input')" not in core
+          assert "querySelector('input[name=\"source_case\"]')" in core
+
+          assert 'assets/css/site-overrides.css?v=20260823-6' in html
+          assert 'assets/js/site-core.js?v=20260823-5' in html
+          assert 'assets/js/site.js?v=20260823-4' in html
+
+          assert 'https://formspree.io/f/xaewddev' in html
+          assert 'G-QXBK6XEK7G' in html
+          assert html.count('data-loop-strip') >= 5
+          assert 'creator-profile-viewport' in html
+          assert 'market-map-lines' in html
+          assert 'growth-line-v93' in html
+          print('HTML/CSS/JS structural validation passed')
+          PY
+          node --check assets/js/site.js
+          node --check assets/js/site-core.js
+
+      - name: Commit production cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm tools/final_static_cleanup.py .github/workflows/final-static-cleanup.yml
+          git add index.html assets/js/site-core.js assets/css/site-overrides.css
+          git commit -m 'Finish static homepage source cleanup'
+          git push origin HEAD:main
