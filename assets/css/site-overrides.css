@@ -31,6 +31,11 @@ body #platforms.market-network-v2 .market-map{
   box-shadow:none!important;
 }
 
+/* SERVICES · redundant with Content, Performance and Process; remove from homepage flow. */
+main > #services{
+  display:none!important;
+}
+
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
