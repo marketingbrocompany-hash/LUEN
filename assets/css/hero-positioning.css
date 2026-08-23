@@ -312,3 +312,23 @@
   }
   .case-studies .case-offline-flow b{font-size:8px!important}
 }
+
+/* CASE 03 COPY · change the proof headline to purchase-oriented language. */
+.case-studies .case-offline-copy h3{
+  font-size:0!important;
+}
+.case-studies .case-offline-copy h3::after{
+  content:"콘텐츠가 구매로 이어지도록."!important;
+  display:block!important;
+  color:#11100E!important;
+  font-size:clamp(30px,2.5vw,42px)!important;
+  font-weight:700!important;
+  line-height:1.08!important;
+  letter-spacing:-.045em!important;
+}
+@media(max-width:767px){
+  .case-studies .case-offline-copy h3::after{
+    font-size:28px!important;
+    line-height:1.12!important;
+  }
+}
