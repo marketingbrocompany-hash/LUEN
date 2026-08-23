@@ -1,6 +1,4 @@
 @import url("content-desktop.css?v=20260820-1");
-@import url("b2b-global.css?v=20260823-1");
-@import url("visual-rhythm.css?v=20260823-1");
 
 /* CONTENT / real edited video sample */
 .luen-content-video{display:grid;grid-template-columns:minmax(240px,.62fr) minmax(0,1.38fr);gap:36px;align-items:center;margin:58px 0 48px;padding:28px;border:1px solid rgba(248,229,207,.13);border-radius:28px;background:radial-gradient(circle at 12% 18%,rgba(244,125,53,.12),transparent 38%),linear-gradient(135deg,rgba(28,16,10,.94),rgba(13,8,5,.82));box-shadow:0 26px 76px rgba(0,0,0,.22);overflow:hidden}
@@ -79,18 +77,3 @@
   .brand-wall .client-logo:hover{background-size:34px 2px!important}
   .brand-wall .client-quadthera::after{font-size:16px}
 }
-
-/* B2B theme compatibility: this file follows the imported global layer, so preserve the new light client-card palette here. */
-body .brand-wall .client-logo{
-  color:#51463f!important;
-  border-color:var(--luen-border)!important;
-  background-color:rgba(255,250,245,.66)!important;
-}
-body .brand-wall .client-logo:hover{
-  color:var(--luen-ink)!important;
-  border-color:rgba(244,125,53,.38)!important;
-  background-color:var(--luen-surface)!important;
-}
-body .brand-wall .client-quadthera{color:transparent!important}
-body .brand-wall .client-quadthera::after{color:#51463f!important}
-body .brand-wall .client-quadthera:hover::after{color:var(--luen-ink)!important}
