@@ -1,12 +1,12 @@
 @import url("./site-overrides-foundation.css?v=20260823-12");
 
-/* DESKTOP HERO · equal-height story and creator network, with a fuller wide-screen composition. */
+/* DESKTOP HERO · equal-height story and creator network, with tighter center spacing. */
 @media(min-width:1181px){
   .hero>.container.hero-layout{
     width:min(1680px,calc(100% - 96px))!important;
     max-width:1680px!important;
-    grid-template-columns:minmax(0,1.12fr) minmax(580px,.88fr)!important;
-    gap:32px!important;
+    grid-template-columns:minmax(0,.92fr) minmax(650px,1.08fr)!important;
+    gap:24px!important;
     align-items:stretch!important;
   }
   .hero>.container.hero-layout>div:first-child{
