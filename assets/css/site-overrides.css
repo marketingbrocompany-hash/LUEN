@@ -282,3 +282,24 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
 @media(max-width:767px){
   main#top>.luen-advantage-section.identity-advantage-ready{padding:72px 0 64px!important}
 }
+
+/* DESKTOP ADVANTAGE HEADING · exact two-line title and one-line supporting copy. */
+@media(min-width:1101px){
+  main#top>.luen-advantage-section .luen-advantage-heading{
+    grid-template-columns:1fr!important;
+    gap:24px!important;
+    align-items:start!important;
+  }
+  main#top>.luen-advantage-section .luen-advantage-heading .section-title{
+    max-width:none!important;
+  }
+  main#top>.luen-advantage-section .luen-advantage-heading .section-title em{
+    display:block!important;
+    white-space:nowrap!important;
+  }
+  main#top>.luen-advantage-section .luen-advantage-heading>p{
+    max-width:none!important;
+    margin:0!important;
+    white-space:nowrap!important;
+  }
+}
