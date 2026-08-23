@@ -111,34 +111,131 @@ body #platforms.market-network-v2 .market-map{
   .identity-platform-section{padding:22px 0 58px!important}
 }
 
-/* CREATOR NETWORK · make network size the primary proof. */
-.creator-network-head strong{
-  display:block!important;
-  font-size:0!important;
-  line-height:1!important;
+/* CREATOR NETWORK · three proof metrics with one-second count-up motion. */
+@property --network-decimal{
+  syntax:"<integer>";
+  initial-value:0;
+  inherits:false;
 }
-.creator-network-head strong::before{
-  content:"+1,300";
+@property --content-decimal{
+  syntax:"<integer>";
+  initial-value:0;
+  inherits:false;
+}
+@property --campaign-count{
+  syntax:"<integer>";
+  initial-value:0;
+  inherits:false;
+}
+.creator-network-head{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:0!important;
+  align-items:end!important;
+  padding:0!important;
+}
+.creator-network-head>span,
+.creator-network-head>strong,
+.creator-network-head>p{
+  box-sizing:border-box!important;
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+  min-width:0!important;
+  min-height:128px!important;
+  margin:0!important;
+  padding:24px 26px!important;
+  border-right:1px solid #DCD8D0!important;
+  color:#D96532!important;
+  font-family:"Pretendard Variable","Pretendard",sans-serif!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:.13em!important;
+  text-transform:uppercase!important;
+}
+.creator-network-head>p{border-right:0!important}
+.creator-network-head>span::after,
+.creator-network-head>strong::after,
+.creator-network-head>p::after{
   display:block!important;
+  margin-top:13px!important;
   color:#11100E!important;
-  font-size:clamp(48px,4.2vw,72px)!important;
-  line-height:.95!important;
+  font-size:clamp(40px,3.4vw,58px)!important;
+  font-weight:700!important;
+  line-height:.92!important;
   letter-spacing:-.055em!important;
-  font-weight:700!important;
+  text-transform:none!important;
 }
-.creator-network-head strong::after{
-  content:"KOREA × JAPAN";
+.creator-network-head>span::after{
+  counter-reset:network-decimal var(--network-decimal);
+  content:"+1." counter(network-decimal) "K"!important;
+  animation:luen-network-count 1s cubic-bezier(.2,.75,.25,1) both;
+}
+.creator-network-head>strong{
+  font-size:0!important;
+  color:transparent!important;
+}
+.creator-network-head>strong::before{
+  content:"CONTENTS"!important;
+  position:static!important;
   display:block!important;
-  margin-top:14px!important;
-  color:#77736C!important;
-  font-size:12px!important;
-  line-height:1!important;
-  letter-spacing:.16em!important;
+  color:#D96532!important;
+  font-size:11px!important;
   font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:.13em!important;
+}
+.creator-network-head>strong::after{
+  counter-reset:content-decimal var(--content-decimal);
+  content:"+2." counter(content-decimal) "K"!important;
+  animation:luen-content-count 1s cubic-bezier(.2,.75,.25,1) both;
+}
+.creator-network-head>p{
+  font-size:0!important;
+  color:transparent!important;
+}
+.creator-network-head>p::before{
+  content:"CAMPAIGN"!important;
+  display:block!important;
+  color:#D96532!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  line-height:1!important;
+  letter-spacing:.13em!important;
+}
+.creator-network-head>p::after{
+  counter-reset:campaign var(--campaign-count);
+  content:"+" counter(campaign)!important;
+  animation:luen-campaign-count 1s cubic-bezier(.2,.75,.25,1) both;
+}
+@keyframes luen-network-count{from{--network-decimal:0}to{--network-decimal:3}}
+@keyframes luen-content-count{from{--content-decimal:0}to{--content-decimal:7}}
+@keyframes luen-campaign-count{from{--campaign-count:0}to{--campaign-count:500}}
+@media(prefers-reduced-motion:reduce){
+  .creator-network-head>span::after{--network-decimal:3;animation:none!important}
+  .creator-network-head>strong::after{--content-decimal:7;animation:none!important}
+  .creator-network-head>p::after{--campaign-count:500;animation:none!important}
 }
 @media(max-width:767px){
-  .creator-network-head strong::before{font-size:clamp(34px,10vw,44px)!important}
-  .creator-network-head strong::after{margin-top:8px!important;font-size:10px!important;letter-spacing:.13em!important}
+  .creator-network-head>span,
+  .creator-network-head>strong,
+  .creator-network-head>p{
+    min-height:88px!important;
+    padding:16px 12px!important;
+    font-size:8px!important;
+    letter-spacing:.09em!important;
+  }
+  .creator-network-head>strong::before,
+  .creator-network-head>p::before{font-size:8px!important;letter-spacing:.09em!important}
+  .creator-network-head>span::after,
+  .creator-network-head>strong::after,
+  .creator-network-head>p::after{
+    margin-top:9px!important;
+    font-size:clamp(24px,8vw,34px)!important;
+  }
 }
 
 /* FAQ · show three questions first, remove the old conversion CTA, and reveal the rest on demand. */
