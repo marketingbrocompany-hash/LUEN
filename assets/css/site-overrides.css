@@ -82,3 +82,31 @@
     font-size:clamp(28px,8.8vw,35px)!important;
   }
 }
+
+/* IDENTITY / PLATFORM REORDER · remove the old identity scene and place the platform network directly after Campaign Process. */
+.identity-platform-section{
+  order:155!important;
+  padding:38px 0 82px!important;
+}
+.identity-platform-section .identity-top,
+.identity-platform-section .identity-signature{
+  display:none!important;
+}
+body #platforms.market-network-v2{
+  margin-top:0!important;
+  padding:0!important;
+  border-top:0!important;
+}
+body #platforms.market-network-v2 .market-map{
+  margin:0!important;
+}
+@media(max-width:900px){
+  .identity-platform-section{padding:32px 0 72px!important}
+}
+@media(max-width:767px){
+  .identity-platform-section{padding:26px 0 64px!important}
+  body #platforms.market-network-v2{margin-top:0!important;padding-top:0!important}
+}
+@media(max-width:420px){
+  .identity-platform-section{padding:22px 0 58px!important}
+}
