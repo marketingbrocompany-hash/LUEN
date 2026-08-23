@@ -137,3 +137,63 @@ body #platforms.market-network-v2{padding:42px 0 118px!important}
   .identity{padding-top:68px!important}
   body #platforms.market-network-v2{padding-bottom:74px!important}
 }
+
+/* TRUE IDENTITY × PLATFORMS MERGE · 2026-08-23 */
+.identity-platform-section{
+  position:relative!important;
+  padding:108px 0 118px!important;
+  background:#F5F3EE!important;
+  background-image:none!important;
+  color:#171614!important;
+}
+.identity-platform-section::before,
+.identity-platform-section::after,
+body #platforms.market-network-v2::before,
+body #platforms.market-network-v2::after{
+  content:none!important;
+  display:none!important;
+  background-image:none!important;
+}
+.identity-platform-section .identity-top .eyebrow,
+.identity-platform-section .identity-top .eyebrow::after{display:none!important;content:none!important}
+.identity-platform-section .identity-statement{max-width:760px!important}
+.identity-platform-section .identity-signature{margin-top:54px!important}
+body #platforms.market-network-v2{
+  display:block!important;
+  margin-top:66px!important;
+  padding:48px 0 0!important;
+  border-top:1px solid #E9E6DF!important;
+  background:transparent!important;
+  background-image:none!important;
+  color:#171614!important;
+}
+body #platforms.market-network-v2 .market-v2-head{display:none!important}
+body #platforms.market-network-v2 .market-map{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+body #platforms.market-network-v2 .market-map::before,
+body #platforms.market-network-v2 .market-map::after{content:none!important;display:none!important}
+body #platforms.market-network-v2 .market-map-lines{display:none!important}
+
+@media(max-width:900px){
+  .identity-platform-section{padding:92px 0 102px!important}
+  .identity-platform-section .identity-signature{margin-top:44px!important}
+  body #platforms.market-network-v2{margin-top:54px!important;padding:40px 0 0!important}
+}
+@media(max-width:767px){
+  .identity-platform-section{padding:76px 0 82px!important}
+  .identity-platform-section .identity-signature{margin-top:36px!important}
+  body #platforms.market-network-v2{margin-top:42px!important;padding:32px 0 0!important}
+  body #platforms.market-network-v2 .market-map{margin:0!important;padding:0!important}
+}
+@media(max-width:420px){
+  .identity-platform-section{padding:68px 0 74px!important}
+  body #platforms.market-network-v2{margin-top:36px!important;padding-top:28px!important}
+}
