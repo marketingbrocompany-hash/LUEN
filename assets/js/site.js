@@ -104,15 +104,14 @@
     });
   }
 
-  /* CROSS-BORDER ADVANTAGE · rebuild the former Identity block around tangible LUEN capabilities. */
+  /* CROSS-BORDER ADVANTAGE · tangible LUEN capabilities live before Case Studies, while Platforms stays after Process. */
   const identitySection=document.querySelector('.identity-platform-section');
   const identityShell=identitySection?.querySelector('.identity-platform-shell');
   const identityTop=identitySection?.querySelector('.identity-top');
   const identitySignature=identitySection?.querySelector('.identity-signature');
   const platformNetwork=identitySection?.querySelector('#platforms');
-  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork){
-    identitySection.classList.add('identity-advantage-ready');
-    identitySection.setAttribute('aria-label','LUEN cross-border creator marketing advantage');
+  const caseStudies=document.querySelector('#cases');
+  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&caseStudies){
     identityTop.innerHTML=`
       <div class="eyebrow">Cross-border Advantage</div>
       <div class="luen-advantage-heading">
@@ -129,10 +128,23 @@
       <article><span>03</span><b>Content Localization</b><p>광고 번역이 아닌 콘텐츠 현지화</p></article>
       <article><span>04</span><b>Campaign Operation</b><p>섭외부터 일정·검수·업로드까지</p></article>
       <article><span>05</span><b>Performance</b><p>조회수 이후 검색·방문·구매·예약 분석</p></article>`;
-    identityShell.insertBefore(advantageGrid,identitySignature);
 
     identitySignature.setAttribute('aria-label','브랜드 메시지와 소비자 관심을 연결하는 LUEN의 역할');
     identitySignature.dataset.auxiliary='true';
+
+    const advantageSection=document.createElement('section');
+    advantageSection.id='about';
+    advantageSection.className='luen-advantage-section identity-advantage-ready';
+    advantageSection.setAttribute('aria-label','LUEN cross-border creator marketing advantage');
+    const advantageShell=document.createElement('div');
+    advantageShell.className='container identity-platform-shell';
+    advantageShell.append(identityTop,advantageGrid,identitySignature);
+    advantageSection.appendChild(advantageShell);
+    caseStudies.parentNode.insertBefore(advantageSection,caseStudies);
+
+    identitySection.removeAttribute('id');
+    identitySection.classList.remove('identity-advantage-ready');
+    identitySection.setAttribute('aria-label','한국과 일본 플랫폼 네트워크');
   }
 
   const ctaSelector='a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]';
