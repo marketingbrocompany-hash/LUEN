@@ -339,26 +339,6 @@
 
 ;
 
-(()=>{
-  const root=document.querySelector('.luen-hero-network');
-  if(!root || !window.matchMedia('(pointer:fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const grid=root.querySelector('.lhn-grid');
-  const glow=root.querySelector('.lhn-glow');
-  root.addEventListener('pointermove',e=>{
-    const r=root.getBoundingClientRect();
-    const nx=(e.clientX-r.left)/r.width-.5;
-    const ny=(e.clientY-r.top)/r.height-.5;
-    if(grid) grid.style.transform=`translate(${(-nx*5).toFixed(2)}px,${(-ny*5).toFixed(2)}px)`;
-    if(glow){glow.style.marginLeft=`${(nx*6).toFixed(2)}px`;glow.style.marginTop=`${(ny*5).toFixed(2)}px`;}
-  });
-  root.addEventListener('pointerleave',()=>{
-    if(grid) grid.style.transform='translate(0,0)';
-    if(glow){glow.style.marginLeft='0';glow.style.marginTop='0';}
-  });
-})();
-
-;
-
 (function(){
   const map=document.querySelector('#platforms .market-map');
   const svg=map&&map.querySelector('.market-map-lines');
