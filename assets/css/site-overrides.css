@@ -95,12 +95,15 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   border-color:#D8D2C7!important;
 }
 
-/* SELECTED CLIENTS · continuous rail, smaller cards and card-width edge fade. */
+/* SELECTED CLIENTS · continuous rail with safe hover clearance. */
+.brand-wall .brand-wall-head{
+  margin-bottom:30px!important;
+}
 .brand-wall .brand-viewport{
   box-sizing:border-box!important;
   width:100%!important;
   margin:0!important;
-  padding:0!important;
+  padding:12px 0 14px!important;
   overflow:hidden!important;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 70px,#000 220px,#000 calc(100% - 220px),rgba(0,0,0,.18) calc(100% - 70px),transparent 100%)!important;
   mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 70px,#000 220px,#000 calc(100% - 220px),rgba(0,0,0,.18) calc(100% - 70px),transparent 100%)!important;
@@ -142,8 +145,16 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   background-color:rgba(217,101,50,.035)!important;
   background-image:none!important;
   color:#171614!important;
+  transform:none!important;
+  box-shadow:none!important;
 }
-.brand-wall .client-logo:hover{background-color:rgba(217,101,50,.075)!important}
+.brand-wall .client-logo{
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease!important;
+}
+.brand-wall .client-logo:hover{
+  background-color:rgba(217,101,50,.075)!important;
+  transform:none!important;
+}
 
 /* Quadthera previously hid the real text and redrew it with ::after. Use one real text layer only. */
 .brand-wall .client-quadthera{
@@ -212,7 +223,8 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
-  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 56px,#000 170px,#000 calc(100% - 170px),rgba(0,0,0,.18) calc(100% - 56px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 56px,#000 170px,#000 calc(100% - 170px),rgba(0,0,0,.18) calc(100% - 56px),transparent 100%)!important}
+  .brand-wall .brand-wall-head{margin-bottom:24px!important}
+  .brand-wall .brand-viewport{padding:10px 0 12px!important;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 56px,#000 170px,#000 calc(100% - 170px),rgba(0,0,0,.18) calc(100% - 56px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 56px,#000 170px,#000 calc(100% - 170px),rgba(0,0,0,.18) calc(100% - 56px),transparent 100%)!important}
   .brand-wall .client-logo{flex-basis:205px!important;min-width:205px!important;min-height:88px!important;padding:17px 16px!important}
   .luen-content-video{grid-template-columns:1fr!important;gap:30px!important}
   .luen-content-video-copy{max-width:620px!important}
@@ -221,7 +233,8 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 @media(max-width:767px){
   .identity-platform-section .identity-signature{margin-top:32px!important}
   body #platforms.market-network-v2{margin-top:20px!important;padding:0!important}
-  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 34px,#000 92px,#000 calc(100% - 92px),rgba(0,0,0,.18) calc(100% - 34px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 34px,#000 92px,#000 calc(100% - 92px),rgba(0,0,0,.18) calc(100% - 34px),transparent 100%)!important}
+  .brand-wall .brand-wall-head{margin-bottom:20px!important}
+  .brand-wall .brand-viewport{padding:8px 0 10px!important;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 34px,#000 92px,#000 calc(100% - 92px),rgba(0,0,0,.18) calc(100% - 34px),transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 34px,#000 92px,#000 calc(100% - 92px),rgba(0,0,0,.18) calc(100% - 34px),transparent 100%)!important}
   .brand-wall .brand-set{gap:10px!important;padding-right:10px!important}
   .brand-wall .client-logo{flex-basis:168px!important;min-width:168px!important;min-height:80px!important;padding:15px 14px!important;border-radius:14px!important;white-space:normal!important}
   .luen-content-video{gap:24px!important}
