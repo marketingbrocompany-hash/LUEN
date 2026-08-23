@@ -95,36 +95,58 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   border-color:#D8D2C7!important;
 }
 
-/* SELECTED CLIENTS · main burnt-orange border with a restrained warm fill. */
+/* SELECTED CLIENTS · burnt-orange cards, fixed grid with no clipped loop edges. */
+.brand-wall .brand-viewport{
+  box-sizing:border-box!important;
+  width:min(1680px,calc(100% - 64px))!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding:0!important;
+  overflow:visible!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
+.brand-wall .brand-track{
+  display:block!important;
+  width:100%!important;
+  transform:none!important;
+  overflow:visible!important;
+}
+.brand-wall .brand-track>.loop-clone,
+.brand-wall .brand-track>.ios-loop-clone{
+  display:none!important;
+}
+.brand-wall .brand-set:not(.loop-clone){
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:14px!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  transform:none!important;
+}
 .brand-wall .client-logo,
 .brand-wall .client-logo:hover{
-  opacity:1!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:108px!important;
+  flex:none!important;
+  padding:22px 16px!important;
   border:1px solid #D96532!important;
+  border-radius:18px!important;
+  opacity:1!important;
   background-color:rgba(217,101,50,.035)!important;
   background-image:none!important;
   color:#171614!important;
 }
 .brand-wall .client-logo:hover{background-color:rgba(217,101,50,.075)!important}
 .brand-wall .client-quadthera::after{color:#171614!important}
-
-/* SELECTED CLIENTS · make the continuous rail read intentionally at both edges. */
-.brand-wall .brand-viewport{
-  box-sizing:border-box!important;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 2.8%,#000 97.2%,transparent 100%)!important;
-  mask-image:linear-gradient(90deg,transparent 0,#000 2.8%,#000 97.2%,transparent 100%)!important;
-}
-.brand-wall .brand-set{
-  gap:18px!important;
-  padding-right:18px!important;
-}
-.brand-wall .client-logo{
-  box-sizing:border-box!important;
-  flex:0 0 clamp(230px,15.5vw,286px)!important;
-  min-width:230px!important;
-  min-height:106px!important;
-  padding:22px 28px!important;
-  border-radius:18px!important;
-}
 
 /* REAL CREATOR CONTENT · rebalance copy/video proportions and reduce oversized type. */
 .luen-content-video{
@@ -175,10 +197,14 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
   overflow:hidden!important;
 }
 
+@media(max-width:1200px){
+  .brand-wall .brand-set:not(.loop-clone){grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
 @media(max-width:900px){
   .identity-platform-section .identity-signature{margin-top:38px!important}
   body #platforms.market-network-v2{margin-top:24px!important;padding:0!important}
-  .brand-wall .client-logo{flex-basis:240px!important;min-width:240px!important;min-height:96px!important}
+  .brand-wall .brand-viewport{width:calc(100% - 40px)!important}
+  .brand-wall .client-logo{min-height:96px!important;padding:20px 16px!important}
   .luen-content-video{grid-template-columns:1fr!important;gap:30px!important}
   .luen-content-video-copy{max-width:620px!important}
   .luen-content-video-copy h3{font-size:clamp(28px,4.2vw,36px)!important}
@@ -186,8 +212,9 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 @media(max-width:767px){
   .identity-platform-section .identity-signature{margin-top:32px!important}
   body #platforms.market-network-v2{margin-top:20px!important;padding:0!important}
-  .brand-wall .brand-viewport{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 5%,#000 95%,transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,#000 5%,#000 95%,transparent 100%)!important}
-  .brand-wall .client-logo{flex-basis:205px!important;min-width:205px!important;min-height:88px!important;padding:18px 20px!important;border-radius:16px!important}
+  .brand-wall .brand-viewport{width:calc(100% - 32px)!important}
+  .brand-wall .brand-set:not(.loop-clone){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .brand-wall .client-logo{min-height:88px!important;padding:18px 12px!important;border-radius:16px!important;white-space:normal!important}
   .luen-content-video{gap:24px!important}
   .luen-content-video-copy h3{font-size:clamp(26px,7.2vw,32px)!important;line-height:1.2!important}
   .luen-content-video-copy>p{font-size:15px!important;line-height:1.68!important}
@@ -197,6 +224,6 @@ body #platforms.market-network-v2 .market-node:hover{background-color:#ECE7DE!im
 }
 @media(max-width:420px){
   body #platforms.market-network-v2{margin-top:16px!important;padding:0!important}
-  .brand-wall .client-logo{flex-basis:190px!important;min-width:190px!important}
+  .brand-wall .client-logo{min-height:82px!important;padding:16px 10px!important}
   .luen-content-video-copy h3{font-size:26px!important}
 }
