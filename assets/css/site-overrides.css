@@ -76,3 +76,194 @@ main#top>.brand-wall .brand-set::after{
     padding:14px 12px!important;
   }
 }
+
+/* CROSS-BORDER ADVANTAGE · tangible LUEN assets replace the old Identity-first presentation. */
+.identity-platform-section.identity-advantage-ready{
+  padding:94px 0 82px!important;
+}
+.identity-platform-section.identity-advantage-ready .identity-top{
+  display:block!important;
+  padding:0!important;
+  border:0!important;
+}
+.identity-advantage-ready .luen-advantage-heading{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);
+  gap:56px;
+  align-items:end;
+}
+.identity-advantage-ready .luen-advantage-heading .section-title{
+  max-width:900px;
+  color:#171614!important;
+}
+.identity-advantage-ready .luen-advantage-heading .section-title em{
+  color:#D96532!important;
+  font-style:normal!important;
+}
+.identity-advantage-ready .luen-advantage-heading>p{
+  max-width:440px;
+  margin:0 0 5px;
+  color:#77736C;
+  font-size:15px;
+  line-height:1.75;
+  letter-spacing:-.02em;
+}
+.identity-advantage-ready .luen-advantage-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+  margin-top:44px;
+}
+.identity-advantage-ready .luen-advantage-grid article{
+  min-width:0;
+  min-height:184px;
+  padding:24px 22px 22px;
+  border:1px solid #D8D2C7;
+  border-top:2px solid #D96532;
+  border-radius:18px;
+  background:#F0EDE6;
+}
+.identity-advantage-ready .luen-advantage-grid article>span{
+  display:block;
+  color:#D96532;
+  font:700 10px/1 "Inter","Pretendard",sans-serif;
+  letter-spacing:.13em;
+}
+.identity-advantage-ready .luen-advantage-grid article>b{
+  display:block;
+  margin-top:38px;
+  color:#171614;
+  font:700 17px/1.2 "Inter","Pretendard",sans-serif;
+  letter-spacing:-.025em;
+}
+.identity-advantage-ready .luen-advantage-grid article>p{
+  margin-top:12px;
+  color:#77736C;
+  font-size:13px;
+  line-height:1.65;
+  letter-spacing:-.02em;
+  word-break:keep-all;
+}
+
+/* Old BRAND MESSAGE ↔ LUEN ↔ AUDIENCE graphic stays as a smaller supporting diagram. */
+.identity-advantage-ready .identity-signature[data-auxiliary="true"]{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 142px minmax(0,1fr)!important;
+  align-items:center!important;
+  width:min(920px,100%)!important;
+  margin:42px auto 0!important;
+  padding:26px 0 0!important;
+  border-top:1px solid #DCD8D0!important;
+  border-bottom:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.identity-advantage-ready .identity-signature .identity-side{
+  min-height:126px!important;
+  padding:20px 22px!important;
+  border:1px solid #D8D2C7!important;
+  border-radius:16px!important;
+  background:#F0EDE6!important;
+  color:#171614!important;
+}
+.identity-advantage-ready .identity-signature .signature-label{
+  color:#77736C!important;
+  font-size:9px!important;
+  letter-spacing:.13em!important;
+}
+.identity-advantage-ready .identity-signature .identity-side strong{
+  display:block!important;
+  margin-top:15px!important;
+  color:#171614!important;
+  font-size:18px!important;
+  line-height:1.35!important;
+}
+.identity-advantage-ready .identity-signature .identity-side p{
+  margin-top:12px!important;
+  color:#77736C!important;
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+.identity-advantage-ready .identity-signature .identity-center{
+  min-height:126px!important;
+  height:126px!important;
+}
+.identity-advantage-ready .identity-signature .identity-core{
+  width:94px!important;
+  height:94px!important;
+  border:1px solid #D96532!important;
+  background:#F5F3EE!important;
+}
+.identity-advantage-ready .identity-signature .identity-core>span{
+  color:#D96532!important;
+  font-size:19px!important;
+}
+.identity-advantage-ready .identity-signature .identity-core>small{
+  color:#77736C!important;
+  font-size:7px!important;
+  letter-spacing:.12em!important;
+}
+.identity-advantage-ready .identity-signature .identity-line{
+  background:#DCD8D0!important;
+  opacity:1!important;
+}
+.identity-advantage-ready #platforms.market-network-v2{
+  margin-top:58px!important;
+}
+
+@media(max-width:1100px){
+  .identity-advantage-ready .luen-advantage-heading{
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+  .identity-advantage-ready .luen-advantage-heading>p{max-width:620px}
+  .identity-advantage-ready .luen-advantage-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media(max-width:767px){
+  .identity-platform-section.identity-advantage-ready{padding:72px 0 64px!important}
+  .identity-advantage-ready .luen-advantage-heading{gap:16px}
+  .identity-advantage-ready .luen-advantage-heading>p{
+    font-size:14px;
+    line-height:1.65;
+  }
+  .identity-advantage-ready .luen-advantage-grid{
+    grid-template-columns:1fr;
+    gap:9px;
+    margin-top:30px;
+  }
+  .identity-advantage-ready .luen-advantage-grid article{
+    min-height:0;
+    padding:18px 18px 17px;
+    border-radius:14px;
+  }
+  .identity-advantage-ready .luen-advantage-grid article>b{
+    margin-top:18px;
+    font-size:16px;
+  }
+  .identity-advantage-ready .luen-advantage-grid article>p{
+    margin-top:7px;
+    font-size:12.5px;
+  }
+  .identity-advantage-ready .identity-signature[data-auxiliary="true"]{
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    margin-top:30px!important;
+    padding-top:22px!important;
+  }
+  .identity-advantage-ready .identity-signature .identity-side{
+    min-height:0!important;
+    padding:18px!important;
+  }
+  .identity-advantage-ready .identity-signature .identity-center{
+    min-height:94px!important;
+    height:94px!important;
+  }
+  .identity-advantage-ready .identity-signature .identity-line{display:none!important}
+  .identity-advantage-ready .identity-signature .identity-core{
+    width:84px!important;
+    height:84px!important;
+  }
+  .identity-advantage-ready #platforms.market-network-v2{margin-top:42px!important}
+}
