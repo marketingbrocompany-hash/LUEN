@@ -1,21 +1,20 @@
 (()=>{
-  const version='20260823-2';
-  const ensureStyle=(dataAttr,href)=>{
-    if(document.querySelector(`link[${dataAttr}]`)) return;
-    const link=document.createElement('link');
-    link.rel='stylesheet';
-    link.href=`${href}?v=${version}`;
-    link.setAttribute(dataAttr,'true');
-    document.head.appendChild(link);
-  };
-
-  ensureStyle('data-luen-current-styles','assets/css/site-current.css');
-  ensureStyle('data-luen-content-video-styles','assets/css/content-video.css');
-
-  if(!document.querySelector('script[data-luen-site-base]')){
-    const base=document.createElement('script');
-    base.src=`assets/js/site-base.js?v=${version}`;
-    base.dataset.luenSiteBase='true';
-    document.body.appendChild(base);
+  /* Runtime-only behavior. Final visual/content DOM is already present in index.html. */
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(isIOS){
+    document.documentElement.classList.add('ios-safari');
+    const iosStyle=document.createElement('style');
+    iosStyle.dataset.luenIosStability='true';
+    iosStyle.textContent=`.ios-safari [data-loop-strip] .loop-track,.ios-safari .creator-profile-track{transform:none!important;will-change:auto!important}.ios-safari .chart-runner{display:none!important}@media(max-width:820px){.ios-safari .portfolio-viewport{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}.ios-safari .portfolio-viewport::-webkit-scrollbar{display:none}.ios-safari .portfolio-track{width:max-content!important}.ios-safari .creator-profile-viewport{overflow-x:auto!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}.ios-safari .creator-profile-viewport::-webkit-scrollbar{display:none}.ios-safari .creator-profile-track{width:max-content!important}}`;
+    document.head.appendChild(iosStyle);
+    document.querySelectorAll('[data-loop-strip]').forEach(el=>{el.dataset.iosLoopSpeed=el.dataset.speed||'';el.removeAttribute('data-loop-strip');});
+    document.querySelectorAll('animateMotion, animate').forEach(el=>el.remove());
   }
+  const ctaSelector='a.btn[href^="#"], a.nav-contact[href^="#"], a.case-inquiry-btn[href^="#"], a.faq-cta[href^="#"], a.float-cta[href^="#"]';
+  const getCtaPosition=link=>link.classList.contains('float-cta')?'floating':link.closest('.mobile-menu')?'mobile_menu':link.closest('.hero')?'hero':link.closest('nav')?'nav':link.closest('.case-studies')?'case':link.closest('.faq')?'faq':link.closest('.final-scene')?'final':'other';
+  document.addEventListener('click',event=>{const link=event.target?.closest?.(ctaSelector);if(!link)return;const context={position:getCtaPosition(link),label:(link.dataset.analyticsLabel||link.getAttribute('aria-label')||link.textContent||'CTA').replace(/\s+/g,' ').trim().slice(0,80)};window.__luenLastCtaContext=context;if(typeof queueMicrotask==='function')queueMicrotask(()=>{if(window.__luenLastCtaContext===context)window.__luenLastCtaContext=null;});else Promise.resolve().then(()=>{if(window.__luenLastCtaContext===context)window.__luenLastCtaContext=null;});},true);
+  if(typeof window.gtag==='function'&&!window.gtag.__luenCtaPositionEnhanced){const originalGtag=window.gtag;const enhancedGtag=function(...args){if(args[0]==='event'&&args[1]==='cta_click'){const context=window.__luenLastCtaContext;if(context)args[2]={...(args[2]||{}),cta_label:context.label,cta_position:context.position};}return originalGtag.apply(this,args);};enhancedGtag.__luenCtaPositionEnhanced=true;window.gtag=enhancedGtag;}
+  const viewport=document.querySelector('.creator-profile-viewport'),track=viewport?.querySelector('.creator-profile-track'),source=viewport?.querySelector('.creator-profile-set');
+  if(viewport&&track&&source&&!isIOS){const clone=source.cloneNode(true);clone.setAttribute('aria-hidden','true');track.appendChild(clone);const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');let offset=0,last=performance.now(),baseWidth=source.getBoundingClientRect().width,raf=0,visible=true;const stop=()=>{if(raf){cancelAnimationFrame(raf);raf=0;}};const tick=now=>{raf=0;if(!visible||document.hidden||reducedMotion.matches)return;const dt=Math.min(.05,(now-last)/1000);last=now;if(baseWidth>0){offset=(offset+60*dt)%baseWidth;track.style.transform=`translate3d(${-offset}px,0,0)`;}raf=requestAnimationFrame(tick);};const start=()=>{if(raf||!visible||document.hidden||reducedMotion.matches)return;last=performance.now();raf=requestAnimationFrame(tick);};const sync=()=>{if(reducedMotion.matches){stop();track.style.transform='none';return;}if(document.hidden||!visible)stop();else start();};if('ResizeObserver'in window)new ResizeObserver(()=>{baseWidth=source.getBoundingClientRect().width||baseWidth;}).observe(viewport);if('IntersectionObserver'in window)new IntersectionObserver(entries=>{visible=Boolean(entries[0]?.isIntersecting);sync();},{rootMargin:'160px 0px',threshold:0}).observe(viewport);document.addEventListener('visibilitychange',sync);reducedMotion.addEventListener?.('change',sync);sync();}
+  document.querySelector('.luen-content-video video')?.addEventListener('play',()=>{if(typeof window.gtag==='function')window.gtag('event','video_play',{video_provider:'self_hosted',video_asset:'luen-content-trim.mp4',video_position:'content'});},{once:true});
 })();
