@@ -111,13 +111,13 @@ body #platforms.market-network-v2 .market-map{
   .identity-platform-section{padding:22px 0 58px!important}
 }
 
-/* CREATOR NETWORK · three proof metrics with one-second count-up motion. */
+/* CREATOR NETWORK · aligned proof metrics using previously published site counts. */
 @property --network-decimal{
   syntax:"<integer>";
   initial-value:0;
   inherits:false;
 }
-@property --content-decimal{
+@property --content-count{
   syntax:"<integer>";
   initial-value:0;
   inherits:false;
@@ -131,7 +131,7 @@ body #platforms.market-network-v2 .market-map{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:0!important;
-  align-items:end!important;
+  align-items:stretch!important;
   padding:0!important;
 }
 .creator-network-head>span,
@@ -148,6 +148,15 @@ body #platforms.market-network-v2 .market-map{
   margin:0!important;
   padding:24px 26px!important;
   border-right:1px solid #DCD8D0!important;
+  font-size:0!important;
+  color:transparent!important;
+}
+.creator-network-head>p{border-right:0!important}
+.creator-network-head>span::before,
+.creator-network-head>strong::before,
+.creator-network-head>p::before{
+  position:static!important;
+  display:block!important;
   color:#D96532!important;
   font-family:"Pretendard Variable","Pretendard",sans-serif!important;
   font-size:11px!important;
@@ -155,14 +164,19 @@ body #platforms.market-network-v2 .market-map{
   line-height:1!important;
   letter-spacing:.13em!important;
   text-transform:uppercase!important;
+  white-space:nowrap!important;
 }
-.creator-network-head>p{border-right:0!important}
+.creator-network-head>span::before{content:"●  CREATOR NETWORK"!important}
+.creator-network-head>strong::before{content:"●  CONTENTS"!important}
+.creator-network-head>p::before{content:"●  CAMPAIGN"!important}
 .creator-network-head>span::after,
 .creator-network-head>strong::after,
 .creator-network-head>p::after{
+  position:static!important;
   display:block!important;
   margin-top:13px!important;
   color:#11100E!important;
+  font-family:"Pretendard Variable","Pretendard",sans-serif!important;
   font-size:clamp(40px,3.4vw,58px)!important;
   font-weight:700!important;
   line-height:.92!important;
@@ -174,37 +188,10 @@ body #platforms.market-network-v2 .market-map{
   content:"+1." counter(network-decimal) "K"!important;
   animation:luen-network-count 1s cubic-bezier(.2,.75,.25,1) both;
 }
-.creator-network-head>strong{
-  font-size:0!important;
-  color:transparent!important;
-}
-.creator-network-head>strong::before{
-  content:"CONTENTS"!important;
-  position:static!important;
-  display:block!important;
-  color:#D96532!important;
-  font-size:11px!important;
-  font-weight:700!important;
-  line-height:1!important;
-  letter-spacing:.13em!important;
-}
 .creator-network-head>strong::after{
-  counter-reset:content-decimal var(--content-decimal);
-  content:"+2." counter(content-decimal) "K"!important;
+  counter-reset:content var(--content-count);
+  content:"+" counter(content)!important;
   animation:luen-content-count 1s cubic-bezier(.2,.75,.25,1) both;
-}
-.creator-network-head>p{
-  font-size:0!important;
-  color:transparent!important;
-}
-.creator-network-head>p::before{
-  content:"CAMPAIGN"!important;
-  display:block!important;
-  color:#D96532!important;
-  font-size:11px!important;
-  font-weight:700!important;
-  line-height:1!important;
-  letter-spacing:.13em!important;
 }
 .creator-network-head>p::after{
   counter-reset:campaign var(--campaign-count);
@@ -212,12 +199,12 @@ body #platforms.market-network-v2 .market-map{
   animation:luen-campaign-count 1s cubic-bezier(.2,.75,.25,1) both;
 }
 @keyframes luen-network-count{from{--network-decimal:0}to{--network-decimal:3}}
-@keyframes luen-content-count{from{--content-decimal:0}to{--content-decimal:7}}
-@keyframes luen-campaign-count{from{--campaign-count:0}to{--campaign-count:500}}
+@keyframes luen-content-count{from{--content-count:0}to{--content-count:600}}
+@keyframes luen-campaign-count{from{--campaign-count:0}to{--campaign-count:280}}
 @media(prefers-reduced-motion:reduce){
   .creator-network-head>span::after{--network-decimal:3;animation:none!important}
-  .creator-network-head>strong::after{--content-decimal:7;animation:none!important}
-  .creator-network-head>p::after{--campaign-count:500;animation:none!important}
+  .creator-network-head>strong::after{--content-count:600;animation:none!important}
+  .creator-network-head>p::after{--campaign-count:280;animation:none!important}
 }
 @media(max-width:767px){
   .creator-network-head>span,
@@ -225,11 +212,13 @@ body #platforms.market-network-v2 .market-map{
   .creator-network-head>p{
     min-height:88px!important;
     padding:16px 12px!important;
-    font-size:8px!important;
-    letter-spacing:.09em!important;
   }
+  .creator-network-head>span::before,
   .creator-network-head>strong::before,
-  .creator-network-head>p::before{font-size:8px!important;letter-spacing:.09em!important}
+  .creator-network-head>p::before{
+    font-size:8px!important;
+    letter-spacing:.07em!important;
+  }
   .creator-network-head>span::after,
   .creator-network-head>strong::after,
   .creator-network-head>p::after{
