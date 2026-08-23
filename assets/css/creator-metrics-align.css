@@ -82,13 +82,13 @@
   .creator-network-head>p::before{font-size:7px!important;letter-spacing:.035em!important}
 }
 
-/* PRODUCTION AUDIT · keep late-created proof visible and remove stale flex ordering. */
+/* PRODUCTION AUDIT · keep late-created proof visible and hide the retired JP/KR map before runtime removes it. */
 html body .case-studies .case-offline-activation.sr{
   opacity:1!important;
   transform:none!important;
 }
 html body main#top>.identity-platform-section{
-  order:0!important;
+  display:none!important;
 }
 
 /* PROJECT INQUIRY · final conversion copy is render-ready before runtime helpers load. */
