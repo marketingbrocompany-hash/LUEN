@@ -1,0 +1,40 @@
+/* FIRST PAINT THEME · prevent dark-to-ivory flash before runtime styles load */
+:root{
+  --bg:#F5F3EE;
+  --bg-2:#FAF9F6;
+  --surface:#FFFFFF;
+  --surface-2:#FAF9F6;
+  --surface-3:#F5F3EE;
+  --line:#DCD8D0;
+  --line-strong:#C9C4BA;
+  --orange:#D96532;
+  --orange-2:#E98250;
+  --orange-soft:rgba(217,101,50,.14);
+  --cream:#F5F3EE;
+  --cream-2:#E9E6DF;
+  --ink:#11100E;
+  --text:#171614;
+  --muted:#77736C;
+  --muted-2:#9B968D;
+  --white:#FFFFFF;
+}
+html,body,main,.hero{background:#F5F3EE!important;color:#171614!important}
+.top-strip{background:#F5F3EE!important;border-color:#DCD8D0!important}
+.top-strip .container,.top-strip-set span{color:#77736C!important}
+.top-strip b,.top-strip-set b{color:#D96532!important}
+nav{color:#171614!important}
+nav.scrolled{background:rgba(245,243,238,.96)!important;border-color:#DCD8D0!important}
+.logo-word{color:#11100E!important}
+.logo-signal{background:#D96532!important}
+.nav-links a{color:#77736C!important}
+.nav-contact{color:#D96532!important;border-color:#D96532!important;background:transparent!important}
+.hamburger{border-color:#DCD8D0!important;background:transparent!important}
+.hamburger span{background:#171614!important}
+.mobile-menu{background:rgba(245,243,238,.99)!important;color:#171614!important}
+.hero::before,.hero-grid{display:none!important}
+.hero-kicker,.hero h1 .line-2{color:#D96532!important}
+.hero h1{color:#11100E!important}
+.hero-desc,.hero-meta{color:#77736C!important}
+.hero-desc strong{color:#171614!important}
+.btn-primary{background:#D96532!important;color:#FFFFFF!important}
+.btn-secondary{border-color:#171614!important;color:#171614!important;background:transparent!important}
