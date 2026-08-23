@@ -111,3 +111,18 @@
 @media(max-width:420px){
   #youtube .luen-content-video .luen-content-video-copy h3::before{font-size:17px!important}
 }
+
+/* DESKTOP HERO · keep the campaign promise on exactly three lines. */
+@media(min-width:768px){
+  .hero h1{
+    --hero-line-size:clamp(48px,3.55vw,62px)!important;
+    font-size:var(--hero-line-size)!important;
+    line-height:.99!important;
+    max-width:none!important;
+  }
+  .hero h1>span:first-child,
+  .hero h1 .line-2::before,
+  .hero h1 .line-2::after{
+    white-space:nowrap!important;
+  }
+}
