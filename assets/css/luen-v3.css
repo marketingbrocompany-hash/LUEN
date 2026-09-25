@@ -403,8 +403,7 @@ main#top>.brand-wall .brand-set::after{
   box-shadow:none!important;
   transform:none!important;
 }
-main#top>.brand-wall .client-logo:hover,
-main#top>.brand-wall .brand-set::after:hover{
+main#top>.brand-wall .client-logo:hover{
   color:var(--luen-ink)!important;
   background:transparent!important;
   transform:none!important;
