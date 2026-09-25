@@ -36,17 +36,32 @@
 
   const nav=document.getElementById('nav');
   const floatCta=document.getElementById('floatCta');
+  const contactSection=document.getElementById('contact');
   const scrollProgress=document.getElementById('scrollProgress');
+  let contactVisible=false;
   let ticking=false;
+
+  function syncFloatCta(){
+    if(!floatCta)return;
+    const pastHero=window.scrollY>window.innerHeight*.72;
+    floatCta.classList.toggle('show',pastHero&&!contactVisible);
+  }
+
+  if(contactSection&&'IntersectionObserver' in window){
+    new IntersectionObserver(entries=>{
+      contactVisible=Boolean(entries[0]?.isIntersecting);
+      syncFloatCta();
+    },{threshold:.06}).observe(contactSection);
+  }
 
   function onScroll(){
     if(ticking) return;
     ticking=true;
     requestAnimationFrame(()=>{
-      nav.classList.toggle('scrolled',window.scrollY>40);
-      floatCta.classList.toggle('show',window.scrollY>window.innerHeight*.72);
+      nav?.classList.toggle('scrolled',window.scrollY>40);
+      syncFloatCta();
       const maxScroll=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
-      scrollProgress.style.transform='scaleX('+Math.min(1,window.scrollY/maxScroll)+')';
+      if(scrollProgress)scrollProgress.style.transform='scaleX('+Math.min(1,window.scrollY/maxScroll)+')';
       ticking=false;
     });
   }
