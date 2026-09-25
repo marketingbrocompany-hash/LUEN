@@ -5885,3 +5885,126 @@ html body #client-voice .voice-dots button{
 html body #client-voice .voice-dots button.active{
   background:#D56F40!important;
 }
+
+
+/* ============================================================
+   FAQ CONTACT V3.3 · WARM FINAL CHAPTER · 2026-09-25
+   End the page with a calm Sand FAQ → Warm Ivory inquiry flow.
+   Keep all accordion, consent and submission behavior unchanged.
+   ============================================================ */
+
+/* FAQ */
+html body main#top>#faq.faq{
+  border-top:1px solid rgba(93,76,64,.14)!important;
+  background:#E4D7C6!important;
+  color:#2A2521!important;
+}
+html body #faq .faq-intro .eyebrow{
+  color:#C96338!important;
+}
+html body #faq .faq-intro .section-title{
+  color:#2A2521!important;
+}
+html body #faq .faq-list{
+  border-top-color:rgba(93,76,64,.42)!important;
+}
+html body #faq .faq-item{
+  border-bottom-color:rgba(93,76,64,.16)!important;
+}
+html body #faq .faq-q{
+  color:#2A2521!important;
+}
+html body #faq .faq-icon{
+  color:#C96338!important;
+}
+html body #faq .faq-a p{
+  color:#6F655C!important;
+}
+html body #faq .faq-conversion{
+  border-top-color:rgba(93,76,64,.18)!important;
+}
+html body #faq .faq-conversion p{
+  color:#6F655C!important;
+}
+html body #faq .faq-conversion p strong{
+  color:#2A2521!important;
+}
+html body #faq .faq-more-toggle{
+  border-top-color:rgba(93,76,64,.16)!important;
+  border-bottom-color:rgba(93,76,64,.16)!important;
+  color:#665B52!important;
+}
+html body #faq .faq-more-toggle:hover{
+  color:#C96338!important;
+}
+html body #faq .faq-more-toggle:focus-visible{
+  outline-color:#D56F40!important;
+}
+
+/* CONTACT */
+html body main#top>#contact.contact{
+  border-top-color:rgba(93,76,64,.14)!important;
+  background:#F3EEE5!important;
+  color:#2A2521!important;
+}
+html body #contact .eyebrow{
+  color:#C96338!important;
+}
+html body #contact .section-title{
+  color:#2A2521!important;
+}
+html body #contact .section-title em{
+  color:#D56F40!important;
+}
+html body #contact .contact-copy{
+  color:#6F655C!important;
+}
+html body #contact .contact-form{
+  border-color:rgba(93,76,64,.18)!important;
+  background:#FFF9F1!important;
+}
+html body #contact .inquiry-reassurance{
+  border-left-color:#D56F40!important;
+}
+html body #contact .inquiry-reassurance>span{
+  color:#C96338!important;
+}
+html body #contact .inquiry-reassurance strong{
+  color:#2A2521!important;
+}
+html body #contact .inquiry-reassurance p{
+  color:#6F655C!important;
+}
+html body #contact .field label{
+  color:#4F4640!important;
+}
+html body #contact .field-note,
+html body #contact .privacy-check-copy small,
+html body #contact .privacy-details summary{
+  color:#7A6E65!important;
+}
+html body #contact .field input,
+html body #contact .field select,
+html body #contact .field textarea{
+  border-color:#D7CCBD!important;
+  background:#FFFCF7!important;
+  color:#2A2521!important;
+}
+html body #contact .field input:focus,
+html body #contact .field select:focus,
+html body #contact .field textarea:focus{
+  border-color:#D56F40!important;
+  box-shadow:0 0 0 2px rgba(213,111,64,.09)!important;
+}
+html body #contact .privacy-consent-group{
+  border-top-color:rgba(93,76,64,.16)!important;
+}
+html body #contact .privacy-consent-item{
+  border-bottom-color:rgba(93,76,64,.13)!important;
+}
+html body #contact .privacy-check-copy b{
+  color:#4F4640!important;
+}
+html body #contact .privacy-detail-body{
+  background:#EEE6DA!important;
+}
