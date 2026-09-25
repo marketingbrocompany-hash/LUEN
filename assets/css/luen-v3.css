@@ -4551,3 +4551,160 @@ html body main#top>.brand-wall .client-logo:hover{
     min-height:148px!important;
   }
 }
+
+
+/* ============================================================
+   HERO WARM EDITORIAL PALETTE V3.3 · 2026-09-25
+   Kinfolk-inspired warmth without copying the brand:
+   Warm Ivory + Cacao + Burnt Orange + Warm Ink.
+   ============================================================ */
+
+html body main#top>.hero{
+  --hero-canvas:#F3EEE5;
+  --hero-sand:#E8DED0;
+  --hero-ink:#2A2521;
+  --hero-ink-soft:#3E3732;
+  --hero-muted:#766C63;
+  --hero-line:#D7CCBD;
+  --hero-cacao:#4B392F;
+  --hero-cacao-2:#5A4538;
+  --hero-cream:#F1E8DB;
+  --hero-orange:#D56F40;
+  --hero-orange-hover:#C96338;
+  background:var(--hero-canvas)!important;
+  color:var(--hero-ink)!important;
+}
+
+/* NAV — same warm paper as the Hero */
+html body #nav{
+  border-bottom-color:rgba(89,68,55,.08)!important;
+  background:rgba(243,238,229,.95)!important;
+}
+html body #nav .logo{
+  color:var(--hero-ink,#2A2521)!important;
+}
+html body #nav .logo-signal{
+  background:#D56F40!important;
+}
+html body #nav .nav-links a{
+  color:#6E645B!important;
+}
+html body #nav .nav-links a:hover{
+  color:#2A2521!important;
+}
+html body #nav .nav-client-login{
+  border-color:#D7CCBD!important;
+  color:#4A423C!important;
+}
+html body #nav .nav-contact{
+  border-color:rgba(213,111,64,.72)!important;
+  color:#C96338!important;
+}
+html body #nav .nav-contact:hover{
+  border-color:#D56F40!important;
+  background:#D56F40!important;
+  color:#FFF9F1!important;
+}
+
+/* HERO TYPOGRAPHY */
+html body main#top>.hero .hero-kicker{
+  color:#7B7168!important;
+}
+html body main#top>.hero .hero-kicker::before{
+  background:rgba(74,57,47,.34)!important;
+}
+html body main#top>.hero h1,
+html body main#top>.hero h1>span,
+html body main#top>.hero h1 .line-2{
+  color:#2A2521!important;
+  -webkit-text-fill-color:#2A2521!important;
+}
+html body main#top>.hero h1 .line-3 em{
+  color:#D56F40!important;
+  -webkit-text-fill-color:#D56F40!important;
+}
+html body main#top>.hero .hero-desc{
+  color:#6F655C!important;
+}
+html body main#top>.hero .hero-desc strong{
+  color:#2A2521!important;
+}
+
+/* ACTIONS */
+html body main#top>.hero .hero-cta .btn-primary{
+  border-color:#D56F40!important;
+  background:#D56F40!important;
+  color:#FFF9F1!important;
+}
+html body main#top>.hero .hero-cta .btn-primary:hover{
+  border-color:#C96338!important;
+  background:#C96338!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary{
+  color:#453D37!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary:hover,
+html body main#top>.hero .hero-cta .btn-secondary span{
+  color:#C96338!important;
+}
+
+/* CACAO MEDIA FRAME — warm contrast instead of black */
+html body main#top>.hero .creator-network-showcase{
+  border-color:rgba(75,57,47,.18)!important;
+  background:#4B392F!important;
+}
+html body main#top>.hero .creator-network-showcase::after{
+  background:#D56F40!important;
+}
+html body main#top>.hero .creator-network-head{
+  border-bottom-color:rgba(241,232,219,.12)!important;
+  background:#4B392F!important;
+}
+html body main#top>.hero .creator-network-head>span{
+  color:rgba(241,232,219,.58)!important;
+}
+html body main#top>.hero .creator-network-head>strong{
+  color:rgba(241,232,219,.84)!important;
+}
+html body main#top>.hero .creator-profile-viewport{
+  background:#4B392F!important;
+}
+html body main#top>.hero .creator-profile-card,
+html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+html body main#top>.hero .creator-profile-card:nth-child(3n){
+  border-color:rgba(241,232,219,.14)!important;
+  background:#5A4538!important;
+}
+html body main#top>.hero .creator-profile-card img{
+  filter:saturate(.90) contrast(.97) brightness(1.025) sepia(.035)!important;
+}
+html body main#top>.hero .creator-profile-card:hover img{
+  filter:saturate(.96) contrast(.99) brightness(1.04) sepia(.025)!important;
+}
+
+/* SELECTED PARTNERS — softer sand transition into proof */
+html body main#top>.brand-wall{
+  border-bottom-color:rgba(89,68,55,.09)!important;
+  background:#EEE6DA!important;
+}
+html body main#top>.brand-wall .brand-wall-micro-label{
+  color:#81766C!important;
+}
+html body main#top>.brand-wall .client-logo,
+html body main#top>.brand-wall .brand-set::after{
+  border-right-color:rgba(89,68,55,.10)!important;
+  color:rgba(74,57,47,.60)!important;
+}
+html body main#top>.brand-wall .client-logo:hover{
+  color:rgba(42,37,33,.82)!important;
+}
+
+/* Mobile keeps the same warm hierarchy. */
+@media(max-width:767px){
+  html body #nav{
+    background:rgba(243,238,229,.97)!important;
+  }
+  html body main#top>.hero .creator-network-showcase{
+    border-color:rgba(75,57,47,.16)!important;
+  }
+}
