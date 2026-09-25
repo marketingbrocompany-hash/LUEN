@@ -105,14 +105,14 @@
     });
   }
 
-  /* CROSS-BORDER PLATFORM MIX · keep methodology after proof and solution. */
+  /* CROSS-BORDER PLATFORM MIX · place operating advantage after the real proposal proof. */
   const identitySection=document.querySelector('.identity-platform-section');
   const identityShell=identitySection?.querySelector('.identity-platform-shell');
   const identityTop=identitySection?.querySelector('.identity-top');
   const identitySignature=identitySection?.querySelector('.identity-signature');
   const platformNetwork=identitySection?.querySelector('#platforms');
-  const solutionSection=document.querySelector('#solution');
-  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&solutionSection){
+  const guideProofSection=document.querySelector('#guide-proof');
+  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&guideProofSection){
     identityTop.innerHTML=`
       <div class="eyebrow">Cross-border Advantage</div>
       <div class="luen-advantage-heading">
@@ -139,15 +139,11 @@
     advantageShell.className='container identity-platform-shell';
     advantageShell.append(identityTop,advantageGrid);
     advantageSection.appendChild(advantageShell);
-    solutionSection.insertAdjacentElement('afterend',advantageSection);
+    guideProofSection.insertAdjacentElement('afterend',advantageSection);
 
     /* The old JP/KR platform map is intentionally removed after its content is consolidated above. */
     identitySection.remove();
   }
-
-  /* CAMPAIGN PROCESS · refine the headline copy without altering the timeline. */
-  const processTitle=document.querySelector('#process .process-v2-head .section-title');
-  if(processTitle)processTitle.innerHTML='실행은 꼼꼼하고<br/><em>브랜드의 경험은 단순하게.</em>';
 
   /* FAQ · normalize the initial state before site-core binds accordion behavior. */
   document.querySelectorAll('.faq-item').forEach(item=>{
