@@ -5138,3 +5138,76 @@ html body main#top>.outcome-strip .proof-result-item:hover .proof-case-link{
     color:#5E534B!important;
   }
 }
+
+
+/* ============================================================
+   CAPABILITY V3.3 · QUIET WARM SCALE · 2026-09-25
+   Operating scale supports the outcome proof without turning into
+   another dashboard. Keep the 4 metrics, soften the visual weight.
+   ============================================================ */
+html body main#top>section.proof-strip.capability-strip{
+  background:#F3EEE5!important;
+}
+html body main#top>.capability-strip .capability-shell{
+  border-bottom-color:rgba(93,76,64,.16)!important;
+}
+html body main#top>.capability-strip .capability-label{
+  border-top-color:rgba(93,76,64,.38)!important;
+}
+html body main#top>.capability-strip .capability-label span{
+  color:#C96338!important;
+}
+html body main#top>.capability-strip .capability-label p{
+  color:#7B7067!important;
+}
+html body main#top>.capability-strip .proof-grid{
+  border-top-color:rgba(93,76,64,.18)!important;
+}
+html body main#top>.capability-strip .proof-item{
+  border-right-color:rgba(93,76,64,.14)!important;
+}
+html body main#top>.capability-strip .proof-item:nth-child(n+3){
+  border-top-color:rgba(93,76,64,.14)!important;
+}
+html body main#top>.capability-strip .proof-kicker{
+  color:#8A7C71!important;
+}
+html body main#top>.capability-strip .proof-item strong{
+  color:#2A2521!important;
+  font-weight:720!important;
+}
+html body main#top>.capability-strip .proof-item p{
+  color:#746960!important;
+}
+
+/* Desktop: slightly more breathing room so the metrics read as editorial facts. */
+@media(min-width:1101px){
+  html body main#top>.capability-strip .capability-shell{
+    grid-template-columns:210px minmax(0,1fr)!important;
+    gap:34px!important;
+  }
+  html body main#top>.capability-strip .capability-label{
+    padding-top:25px!important;
+    padding-bottom:22px!important;
+  }
+  html body main#top>.capability-strip .proof-item{
+    min-height:122px!important;
+    padding:25px 20px 18px!important;
+  }
+  html body main#top>.capability-strip .proof-item strong{
+    font-size:clamp(27px,2.15vw,34px)!important;
+  }
+}
+
+/* Mobile stays two columns: compact enough to scan without feeling like cards. */
+@media(max-width:767px){
+  html body main#top>.capability-strip .capability-label{
+    border-top-color:rgba(93,76,64,.30)!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(odd){
+    border-right-color:rgba(93,76,64,.14)!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(n+3){
+    border-top-color:rgba(93,76,64,.14)!important;
+  }
+}
