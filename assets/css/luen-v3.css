@@ -1248,3 +1248,234 @@ html body main#top>#cases.case-studies{
     justify-content:center!important;
   }
 }
+
+
+/* ============================================================
+   SELECTED WORK V3 · MEDIA REEL
+   The work itself carries the brand energy.
+   ============================================================ */
+html body main#top>#work.work{
+  padding:var(--luen-section-y) 0 clamp(88px,8vw,124px)!important;
+  background:var(--luen-espresso)!important;
+  background-image:none!important;
+  color:#F5F3EE!important;
+}
+#work .work-head{
+  display:block!important;
+}
+#work .work-head .eyebrow{
+  color:var(--luen-orange-bright)!important;
+}
+#work .work-story-title{
+  max-width:950px!important;
+  color:#F5F3EE!important;
+  font-size:clamp(48px,5vw,68px)!important;
+  font-weight:720!important;
+  line-height:1.03!important;
+  letter-spacing:-.055em!important;
+}
+#work .work-story-title em{
+  color:var(--luen-orange-bright)!important;
+  font-style:normal!important;
+}
+#work .work-curation-note{
+  max-width:560px!important;
+  margin-top:24px!important;
+  color:rgba(245,243,238,.54)!important;
+  font-size:14px!important;
+  line-height:1.75!important;
+}
+#work .portfolio{
+  margin-top:72px!important;
+  gap:78px!important;
+}
+#work .portfolio-lane{
+  padding:0!important;
+}
+#work .portfolio-head{
+  margin-bottom:22px!important;
+  padding-top:16px!important;
+  border-top:1px solid var(--luen-line-dark)!important;
+}
+#work .portfolio-head span{
+  margin-bottom:9px!important;
+  color:var(--luen-orange-bright)!important;
+  font-size:10px!important;
+  letter-spacing:.11em!important;
+}
+#work .portfolio-head h3{
+  color:#F5F3EE!important;
+  font-size:clamp(22px,2vw,30px)!important;
+  font-weight:650!important;
+  letter-spacing:-.03em!important;
+}
+#work .portfolio-head small{
+  color:rgba(245,243,238,.36)!important;
+  font-size:10px!important;
+  letter-spacing:.10em!important;
+}
+
+/* remove the generic carousel-card feel */
+#work .portfolio-viewport{
+  padding:0 0 4px!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)!important;
+  mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)!important;
+}
+#work .portfolio-viewport::before,
+#work .portfolio-viewport::after{
+  display:none!important;
+}
+#work .portfolio-set{
+  gap:16px!important;
+  padding-right:16px!important;
+}
+#work .portfolio-card{
+  flex-basis:clamp(390px,36vw,560px)!important;
+  aspect-ratio:16/9!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:var(--luen-radius-xs)!important;
+  background:#221915!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+#work .portfolio-card.portrait{
+  flex-basis:clamp(220px,18vw,290px)!important;
+  aspect-ratio:9/16!important;
+  border-radius:var(--luen-radius-xs)!important;
+}
+#work .portfolio-card:hover{
+  transform:none!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+#work .portfolio-card img{
+  filter:saturate(.96) contrast(1.02) brightness(.94)!important;
+  transition:transform .7s var(--luen-ease),filter .35s ease!important;
+}
+#work .portfolio-card:hover img{
+  transform:scale(1.018)!important;
+  filter:saturate(1.02) contrast(1.02) brightness(.98)!important;
+}
+#work .portfolio-card::after{
+  background:linear-gradient(180deg,transparent 54%,rgba(13,9,7,.78) 100%)!important;
+}
+#work .portfolio-country{
+  top:12px!important;
+  left:12px!important;
+  min-width:0!important;
+  height:auto!important;
+  padding:7px 8px!important;
+  border:0!important;
+  border-radius:var(--luen-radius-xs)!important;
+  background:rgba(17,16,14,.76)!important;
+  color:#fff!important;
+  font-size:9px!important;
+  letter-spacing:.11em!important;
+  backdrop-filter:blur(8px)!important;
+}
+#work .portfolio-meta{
+  left:16px!important;
+  right:16px!important;
+  bottom:15px!important;
+  align-items:flex-end!important;
+}
+#work .portfolio-meta span{
+  color:rgba(245,243,238,.68)!important;
+  font-size:9.5px!important;
+  letter-spacing:.08em!important;
+}
+#work .portfolio-meta b{
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:600!important;
+  letter-spacing:-.01em!important;
+}
+
+/* a very small offset creates an editorial film-strip rhythm */
+@media(min-width:901px){
+  #work .portfolio-lane:first-child .portfolio-card:nth-child(3n+2){
+    transform:translateY(12px)!important;
+  }
+  #work .portfolio-lane:first-child .portfolio-card:nth-child(3n){
+    transform:translateY(5px)!important;
+  }
+  #work .portfolio-lane:nth-child(2) .portfolio-card:nth-child(2n){
+    transform:translateY(14px)!important;
+  }
+  #work .portfolio-lane:first-child .portfolio-viewport{
+    padding-bottom:18px!important;
+  }
+  #work .portfolio-lane:nth-child(2) .portfolio-viewport{
+    padding-bottom:20px!important;
+  }
+}
+
+@media(max-width:900px){
+  #work .work-story-title{
+    font-size:clamp(42px,7vw,58px)!important;
+  }
+  #work .portfolio{
+    margin-top:58px!important;
+    gap:62px!important;
+  }
+  #work .portfolio-card{
+    flex-basis:min(76vw,470px)!important;
+  }
+  #work .portfolio-card.portrait{
+    flex-basis:min(43vw,260px)!important;
+  }
+}
+
+@media(max-width:767px){
+  html body main#top>#work.work{
+    padding-top:78px!important;
+    padding-bottom:78px!important;
+  }
+  #work .work-story-title{
+    font-size:clamp(36px,10vw,45px)!important;
+    line-height:1.06!important;
+  }
+  #work .work-curation-note{
+    margin-top:18px!important;
+    font-size:13px!important;
+  }
+  #work .portfolio{
+    margin-top:48px!important;
+    gap:50px!important;
+  }
+  #work .portfolio-head{
+    align-items:flex-end!important;
+    margin-bottom:16px!important;
+  }
+  #work .portfolio-head h3{
+    font-size:21px!important;
+  }
+  #work .portfolio-head small{
+    display:none!important;
+  }
+  #work .portfolio-viewport{
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)!important;
+    mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)!important;
+  }
+  #work .portfolio-set{
+    gap:10px!important;
+    padding-right:10px!important;
+  }
+  #work .portfolio-card{
+    flex-basis:min(84vw,360px)!important;
+  }
+  #work .portfolio-card.portrait{
+    flex-basis:min(56vw,220px)!important;
+  }
+  #work .portfolio-meta{
+    left:12px!important;
+    right:12px!important;
+    bottom:11px!important;
+    display:block!important;
+  }
+  #work .portfolio-meta b{
+    display:block!important;
+    margin-top:4px!important;
+  }
+}
