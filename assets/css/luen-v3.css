@@ -5408,3 +5408,52 @@ html body #cases.case-studies .case-support-grid .case-card-cta:hover i{
     margin-top:17px!important;
   }
 }
+
+
+/* ============================================================
+   WHAT LUEN DOES V3.3 · WARM EDITORIAL METHOD · 2026-09-25
+   Keep the sticky decision-framework layout; align its palette and motion
+   with the calmer warm editorial language established above.
+   ============================================================ */
+html body main#top>#solution.inbound-method{
+  background:#F5F0E8!important;
+}
+html body main#top>#solution .inbound-method-intro .eyebrow{
+  color:#C96338!important;
+}
+html body main#top>#solution .inbound-method-intro .section-title{
+  color:#2A2521!important;
+}
+html body main#top>#solution .inbound-method-intro .section-title em{
+  color:#D56F40!important;
+}
+html body main#top>#solution .inbound-method-intro .section-copy{
+  color:#6F655C!important;
+}
+html body main#top>#solution .inbound-method-list{
+  border-top-color:#D7CCBD!important;
+}
+html body main#top>#solution .inbound-method-item{
+  border-bottom-color:#D7CCBD!important;
+}
+html body main#top>#solution .inbound-method-index{
+  color:#C96338!important;
+}
+html body main#top>#solution .inbound-method-item h3{
+  color:#2A2521!important;
+}
+html body main#top>#solution .inbound-method-item p{
+  color:#6F655C!important;
+}
+html body main#top>#solution .inbound-method-item>div,
+html body main#top>#solution .inbound-method-item:hover>div{
+  transform:none!important;
+  transition:none!important;
+}
+
+@media(max-width:767px){
+  html body main#top>#solution.inbound-method{
+    padding-top:78px!important;
+    padding-bottom:72px!important;
+  }
+}
