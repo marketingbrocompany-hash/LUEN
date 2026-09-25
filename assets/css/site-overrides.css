@@ -818,3 +818,20 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
   .case-support-grid{gap:16px;margin-top:16px}
   .case-studies .case-support-grid .case-proof-card .case-body{padding:24px 22px!important}
 }
+
+
+/* PERFORMANCE FOLLOW-UP · explain how LUEN uses post-upload growth data. */
+.performance-followup{
+  margin-top:12px;
+  max-width:520px;
+  color:#A99F94;
+  font-size:12px;
+  line-height:1.75;
+}
+@media(max-width:767px){
+  .performance-followup{
+    margin-top:10px;
+    font-size:11.5px;
+    line-height:1.7;
+  }
+}
