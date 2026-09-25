@@ -4798,7 +4798,7 @@ html body main#top>.brand-wall .brand-viewport{
 
 html body main#top>.brand-wall .brand-track{
   width:100%!important;
-  transform:none!important;
+  transform:translate3d(0,0,0);
   will-change:auto!important;
 }
 
