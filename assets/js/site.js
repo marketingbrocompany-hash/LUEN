@@ -114,14 +114,14 @@
     });
   }
 
-  /* CROSS-BORDER PLATFORM MIX · platform cards live before Case Studies. */
+  /* CROSS-BORDER PLATFORM MIX · keep methodology after proof and solution. */
   const identitySection=document.querySelector('.identity-platform-section');
   const identityShell=identitySection?.querySelector('.identity-platform-shell');
   const identityTop=identitySection?.querySelector('.identity-top');
   const identitySignature=identitySection?.querySelector('.identity-signature');
   const platformNetwork=identitySection?.querySelector('#platforms');
-  const caseStudies=document.querySelector('#cases');
-  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&caseStudies){
+  const solutionSection=document.querySelector('#solution');
+  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&solutionSection){
     identityTop.innerHTML=`
       <div class="eyebrow">Cross-border Advantage</div>
       <div class="luen-advantage-heading">
@@ -148,7 +148,7 @@
     advantageShell.className='container identity-platform-shell';
     advantageShell.append(identityTop,advantageGrid);
     advantageSection.appendChild(advantageShell);
-    caseStudies.insertAdjacentElement('afterend',advantageSection);
+    solutionSection.insertAdjacentElement('afterend',advantageSection);
 
     /* The old JP/KR platform map is intentionally removed after its content is consolidated above. */
     identitySection.remove();
