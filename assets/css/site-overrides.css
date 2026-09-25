@@ -303,3 +303,69 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
     white-space:nowrap!important;
   }
 }
+
+
+/* =========================================================
+   INBOUND CONVERSION P1 · 2026-09-25
+   Keep the current visual system while making inquiry paths explicit.
+   ========================================================= */
+.faq .faq-conversion{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  margin-top:24px!important;
+  padding:24px 26px!important;
+  border:1px solid #D8D2C7!important;
+  border-radius:18px!important;
+  background:#F0EDE6!important;
+}
+.faq .faq-conversion p{
+  margin:0!important;
+  max-width:620px!important;
+  color:#5E5A54!important;
+}
+.faq .faq-conversion p strong{color:#171614!important}
+.faq .faq-cta{
+  flex:0 0 auto!important;
+  min-height:48px!important;
+  padding:0 18px!important;
+  border-radius:999px!important;
+  background:#D96532!important;
+  color:#fff!important;
+}
+
+.float-cta{
+  width:auto!important;
+  min-width:0!important;
+  height:52px!important;
+  padding:0 18px!important;
+  border-radius:999px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  color:#211009!important;
+  font-size:13px!important;
+  font-weight:750!important;
+  letter-spacing:-.02em!important;
+}
+.float-cta-label{white-space:nowrap}
+.float-cta-arrow{font-family:"Inter",sans-serif;font-size:15px;line-height:1}
+
+@media(max-width:767px){
+  .faq .faq-conversion{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:16px!important;
+    padding:20px 18px!important;
+  }
+  .faq .faq-cta{width:100%!important;justify-content:center!important}
+  .float-cta{
+    right:14px!important;
+    bottom:14px!important;
+    height:48px!important;
+    padding:0 15px!important;
+    font-size:12px!important;
+  }
+}
