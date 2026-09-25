@@ -2928,3 +2928,53 @@ html body #youtube .content-design-flow>article:last-child{
     border-bottom:0!important;
   }
 }
+
+
+/* ============================================================
+   V3 CASE / CONTENT SPECIFICITY FIXES · 2026-09-25
+   Retire old rounded case media and CSS-generated content copy.
+   ============================================================ */
+
+/* CORE EXPERTISE · only the semantic HTML title should render. */
+html body #youtube .luen-content-video .luen-content-video-copy h3::before{
+  content:none!important;
+  display:none!important;
+}
+
+/* SUPPORTING CASES · keep V3's flat editorial media treatment. */
+html body #cases.case-studies .case-support-grid .case-proof-card .case-image{
+  aspect-ratio:16/9!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:var(--luen-radius-xs)!important;
+  overflow:hidden!important;
+  clip-path:none!important;
+  background:var(--luen-surface)!important;
+}
+html body #cases.case-studies .case-support-grid .case-proof-card .case-image img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:var(--luen-radius-xs)!important;
+  clip-path:none!important;
+}
+html body #cases.case-studies .case-support-grid .case-proof-card .case-image>span{
+  border-radius:var(--luen-radius-xs)!important;
+  overflow:visible!important;
+}
+html body #cases.case-studies .case-support-grid .case-proof-card .case-body{
+  min-height:0!important;
+  height:auto!important;
+  padding:22px 0 0!important;
+}
+@media(max-width:767px){
+  html body #cases.case-studies .case-support-grid .case-proof-card .case-image,
+  html body #cases.case-studies .case-support-grid .case-proof-card .case-image img{
+    border-radius:var(--luen-radius-xs)!important;
+    clip-path:none!important;
+  }
+  html body #cases.case-studies .case-support-grid .case-proof-card .case-body{
+    padding:18px 0 0!important;
+  }
+}
