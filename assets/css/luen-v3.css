@@ -3334,51 +3334,6 @@ html body main#top>.hero .creator-network-foot i{
   opacity:.72!important;
 }
 
-/* Movement becomes a brand signal between Hero and proof. */
-html body main#top>.marquee{
-  order:-15!important;
-  display:block!important;
-  min-height:36px!important;
-  overflow:hidden!important;
-  border:0!important;
-  background:var(--luen-orange)!important;
-}
-html body main#top>.marquee .marquee-track{
-  display:flex!important;
-  width:max-content!important;
-  padding:11px 0!important;
-  will-change:transform!important;
-}
-html body main#top>.marquee .marquee-set{
-  display:flex!important;
-  flex:0 0 auto!important;
-  align-items:center!important;
-  white-space:nowrap!important;
-}
-html body main#top>.marquee .marquee-track span{
-  position:relative!important;
-  padding:0 24px!important;
-  color:rgba(21,16,13,.70)!important;
-  font:750 9px/1 var(--luen-type-ui)!important;
-  letter-spacing:.12em!important;
-  text-transform:uppercase!important;
-}
-html body main#top>.marquee .marquee-track span::after{
-  content:""!important;
-  position:absolute!important;
-  right:-2px!important;
-  top:50%!important;
-  width:4px!important;
-  height:4px!important;
-  border-radius:50%!important;
-  background:rgba(21,16,13,.72)!important;
-  transform:translateY(-50%)!important;
-}
-html body main#top>.marquee .marquee-track b{
-  color:var(--luen-espresso)!important;
-  font-weight:850!important;
-}
-
 /* medium desktop */
 @media(min-width:1121px) and (max-width:1240px){
   html body main#top>.hero{
