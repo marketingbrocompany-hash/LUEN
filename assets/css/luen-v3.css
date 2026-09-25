@@ -5838,3 +5838,50 @@ html body #process .timeline-shell article p{
     border-bottom-color:rgba(93,76,64,.15)!important;
   }
 }
+
+
+/* ============================================================
+   CLIENT VOICE V3.3 · WARM TYPOGRAPHIC PROOF · 2026-09-25
+   The client words are the visual proof. Remove oversized decoration
+   and keep the carousel quiet, warm and legible.
+   ============================================================ */
+html body main#top>#client-voice.client-voice{
+  border-top-color:rgba(93,76,64,.14)!important;
+  border-bottom-color:rgba(93,76,64,.14)!important;
+  background:#EEE6DA!important;
+}
+html body #client-voice .voice-left .section-title{
+  color:#2A2521!important;
+}
+html body #client-voice .voice-left .section-title em{
+  color:#D56F40!important;
+}
+html body #client-voice .actual-voice-badge{
+  color:#C96338!important;
+}
+html body #client-voice .voice-context{
+  color:#6F655C!important;
+}
+html body #client-voice .voice-stage{
+  border-top-color:rgba(93,76,64,.42)!important;
+  border-bottom-color:rgba(93,76,64,.16)!important;
+}
+html body #client-voice .voice-stage::before{
+  content:none!important;
+  display:none!important;
+}
+html body #client-voice .voice-item>span{
+  color:#C96338!important;
+}
+html body #client-voice .voice-item blockquote{
+  color:#2A2521!important;
+}
+html body #client-voice .voice-item p{
+  color:#7A6E65!important;
+}
+html body #client-voice .voice-dots button{
+  background:rgba(93,76,64,.18)!important;
+}
+html body #client-voice .voice-dots button.active{
+  background:#D56F40!important;
+}
