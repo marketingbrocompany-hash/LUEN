@@ -5058,3 +5058,83 @@ html body main#top>.hero .hero-cta .btn-secondary:hover,
 html body main#top>.hero .hero-cta .btn-secondary span{
   color:#D56F40!important;
 }
+
+
+/* ============================================================
+   BUSINESS RESULTS V3.3 · SAND EDITORIAL PROOF · 2026-09-25
+   Keep the proof-index structure while removing the isolated dark block.
+   Warm sand creates contrast through tone, not black.
+   ============================================================ */
+html body main#top>section.proof-strip.outcome-strip{
+  background:#E4D7C6!important;
+  color:#2A2521!important;
+}
+html body main#top>.outcome-strip .outcome-head .eyebrow{
+  color:#C96338!important;
+}
+html body main#top>.outcome-strip .outcome-head h2,
+html body main#top>.outcome-strip .outcome-head h2 em{
+  color:#2A2521!important;
+}
+html body main#top>.outcome-strip .outcome-head p{
+  color:#70645B!important;
+}
+html body main#top>.outcome-strip .outcome-list{
+  border-top-color:rgba(93,76,64,.25)!important;
+}
+html body main#top>.outcome-strip .proof-result-item{
+  border-bottom-color:rgba(93,76,64,.18)!important;
+}
+html body main#top>.outcome-strip .proof-result-item:hover{
+  background:linear-gradient(90deg,rgba(255,249,241,.34),rgba(255,249,241,0) 76%)!important;
+}
+html body main#top>.outcome-strip .proof-index{
+  color:#C96338!important;
+}
+html body main#top>.outcome-strip .proof-kicker{
+  color:#8A7C71!important;
+}
+html body main#top>.outcome-strip .proof-result-item strong{
+  color:#2A2521!important;
+}
+html body main#top>.outcome-strip .proof-result-item p{
+  color:#70645B!important;
+}
+html body main#top>.outcome-strip .proof-case-link{
+  color:#665B52!important;
+}
+html body main#top>.outcome-strip .proof-case-link i{
+  color:#C96338!important;
+}
+html body main#top>.outcome-strip .proof-result-item:hover .proof-case-link{
+  color:#2A2521!important;
+}
+
+/* Slightly more editorial breathing room between headline and evidence. */
+@media(min-width:1101px){
+  html body main#top>.outcome-strip .outcome-shell{
+    gap:84px!important;
+  }
+  html body main#top>.outcome-strip .proof-result-item{
+    padding-top:30px!important;
+    padding-bottom:30px!important;
+  }
+}
+
+/* Mobile keeps the rows compact but improves scan order and touch clarity. */
+@media(max-width:767px){
+  html body main#top>section.proof-strip.outcome-strip{
+    padding-top:68px!important;
+    padding-bottom:64px!important;
+  }
+  html body main#top>.outcome-strip .outcome-shell{
+    gap:32px!important;
+  }
+  html body main#top>.outcome-strip .proof-result-item{
+    padding-top:21px!important;
+    padding-bottom:21px!important;
+  }
+  html body main#top>.outcome-strip .proof-case-link{
+    color:#5E534B!important;
+  }
+}
