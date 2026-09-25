@@ -2978,3 +2978,11 @@ html body #cases.case-studies .case-support-grid .case-proof-card .case-body{
     padding:18px 0 0!important;
   }
 }
+
+
+/* BUSINESS RESULTS · beat the legacy critical warm-canvas selector
+   (html body main#top>section[class]) with an explicit section selector. */
+html body main#top>section.proof-strip.outcome-strip{
+  background:var(--luen-espresso)!important;
+  background-image:none!important;
+}
