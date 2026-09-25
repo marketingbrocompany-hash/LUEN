@@ -6102,3 +6102,97 @@ html body footer .footer-business-info a:hover{
     font-size:10.5px!important;
   }
 }
+
+
+/* ============================================================
+   SCREENSHOT QA FIXES · 100% / 67% REVIEW · 2026-09-25
+   Fix only issues proven by the supplied real-screen captures.
+   ============================================================ */
+
+/* 1) CROSS-BORDER
+   The long English headline was entering the copy column at 100% zoom.
+   Use one editorial text column so headline and supporting copy can never collide. */
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:22px!important;
+  align-items:start!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title{
+  width:100%!important;
+  max-width:1180px!important;
+  margin:0!important;
+  font-size:clamp(48px,4.45vw,64px)!important;
+  line-height:1.025!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title em{
+  display:block!important;
+  margin-top:8px!important;
+  max-width:100%!important;
+  white-space:normal!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+  width:100%!important;
+  max-width:760px!important;
+  margin:0!important;
+  position:static!important;
+}
+
+/* 2) CORE EXPERTISE
+   Retired V8/V9 CSS still imposed min-height:520px on this five-step rail. */
+html body #youtube .yt-action-flow.content-design-flow,
+html body #youtube .yt-action-flow.content-design-flow-v9,
+html body #youtube .content-design-flow{
+  min-height:0!important;
+  height:auto!important;
+}
+@media(min-width:1101px){
+  html body #youtube .yt-action-flow.content-design-flow>article,
+  html body #youtube .yt-action-flow.content-design-flow-v9>article,
+  html body #youtube .content-design-flow>article{
+    min-height:184px!important;
+    height:auto!important;
+  }
+}
+
+/* 3) SELECTED WORK
+   Semantic H2 exists in HTML but disappeared in the real capture.
+   Explicitly restore its paint/display state above legacy title rules. */
+html body main#top>#work .work-head .work-story-title{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:static!important;
+  width:auto!important;
+  max-width:960px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:12px 0 0!important;
+  overflow:visible!important;
+  color:#2A2521!important;
+  -webkit-text-fill-color:#2A2521!important;
+  font-size:clamp(46px,4.7vw,64px)!important;
+  line-height:1.035!important;
+}
+html body main#top>#work .work-head .work-story-title>span{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  color:#2A2521!important;
+  -webkit-text-fill-color:#2A2521!important;
+  white-space:normal!important;
+}
+html body main#top>#work .work-head .work-story-title em{
+  display:inline!important;
+  color:#D56F40!important;
+  -webkit-text-fill-color:#D56F40!important;
+}
+@media(max-width:767px){
+  html body main#top>#work .work-head .work-story-title{
+    font-size:clamp(34px,9.6vw,44px)!important;
+    line-height:1.07!important;
+  }
+}
