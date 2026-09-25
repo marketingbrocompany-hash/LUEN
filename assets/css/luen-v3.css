@@ -3536,3 +3536,360 @@ html body main#top>.marquee{
     transform:none!important;
   }
 }
+
+
+/* ============================================================
+   BUSINESS RESULTS V3.2 · EDITORIAL PROOF INDEX
+   Results read like evidence, not four equal KPI cards.
+   ============================================================ */
+html body main#top>section.proof-strip.outcome-strip{
+  display:block!important;
+  padding:92px 0 88px!important;
+  border:0!important;
+  background:var(--luen-espresso)!important;
+  background-image:none!important;
+  color:#F5F3EE!important;
+}
+html body main#top>.outcome-strip .outcome-shell{
+  width:min(var(--luen-container),calc(100% - 80px))!important;
+  display:grid!important;
+  grid-template-columns:minmax(280px,.68fr) minmax(0,1.32fr)!important;
+  gap:72px!important;
+  align-items:start!important;
+}
+html body main#top>.outcome-strip .outcome-head{
+  padding-top:4px!important;
+}
+html body main#top>.outcome-strip .outcome-head .eyebrow{
+  margin:0 0 24px!important;
+  color:var(--luen-orange-bright)!important;
+}
+html body main#top>.outcome-strip .outcome-head h2{
+  max-width:520px!important;
+  margin:0!important;
+  color:#F5F3EE!important;
+  font:720 clamp(42px,4vw,58px)/1.05 var(--luen-type-display)!important;
+  letter-spacing:-.055em!important;
+}
+html body main#top>.outcome-strip .outcome-head h2 em{
+  color:#F5F3EE!important;
+  font-style:normal!important;
+}
+html body main#top>.outcome-strip .outcome-head p{
+  max-width:470px!important;
+  margin-top:24px!important;
+  color:rgba(245,243,238,.52)!important;
+  font:450 13.5px/1.76 var(--luen-type-body)!important;
+  letter-spacing:-.015em!important;
+  word-break:keep-all!important;
+}
+
+/* flat result rows */
+html body main#top>.outcome-strip .outcome-list{
+  display:block!important;
+  width:100%!important;
+  border-top:1px solid rgba(245,243,238,.28)!important;
+}
+html body main#top>.outcome-strip .proof-result-item{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(250px,1.08fr) minmax(220px,.92fr) 88px!important;
+  gap:20px!important;
+  align-items:center!important;
+  min-height:0!important;
+  padding:28px 0!important;
+  border:0!important;
+  border-bottom:1px solid var(--luen-line-dark)!important;
+  background:transparent!important;
+  transition:background .25s ease!important;
+}
+html body main#top>.outcome-strip .proof-result-item:hover{
+  background:linear-gradient(90deg,rgba(217,101,50,.045),transparent 72%)!important;
+}
+html body main#top>.outcome-strip .proof-result-item::before{
+  content:none!important;
+  display:none!important;
+}
+html body main#top>.outcome-strip .proof-index{
+  align-self:start!important;
+  padding-top:4px!important;
+  color:var(--luen-orange-bright)!important;
+  font:700 9.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.10em!important;
+}
+html body main#top>.outcome-strip .proof-result-copy{
+  min-width:0!important;
+}
+html body main#top>.outcome-strip .proof-kicker{
+  position:static!important;
+  display:block!important;
+  margin:0 0 12px!important;
+  color:rgba(245,243,238,.40)!important;
+  font:700 9.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.12em!important;
+}
+html body main#top>.outcome-strip .proof-result-item strong{
+  display:block!important;
+  max-width:13em!important;
+  margin:0!important;
+  color:#F5F3EE!important;
+  font:720 clamp(28px,2.55vw,38px)/1.08 var(--luen-type-display)!important;
+  letter-spacing:-.045em!important;
+}
+html body main#top>.outcome-strip .proof-result-item p{
+  align-self:center!important;
+  min-height:0!important;
+  margin:0!important;
+  color:rgba(245,243,238,.55)!important;
+  font:450 12.5px/1.72 var(--luen-type-body)!important;
+  letter-spacing:-.01em!important;
+  word-break:keep-all!important;
+}
+html body main#top>.outcome-strip .proof-case-link{
+  align-self:center!important;
+  justify-self:end!important;
+  width:max-content!important;
+  margin:0!important;
+  padding:7px 0!important;
+  color:rgba(245,243,238,.58)!important;
+  font:700 9.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.10em!important;
+  text-decoration:none!important;
+}
+html body main#top>.outcome-strip .proof-case-link i{
+  margin-left:5px!important;
+  color:var(--luen-orange-bright)!important;
+}
+html body main#top>.outcome-strip .proof-result-item:hover .proof-case-link{
+  color:#F5F3EE!important;
+}
+
+/* ============================================================
+   CAPABILITY V3.2 · QUIET OPERATING SCALE
+   Proof of scale supports the cases; it does not compete with them.
+   ============================================================ */
+html body main#top>section.proof-strip.capability-strip{
+  display:block!important;
+  padding:0!important;
+  border:0!important;
+  background:var(--luen-canvas)!important;
+  background-image:none!important;
+}
+html body main#top>.capability-strip .capability-shell{
+  width:min(var(--luen-container),calc(100% - 80px))!important;
+  display:grid!important;
+  grid-template-columns:190px minmax(0,1fr)!important;
+  gap:28px!important;
+  border-bottom:1px solid var(--luen-line)!important;
+}
+html body main#top>.capability-strip .capability-label{
+  padding:22px 0 18px!important;
+  border-top:1px solid var(--luen-ink)!important;
+}
+html body main#top>.capability-strip .capability-label span{
+  display:block!important;
+  color:var(--luen-orange)!important;
+  font:700 9.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.11em!important;
+}
+html body main#top>.capability-strip .capability-label p{
+  max-width:160px!important;
+  margin-top:11px!important;
+  color:var(--luen-muted)!important;
+  font:450 11.5px/1.6 var(--luen-type-body)!important;
+}
+html body main#top>.capability-strip .proof-grid{
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  border:0!important;
+  border-top:1px solid var(--luen-line)!important;
+}
+html body main#top>.capability-strip .proof-item{
+  position:relative!important;
+  min-height:112px!important;
+  padding:22px 18px 16px!important;
+  border:0!important;
+  border-right:1px solid var(--luen-line)!important;
+  background:transparent!important;
+}
+html body main#top>.capability-strip .proof-item:first-child{
+  border-left:0!important;
+}
+html body main#top>.capability-strip .proof-item:last-child{
+  border-right:0!important;
+}
+html body main#top>.capability-strip .proof-item::before{
+  content:none!important;
+  display:none!important;
+}
+html body main#top>.capability-strip .proof-kicker{
+  position:static!important;
+  display:block!important;
+  margin:0 0 13px!important;
+  color:var(--luen-muted-light)!important;
+  font:700 8.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.10em!important;
+}
+html body main#top>.capability-strip .proof-item strong{
+  display:block!important;
+  margin:0!important;
+  color:var(--luen-ink)!important;
+  font:760 clamp(25px,2vw,32px)/1 var(--luen-type-ui)!important;
+  letter-spacing:-.045em!important;
+}
+html body main#top>.capability-strip .proof-item p{
+  max-width:220px!important;
+  margin:8px 0 0!important;
+  color:var(--luen-muted)!important;
+  font:450 10.5px/1.55 var(--luen-type-body)!important;
+  letter-spacing:-.01em!important;
+  word-break:keep-all!important;
+}
+
+/* tablet */
+@media(max-width:1100px){
+  html body main#top>.outcome-strip .outcome-shell,
+  html body main#top>.capability-strip .capability-shell{
+    width:min(100% - 48px,var(--luen-container))!important;
+  }
+  html body main#top>.outcome-strip .outcome-shell{
+    grid-template-columns:1fr!important;
+    gap:44px!important;
+  }
+  html body main#top>.outcome-strip .outcome-head{
+    max-width:760px!important;
+  }
+  html body main#top>.outcome-strip .proof-result-item{
+    grid-template-columns:38px minmax(230px,1.1fr) minmax(200px,.9fr) 80px!important;
+    gap:16px!important;
+  }
+  html body main#top>.capability-strip .capability-shell{
+    grid-template-columns:150px minmax(0,1fr)!important;
+    gap:22px!important;
+  }
+  html body main#top>.capability-strip .proof-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(2){
+    border-right:0!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(n+3){
+    border-top:1px solid var(--luen-line)!important;
+  }
+}
+
+/* mobile */
+@media(max-width:767px){
+  html body main#top>section.proof-strip.outcome-strip{
+    padding:72px 0 68px!important;
+  }
+  html body main#top>.outcome-strip .outcome-shell,
+  html body main#top>.capability-strip .capability-shell{
+    width:calc(100% - 36px)!important;
+  }
+  html body main#top>.outcome-strip .outcome-shell{
+    gap:36px!important;
+  }
+  html body main#top>.outcome-strip .outcome-head .eyebrow{
+    margin-bottom:18px!important;
+  }
+  html body main#top>.outcome-strip .outcome-head h2{
+    max-width:none!important;
+    font-size:clamp(34px,9.5vw,42px)!important;
+    line-height:1.07!important;
+  }
+  html body main#top>.outcome-strip .outcome-head p{
+    max-width:33em!important;
+    margin-top:18px!important;
+    font-size:12.5px!important;
+  }
+  html body main#top>.outcome-strip .proof-result-item{
+    grid-template-columns:28px minmax(0,1fr) auto!important;
+    gap:10px 12px!important;
+    padding:22px 0!important;
+  }
+  html body main#top>.outcome-strip .proof-index{
+    grid-column:1!important;
+    grid-row:1!important;
+    padding-top:3px!important;
+    font-size:8.5px!important;
+  }
+  html body main#top>.outcome-strip .proof-result-copy{
+    grid-column:2/4!important;
+    grid-row:1!important;
+  }
+  html body main#top>.outcome-strip .proof-kicker{
+    margin-bottom:9px!important;
+    font-size:8.5px!important;
+  }
+  html body main#top>.outcome-strip .proof-result-item strong{
+    max-width:none!important;
+    font-size:clamp(26px,7.6vw,32px)!important;
+  }
+  html body main#top>.outcome-strip .proof-result-item p{
+    grid-column:2/4!important;
+    grid-row:2!important;
+    margin-top:2px!important;
+    font-size:11.5px!important;
+  }
+  html body main#top>.outcome-strip .proof-case-link{
+    grid-column:2!important;
+    grid-row:3!important;
+    justify-self:start!important;
+    margin-top:2px!important;
+    padding:5px 0!important;
+    font-size:8.5px!important;
+  }
+
+  html body main#top>.capability-strip .capability-shell{
+    grid-template-columns:1fr!important;
+    gap:0!important;
+  }
+  html body main#top>.capability-strip .capability-label{
+    display:flex!important;
+    align-items:baseline!important;
+    justify-content:space-between!important;
+    gap:18px!important;
+    padding:18px 0 14px!important;
+  }
+  html body main#top>.capability-strip .capability-label p{
+    max-width:none!important;
+    margin:0!important;
+    font-size:10.5px!important;
+    text-align:right!important;
+  }
+  html body main#top>.capability-strip .proof-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  html body main#top>.capability-strip .proof-item{
+    min-height:104px!important;
+    padding:18px 12px 15px!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(odd){
+    border-right:1px solid var(--luen-line)!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(even){
+    border-right:0!important;
+  }
+  html body main#top>.capability-strip .proof-item:nth-child(n+3){
+    border-top:1px solid var(--luen-line)!important;
+  }
+  html body main#top>.capability-strip .proof-item strong{
+    font-size:27px!important;
+  }
+  html body main#top>.capability-strip .proof-item p{
+    font-size:10px!important;
+    line-height:1.48!important;
+  }
+}
+
+@media(max-width:420px){
+  html body main#top>.capability-strip .capability-label{
+    display:block!important;
+  }
+  html body main#top>.capability-strip .capability-label p{
+    margin-top:7px!important;
+    text-align:left!important;
+  }
+}
