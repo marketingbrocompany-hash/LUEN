@@ -163,7 +163,7 @@
     track.style.transform='translate3d(0,0,0)';
     const baseWidth=source.getBoundingClientRect().width;if(!baseWidth)return;
     const copies=Math.max(2,Math.ceil((viewport.clientWidth+baseWidth*2)/baseWidth));
-    for(let i=0;i<copies;i++){const clone=source.cloneNode(true);clone.classList.add('loop-clone');clone.setAttribute('aria-hidden','true');track.appendChild(clone);}
+    for(let i=0;i<copies;i++){const clone=source.cloneNode(true);clone.classList.add('loop-clone');clone.setAttribute('aria-hidden','true');clone.querySelectorAll('img').forEach(img=>{img.loading='eager';img.fetchPriority='low';});track.appendChild(clone);}
     if(reducedMotion.matches){loopControllers.set(viewport,{raf:0,visible:false});return;}
     const controller={raf:0,visible:!loopVisibilityObserver,offset:0,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
     controller.tick=now=>{
