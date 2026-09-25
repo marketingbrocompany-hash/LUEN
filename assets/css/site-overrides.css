@@ -520,3 +520,20 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
   .work-curation-note{margin-top:18px;font-size:13px}
   .performance-context,.voice-context{margin-top:12px;font-size:12px;line-height:1.65}
 }
+
+
+/* CASE STUDY EVIDENCE · keep narrative proof within LUEN's existing metric hierarchy. */
+.case-metric.case-metric-text strong{
+  max-width:19em;
+  font-family:"Pretendard Variable","Pretendard","Inter",sans-serif!important;
+  font-size:clamp(21px,2.1vw,31px)!important;
+  line-height:1.22!important;
+  letter-spacing:-.035em!important;
+  word-break:keep-all;
+}
+@media(max-width:767px){
+  .case-metric.case-metric-text strong{
+    font-size:clamp(20px,6.1vw,26px)!important;
+    line-height:1.25!important;
+  }
+}
