@@ -494,3 +494,29 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
   .inbound-solution-flow span{font-size:11px}
   .inbound-solution-cta{width:100%;margin-top:18px}
 }
+
+
+/* =========================================================
+   INBOUND EVIDENCE P3 · 2026-09-25
+   Reduce repetition and make the proof source easier to understand.
+   ========================================================= */
+.work-curation-note{
+  margin-top:24px;
+  max-width:620px;
+  color:#77736C;
+  font-size:14px;
+  line-height:1.75;
+}
+.performance-context,
+.voice-context{
+  margin-top:14px;
+  max-width:520px;
+  color:#77736C;
+  font-size:13px;
+  line-height:1.7;
+}
+.client-voice .voice-context{max-width:460px}
+@media(max-width:767px){
+  .work-curation-note{margin-top:18px;font-size:13px}
+  .performance-context,.voice-context{margin-top:12px;font-size:12px;line-height:1.65}
+}
