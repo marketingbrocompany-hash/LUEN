@@ -5523,3 +5523,92 @@ html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advant
     margin-top:36px!important;
   }
 }
+
+
+/* ============================================================
+   SELECTED WORK V3.3 · WARM MEDIA REEL · 2026-09-25
+   Keep both continuous loops and let the content thumbnails carry the energy.
+   The section itself returns to warm paper instead of a black media wall.
+   ============================================================ */
+html body main#top>#work.work{
+  background:#F3EEE5!important;
+  color:#2A2521!important;
+}
+html body #work .work-head .eyebrow{
+  color:#C96338!important;
+}
+html body #work .work-story-title{
+  color:#2A2521!important;
+}
+html body #work .work-story-title em{
+  color:#D56F40!important;
+}
+html body #work .work-curation-note{
+  color:#71675E!important;
+}
+html body #work .portfolio-head{
+  border-top-color:rgba(93,76,64,.22)!important;
+}
+html body #work .portfolio-head span{
+  color:#C96338!important;
+}
+html body #work .portfolio-head h3{
+  color:#2A2521!important;
+}
+html body #work .portfolio-head small{
+  color:#8A7C71!important;
+}
+html body #work .portfolio-viewport{
+  overflow:hidden!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
+html body #work .portfolio-card,
+html body #work .portfolio-card.portrait{
+  background:#E4D7C6!important;
+  border-radius:3px!important;
+}
+html body #work .portfolio-card img{
+  filter:saturate(.97) contrast(.995) brightness(1.01) sepia(.006)!important;
+}
+html body #work .portfolio-card:hover img{
+  filter:saturate(1) contrast(1.005) brightness(1.02) sepia(.003)!important;
+}
+html body #work .portfolio-card::after{
+  background:linear-gradient(180deg,transparent 57%,rgba(42,37,33,.72) 100%)!important;
+}
+html body #work .portfolio-country{
+  border:1px solid rgba(93,76,64,.12)!important;
+  background:rgba(243,238,229,.92)!important;
+  color:#554B44!important;
+  backdrop-filter:blur(7px)!important;
+}
+html body #work .portfolio-meta span{
+  color:rgba(255,249,241,.72)!important;
+}
+html body #work .portfolio-meta b{
+  color:#FFF9F1!important;
+}
+
+/* A continuous reel reads cleaner when cards share one baseline. */
+@media(min-width:901px){
+  html body #work .portfolio-lane:first-child .portfolio-card:nth-child(3n+2),
+  html body #work .portfolio-lane:first-child .portfolio-card:nth-child(3n),
+  html body #work .portfolio-lane:nth-child(2) .portfolio-card:nth-child(2n){
+    transform:none!important;
+  }
+  html body #work .portfolio-lane:first-child .portfolio-viewport,
+  html body #work .portfolio-lane:nth-child(2) .portfolio-viewport{
+    padding-bottom:4px!important;
+  }
+}
+
+@media(max-width:767px){
+  html body #work .portfolio-viewport{
+    -webkit-mask-image:none!important;
+    mask-image:none!important;
+  }
+  html body #work .portfolio{
+    gap:46px!important;
+  }
+}
