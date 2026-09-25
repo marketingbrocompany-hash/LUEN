@@ -5211,3 +5211,107 @@ html body main#top>.capability-strip .proof-item p{
     border-top-color:rgba(93,76,64,.14)!important;
   }
 }
+
+
+/* ============================================================
+   SIGNATURE CASE V3.3 · WARM EDITORIAL SCENE · 2026-09-25
+   The campaign image carries the drama. Remove the isolated black card
+   and let warm sand + ink carry the narrative and proof.
+   ============================================================ */
+html body #cases.case-studies .case-signature{
+  border-color:rgba(93,76,64,.18)!important;
+  background:#E4D7C6!important;
+}
+html body #cases.case-studies .case-signature-visual{
+  background:#D9CCBC!important;
+}
+html body #cases.case-studies .case-signature-visual::after{
+  background:linear-gradient(90deg,transparent 70%,rgba(228,215,198,.30) 100%)!important;
+}
+html body #cases.case-studies .case-signature-visual img{
+  filter:saturate(.96) contrast(.995) brightness(1.01) sepia(.01)!important;
+}
+html body #cases.case-studies .case-signature:hover .case-signature-visual img{
+  filter:saturate(1) contrast(1.005) brightness(1.025) sepia(.005)!important;
+}
+html body #cases.case-studies .case-signature-index{
+  color:#76695F!important;
+}
+html body #cases.case-studies .case-signature-kicker{
+  color:#C96338!important;
+}
+html body #cases.case-studies .case-signature-body h3{
+  color:#74685E!important;
+}
+html body #cases.case-studies .case-signature-title{
+  color:#2A2521!important;
+}
+html body #cases.case-studies .case-signature-title em{
+  color:#C96338!important;
+}
+html body #cases.case-studies .case-signature-desc{
+  color:#6E6259!important;
+}
+html body #cases.case-studies .case-journey::before{
+  background:linear-gradient(90deg,#D56F40,rgba(213,111,64,.40),rgba(93,76,64,.18))!important;
+}
+html body #cases.case-studies .case-journey span{
+  color:#655A52!important;
+}
+html body #cases.case-studies .case-journey span::before{
+  background:#D56F40!important;
+  box-shadow:0 0 0 4px rgba(213,111,64,.10)!important;
+}
+html body #cases.case-studies .case-signature-proof>div{
+  border-top-color:rgba(93,76,64,.18)!important;
+}
+html body #cases.case-studies .case-signature-proof>div+div{
+  border-left-color:rgba(93,76,64,.18)!important;
+}
+html body #cases.case-studies .case-signature-proof span{
+  color:#877A70!important;
+}
+html body #cases.case-studies .case-signature-proof strong{
+  color:#2A2521!important;
+}
+html body #cases.case-studies .case-signature-proof small{
+  color:#756960!important;
+}
+
+/* Signature CTA is a clear action, not a decorative dark-text link. */
+html body #cases.case-studies .case-signature-cta{
+  min-height:44px!important;
+  padding:0 17px!important;
+  border:1px solid #D56F40!important;
+  border-radius:7px!important;
+  background:#D56F40!important;
+  color:#FFF9F1!important;
+}
+html body #cases.case-studies .case-signature-cta i{
+  color:#FFF9F1!important;
+}
+html body #cases.case-studies .case-signature-cta:hover{
+  border-color:#C96338!important;
+  background:#C96338!important;
+  color:#FFF9F1!important;
+}
+
+/* Tablet/mobile: use a soft sand fade rather than a black image overlay. */
+@media(max-width:1100px){
+  html body #cases.case-studies .case-signature-visual::after{
+    background:linear-gradient(180deg,transparent 72%,rgba(228,215,198,.24) 100%)!important;
+  }
+}
+@media(max-width:767px){
+  html body #cases.case-studies .case-signature-body{
+    padding-top:30px!important;
+  }
+  html body #cases.case-studies .case-signature-proof>div+div{
+    border-left:0!important;
+    border-top-color:rgba(93,76,64,.18)!important;
+  }
+  html body #cases.case-studies .case-signature-cta{
+    width:100%!important;
+    justify-content:center!important;
+  }
+}
