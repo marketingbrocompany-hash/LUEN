@@ -835,3 +835,149 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
     line-height:1.7;
   }
 }
+
+
+/* ============================================================
+   WHAT LUEN DOES · EDITORIAL METHOD
+   Replace generic service cards with LUEN's decision framework.
+   ============================================================ */
+.inbound-method{
+  padding:116px 0 110px!important;
+}
+.inbound-method-layout{
+  display:grid;
+  grid-template-columns:minmax(0,.88fr) minmax(460px,1.12fr);
+  gap:72px 96px;
+  align-items:start;
+}
+.inbound-method-intro{
+  position:sticky;
+  top:112px;
+  align-self:start;
+}
+.inbound-method-intro .eyebrow{
+  margin-bottom:30px!important;
+  color:#A74610!important;
+}
+.inbound-method-intro .section-title{
+  margin:0!important;
+  max-width:720px!important;
+  color:#171614!important;
+  font-size:clamp(38px,4.3vw,66px)!important;
+  line-height:1.04!important;
+  letter-spacing:-.055em!important;
+}
+.inbound-method-intro .section-title em{
+  color:#D96532!important;
+  font-style:normal!important;
+}
+.inbound-method-intro .section-copy{
+  margin-top:28px!important;
+  max-width:590px!important;
+  color:#625E57!important;
+  font-size:15px!important;
+  line-height:1.85!important;
+}
+.inbound-method-intro .inbound-solution-cta{
+  margin-top:30px;
+}
+.inbound-method-list{
+  border-top:1px solid #D8D2C7;
+}
+.inbound-method-item{
+  display:grid;
+  grid-template-columns:118px minmax(0,1fr);
+  gap:24px;
+  min-height:215px;
+  padding:32px 4px 34px;
+  border-bottom:1px solid #D8D2C7;
+}
+.inbound-method-index{
+  padding-top:5px;
+  color:#D96532;
+  font:700 10px/1.2 "Inter","Pretendard",sans-serif;
+  letter-spacing:.13em;
+}
+.inbound-method-item h3{
+  max-width:620px;
+  color:#171614;
+  font:760 clamp(24px,2.15vw,34px)/1.18 "Pretendard Variable","Pretendard","Inter",sans-serif;
+  letter-spacing:-.045em;
+  word-break:keep-all;
+}
+.inbound-method-item p{
+  max-width:650px;
+  margin-top:17px;
+  color:#666159;
+  font-size:14px;
+  line-height:1.8;
+  word-break:keep-all;
+}
+.inbound-method-item>div{
+  transition:transform .25s ease;
+}
+.inbound-method-item:hover>div{
+  transform:translateX(5px);
+}
+
+@media(max-width:1020px){
+  .inbound-method-layout{
+    grid-template-columns:1fr;
+    gap:54px;
+  }
+  .inbound-method-intro{
+    position:static;
+  }
+  .inbound-method-intro .section-title{
+    max-width:820px!important;
+  }
+  .inbound-method-intro .section-copy{
+    max-width:720px!important;
+  }
+}
+@media(max-width:767px){
+  .inbound-method{
+    padding:82px 0 76px!important;
+  }
+  .inbound-method-layout{
+    gap:42px;
+  }
+  .inbound-method-intro .eyebrow{
+    margin-bottom:22px!important;
+  }
+  .inbound-method-intro .section-title{
+    font-size:clamp(36px,10.6vw,48px)!important;
+    line-height:1.06!important;
+  }
+  .inbound-method-intro .section-copy{
+    margin-top:22px!important;
+    font-size:14px!important;
+    line-height:1.8!important;
+  }
+  .inbound-method-intro .inbound-solution-cta{
+    width:100%;
+    margin-top:24px;
+  }
+  .inbound-method-item{
+    grid-template-columns:1fr;
+    gap:14px;
+    min-height:0;
+    padding:26px 0 28px;
+  }
+  .inbound-method-index{
+    padding-top:0;
+    font-size:9px;
+  }
+  .inbound-method-item h3{
+    font-size:clamp(23px,7.2vw,30px);
+    line-height:1.22;
+  }
+  .inbound-method-item p{
+    margin-top:13px;
+    font-size:13px;
+    line-height:1.75;
+  }
+  .inbound-method-item:hover>div{
+    transform:none;
+  }
+}
