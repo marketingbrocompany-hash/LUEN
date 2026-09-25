@@ -4944,9 +4944,9 @@ html body main#top>.brand-wall .client-edita{
    The label says Selected Partners, so the rail reads as a curated
    sample rather than a complete partner count. */
 html body main#top>.brand-wall .brand-viewport{
-  width:100%!important;
-  max-width:none!important;
-  margin:0!important;
+  width:min(1400px,calc(100% - 80px))!important;
+  max-width:1400px!important;
+  margin:0 auto!important;
   padding:0!important;
   overflow:hidden!important;
   scroll-snap-type:none!important;
@@ -4986,6 +4986,10 @@ html body main#top>.brand-wall .client-gangneung{
   min-width:235px!important;
 }
 @media(max-width:1100px){
+  html body main#top>.brand-wall .brand-viewport{
+    width:calc(100% - 48px)!important;
+    max-width:none!important;
+  }
   html body main#top>.brand-wall .client-logo{
     flex-basis:180px!important;
     width:180px!important;
@@ -4999,6 +5003,9 @@ html body main#top>.brand-wall .client-gangneung{
 }
 @media(max-width:767px){
   html body main#top>.brand-wall .brand-viewport{
+    width:calc(100% - 36px)!important;
+    max-width:none!important;
+    margin:0 auto!important;
     overflow:hidden!important;
     padding:0!important;
   }
