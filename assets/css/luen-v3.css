@@ -2736,3 +2736,39 @@ html body main#top>#contact.contact{
     height:136px!important;
   }
 }
+
+
+/* ============================================================
+   V3 VISIBILITY RECOVERY · 2026-09-25
+   Legacy foundation files intentionally retired these blocks in an
+   older layout. V3 uses them again, so visibility must be explicit.
+   ============================================================ */
+html body main#top>.outcome-strip,
+html body main#top>.capability-strip{
+  display:block!important;
+}
+#contact .inquiry-reassurance{
+  display:block!important;
+}
+
+/* The current network rail is the proof. Keep the retired numeric
+   pseudo-counters hidden rather than reviving potentially stale data. */
+.hero .creator-network-head>span::after,
+.hero .creator-network-head>strong::after,
+.hero .creator-network-head>p::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+}
+.hero .creator-network-head>span,
+.hero .creator-network-head>strong,
+.hero .creator-network-head>p{
+  min-height:64px!important;
+}
+@media(max-width:767px){
+  .hero .creator-network-head>span,
+  .hero .creator-network-head>strong,
+  .hero .creator-network-head>p{
+    min-height:52px!important;
+  }
+}
