@@ -2986,3 +2986,553 @@ html body main#top>section.proof-strip.outcome-strip{
   background:var(--luen-espresso)!important;
   background-image:none!important;
 }
+
+
+/* ============================================================
+   HERO FIRST SCREEN V3.1 · BRAND LOCK
+   Hero is LUEN's first brand scene: one statement, one action,
+   one moving creator proof. This block intentionally uses higher
+   specificity to retire all remaining legacy Hero experiments.
+   ============================================================ */
+html body main#top>.hero{
+  position:relative!important;
+  min-height:0!important;
+  height:auto!important;
+  padding:88px 0 74px!important;
+  overflow:hidden!important;
+  background:var(--luen-canvas)!important;
+  background-image:none!important;
+}
+html body main#top>.hero::after{
+  content:"LUEN"!important;
+  display:block!important;
+  position:absolute!important;
+  left:-.035em!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:-.18em!important;
+  z-index:0!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  border-radius:0!important;
+  background:none!important;
+  color:rgba(17,16,14,.026)!important;
+  font:800 clamp(180px,22vw,360px)/.78 var(--luen-type-ui)!important;
+  letter-spacing:-.085em!important;
+  white-space:nowrap!important;
+  pointer-events:none!important;
+}
+
+/* semantic copy only */
+html body main#top>.hero h1::before,
+html body main#top>.hero h1::after,
+html body main#top>.hero h1 .line-2::before,
+html body main#top>.hero h1 .line-2::after,
+html body main#top>.hero h1 .line-3::before,
+html body main#top>.hero h1 .line-3::after,
+html body main#top>.hero .hero-desc::before,
+html body main#top>.hero .hero-desc::after,
+html body main#top>.hero .hero-desc-line::before,
+html body main#top>.hero .hero-desc-line::after{
+  content:none!important;
+  display:none!important;
+}
+html body main#top>.hero h1,
+html body main#top>.hero .hero-desc{
+  font-size:inherit;
+}
+html body main#top>.hero h1>span,
+html body main#top>.hero h1 .line-2,
+html body main#top>.hero h1 .line-3,
+html body main#top>.hero .hero-desc>*{
+  display:block!important;
+}
+
+html body main#top>.hero>.container.hero-layout{
+  position:relative!important;
+  z-index:1!important;
+  width:min(1480px,calc(100% - 80px))!important;
+  max-width:1480px!important;
+  height:auto!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,.90fr) minmax(560px,1.10fr)!important;
+  grid-template-rows:auto!important;
+  gap:clamp(48px,5vw,82px)!important;
+  align-items:center!important;
+}
+html body main#top>.hero .hero-copy{
+  min-width:0!important;
+  min-height:0!important;
+  padding:0!important;
+  display:block!important;
+}
+
+html body main#top>.hero .hero-kicker{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0 0 25px!important;
+  color:var(--luen-muted)!important;
+  font:700 10.5px/1.2 var(--luen-type-ui)!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+}
+html body main#top>.hero .hero-kicker::before{
+  content:""!important;
+  display:block!important;
+  flex:0 0 7px!important;
+  width:7px!important;
+  height:7px!important;
+  border-radius:50%!important;
+  background:var(--luen-orange)!important;
+  box-shadow:0 0 0 4px rgba(217,101,50,.08)!important;
+}
+
+html body main#top>.hero h1{
+  margin:0!important;
+  max-width:700px!important;
+  color:var(--luen-ink)!important;
+  font:760 clamp(52px,4vw,64px)/.99 var(--luen-type-display)!important;
+  letter-spacing:-.064em!important;
+}
+html body main#top>.hero h1>span{
+  width:max-content!important;
+  max-width:100%!important;
+  color:var(--luen-ink)!important;
+  white-space:nowrap!important;
+}
+html body main#top>.hero h1 .line-2{
+  margin-top:4px!important;
+  color:var(--luen-ink)!important;
+  -webkit-text-fill-color:var(--luen-ink)!important;
+}
+html body main#top>.hero h1 .line-3{
+  margin-top:4px!important;
+}
+html body main#top>.hero h1 .line-3 em{
+  color:var(--luen-orange)!important;
+  font-style:normal!important;
+  -webkit-text-fill-color:var(--luen-orange)!important;
+}
+
+html body main#top>.hero .hero-desc{
+  max-width:570px!important;
+  margin:28px 0 0!important;
+  color:var(--luen-muted)!important;
+  font:450 15px/1.78 var(--luen-type-body)!important;
+  letter-spacing:-.018em!important;
+  word-break:keep-all!important;
+}
+html body main#top>.hero .hero-desc strong{
+  display:inline!important;
+  margin:0!important;
+  color:var(--luen-ink)!important;
+  font-weight:650!important;
+  font-size:inherit!important;
+  line-height:inherit!important;
+}
+
+html body main#top>.hero .hero-cta{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:24px!important;
+  margin-top:31px!important;
+}
+html body main#top>.hero .hero-cta .btn{
+  width:auto!important;
+  min-height:50px!important;
+  padding:0 20px!important;
+  border-radius:var(--luen-radius-sm)!important;
+  font:700 12.5px/1 var(--luen-type-ui)!important;
+  box-shadow:none!important;
+}
+html body main#top>.hero .hero-cta .btn-primary{
+  border:1px solid var(--luen-orange)!important;
+  background:var(--luen-orange)!important;
+  color:#fff!important;
+}
+html body main#top>.hero .hero-cta .btn-primary:hover{
+  border-color:var(--luen-orange-bright)!important;
+  background:var(--luen-orange-bright)!important;
+  transform:none!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary{
+  min-height:auto!important;
+  padding:8px 0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--luen-ink-soft)!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary:hover{
+  background:transparent!important;
+  color:var(--luen-orange)!important;
+  transform:none!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary span{
+  color:var(--luen-orange)!important;
+}
+
+/* Creator stage — actual creator faces are the dominant proof. */
+html body main#top>.hero .creator-network-showcase{
+  position:relative!important;
+  min-height:430px!important;
+  height:auto!important;
+  align-self:center!important;
+  overflow:hidden!important;
+  border:1px solid rgba(245,243,238,.10)!important;
+  border-radius:var(--luen-radius-xs)!important;
+  background:var(--luen-espresso)!important;
+  box-shadow:none!important;
+}
+html body main#top>.hero .creator-network-showcase::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  z-index:6!important;
+  width:82px!important;
+  height:3px!important;
+  background:var(--luen-orange)!important;
+}
+
+/* retire legacy pseudo labels/counters; use real HTML labels */
+html body main#top>.hero .creator-network-head{
+  position:relative!important;
+  z-index:4!important;
+  min-height:62px!important;
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr!important;
+  align-items:center!important;
+  gap:18px!important;
+  padding:0 20px!important;
+  border-bottom:1px solid var(--luen-line-dark)!important;
+  background:transparent!important;
+}
+html body main#top>.hero .creator-network-head>span,
+html body main#top>.hero .creator-network-head>strong,
+html body main#top>.hero .creator-network-head>p{
+  min-width:0!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  display:block!important;
+  background:none!important;
+  color:rgba(245,243,238,.46)!important;
+  font:700 9px/1.2 var(--luen-type-ui)!important;
+  letter-spacing:.11em!important;
+  white-space:nowrap!important;
+  text-transform:uppercase!important;
+}
+html body main#top>.hero .creator-network-head>strong{
+  color:#F5F3EE!important;
+  font-size:12px!important;
+  letter-spacing:.08em!important;
+  text-align:center!important;
+}
+html body main#top>.hero .creator-network-head>p{
+  text-align:right!important;
+}
+html body main#top>.hero .creator-network-head>span::before,
+html body main#top>.hero .creator-network-head>strong::before,
+html body main#top>.hero .creator-network-head>p::before,
+html body main#top>.hero .creator-network-head>span::after,
+html body main#top>.hero .creator-network-head>strong::after,
+html body main#top>.hero .creator-network-head>p::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+  background:none!important;
+}
+
+html body main#top>.hero .creator-profile-viewport{
+  position:relative!important;
+  z-index:2!important;
+  min-height:300px!important;
+  display:flex!important;
+  align-items:center!important;
+  padding:24px 0!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.018),transparent 28%),var(--luen-espresso)!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 34px,#000 calc(100% - 34px),transparent)!important;
+  mask-image:linear-gradient(90deg,transparent,#000 34px,#000 calc(100% - 34px),transparent)!important;
+}
+html body main#top>.hero .creator-profile-track{
+  display:flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  will-change:transform!important;
+}
+html body main#top>.hero .creator-profile-set{
+  display:flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  gap:10px!important;
+  width:max-content!important;
+  padding-right:10px!important;
+}
+html body main#top>.hero .creator-profile-card{
+  flex:0 0 184px!important;
+  width:184px!important;
+  height:184px!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border:1px solid rgba(245,243,238,.11)!important;
+  border-radius:3px!important;
+  background:#211813!important;
+  box-shadow:none!important;
+  transform:translateY(-6px)!important;
+}
+html body main#top>.hero .creator-profile-card:nth-child(3n+2){
+  transform:translateY(8px)!important;
+}
+html body main#top>.hero .creator-profile-card:nth-child(3n){
+  transform:translateY(1px)!important;
+}
+html body main#top>.hero .creator-profile-card img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  filter:saturate(.95) contrast(1.01) brightness(.95)!important;
+  transition:filter .35s ease,transform .55s var(--luen-ease)!important;
+}
+html body main#top>.hero .creator-profile-card:hover img{
+  transform:scale(1.02)!important;
+  filter:saturate(1) contrast(1.02) brightness(1)!important;
+}
+
+html body main#top>.hero .creator-network-foot{
+  min-height:46px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  padding:0 20px!important;
+  border-top:1px solid var(--luen-line-dark)!important;
+  background:var(--luen-espresso)!important;
+  color:rgba(245,243,238,.36)!important;
+}
+html body main#top>.hero .creator-network-foot span{
+  color:inherit!important;
+  font:700 8.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.12em!important;
+}
+html body main#top>.hero .creator-network-foot i{
+  width:3px!important;
+  height:3px!important;
+  flex:0 0 3px!important;
+  border-radius:50%!important;
+  background:var(--luen-orange)!important;
+  opacity:.72!important;
+}
+
+/* keep secondary ticker retired; movement belongs to Creator Network only */
+html body main#top>.marquee{
+  display:none!important;
+}
+
+/* medium desktop */
+@media(min-width:1121px) and (max-width:1240px){
+  html body main#top>.hero{
+    padding:72px 0 62px!important;
+  }
+  html body main#top>.hero>.container.hero-layout{
+    width:calc(100% - 64px)!important;
+    grid-template-columns:minmax(0,.90fr) minmax(490px,1.10fr)!important;
+    gap:38px!important;
+  }
+  html body main#top>.hero h1{
+    font-size:clamp(46px,4.35vw,54px)!important;
+  }
+  html body main#top>.hero .hero-desc{
+    font-size:14px!important;
+  }
+  html body main#top>.hero .creator-network-showcase{
+    min-height:378px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:270px!important;
+  }
+  html body main#top>.hero .creator-profile-card{
+    flex-basis:162px!important;
+    width:162px!important;
+    height:162px!important;
+  }
+}
+
+/* tablet / small desktop */
+@media(max-width:1120px){
+  html body main#top>.hero{
+    padding:66px 0 58px!important;
+  }
+  html body main#top>.hero>.container.hero-layout{
+    width:min(100% - 48px,980px)!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto auto!important;
+    gap:42px!important;
+  }
+  html body main#top>.hero h1{
+    max-width:760px!important;
+    font-size:clamp(48px,7vw,64px)!important;
+  }
+  html body main#top>.hero .hero-desc{
+    max-width:650px!important;
+  }
+  html body main#top>.hero .creator-network-showcase{
+    min-height:370px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:260px!important;
+  }
+  html body main#top>.hero .creator-profile-card{
+    flex-basis:170px!important;
+    width:170px!important;
+    height:170px!important;
+  }
+}
+
+/* mobile */
+@media(max-width:767px){
+  html body main#top>.hero{
+    padding:46px 0 34px!important;
+  }
+  html body main#top>.hero::after{
+    left:-.04em!important;
+    bottom:-.10em!important;
+    color:rgba(17,16,14,.022)!important;
+    font-size:47vw!important;
+  }
+  html body main#top>.hero>.container.hero-layout{
+    width:calc(100% - 36px)!important;
+    gap:30px!important;
+  }
+  html body main#top>.hero .hero-kicker{
+    margin-bottom:18px!important;
+    font-size:9px!important;
+    letter-spacing:.085em!important;
+  }
+  html body main#top>.hero h1{
+    max-width:none!important;
+    font-size:clamp(35px,10.5vw,44px)!important;
+    line-height:1.02!important;
+    letter-spacing:-.06em!important;
+  }
+  html body main#top>.hero h1>span{
+    width:auto!important;
+    max-width:none!important;
+    white-space:nowrap!important;
+  }
+  html body main#top>.hero h1 .line-2,
+  html body main#top>.hero h1 .line-3{
+    margin-top:3px!important;
+  }
+  html body main#top>.hero .hero-desc{
+    max-width:32em!important;
+    margin-top:20px!important;
+    font-size:13.5px!important;
+    line-height:1.7!important;
+  }
+  html body main#top>.hero .hero-cta{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    gap:13px!important;
+    margin-top:24px!important;
+  }
+  html body main#top>.hero .hero-cta .btn-primary{
+    width:100%!important;
+    min-height:48px!important;
+    justify-content:center!important;
+  }
+  html body main#top>.hero .hero-cta .btn-secondary{
+    width:max-content!important;
+    min-height:auto!important;
+    padding:5px 0!important;
+    justify-content:flex-start!important;
+  }
+
+  html body main#top>.hero .creator-network-showcase{
+    min-height:270px!important;
+    border-radius:3px!important;
+  }
+  html body main#top>.hero .creator-network-head{
+    min-height:50px!important;
+    grid-template-columns:1fr auto!important;
+    gap:10px!important;
+    padding:0 13px!important;
+  }
+  html body main#top>.hero .creator-network-head>span{
+    font-size:8px!important;
+    letter-spacing:.08em!important;
+  }
+  html body main#top>.hero .creator-network-head>strong{
+    font-size:9px!important;
+    text-align:right!important;
+  }
+  html body main#top>.hero .creator-network-head>p{
+    display:none!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:180px!important;
+    padding:16px 0!important;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)!important;
+    mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)!important;
+  }
+  html body main#top>.hero .creator-profile-set{
+    gap:7px!important;
+    padding-right:7px!important;
+  }
+  html body main#top>.hero .creator-profile-card,
+  html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+  html body main#top>.hero .creator-profile-card:nth-child(3n){
+    flex-basis:132px!important;
+    width:132px!important;
+    height:132px!important;
+    transform:none!important;
+  }
+  html body main#top>.hero .creator-network-foot{
+    min-height:40px!important;
+    gap:7px!important;
+    padding:0 13px!important;
+  }
+  html body main#top>.hero .creator-network-foot span{
+    font-size:7.5px!important;
+    letter-spacing:.08em!important;
+  }
+}
+
+@media(max-width:480px){
+  html body main#top>.hero h1{
+    font-size:clamp(31px,8.8vw,37px)!important;
+    letter-spacing:-.062em!important;
+  }
+}
+
+@media(max-width:380px){
+  html body main#top>.hero h1{
+    font-size:clamp(30px,8.7vw,34px)!important;
+  }
+  html body main#top>.hero .hero-desc{
+    font-size:13px!important;
+  }
+  html body main#top>.hero .creator-profile-card,
+  html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+  html body main#top>.hero .creator-profile-card:nth-child(3n){
+    flex-basis:122px!important;
+    width:122px!important;
+    height:122px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){  html body main#top>.hero .creator-profile-track{
+    transform:none!important;
+  }
+}
