@@ -7721,3 +7721,41 @@ html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
     padding:14px 28px!important;
   }
 }
+
+
+/* ============================================================
+   SUPPORTING CASES · TYPOGRAPHY HIERARCHY · 2026-09-25
+   Project/creator name leads. Results support rather than dominate.
+   ============================================================ */
+html body #cases.case-studies-v7 .case-support-copy-v7>span{
+  font-size:9px!important;
+}
+html body #cases.case-studies-v7 .case-support-copy-v7 h3{
+  margin-top:10px!important;
+  color:#403832!important;
+  font-size:clamp(19px,1.55vw,22px)!important;
+  font-weight:700!important;
+  line-height:1.28!important;
+  letter-spacing:-.03em!important;
+}
+html body #cases.case-studies-v7 .case-support-copy-v7 strong{
+  margin-top:18px!important;
+  color:#2F2A26!important;
+  font-size:clamp(16px,1.28vw,18px)!important;
+  font-weight:650!important;
+  line-height:1.35!important;
+  letter-spacing:-.025em!important;
+}
+html body #cases.case-studies-v7 .case-support-copy-v7 p{
+  margin-top:7px!important;
+  font-size:11px!important;
+  line-height:1.5!important;
+}
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-support-copy-v7 h3{
+    font-size:19px!important;
+  }
+  html body #cases.case-studies-v7 .case-support-copy-v7 strong{
+    font-size:16px!important;
+  }
+}
