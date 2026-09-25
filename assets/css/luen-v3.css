@@ -5612,3 +5612,180 @@ html body #work .portfolio-meta b{
     gap:46px!important;
   }
 }
+
+
+/* ============================================================
+   CAMPAIGN PROOF V3.3 · CONTENT TO PERFORMANCE · 2026-09-25
+   Content → Deliverable → Performance should read as one campaign chapter.
+   Keep the real video, proposal pages and public metrics; remove isolated black UI.
+   ============================================================ */
+
+/* 01 · CORE EXPERTISE / REAL CONTENT */
+html body main#top>#youtube.youtube-v2{
+  border-top-color:rgba(93,76,64,.14)!important;
+  background:#F5F0E8!important;
+}
+html body #youtube .youtube-v2-head .section-title{
+  color:#2A2521!important;
+}
+html body #youtube .youtube-v2-head .section-title em{
+  color:#D56F40!important;
+}
+html body #youtube .luen-content-video{
+  border-color:rgba(93,76,64,.20)!important;
+  background:#E4D7C6!important;
+}
+html body #youtube .luen-content-video-copy{
+  background:#E4D7C6!important;
+  color:#2A2521!important;
+}
+html body #youtube .luen-content-video-copy>span{
+  color:#C96338!important;
+}
+html body #youtube .luen-content-video-copy h3{
+  color:#2A2521!important;
+}
+html body #youtube .luen-content-video-copy p{
+  color:#6F655C!important;
+}
+html body #youtube .luen-content-video-meta{
+  color:#8A7C71!important;
+}
+html body #youtube .luen-content-video-frame{
+  border-left-color:rgba(93,76,64,.16)!important;
+  background:#D9CCBC!important;
+}
+html body #youtube .luen-content-video-frame video{
+  background:#D9CCBC!important;
+}
+html body #youtube .yt-action-flow.content-design-flow,
+html body #youtube .yt-action-flow.content-design-flow-v9,
+html body #youtube .content-design-flow{
+  border-top-color:rgba(93,76,64,.42)!important;
+  border-bottom-color:rgba(93,76,64,.16)!important;
+}
+html body #youtube .yt-action-flow article,
+html body #youtube .content-design-flow article,
+html body #youtube .yt-action-flow.content-design-flow>article,
+html body #youtube .yt-action-flow.content-design-flow-v9>article,
+html body #youtube .content-design-flow>article{
+  border-right-color:rgba(93,76,64,.15)!important;
+}
+html body #youtube .yt-action-flow article>span,
+html body #youtube .content-design-flow article>span{
+  color:#C96338!important;
+}
+html body #youtube .yt-action-flow article>b,
+html body #youtube .content-design-flow article>b{
+  color:#2A2521!important;
+}
+html body #youtube .yt-action-flow article>p,
+html body #youtube .content-design-flow article>p{
+  color:#71675E!important;
+}
+
+/* 02 · REAL DELIVERABLE */
+html body main#top>#guide-proof.guide-proof{
+  border-top-color:rgba(93,76,64,.14)!important;
+  background:#EEE6DA!important;
+}
+html body #guide-proof .guide-copy .section-title{
+  color:#2A2521!important;
+}
+html body #guide-proof .guide-copy .section-title em{
+  color:#D56F40!important;
+}
+html body #guide-proof .guide-proof-note{
+  border-top-color:rgba(93,76,64,.18)!important;
+}
+html body #guide-proof .guide-proof-note b{
+  color:#C96338!important;
+}
+html body #guide-proof .guide-proof-note p{
+  color:#6F655C!important;
+}
+html body #guide-proof .guide-page{
+  box-shadow:0 22px 54px rgba(75,57,47,.14)!important;
+}
+
+/* 03 · PERFORMANCE INTELLIGENCE */
+html body main#top>#performance.performance-lab{
+  border-top:1px solid rgba(93,76,64,.14)!important;
+  background:#E4D7C6!important;
+}
+html body #performance .performance-copy .eyebrow{
+  color:#C96338!important;
+}
+html body #performance .performance-copy .section-title{
+  color:#2A2521!important;
+}
+html body #performance .performance-copy .section-title em{
+  color:#D56F40!important;
+}
+html body #performance .data-source-badge{
+  color:#C96338!important;
+}
+html body #performance .performance-context,
+html body #performance .performance-followup{
+  color:#6F655C!important;
+}
+html body #performance .performance-dashboard{
+  border-color:rgba(93,76,64,.20)!important;
+  background:rgba(255,249,241,.12)!important;
+}
+html body #performance .metric-row{
+  border-bottom-color:rgba(93,76,64,.18)!important;
+}
+html body #performance .metric-row article{
+  border-right-color:rgba(93,76,64,.16)!important;
+  background:transparent!important;
+}
+html body #performance .metric-row span,
+html body #performance .metric-row small{
+  color:#877A70!important;
+}
+html body #performance .metric-row strong{
+  color:#2A2521!important;
+}
+html body #performance .chart-head,
+html body #performance .chart-labels{
+  color:#7A6E65!important;
+}
+html body #performance .chart-head b{
+  color:#C96338!important;
+}
+html body #performance .performance-growth-v93 .growth-path-base-v93{
+  stroke:rgba(201,99,56,.22)!important;
+}
+html body #performance .performance-growth-v93 .growth-line-v93,
+html body #performance .chart-line{
+  stroke:#D56F40!important;
+}
+html body #performance .performance-growth-v93 .growth-stage,
+html body #performance .chart-stage{
+  fill:#D56F40!important;
+  stroke:#E4D7C6!important;
+  filter:drop-shadow(0 0 4px rgba(213,111,64,.22))!important;
+}
+html body #performance .performance-growth-v93 .growth-value{
+  fill:#A84F29!important;
+}
+
+/* Responsive borders must not fall back to the retired dark system. */
+@media(max-width:1100px){
+  html body #youtube .luen-content-video-frame{
+    border-left:0!important;
+    border-top:1px solid rgba(93,76,64,.16)!important;
+  }
+}
+@media(max-width:767px){
+  html body #youtube .yt-action-flow article,
+  html body #youtube .content-design-flow article,
+  html body #youtube .yt-action-flow.content-design-flow>article,
+  html body #youtube .yt-action-flow.content-design-flow-v9>article{
+    border-bottom-color:rgba(93,76,64,.15)!important;
+  }
+  html body #performance .metric-row article:nth-child(-n+2){
+    border-bottom-color:rgba(93,76,64,.16)!important;
+  }
+}
