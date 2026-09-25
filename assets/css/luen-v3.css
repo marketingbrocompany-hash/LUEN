@@ -6008,3 +6008,97 @@ html body #contact .privacy-check-copy b{
 html body #contact .privacy-detail-body{
   background:#EEE6DA!important;
 }
+
+
+/* ============================================================
+   PAGE END V3.3 · WARM FOOTER AND SUCCESS STATE · 2026-09-25
+   Remove the last inherited near-black surfaces from the page.
+   ============================================================ */
+
+/* CONTACT SUCCESS STATE */
+html body #contact .form-feedback{
+  color:#746960!important;
+}
+html body #contact .form-feedback.is-error{
+  color:#9A4F3A!important;
+}
+html body #contact .form-success{
+  border-color:rgba(213,111,64,.24)!important;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(213,111,64,.10),transparent 42%),
+    #EEE6DA!important;
+}
+html body #contact .form-success-kicker{
+  color:#C96338!important;
+}
+html body #contact .form-success strong{
+  color:#2A2521!important;
+}
+html body #contact .form-success p{
+  color:#6F655C!important;
+}
+html body #contact .form-reset{
+  border-color:rgba(93,76,64,.22)!important;
+  background:transparent!important;
+  color:#5E534B!important;
+}
+html body #contact .form-reset:hover{
+  border-color:#D56F40!important;
+  background:rgba(213,111,64,.06)!important;
+  color:#C96338!important;
+}
+
+/* FOOTER */
+html body footer{
+  padding:40px 0 36px!important;
+  border-top:1px solid rgba(93,76,64,.15)!important;
+  background:#D9CCBC!important;
+  color:#2A2521!important;
+}
+html body footer .logo{
+  color:#2A2521!important;
+}
+html body footer .logo-signal{
+  background:#D56F40!important;
+}
+html body footer .footer-brand p{
+  color:#746960!important;
+}
+html body footer .footer-links a{
+  color:#5E534B!important;
+}
+html body footer .footer-links a:hover{
+  color:#C96338!important;
+}
+html body footer .footer-bottom{
+  border-top-color:rgba(93,76,64,.16)!important;
+}
+html body footer .footer-bottom p{
+  color:#7A6E65!important;
+}
+html body footer .footer-business-info{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px 16px!important;
+  margin-top:18px!important;
+  color:#7A6E65!important;
+  font-size:11px!important;
+  line-height:1.55!important;
+}
+html body footer .footer-business-info a{
+  color:#655A52!important;
+}
+html body footer .footer-business-info a:hover{
+  color:#C96338!important;
+}
+@media(max-width:767px){
+  html body footer{
+    padding-top:32px!important;
+    padding-bottom:34px!important;
+  }
+  html body footer .footer-business-info{
+    display:grid!important;
+    gap:5px!important;
+    font-size:10.5px!important;
+  }
+}
