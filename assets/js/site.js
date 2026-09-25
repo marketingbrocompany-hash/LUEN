@@ -153,10 +153,10 @@
     if(answer)answer.style.maxHeight='0px';
   });
 
-  /* CASE 03 · load only the proof block core; visual stability is handled in CSS. */
-  if(document.querySelector('#cases .case-grid')){
+  /* CASE STUDY · restore the real in-store POP proof into the featured case. */
+  if(document.querySelector('[data-herahera-pop-proof]')){
     const offlineScript=document.createElement('script');
-    offlineScript.src='assets/js/offline-activation-core.js?v=20260823-1';
+    offlineScript.src='assets/js/offline-activation-core.js?v=20260925-2';
     offlineScript.async=false;
     offlineScript.dataset.offlineActivationCore='true';
     document.body.appendChild(offlineScript);
