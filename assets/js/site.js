@@ -148,7 +148,7 @@
     advantageShell.className='container identity-platform-shell';
     advantageShell.append(identityTop,advantageGrid);
     advantageSection.appendChild(advantageShell);
-    caseStudies.parentNode.insertBefore(advantageSection,caseStudies);
+    caseStudies.insertAdjacentElement('afterend',advantageSection);
 
     /* The old JP/KR platform map is intentionally removed after its content is consolidated above. */
     identitySection.remove();
