@@ -7759,3 +7759,64 @@ html body #cases.case-studies-v7 .case-support-copy-v7 p{
     font-size:16px!important;
   }
 }
+
+
+/* ============================================================
+   CROSS-BORDER PLATFORM RAIL · MOBILE SWIPE · 2026-09-25
+   Desktop/tablet layout stays intact. On mobile, keep the five
+   platform cards in one horizontal rail with a visible next-card peek.
+   ============================================================ */
+@media(max-width:767px){
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:10px!important;
+    width:100%!important;
+    margin-top:34px!important;
+    padding:1px 18px 12px 0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-x:contain!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:0!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+    border-top:0!important;
+    border-bottom:0!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid::-webkit-scrollbar{
+    display:none!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid::before{
+    display:none!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    flex:0 0 clamp(238px,78vw,300px)!important;
+    min-width:0!important;
+    min-height:142px!important;
+    box-sizing:border-box!important;
+    padding:18px 18px 17px!important;
+    border:1px solid rgba(93,76,64,.16)!important;
+    border-radius:10px!important;
+    background:rgba(255,249,241,.22)!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:last-child{
+    margin-right:2px!important;
+    border:1px solid rgba(93,76,64,.16)!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>b{
+    margin-top:26px!important;
+    font-size:19px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>p{
+    margin-top:8px!important;
+    font-size:12px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article::after{
+    display:none!important;
+  }
+}
