@@ -1479,3 +1479,199 @@ html body main#top>#work.work{
     margin-top:4px!important;
   }
 }
+
+
+/* ============================================================
+   CROSS-BORDER ADVANTAGE V3 · SIGNAL SYSTEM
+   Korea ↔ Japan is the scene; platforms are supporting tools.
+   ============================================================ */
+html body main#top>.luen-advantage-section.identity-advantage-ready{
+  position:relative!important;
+  overflow:hidden!important;
+  padding:var(--luen-section-y) 0 clamp(84px,7vw,112px)!important;
+  border-top:1px solid var(--luen-line)!important;
+  border-bottom:1px solid var(--luen-line)!important;
+  background:var(--luen-canvas)!important;
+  background-image:none!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready::before{
+  content:"KR ↔ JP";
+  position:absolute;
+  right:-.02em;
+  top:.10em;
+  z-index:0;
+  color:rgba(17,16,14,.035);
+  font:800 clamp(96px,18vw,270px)/.82 var(--luen-type-ui);
+  letter-spacing:-.08em;
+  white-space:nowrap;
+  pointer-events:none;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .identity-platform-shell{
+  position:relative!important;
+  z-index:1!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
+  padding:0!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .identity-top>.eyebrow{
+  color:var(--luen-orange)!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr)!important;
+  gap:48px 76px!important;
+  align-items:end!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title{
+  max-width:900px!important;
+  color:var(--luen-ink)!important;
+  font-size:clamp(48px,5vw,66px)!important;
+  line-height:1.04!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title em{
+  color:var(--luen-orange)!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+  max-width:460px!important;
+  margin:0!important;
+  color:var(--luen-muted)!important;
+  font-size:15px!important;
+  line-height:1.78!important;
+}
+
+/* platform list becomes a quiet editorial utility rail */
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:0!important;
+  margin-top:58px!important;
+  border-top:1px solid var(--luen-ink)!important;
+  border-bottom:1px solid var(--luen-line)!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:-1px;
+  width:74px;
+  height:3px;
+  background:var(--luen-orange);
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article{
+  position:relative!important;
+  min-height:166px!important;
+  padding:24px 20px 22px!important;
+  border:0!important;
+  border-right:1px solid var(--luen-line)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:last-child{
+  border-right:0!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>span{
+  display:block!important;
+  color:var(--luen-orange)!important;
+  font:700 10px/1 var(--luen-type-ui)!important;
+  letter-spacing:.11em!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>b{
+  display:block!important;
+  margin-top:36px!important;
+  color:var(--luen-ink)!important;
+  font:700 clamp(18px,1.6vw,23px)/1.15 var(--luen-type-ui)!important;
+  letter-spacing:-.03em!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>p{
+  max-width:210px!important;
+  margin-top:12px!important;
+  color:var(--luen-muted)!important;
+  font-size:12.5px!important;
+  line-height:1.65!important;
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article::after{
+  content:"";
+  position:absolute;
+  left:20px;
+  right:20px;
+  bottom:-1px;
+  height:2px;
+  background:var(--luen-orange);
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform .35s var(--luen-ease);
+}
+main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:hover::after{
+  transform:scaleX(1);
+}
+
+@media(max-width:1100px){
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading{
+    grid-template-columns:1fr!important;
+    gap:22px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+    max-width:650px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article{
+    border-bottom:1px solid var(--luen-line)!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3){
+    border-right:0!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    border-bottom:0!important;
+  }
+}
+
+@media(max-width:767px){
+  html body main#top>.luen-advantage-section.identity-advantage-ready{
+    padding-top:78px!important;
+    padding-bottom:72px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready::before{
+    right:-.04em;
+    top:.12em;
+    font-size:clamp(82px,26vw,132px);
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title{
+    font-size:clamp(36px,10vw,45px)!important;
+    line-height:1.06!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+    font-size:14px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+    grid-template-columns:1fr!important;
+    margin-top:40px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    min-height:0!important;
+    padding:20px 0 21px!important;
+    border-right:0!important;
+    border-bottom:1px solid var(--luen-line)!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:last-child{
+    border-bottom:0!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>b{
+    margin-top:14px!important;
+    font-size:20px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>p{
+    max-width:none!important;
+    margin-top:8px!important;
+    font-size:12.5px!important;
+  }
+  main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article::after{
+    display:none;
+  }
+}
