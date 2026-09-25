@@ -6298,3 +6298,14 @@ html body main#top>#solution .inbound-method-item p{
     padding-bottom:24px!important;
   }
 }
+
+
+/* ============================================================
+   WHAT LUEN DOES V3.4.1 · REMOVE STICKY · 2026-09-25
+   Real-screen QA: the left copy should scroll normally with the section.
+   ============================================================ */
+html body main#top>#solution .inbound-method-intro{
+  position:static!important;
+  top:auto!important;
+  align-self:start!important;
+}
