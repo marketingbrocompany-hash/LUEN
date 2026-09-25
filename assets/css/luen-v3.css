@@ -4708,3 +4708,47 @@ html body main#top>.brand-wall .client-logo:hover{
     border-color:rgba(75,57,47,.16)!important;
   }
 }
+
+
+/* ============================================================
+   HERO SAND BEIGE FRAME V3.4 · 2026-09-25
+   Replace the remaining brown media field with a lighter sand-beige
+   editorial frame. Brown remains only in typography and hairline borders.
+   ============================================================ */
+html body main#top>.hero .creator-network-showcase{
+  border-color:rgba(93,76,64,.14)!important;
+  background:#E4D7C6!important;
+}
+html body main#top>.hero .creator-network-showcase::after{
+  background:#D56F40!important;
+}
+html body main#top>.hero .creator-network-head{
+  border-bottom-color:rgba(93,76,64,.11)!important;
+  background:#E4D7C6!important;
+}
+html body main#top>.hero .creator-network-head>span{
+  color:#7D6E63!important;
+}
+html body main#top>.hero .creator-network-head>strong{
+  color:#54483F!important;
+}
+html body main#top>.hero .creator-profile-viewport{
+  background:#EEE5D9!important;
+}
+html body main#top>.hero .creator-profile-card,
+html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+html body main#top>.hero .creator-profile-card:nth-child(3n){
+  border-color:rgba(93,76,64,.10)!important;
+  background:#F6F0E8!important;
+}
+html body main#top>.hero .creator-profile-card img{
+  filter:saturate(.94) contrast(.985) brightness(1.025) sepia(.012)!important;
+}
+html body main#top>.hero .creator-profile-card:hover img{
+  filter:saturate(.98) contrast(1) brightness(1.035) sepia(.008)!important;
+}
+@media(max-width:767px){
+  html body main#top>.hero .creator-network-showcase{
+    border-color:rgba(93,76,64,.12)!important;
+  }
+}
