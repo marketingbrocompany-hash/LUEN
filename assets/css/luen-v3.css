@@ -5315,3 +5315,96 @@ html body #cases.case-studies .case-signature-cta:hover{
     justify-content:center!important;
   }
 }
+
+
+/* ============================================================
+   SUPPORTING CASES V3.3 · WARM PROOF COLUMNS · 2026-09-25
+   Keep the three cases quiet and comparable. Signature Case remains
+   the hero proof; these links behave as text actions, not primary buttons.
+   ============================================================ */
+html body #cases.case-studies .case-support-grid{
+  gap:32px!important;
+}
+html body #cases.case-studies .case-support-grid .case-proof-card{
+  border-top-color:rgba(93,76,64,.34)!important;
+}
+html body #cases.case-studies .case-support-grid .case-proof-card:hover{
+  border-top-color:rgba(93,76,64,.52)!important;
+}
+html body #cases.case-studies .case-support-grid .case-image{
+  background:#E8DED0!important;
+}
+html body #cases.case-studies .case-support-grid .case-image img{
+  filter:saturate(.96) contrast(.995) brightness(1.01) sepia(.008)!important;
+}
+html body #cases.case-studies .case-support-grid .case-image>span{
+  border:1px solid rgba(93,76,64,.14)!important;
+  background:rgba(243,238,229,.92)!important;
+  color:#5E534B!important;
+}
+html body #cases.case-studies .case-support-grid .case-body>small{
+  color:#C96338!important;
+}
+html body #cases.case-studies .case-support-grid .case-body h3{
+  color:#2A2521!important;
+}
+html body #cases.case-studies .case-support-grid .case-cat,
+html body #cases.case-studies .case-support-grid .case-metric span{
+  color:#8A7C71!important;
+}
+html body #cases.case-studies .case-support-grid .case-metric,
+html body #cases.case-studies .case-support-grid .case-mini-proof{
+  border-top-color:rgba(93,76,64,.16)!important;
+}
+html body #cases.case-studies .case-support-grid .case-metric strong{
+  color:#2A2521!important;
+}
+html body #cases.case-studies .case-support-grid .case-mini-proof span,
+html body #cases.case-studies .case-support-grid .case-desc{
+  color:#746960!important;
+}
+html body #cases.case-studies .case-support-grid .case-mini-proof b{
+  color:#C96338!important;
+}
+
+/* Supporting case links are secondary text actions in the same orange family. */
+html body #cases.case-studies .case-support-grid .case-card-cta{
+  width:max-content!important;
+  min-height:auto!important;
+  margin-top:20px!important;
+  padding:7px 0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#C96338!important;
+  box-shadow:none!important;
+}
+html body #cases.case-studies .case-support-grid .case-card-cta i{
+  margin-left:5px!important;
+  color:#C96338!important;
+  transition:transform .2s ease!important;
+}
+html body #cases.case-studies .case-support-grid .case-card-cta:hover{
+  border:0!important;
+  background:transparent!important;
+  color:#2A2521!important;
+}
+html body #cases.case-studies .case-support-grid .case-card-cta:hover i{
+  color:#C96338!important;
+  transform:translateX(3px)!important;
+}
+
+@media(max-width:1100px){
+  html body #cases.case-studies .case-support-grid{
+    gap:42px!important;
+  }
+}
+@media(max-width:767px){
+  html body #cases.case-studies .case-support-grid{
+    gap:36px!important;
+    margin-top:42px!important;
+  }
+  html body #cases.case-studies .case-support-grid .case-card-cta{
+    margin-top:17px!important;
+  }
+}
