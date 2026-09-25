@@ -2576,3 +2576,80 @@ html body main#top>#contact.contact{
     grid-column:auto!important;
   }
 }
+
+
+/* ============================================================
+   V3 LEGACY COLLISION FIXES · 2026-09-25
+   Neutralize late-surviving legacy assumptions without deleting
+   the old layer before real-device visual QA.
+   ============================================================ */
+
+/* HERO · allow semantic copy to wrap safely and avoid overlap at
+   intermediate desktop widths where the legacy layer forced nowrap. */
+.hero h1>span:first-child{
+  white-space:normal!important;
+}
+@media(max-width:1240px){
+  .hero>.container.hero-layout{
+    grid-template-columns:1fr!important;
+    gap:42px!important;
+  }
+  .hero .creator-network-showcase{
+    min-height:470px!important;
+  }
+}
+
+/* CREATOR NETWORK · legacy counters remain useful proof, but their
+   old ink color disappears on the new Espresso media stage. */
+.hero .creator-network-head>span::after,
+.hero .creator-network-head>strong::after,
+.hero .creator-network-head>p::after{
+  margin-top:10px!important;
+  color:#F5F3EE!important;
+  font-size:clamp(34px,3vw,48px)!important;
+  font-weight:720!important;
+  line-height:.95!important;
+}
+@media(max-width:767px){
+  .hero .creator-network-head>span::after,
+  .hero .creator-network-head>strong::after,
+  .hero .creator-network-head>p::after{
+    margin-top:7px!important;
+    font-size:clamp(22px,6.8vw,30px)!important;
+  }
+}
+
+/* FAQ · JS creates this button after load. Keep it inside the same
+   dark editorial language instead of the retired ivory pill UI. */
+#faq .faq-more-toggle{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:50px!important;
+  margin-top:20px!important;
+  padding:0!important;
+  border:0!important;
+  border-top:1px solid var(--luen-line-dark)!important;
+  border-bottom:1px solid var(--luen-line-dark)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:rgba(245,243,238,.68)!important;
+  font:700 11px/1 var(--luen-type-ui)!important;
+  letter-spacing:.08em!important;
+  text-align:left!important;
+  cursor:pointer!important;
+}
+#faq .faq-more-toggle:hover{
+  background:transparent!important;
+  color:var(--luen-orange-bright)!important;
+}
+#faq .faq-more-toggle:focus-visible{
+  outline:2px solid var(--luen-orange-bright)!important;
+  outline-offset:3px!important;
+}
+@media(max-width:767px){
+  #faq .faq-more-toggle{
+    min-height:48px!important;
+    margin-top:16px!important;
+    font-size:10.5px!important;
+  }
+}
