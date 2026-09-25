@@ -7522,3 +7522,62 @@ html body #cases.case-studies-v7 .case-inquiry-btn-v7 i{
     justify-content:center!important;
   }
 }
+
+
+/* ============================================================
+   SELECTED CASE STUDIES V7.1 · CHAPTER SEPARATION · 2026-09-25
+   Make CONTENT and OFFLINE EXTENSION read as two distinct cards.
+   ============================================================ */
+html body #cases.case-studies-v7 .case-feature-v7{
+  display:grid!important;
+  gap:28px!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+html body #cases.case-studies-v7 .case-content-chapter-v7{
+  overflow:hidden!important;
+  border:1px solid rgba(93,76,64,.16)!important;
+  border-radius:14px!important;
+  background:#E9DECF!important;
+}
+html body #cases.case-studies-v7 .case-offline-chapter-v7{
+  grid-template-columns:minmax(340px,.42fr) minmax(0,.58fr)!important;
+  overflow:hidden!important;
+  min-height:300px!important;
+  border:1px solid rgba(93,76,64,.16)!important;
+  border-radius:14px!important;
+  background:#F1E8DD!important;
+}
+html body #cases.case-studies-v7 .case-pop-media-v7{
+  min-height:300px!important;
+  border-left:1px solid rgba(93,76,64,.12)!important;
+}
+html body #cases.case-studies-v7 .case-pop-media-v7 img{
+  padding:18px 28px!important;
+}
+@media(max-width:1100px){
+  html body #cases.case-studies-v7 .case-feature-v7{
+    gap:24px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    grid-template-columns:minmax(300px,.44fr) minmax(0,.56fr)!important;
+  }
+}
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-feature-v7{
+    gap:18px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-chapter-v7,
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    border-radius:10px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    grid-template-columns:1fr!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    border-left:0!important;
+    border-top:1px solid rgba(93,76,64,.12)!important;
+  }
+}
