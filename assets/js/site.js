@@ -34,6 +34,7 @@
       const clone=source.cloneNode(true);
       clone.classList.add('loop-clone','ios-loop-clone');
       clone.setAttribute('aria-hidden','true');
+      clone.querySelectorAll('img').forEach(img=>{img.loading='eager';img.fetchPriority='low';});
       track.appendChild(clone);
     }
     if(reducedMotion.matches)return;
@@ -242,7 +243,7 @@
   /* FAQ · keep the first three questions visible and reveal the remainder on demand. */
   const faqList=document.querySelector('.faq-list');
   if(faqList){
-    faqList.querySelector('.faq-conversion')?.remove();
+    const faqConversion=faqList.querySelector('.faq-conversion');
     const faqItems=[...faqList.querySelectorAll(':scope > .faq-item')];
     const extraItems=faqItems.slice(3);
     if(extraItems.length){
@@ -252,7 +253,7 @@
       toggle.className='faq-more-toggle';
       toggle.setAttribute('aria-expanded','false');
       toggle.textContent=`질문 더보기 +${extraItems.length}`;
-      faqList.appendChild(toggle);
+      faqList.insertBefore(toggle,faqConversion||null);
       toggle.addEventListener('click',()=>{
         const nextExpanded=toggle.getAttribute('aria-expanded')!=='true';
         toggle.setAttribute('aria-expanded',String(nextExpanded));
