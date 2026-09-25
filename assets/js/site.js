@@ -117,7 +117,7 @@
       <div class="eyebrow">Cross-border Advantage</div>
       <div class="luen-advantage-heading">
         <h2 class="section-title">한국과 일본 양쪽 시장을 이해하는<br/><em>Cross-border Creator Marketing Partner</em></h2>
-        <p>YouTube부터 Instagram, TikTok, X, Ameba Blog까지 시장과 목적에 맞는 플랫폼을 연결합니다.</p>
+        <p>시장과 목적에 맞는 플랫폼을 연결합니다.</p>
       </div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
@@ -125,11 +125,11 @@
     advantageGrid.id='platforms';
     advantageGrid.className='luen-advantage-grid sr d1';
     advantageGrid.innerHTML=`
-      <article><span>01</span><b>YouTube</b><p>제품 이해와 신뢰 형성에 강한 롱폼 콘텐츠</p></article>
-      <article><span>02</span><b>Instagram</b><p>비주얼 중심의 발견과 브랜드 경험 확산</p></article>
-      <article><span>03</span><b>TikTok</b><p>짧고 강한 포맷으로 트렌드 참여와 빠른 확산</p></article>
-      <article><span>04</span><b>X</b><p>실시간 화제성과 공유를 통한 이슈 확산</p></article>
-      <article><span>05</span><b>Ameba Blog</b><p>검색에 오래 남는 후기형 콘텐츠로 정보 탐색 강화</p></article>`;
+      <article><span>01</span><b>YouTube</b><p>이해 · 신뢰 형성</p></article>
+      <article><span>02</span><b>Instagram</b><p>발견 · 브랜드 경험</p></article>
+      <article><span>03</span><b>TikTok</b><p>트렌드 · 빠른 확산</p></article>
+      <article><span>04</span><b>X</b><p>실시간 화제 · 공유</p></article>
+      <article><span>05</span><b>Ameba Blog</b><p>검색 · 후기 축적</p></article>`;
 
     const advantageSection=document.createElement('section');
     advantageSection.id='about';
