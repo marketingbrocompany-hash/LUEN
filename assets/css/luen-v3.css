@@ -3334,6 +3334,11 @@ html body main#top>.hero .creator-network-foot i{
   opacity:.72!important;
 }
 
+/* keep secondary ticker retired; movement belongs to Creator Network only */
+html body main#top>.marquee{
+  display:none!important;
+}
+
 /* medium desktop */
 @media(min-width:1121px) and (max-width:1240px){
   html body main#top>.hero{
@@ -3502,17 +3507,6 @@ html body main#top>.hero .creator-network-foot i{
     font-size:7.5px!important;
     letter-spacing:.08em!important;
   }
-
-  html body main#top>.marquee{
-    min-height:32px!important;
-  }
-  html body main#top>.marquee .marquee-track{
-    padding:9px 0!important;
-  }
-  html body main#top>.marquee .marquee-track span{
-    padding:0 18px!important;
-    font-size:8px!important;
-  }
 }
 
 @media(max-width:480px){
@@ -3538,11 +3532,7 @@ html body main#top>.hero .creator-network-foot i{
   }
 }
 
-@media(prefers-reduced-motion:reduce){
-  html body main#top>.marquee .marquee-track{
-    transform:none!important;
-  }
-  html body main#top>.hero .creator-profile-track{
+@media(prefers-reduced-motion:reduce){  html body main#top>.hero .creator-profile-track{
     transform:none!important;
   }
 }
