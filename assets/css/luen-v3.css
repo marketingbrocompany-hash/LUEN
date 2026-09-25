@@ -4082,3 +4082,472 @@ html body main#top>.brand-wall .brand-wall-micro-label{
     padding-top:8px!important;
   }
 }
+
+
+/* ============================================================
+   HERO FINAL V3.2 · 2026-09-25
+   Finalize the first-screen brand system.
+   Editorial typography + Espresso Media Frame + quiet trust handoff.
+   ============================================================ */
+
+/* HEADER / NAV — align to the exact Hero grid */
+html body #nav{
+  height:72px!important;
+  border-bottom:1px solid rgba(17,16,14,.045)!important;
+  background:rgba(245,243,238,.94)!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+}
+html body #nav .nav-inner{
+  width:min(1400px,calc(100% - 80px))!important;
+  max-width:1400px!important;
+  gap:28px!important;
+}
+html body #nav .logo{
+  gap:8px!important;
+  color:var(--luen-ink)!important;
+  font:800 21px/1 var(--luen-type-ui)!important;
+  letter-spacing:.18em!important;
+}
+html body #nav .logo-signal{
+  width:6px!important;
+  height:6px!important;
+  border-radius:50%!important;
+  background:var(--luen-orange)!important;
+  box-shadow:none!important;
+}
+html body #nav .nav-links{
+  gap:28px!important;
+}
+html body #nav .nav-links a{
+  color:#625E57!important;
+  font:620 11.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.01em!important;
+}
+html body #nav .nav-links a:hover{
+  color:var(--luen-ink)!important;
+}
+html body #nav .nav-actions{
+  gap:10px!important;
+}
+html body #nav .nav-client-login,
+html body #nav .nav-contact{
+  min-height:38px!important;
+  padding:0 14px!important;
+  border-radius:8px!important;
+  font:650 11px/1 var(--luen-type-ui)!important;
+  box-shadow:none!important;
+}
+html body #nav .nav-client-login{
+  border:1px solid var(--luen-line)!important;
+  background:transparent!important;
+  color:var(--luen-ink-soft)!important;
+}
+html body #nav .nav-contact{
+  border:1px solid rgba(217,101,50,.72)!important;
+  background:transparent!important;
+  color:var(--luen-orange)!important;
+}
+html body #nav .nav-contact:hover{
+  border-color:var(--luen-orange)!important;
+  background:var(--luen-orange)!important;
+  color:#fff!important;
+}
+
+/* HERO GRID */
+html body main#top>.hero{
+  padding:50px 0 52px!important;
+}
+html body main#top>.hero>.container.hero-layout{
+  width:min(1400px,calc(100% - 80px))!important;
+  max-width:1400px!important;
+  grid-template-columns:minmax(0,.91fr) minmax(600px,1.09fr)!important;
+  gap:clamp(56px,4.5vw,78px)!important;
+  align-items:center!important;
+}
+
+/* TYPOGRAPHY — strong but less ad-like */
+html body main#top>.hero .hero-kicker{
+  margin-bottom:23px!important;
+  color:#736E67!important;
+  font:700 10px/1.2 var(--luen-type-ui)!important;
+  letter-spacing:.105em!important;
+}
+html body main#top>.hero .hero-kicker::before{
+  width:5px!important;
+  height:5px!important;
+  flex-basis:5px!important;
+  background:rgba(17,16,14,.34)!important;
+}
+
+html body main#top>.hero h1{
+  max-width:690px!important;
+  font-family:var(--luen-type-display)!important;
+  font-size:clamp(54px,3.65vw,64px)!important;
+  font-weight:720!important;
+  line-height:1.015!important;
+  letter-spacing:-.052em!important;
+}
+html body main#top>.hero h1>span,
+html body main#top>.hero h1 .line-2,
+html body main#top>.hero h1 .line-3{
+  font-size:inherit!important;
+  line-height:inherit!important;
+  letter-spacing:inherit!important;
+}
+html body main#top>.hero h1 .line-2,
+html body main#top>.hero h1 .line-3{
+  margin-top:1px!important;
+}
+html body main#top>.hero h1 .line-3 em{
+  color:var(--luen-orange)!important;
+  -webkit-text-fill-color:var(--luen-orange)!important;
+}
+
+html body main#top>.hero .hero-desc{
+  max-width:590px!important;
+  margin-top:27px!important;
+  color:#56514A!important;
+  font-size:16px!important;
+  font-weight:450!important;
+  line-height:1.72!important;
+  letter-spacing:-.014em!important;
+}
+html body main#top>.hero .hero-desc strong{
+  color:var(--luen-ink)!important;
+  font-weight:650!important;
+}
+
+/* CTA — one action, one quiet link */
+html body main#top>.hero .hero-cta{
+  gap:22px!important;
+  margin-top:29px!important;
+}
+html body main#top>.hero .hero-cta .btn-primary{
+  min-height:48px!important;
+  padding:0 20px!important;
+  border-radius:7px!important;
+  border-color:var(--luen-orange)!important;
+  background:var(--luen-orange)!important;
+  color:#fff!important;
+  font-size:12px!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary{
+  min-height:auto!important;
+  padding:7px 0!important;
+  color:#3F3B36!important;
+  font-size:12px!important;
+  border:0!important;
+  border-radius:0!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary:hover{
+  color:var(--luen-orange)!important;
+}
+html body main#top>.hero .hero-cta .btn-secondary span{
+  margin-left:5px!important;
+  color:var(--luen-orange)!important;
+}
+
+/* ESPRESSO MEDIA FRAME */
+html body main#top>.hero .creator-network-showcase{
+  position:relative!important;
+  width:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  border:1px solid rgba(17,16,14,.11)!important;
+  border-radius:4px!important;
+  background:var(--luen-espresso)!important;
+  box-shadow:none!important;
+}
+html body main#top>.hero .creator-network-showcase::after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  z-index:7!important;
+  width:44px!important;
+  height:2px!important;
+  background:var(--luen-orange)!important;
+  pointer-events:none!important;
+}
+html body main#top>.hero .creator-network-head{
+  min-height:40px!important;
+  grid-template-columns:1fr auto!important;
+  padding:0 14px!important;
+  border-bottom:1px solid rgba(245,243,238,.085)!important;
+}
+html body main#top>.hero .creator-network-head>span,
+html body main#top>.hero .creator-network-head>strong{
+  color:rgba(245,243,238,.46)!important;
+  font:700 8.5px/1 var(--luen-type-ui)!important;
+  letter-spacing:.105em!important;
+}
+html body main#top>.hero .creator-network-head>strong{
+  color:rgba(245,243,238,.72)!important;
+  font-size:9px!important;
+}
+
+/* Media fills the frame; continuation is shown by natural clipping, not foggy masks. */
+html body main#top>.hero .creator-profile-viewport{
+  min-height:252px!important;
+  padding:16px 0!important;
+  overflow:hidden!important;
+  background:var(--luen-espresso)!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
+html body main#top>.hero .creator-profile-track{
+  display:flex!important;
+  align-items:center!important;
+}
+html body main#top>.hero .creator-profile-set{
+  gap:8px!important;
+  padding-right:8px!important;
+}
+html body main#top>.hero .creator-profile-card,
+html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+html body main#top>.hero .creator-profile-card:nth-child(3n){
+  flex:0 0 218px!important;
+  width:218px!important;
+  height:218px!important;
+  margin:0!important;
+  border:1px solid rgba(245,243,238,.08)!important;
+  border-radius:2px!important;
+  background:#211813!important;
+  transform:none!important;
+  box-shadow:none!important;
+}
+html body main#top>.hero .creator-profile-card img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  filter:saturate(.99) contrast(1.01) brightness(.985)!important;
+}
+html body main#top>.hero .creator-profile-card:hover img{
+  transform:scale(1.012)!important;
+}
+
+/* TRUST HANDOFF */
+html body main#top>.brand-wall{
+  padding:10px 0 14px!important;
+  border-top:0!important;
+  border-bottom:1px solid rgba(17,16,14,.085)!important;
+  background:var(--luen-canvas)!important;
+}
+html body main#top>.brand-wall .brand-wall-micro-label{
+  width:min(1400px,calc(100% - 80px))!important;
+  max-width:1400px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  color:#817B73!important;
+  font:700 9px/1 var(--luen-type-ui)!important;
+  letter-spacing:.10em!important;
+  text-align:left!important;
+}
+html body main#top>.brand-wall .brand-viewport{
+  margin-top:8px!important;
+  padding:0!important;
+}
+html body main#top>.brand-wall .client-logo,
+html body main#top>.brand-wall .brand-set::after{
+  min-width:210px!important;
+  min-height:62px!important;
+  height:62px!important;
+  padding:0 26px!important;
+  border-right:1px solid rgba(17,16,14,.085)!important;
+  color:rgba(17,16,14,.58)!important;
+  font-size:15px!important;
+}
+html body main#top>.brand-wall .client-logo:hover{
+  color:rgba(17,16,14,.78)!important;
+}
+
+/* DESKTOP COMPRESSION */
+@media(min-width:1121px) and (max-width:1320px){
+  html body #nav .nav-inner,
+  html body main#top>.hero>.container.hero-layout,
+  html body main#top>.brand-wall .brand-wall-micro-label{
+    width:calc(100% - 64px)!important;
+  }
+  html body main#top>.hero>.container.hero-layout{
+    grid-template-columns:minmax(0,.92fr) minmax(520px,1.08fr)!important;
+    gap:42px!important;
+  }
+  html body main#top>.hero h1{
+    font-size:clamp(48px,4.2vw,58px)!important;
+  }
+  html body main#top>.hero .creator-profile-card,
+  html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+  html body main#top>.hero .creator-profile-card:nth-child(3n){
+    flex-basis:190px!important;
+    width:190px!important;
+    height:190px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:224px!important;
+  }
+}
+
+/* TABLET */
+@media(max-width:1120px){
+  html body #nav .nav-inner{
+    width:min(100% - 48px,980px)!important;
+  }
+  html body main#top>.hero{
+    padding-top:48px!important;
+    padding-bottom:44px!important;
+  }
+  html body main#top>.hero>.container.hero-layout{
+    width:min(100% - 48px,980px)!important;
+    grid-template-columns:1fr!important;
+    gap:38px!important;
+  }
+  html body main#top>.hero h1{
+    max-width:760px!important;
+    font-size:clamp(46px,6.4vw,60px)!important;
+  }
+  html body main#top>.hero .hero-desc{
+    max-width:650px!important;
+    font-size:15px!important;
+  }
+  html body main#top>.hero .creator-network-showcase{
+    max-width:780px!important;
+  }
+  html body main#top>.hero .creator-profile-card,
+  html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+  html body main#top>.hero .creator-profile-card:nth-child(3n){
+    flex-basis:178px!important;
+    width:178px!important;
+    height:178px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:212px!important;
+  }
+  html body main#top>.brand-wall .brand-wall-micro-label{
+    width:min(100% - 48px,980px)!important;
+  }
+}
+
+/* MOBILE */
+@media(max-width:767px){
+  html body #nav{
+    height:64px!important;
+  }
+  html body #nav .nav-inner{
+    width:calc(100% - 36px)!important;
+  }
+  html body #nav .logo{
+    font-size:18px!important;
+  }
+  html body #nav .nav-client-login{
+    display:none!important;
+  }
+  html body main#top>.hero{
+    padding-top:32px!important;
+    padding-bottom:28px!important;
+  }
+  html body main#top>.hero>.container.hero-layout{
+    width:calc(100% - 36px)!important;
+    gap:28px!important;
+  }
+  html body main#top>.hero .hero-kicker{
+    margin-bottom:16px!important;
+    font-size:8.5px!important;
+    letter-spacing:.075em!important;
+  }
+  html body main#top>.hero h1{
+    max-width:none!important;
+    font-size:clamp(31px,8.9vw,38px)!important;
+    font-weight:720!important;
+    line-height:1.035!important;
+    letter-spacing:-.05em!important;
+  }
+  html body main#top>.hero h1>span{
+    width:auto!important;
+    white-space:nowrap!important;
+  }
+  html body main#top>.hero .hero-desc{
+    max-width:31em!important;
+    margin-top:18px!important;
+    font-size:14px!important;
+    line-height:1.68!important;
+  }
+  html body main#top>.hero .hero-cta{
+    gap:12px!important;
+    margin-top:22px!important;
+  }
+  html body main#top>.hero .hero-cta .btn-primary{
+    width:100%!important;
+    min-height:46px!important;
+    justify-content:center!important;
+  }
+  html body main#top>.hero .hero-cta .btn-secondary{
+    width:max-content!important;
+  }
+
+  html body main#top>.hero .creator-network-head{
+    min-height:36px!important;
+    padding:0 11px!important;
+  }
+  html body main#top>.hero .creator-network-head>span{
+    font-size:7.5px!important;
+  }
+  html body main#top>.hero .creator-network-head>strong{
+    font-size:8px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:160px!important;
+    padding:12px 0!important;
+  }
+  html body main#top>.hero .creator-profile-set{
+    gap:6px!important;
+    padding-right:6px!important;
+  }
+  html body main#top>.hero .creator-profile-card,
+  html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+  html body main#top>.hero .creator-profile-card:nth-child(3n){
+    flex-basis:136px!important;
+    width:136px!important;
+    height:136px!important;
+  }
+  html body main#top>.hero .creator-network-showcase::after{
+    width:30px!important;
+  }
+
+  html body main#top>.brand-wall{
+    padding-top:8px!important;
+    padding-bottom:10px!important;
+  }
+  html body main#top>.brand-wall .brand-wall-micro-label{
+    width:calc(100% - 36px)!important;
+    font-size:8.5px!important;
+  }
+  html body main#top>.brand-wall .brand-viewport{
+    margin-top:6px!important;
+  }
+  html body main#top>.brand-wall .client-logo,
+  html body main#top>.brand-wall .brand-set::after{
+    min-width:150px!important;
+    min-height:54px!important;
+    height:54px!important;
+    padding:0 18px!important;
+    font-size:13px!important;
+  }
+}
+
+@media(max-width:380px){
+  html body main#top>.hero h1{
+    font-size:clamp(29px,8.55vw,33px)!important;
+  }
+  html body main#top>.hero .creator-profile-card,
+  html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+  html body main#top>.hero .creator-profile-card:nth-child(3n){
+    flex-basis:124px!important;
+    width:124px!important;
+    height:124px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:148px!important;
+  }
+}
