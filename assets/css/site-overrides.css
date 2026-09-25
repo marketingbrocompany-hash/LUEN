@@ -537,3 +537,284 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
     line-height:1.25!important;
   }
 }
+
+
+/* ============================================================
+   BUSINESS PROOF + SIGNATURE CASES
+   Extend LUEN's existing evidence-first visual system.
+   ============================================================ */
+.outcome-strip .proof-result-item{
+  min-height:236px!important;
+  padding:58px 28px 30px!important;
+}
+.outcome-strip .proof-result-item strong{
+  color:var(--orange-2)!important;
+  font-family:"Pretendard Variable","Pretendard","Inter",sans-serif!important;
+  font-size:clamp(27px,2.6vw,40px)!important;
+  line-height:1.08!important;
+  letter-spacing:-.045em!important;
+  word-break:keep-all;
+}
+.outcome-strip .proof-result-item p{
+  max-width:270px!important;
+  margin-top:14px!important;
+  min-height:42px;
+  color:var(--muted)!important;
+}
+.proof-case-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:max-content;
+  margin-top:18px;
+  color:var(--orange);
+  font:700 8px/1 "Inter","Pretendard",sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.proof-case-link i{font-style:normal;transition:transform .2s ease}
+.proof-case-link:hover i{transform:translateX(3px)}
+
+.case-studies .case-head .section-title em{
+  color:var(--orange-2);
+  font-style:normal;
+}
+.case-studies .case-head .section-copy{
+  margin-top:22px;
+  max-width:620px!important;
+}
+.case-signature{
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(420px,.92fr);
+  margin-top:64px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:#120b07;
+  scroll-margin-top:100px;
+}
+.case-signature-visual{
+  position:relative;
+  min-height:570px;
+  overflow:hidden;
+}
+.case-signature-visual img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(.78) brightness(.74);
+  transition:transform .65s ease,filter .4s ease;
+}
+.case-signature:hover .case-signature-visual img{
+  transform:scale(1.025);
+  filter:saturate(.88) brightness(.8);
+}
+.case-signature-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(13,8,5,.05) 45%,rgba(18,11,7,.58) 100%);
+  pointer-events:none;
+}
+.case-signature-index{
+  position:absolute;
+  left:22px;
+  top:22px;
+  z-index:2;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(248,229,207,.22);
+  border-radius:50%;
+  background:rgba(13,8,5,.62);
+  color:var(--orange-2);
+  font:700 9px/1 "Inter",sans-serif;
+}
+.case-signature-body{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:46px 46px 42px;
+}
+.case-signature-kicker{
+  color:var(--orange);
+  font:700 9px/1.2 "Inter","Pretendard",sans-serif;
+  letter-spacing:.14em;
+}
+.case-signature-body h3{
+  margin-top:16px;
+  color:var(--cream);
+  font:750 18px/1.3 "Pretendard Variable","Pretendard","Inter",sans-serif;
+  letter-spacing:-.025em;
+}
+.case-signature-title{
+  margin-top:28px;
+  color:var(--cream);
+  font:780 clamp(34px,3.4vw,50px)/1.08 "Pretendard Variable","Pretendard","Inter",sans-serif;
+  letter-spacing:-.055em;
+}
+.case-signature-title em{color:var(--orange-2);font-style:normal}
+.case-signature-desc{
+  margin-top:22px;
+  max-width:590px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.85;
+}
+.case-journey{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:9px 11px;
+  margin-top:28px;
+  padding:16px 0;
+  border-block:1px solid var(--line);
+}
+.case-journey span{
+  color:var(--cream);
+  font:700 8px/1.25 "Inter",sans-serif;
+  letter-spacing:.10em;
+}
+.case-journey i{color:var(--orange);font-style:normal}
+.case-signature-proof{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  margin-top:24px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+}
+.case-signature-proof>div{
+  min-width:0;
+  padding:18px 18px 17px;
+}
+.case-signature-proof>div+div{border-left:1px solid var(--line)}
+.case-signature-proof span{
+  display:block;
+  color:var(--muted-2);
+  font:700 8px/1 "Inter",sans-serif;
+  letter-spacing:.12em;
+}
+.case-signature-proof strong{
+  display:block;
+  margin-top:9px;
+  color:var(--orange-2);
+  font:760 clamp(20px,2vw,28px)/1.15 "Pretendard Variable","Pretendard","Inter",sans-serif;
+  letter-spacing:-.04em;
+  word-break:keep-all;
+}
+.case-signature-proof small{
+  display:block;
+  margin-top:9px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.55;
+}
+.case-signature-cta{margin-top:26px!important}
+
+.case-support-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+.case-studies .case-support-grid .case-proof-card{
+  display:flex!important;
+  flex-direction:column!important;
+  min-width:0;
+  min-height:0!important;
+  grid-column:auto!important;
+  grid-template-columns:none!important;
+  scroll-margin-top:100px;
+}
+.case-studies .case-support-grid .case-proof-card .case-image{
+  min-height:0!important;
+  aspect-ratio:16/9;
+}
+.case-studies .case-support-grid .case-proof-card .case-body{
+  flex:1;
+  min-height:430px!important;
+  padding:26px 24px 24px!important;
+}
+.case-studies .case-support-grid .case-proof-card .case-body h3{
+  font-size:22px!important;
+}
+.case-studies .case-support-grid .case-proof-card .case-metric{
+  margin-top:22px!important;
+  padding-top:18px!important;
+}
+.case-studies .case-support-grid .case-proof-card .case-metric strong{
+  font-size:clamp(22px,2vw,29px)!important;
+  line-height:1.2!important;
+}
+.case-evidence-note{
+  margin-top:10px;
+  color:rgba(244,125,53,.78);
+  font-size:10px;
+  line-height:1.65;
+}
+.case-mini-proof{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.case-mini-proof span{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.55;
+}
+.case-mini-proof b{
+  margin-right:6px;
+  color:var(--orange);
+  font:700 8px/1 "Inter",sans-serif;
+  letter-spacing:.08em;
+}
+.case-support-grid .case-desc{
+  margin-top:auto!important;
+  padding-top:18px!important;
+}
+.case-support-grid .case-card-cta{margin-top:20px!important}
+
+@media(max-width:1100px){
+  .case-signature{
+    grid-template-columns:1fr;
+  }
+  .case-signature-visual{
+    min-height:0;
+    aspect-ratio:16/8.5;
+  }
+  .case-signature-visual::after{
+    background:linear-gradient(180deg,transparent 55%,rgba(18,11,7,.58) 100%);
+  }
+  .case-signature-body{padding:38px 34px 36px}
+  .case-support-grid{grid-template-columns:1fr}
+  .case-studies .case-support-grid .case-proof-card .case-body{min-height:0!important}
+}
+@media(max-width:767px){
+  .outcome-strip .proof-result-item{
+    min-height:180px!important;
+    padding:54px 22px 24px!important;
+  }
+  .outcome-strip .proof-result-item strong{
+    font-size:clamp(26px,8vw,34px)!important;
+  }
+  .outcome-strip .proof-result-item p{min-height:0}
+  .case-signature{margin-top:46px;border-radius:22px}
+  .case-signature-visual{aspect-ratio:16/10}
+  .case-signature-body{padding:28px 22px 26px}
+  .case-signature-title{
+    margin-top:22px;
+    font-size:clamp(30px,9.2vw,39px);
+  }
+  .case-signature-desc{font-size:12px;line-height:1.8}
+  .case-journey{gap:8px 9px}
+  .case-journey span{font-size:7px}
+  .case-signature-proof{grid-template-columns:1fr}
+  .case-signature-proof>div+div{border-left:0;border-top:1px solid var(--line)}
+  .case-signature-proof strong{font-size:24px}
+  .case-support-grid{gap:16px;margin-top:16px}
+  .case-studies .case-support-grid .case-proof-card .case-body{padding:24px 22px!important}
+}
