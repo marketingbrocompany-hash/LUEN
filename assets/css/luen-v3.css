@@ -7581,3 +7581,68 @@ html body #cases.case-studies-v7 .case-pop-media-v7 img{
     border-top:1px solid rgba(93,76,64,.12)!important;
   }
 }
+
+
+/* ============================================================
+   GLOBAL TYPE HIERARCHY · 2026-09-25
+   One visual ceiling: Hero H1 = Case Studies display title.
+   Every other content heading and metric stays below it.
+   ============================================================ */
+html body{
+  --luen-display-title:clamp(54px,3.65vw,64px);
+  --luen-section-title-max:clamp(36px,3.2vw,50px);
+  --luen-key-metric-max:clamp(44px,3.4vw,56px);
+}
+
+/* The only two top-level display titles on the page. */
+html body main#top>.hero h1,
+html body #cases.case-studies-v7 .case-head-v7 .section-title{
+  font-size:var(--luen-display-title)!important;
+}
+
+/* Every other section title must sit one level below the display title. */
+html body main#top>section:not(.hero):not(#cases) .section-title,
+html body main#top>.luen-advantage-section .section-title{
+  font-size:var(--luen-section-title-max)!important;
+}
+
+/* Large performance numbers are evidence, not headlines. */
+html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
+  font-size:var(--luen-key-metric-max)!important;
+}
+
+/* Desktop compression follows the Hero's existing scale exactly. */
+@media(min-width:1121px) and (max-width:1320px){
+  html body{
+    --luen-display-title:clamp(48px,4.2vw,58px);
+    --luen-section-title-max:clamp(34px,3.5vw,46px);
+    --luen-key-metric-max:clamp(40px,3.7vw,50px);
+  }
+}
+
+/* Tablet */
+@media(max-width:1120px){
+  html body{
+    --luen-display-title:clamp(46px,6.4vw,60px);
+    --luen-section-title-max:clamp(34px,5vw,47px);
+    --luen-key-metric-max:clamp(40px,5vw,52px);
+  }
+}
+
+/* Mobile */
+@media(max-width:767px){
+  html body{
+    --luen-display-title:clamp(31px,8.9vw,38px);
+    --luen-section-title-max:clamp(27px,7.4vw,33px);
+    --luen-key-metric-max:clamp(30px,8vw,34px);
+  }
+}
+
+/* Small mobile */
+@media(max-width:380px){
+  html body{
+    --luen-display-title:clamp(29px,8.55vw,33px);
+    --luen-section-title-max:clamp(25px,7vw,29px);
+    --luen-key-metric-max:clamp(28px,7.6vw,31px);
+  }
+}
