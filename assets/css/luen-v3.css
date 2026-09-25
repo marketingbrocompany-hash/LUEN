@@ -3893,3 +3893,192 @@ html body main#top>.capability-strip .proof-item p{
     text-align:left!important;
   }
 }
+
+
+/* ============================================================
+   HERO SCREENSHOT QA · 2026-09-25
+   Simplify first-screen hierarchy based on the actual rendered Hero.
+   ============================================================ */
+
+/* The upper ticker duplicates the same platform/category language and
+   makes the first screen visually noisy. Keep the navigation as the top
+   frame and remove the decorative ticker completely. */
+html body>.top-strip{
+  display:none!important;
+}
+
+/* Remove the oversized LUEN watermark. In the rendered screen it reads
+   as a cropped background artifact rather than a deliberate brand mark. */
+html body main#top>.hero::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Tighten the Hero vertical rhythm now that the top ticker is gone. */
+html body main#top>.hero{
+  padding-top:66px!important;
+  padding-bottom:58px!important;
+}
+
+/* Explicitly restore the semantic second line. A legacy foundation rule
+   still sets .line-2 to font-size:0 / line-height:0. */
+html body main#top>.hero h1 .line-2{
+  display:block!important;
+  font-size:inherit!important;
+  line-height:inherit!important;
+  margin-top:4px!important;
+  color:var(--luen-ink)!important;
+  -webkit-text-fill-color:var(--luen-ink)!important;
+  letter-spacing:inherit!important;
+  padding:0!important;
+}
+html body main#top>.hero h1 .line-3{
+  display:block!important;
+  font-size:inherit!important;
+  line-height:inherit!important;
+}
+
+/* The supporting sentence is important context, not a footnote. */
+html body main#top>.hero .hero-desc{
+  max-width:600px!important;
+  margin-top:25px!important;
+  color:#5D5851!important;
+  font-size:16px!important;
+  line-height:1.72!important;
+}
+html body main#top>.hero .hero-desc strong{
+  color:var(--luen-ink)!important;
+  font-weight:680!important;
+}
+
+/* Reduce always-visible orange. The headline and primary CTA are the
+   main orange moments; the kicker dot becomes a quiet ink signal. */
+html body main#top>.hero .hero-kicker::before{
+  background:rgba(17,16,14,.38)!important;
+  box-shadow:none!important;
+}
+html body main#top>.hero .creator-network-showcase::before{
+  content:none!important;
+  display:none!important;
+}
+
+/* Creator Network should feel like media, not a dashboard widget. */
+html body main#top>.hero .creator-network-showcase{
+  min-height:0!important;
+  border-color:rgba(17,16,14,.10)!important;
+  border-radius:3px!important;
+}
+html body main#top>.hero .creator-network-head{
+  min-height:44px!important;
+  grid-template-columns:1fr auto!important;
+  gap:16px!important;
+  padding:0 16px!important;
+  border-bottom:1px solid rgba(245,243,238,.10)!important;
+}
+html body main#top>.hero .creator-network-head>span,
+html body main#top>.hero .creator-network-head>strong{
+  min-height:0!important;
+  padding:0!important;
+  font-size:8.5px!important;
+  letter-spacing:.10em!important;
+}
+html body main#top>.hero .creator-network-head>strong{
+  color:rgba(245,243,238,.78)!important;
+  font-size:9.5px!important;
+  text-align:right!important;
+}
+html body main#top>.hero .creator-profile-viewport{
+  min-height:266px!important;
+  padding:20px 0!important;
+  background:var(--luen-espresso)!important;
+}
+html body main#top>.hero .creator-profile-set{
+  gap:9px!important;
+  padding-right:9px!important;
+}
+html body main#top>.hero .creator-profile-card{
+  flex-basis:188px!important;
+  width:188px!important;
+  height:188px!important;
+  border-color:rgba(245,243,238,.09)!important;
+  border-radius:2px!important;
+  transform:none!important;
+}
+html body main#top>.hero .creator-profile-card:nth-child(3n+2),
+html body main#top>.hero .creator-profile-card:nth-child(3n){
+  transform:none!important;
+}
+html body main#top>.hero .creator-profile-card img{
+  filter:saturate(.98) contrast(1.01) brightness(.98)!important;
+}
+
+/* The bottom metadata rail has been removed from HTML. */
+html body main#top>.hero .creator-network-foot{
+  display:none!important;
+}
+
+/* Make the Hero → trusted brands handoff quieter and less component-like. */
+html body main#top>.brand-wall{
+  padding-top:12px!important;
+  border-top:0!important;
+  background:var(--luen-canvas)!important;
+}
+html body main#top>.brand-wall .brand-wall-micro-label{
+  color:rgba(17,16,14,.45)!important;
+  font-size:9.5px!important;
+  letter-spacing:.06em!important;
+}
+
+/* Tablet */
+@media(max-width:1120px){
+  html body main#top>.hero{
+    padding-top:56px!important;
+    padding-bottom:48px!important;
+  }
+  html body main#top>.hero .hero-desc{
+    font-size:15px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:242px!important;
+  }
+  html body main#top>.hero .creator-profile-card{
+    flex-basis:170px!important;
+    width:170px!important;
+    height:170px!important;
+  }
+}
+
+/* Mobile */
+@media(max-width:767px){
+  html body main#top>.hero{
+    padding-top:38px!important;
+    padding-bottom:30px!important;
+  }
+  html body main#top>.hero .hero-desc{
+    margin-top:18px!important;
+    font-size:14px!important;
+    line-height:1.68!important;
+  }
+  html body main#top>.hero .creator-network-head{
+    min-height:40px!important;
+    padding:0 12px!important;
+  }
+  html body main#top>.hero .creator-network-head>span{
+    font-size:7.5px!important;
+  }
+  html body main#top>.hero .creator-network-head>strong{
+    font-size:8.5px!important;
+  }
+  html body main#top>.hero .creator-profile-viewport{
+    min-height:166px!important;
+    padding:14px 0!important;
+  }
+  html body main#top>.hero .creator-profile-card{
+    flex-basis:132px!important;
+    width:132px!important;
+    height:132px!important;
+  }
+  html body main#top>.brand-wall{
+    padding-top:8px!important;
+  }
+}
