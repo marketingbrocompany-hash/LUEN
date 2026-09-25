@@ -7646,3 +7646,78 @@ html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
     --luen-key-metric-max:clamp(28px,7.6vw,31px);
   }
 }
+
+
+/* ============================================================
+   SELECTED CASE STUDIES V7.2 · SCALE BALANCE · 2026-09-25
+   Reduce media dominance. Importance comes from hierarchy,
+   spacing and information density rather than oversized panels.
+   ============================================================ */
+@media(min-width:768px){
+  html body #cases.case-studies-v7 .case-content-chapter-v7{
+    min-height:420px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-media-v7{
+    min-height:420px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-copy-v7{
+    padding:36px 34px!important;
+  }
+
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    grid-template-columns:minmax(360px,.52fr) minmax(0,.48fr)!important;
+    min-height:190px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7{
+    padding:26px 34px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+    max-width:360px!important;
+    font-size:clamp(24px,2.1vw,32px)!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7 p{
+    max-width:420px!important;
+    margin-top:12px!important;
+    font-size:12px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    min-height:190px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7 img{
+    padding:16px 40px!important;
+  }
+}
+
+@media(min-width:768px) and (max-width:1100px){
+  html body #cases.case-studies-v7 .case-content-chapter-v7{
+    min-height:390px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-media-v7{
+    min-height:390px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    grid-template-columns:minmax(300px,.54fr) minmax(0,.46fr)!important;
+    min-height:180px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    min-height:180px!important;
+  }
+}
+
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-content-media-v7{
+    aspect-ratio:16/9!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7{
+    padding:24px 20px 20px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+    font-size:26px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    min-height:180px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7 img{
+    padding:14px 28px!important;
+  }
+}
