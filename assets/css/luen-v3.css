@@ -2653,3 +2653,86 @@ html body main#top>#contact.contact{
     font-size:10.5px!important;
   }
 }
+
+
+/* ============================================================
+   CREATOR NETWORK TRACK STRUCTURE · 2026-09-25
+   JS translates this rail horizontally, so the DOM must have an
+   explicit horizontal geometry instead of relying on legacy side
+   effects that do not exist in the current stylesheet stack.
+   ============================================================ */
+.hero .creator-network-showcase{
+  min-height:460px!important;
+}
+.hero .creator-profile-viewport{
+  display:flex!important;
+  align-items:center!important;
+  min-height:326px!important;
+  overflow:hidden!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 34px),transparent 100%)!important;
+  mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 34px),transparent 100%)!important;
+}
+.hero .creator-profile-track{
+  display:flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  will-change:transform!important;
+  transform:translate3d(0,0,0);
+}
+.hero .creator-profile-set{
+  display:flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  gap:12px!important;
+  width:max-content!important;
+  padding-right:12px!important;
+}
+.hero .creator-profile-card{
+  flex:0 0 190px!important;
+  width:190px!important;
+  height:190px!important;
+  margin:0!important;
+}
+.hero .creator-profile-card img{
+  display:block!important;
+}
+@media(max-width:1240px){
+  .hero .creator-network-showcase{
+    min-height:420px!important;
+  }
+  .hero .creator-profile-viewport{
+    min-height:286px!important;
+  }
+  .hero .creator-profile-card{
+    flex-basis:174px!important;
+    width:174px!important;
+    height:174px!important;
+  }
+}
+@media(max-width:767px){
+  .hero .creator-network-showcase{
+    min-height:330px!important;
+  }
+  .hero .creator-profile-viewport{
+    min-height:230px!important;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%)!important;
+    mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%)!important;
+  }
+  .hero .creator-profile-set{
+    gap:8px!important;
+    padding-right:8px!important;
+  }
+  .hero .creator-profile-card{
+    flex-basis:148px!important;
+    width:148px!important;
+    height:148px!important;
+  }
+}
+@media(max-width:380px){
+  .hero .creator-profile-card{
+    flex-basis:136px!important;
+    width:136px!important;
+    height:136px!important;
+  }
+}
