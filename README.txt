@@ -10,6 +10,9 @@ Tracked events:
 - page_view (GA4 default)
 - cta_click (internal CTA links)
 - contact_form_start (first interaction with inquiry form)
+- contact_form_submit_attempt (valid submit event reaches the form handler)
+- contact_form_validation_error (field name only; no field value)
+- contact_form_error (response/network stage only; no form values)
 - generate_lead (only after Formspree returns a successful response)
 
 Privacy:

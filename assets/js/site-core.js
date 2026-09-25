@@ -206,11 +206,30 @@
     const clearContactValidity=()=>{email?.setCustomValidity('');phone?.setCustomValidity('');};
     email?.addEventListener('input',clearContactValidity);
     phone?.addEventListener('input',clearContactValidity);
+    let lastInvalidTrackedAt=0;
+    form.addEventListener('invalid',event=>{
+      const now=Date.now();
+      if(now-lastInvalidTrackedAt<250)return;
+      lastInvalidTrackedAt=now;
+      const fieldName=event.target?.getAttribute?.('name')||'unknown';
+      track('contact_form_validation_error',{
+        form_id:'contactForm',
+        field_name:fieldName,
+        page_path:window.location.pathname
+      });
+    },true);
+
     form.addEventListener('submit',event=>{
+      track('contact_form_submit_attempt',{form_id:'contactForm',page_path:window.location.pathname});
       const hasEmail=Boolean(email?.value.trim());
       const hasPhone=Boolean(phone?.value.trim());
       clearContactValidity();
       if(hasEmail||hasPhone)return;
+      track('contact_form_validation_error',{
+        form_id:'contactForm',
+        field_name:'contact_method',
+        page_path:window.location.pathname
+      });
       email?.setCustomValidity('이메일 또는 연락처 중 하나를 입력해주세요.');
       email?.reportValidity();
       email?.focus();
@@ -268,6 +287,12 @@
           form.reset();
           if(success) success.focus?.();
         }else{
+          track('contact_form_error',{
+            form_id:'contactForm',
+            stage:'response',
+            status_code:response.status,
+            page_path:window.location.pathname
+          });
           let message='문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
           try{
             const result=await response.json();
@@ -277,6 +302,11 @@
           status.className='form-feedback is-error';
         }
       }catch(_err){
+        track('contact_form_error',{
+          form_id:'contactForm',
+          stage:'network',
+          page_path:window.location.pathname
+        });
         status.textContent='네트워크 연결을 확인한 뒤 다시 시도해주세요.';
         status.className='form-feedback is-error';
       }finally{
