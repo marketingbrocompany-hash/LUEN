@@ -123,18 +123,23 @@
     const operatingSystem=document.createElement('div');
     operatingSystem.className='luen-crossborder-system sr d1';
     operatingSystem.innerHTML=`
-      <div class="luen-crossborder-route" aria-label="Korea Brand, LUEN, Japan Market cross-border operating structure">
-        <div class="luen-market-end luen-market-brand"><span>한국 브랜드</span><b>브랜드 · 제품 · 목표</b></div>
-        <div class="luen-crossborder-hub"><span>LUEN</span><b>한·일 캠페인 운영</b></div>
-        <div class="luen-market-end luen-market-japan"><span>일본 시장</span><b>크리에이터 · 플랫폼 · 소비자</b></div>
+      <div class="luen-crossborder-bridge" aria-label="한국 브랜드와 일본 시장을 연결하는 LUEN">
+        <div class="luen-bridge-side luen-bridge-brand">
+          <span>한국 브랜드</span>
+          <b>브랜드 · 제품 · 목표</b>
+        </div>
+        <div class="luen-bridge-line" aria-hidden="true"><i></i></div>
+        <div class="luen-bridge-hub">
+          <strong>LUEN</strong>
+          <small>한·일 캠페인 운영</small>
+        </div>
+        <div class="luen-bridge-line" aria-hidden="true"><i></i></div>
+        <div class="luen-bridge-side luen-bridge-market">
+          <span>일본 시장</span>
+          <b>크리에이터 · 플랫폼 · 소비자</b>
+        </div>
       </div>
-      <div class="luen-operation-roles" aria-label="LUEN cross-border operation roles">
-        <span><i>01</i>크리에이터 섭외</span>
-        <span><i>02</i>커뮤니케이션</span>
-        <span><i>03</i>현지화</span>
-        <span><i>04</i>캠페인 운영</span>
-        <span><i>05</i>콘텐츠 검수</span>
-      </div>
+      <p class="luen-bridge-roles">크리에이터 섭외 <i>·</i> 커뮤니케이션 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p>
       <div class="luen-platform-label"><span>주요 플랫폼</span><small>일본 시장</small></div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
