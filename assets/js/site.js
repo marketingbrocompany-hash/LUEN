@@ -114,7 +114,7 @@
   const guideProofSection=document.querySelector('#guide-proof');
   if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&guideProofSection){
     identityTop.innerHTML=`
-      <div class="eyebrow">Cross-border Operations</div>
+      <div class="eyebrow">한·일 크리에이터 마케팅 운영</div>
       <div class="luen-advantage-heading">
         <h2 class="section-title">한국 브랜드와 일본 시장 사이.<br/><em>LUEN이 연결하고 운영합니다.</em></h2>
         <p>크리에이터 섭외부터 현지화, 콘텐츠 검수까지 한 팀에서 관리합니다.</p>
@@ -124,18 +124,18 @@
     operatingSystem.className='luen-crossborder-system sr d1';
     operatingSystem.innerHTML=`
       <div class="luen-crossborder-route" aria-label="Korea Brand, LUEN, Japan Market cross-border operating structure">
-        <div class="luen-market-end luen-market-brand"><span>KOREA BRAND</span><b>브랜드 · 제품 · 목표</b></div>
-        <div class="luen-crossborder-hub"><span>LUEN</span><b>CROSS-BORDER OPERATIONS</b></div>
-        <div class="luen-market-end luen-market-japan"><span>JAPAN MARKET</span><b>크리에이터 · 플랫폼 · 소비자</b></div>
+        <div class="luen-market-end luen-market-brand"><span>한국 브랜드</span><b>브랜드 · 제품 · 목표</b></div>
+        <div class="luen-crossborder-hub"><span>LUEN</span><b>한·일 캠페인 운영</b></div>
+        <div class="luen-market-end luen-market-japan"><span>일본 시장</span><b>크리에이터 · 플랫폼 · 소비자</b></div>
       </div>
       <div class="luen-operation-roles" aria-label="LUEN cross-border operation roles">
-        <span><i>01</i>Creator Sourcing</span>
-        <span><i>02</i>Communication</span>
-        <span><i>03</i>Localization</span>
-        <span><i>04</i>Campaign Operation</span>
-        <span><i>05</i>Content Review</span>
+        <span><i>01</i>크리에이터 섭외</span>
+        <span><i>02</i>커뮤니케이션</span>
+        <span><i>03</i>현지화</span>
+        <span><i>04</i>캠페인 운영</span>
+        <span><i>05</i>콘텐츠 검수</span>
       </div>
-      <div class="luen-platform-label"><span>MARKET CHANNELS</span><small>JAPAN</small></div>`;
+      <div class="luen-platform-label"><span>주요 플랫폼</span><small>일본 시장</small></div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
     const advantageGrid=document.createElement('div');
