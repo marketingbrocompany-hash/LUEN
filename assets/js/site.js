@@ -114,11 +114,28 @@
   const guideProofSection=document.querySelector('#guide-proof');
   if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&guideProofSection){
     identityTop.innerHTML=`
-      <div class="eyebrow">Cross-border Advantage</div>
+      <div class="eyebrow">Cross-border Operations</div>
       <div class="luen-advantage-heading">
-        <h2 class="section-title">한국과 일본 양쪽 시장을 이해하는<br/><em>Cross-border Creator Marketing Partner</em></h2>
-        <p>시장과 목적에 맞는 플랫폼을 연결합니다.</p>
+        <h2 class="section-title">한국 브랜드와 일본 시장 사이.<br/><em>LUEN이 연결하고 운영합니다.</em></h2>
+        <p>크리에이터 섭외부터 현지화, 콘텐츠 검수까지 한 팀에서 관리합니다.</p>
       </div>`;
+
+    const operatingSystem=document.createElement('div');
+    operatingSystem.className='luen-crossborder-system sr d1';
+    operatingSystem.innerHTML=`
+      <div class="luen-crossborder-route" aria-label="Korea Brand, LUEN, Japan Market cross-border operating structure">
+        <div class="luen-market-end luen-market-brand"><span>KOREA BRAND</span><b>브랜드 · 제품 · 목표</b></div>
+        <div class="luen-crossborder-hub"><span>LUEN</span><b>CROSS-BORDER OPERATIONS</b></div>
+        <div class="luen-market-end luen-market-japan"><span>JAPAN MARKET</span><b>크리에이터 · 플랫폼 · 소비자</b></div>
+      </div>
+      <div class="luen-operation-roles" aria-label="LUEN cross-border operation roles">
+        <span><i>01</i>Creator Sourcing</span>
+        <span><i>02</i>Communication</span>
+        <span><i>03</i>Localization</span>
+        <span><i>04</i>Campaign Operation</span>
+        <span><i>05</i>Content Review</span>
+      </div>
+      <div class="luen-platform-label"><span>MARKET CHANNELS</span><small>JAPAN</small></div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
     const advantageGrid=document.createElement('div');
@@ -134,10 +151,10 @@
     const advantageSection=document.createElement('section');
     advantageSection.id='about';
     advantageSection.className='luen-advantage-section identity-advantage-ready';
-    advantageSection.setAttribute('aria-label','LUEN cross-border platform advantage');
+    advantageSection.setAttribute('aria-label','LUEN Korea to Japan cross-border operations');
     const advantageShell=document.createElement('div');
     advantageShell.className='container identity-platform-shell';
-    advantageShell.append(identityTop,advantageGrid);
+    advantageShell.append(identityTop,operatingSystem,advantageGrid);
     advantageSection.appendChild(advantageShell);
     guideProofSection.insertAdjacentElement('afterend',advantageSection);
 
