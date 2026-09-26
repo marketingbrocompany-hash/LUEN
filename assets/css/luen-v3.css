@@ -8672,3 +8672,27 @@ html body .luen-platform-label>small{
     margin-top:26px!important;
   }
 }
+
+
+/* ============================================================
+   CROSS-BORDER FINAL CLEANUP · 2026-09-26
+   Remove any legacy eyebrow suffix and improve operation-role readability.
+   ============================================================ */
+html body main#top>.luen-advantage-section.identity-advantage-ready .identity-top>.eyebrow::after{
+  content:none!important;
+  display:none!important;
+}
+@media(min-width:768px){
+  html body .luen-operation-roles>span{
+    font-size:13px!important;
+    font-weight:650!important;
+    letter-spacing:-.015em!important;
+  }
+}
+@media(max-width:767px){
+  html body .luen-operation-roles>span,
+  html body .luen-operation-roles>span:nth-child(3){
+    font-size:10.5px!important;
+    font-weight:650!important;
+  }
+}
