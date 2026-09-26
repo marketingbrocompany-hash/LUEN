@@ -8934,3 +8934,90 @@ html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advant
     font-size:10px!important;
   }
 }
+
+
+/* ============================================================
+   CROSS-BORDER FINAL VISUAL POLISH · 2026-09-26
+   Tighten vertical rhythm, strengthen LUEN as the center, and
+   remove the remaining card-like platform background.
+   ============================================================ */
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+  margin-top:12px!important;
+}
+
+html body .luen-crossborder-system{
+  margin-top:30px!important;
+}
+html body .luen-crossborder-bridge{
+  align-items:center!important;
+}
+html body .luen-bridge-hub{
+  min-height:86px!important;
+}
+html body .luen-bridge-hub strong{
+  font-size:31px!important;
+  font-weight:780!important;
+}
+html body .luen-bridge-hub small{
+  margin-top:7px!important;
+  font-size:8.5px!important;
+  letter-spacing:.04em!important;
+}
+html body .luen-bridge-roles{
+  margin-top:11px!important;
+  font-size:12.5px!important;
+  font-weight:580!important;
+}
+html body .luen-platform-label{
+  margin-top:30px!important;
+}
+
+/* platform rail: no card background, only quiet dividers */
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+  background:transparent!important;
+  border-top:1px solid rgba(93,76,64,.18)!important;
+  border-bottom:1px solid rgba(93,76,64,.18)!important;
+  box-shadow:none!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article::after{
+  display:none!important;
+}
+
+@media(min-width:768px){
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    border-right:1px solid rgba(93,76,64,.12)!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:last-child{
+    border-right:0!important;
+  }
+}
+
+@media(max-width:767px){
+  html body .luen-crossborder-system{
+    margin-top:24px!important;
+  }
+  html body .luen-bridge-hub{
+    min-height:68px!important;
+  }
+  html body .luen-bridge-hub strong{
+    font-size:23px!important;
+  }
+  html body .luen-bridge-hub small{
+    font-size:7px!important;
+  }
+  html body .luen-bridge-roles{
+    margin-top:10px!important;
+  }
+  html body .luen-platform-label{
+    margin-top:24px!important;
+  }
+}
