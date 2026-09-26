@@ -7820,3 +7820,211 @@ html body #cases.case-studies-v7 .case-support-copy-v7 p{
     display:none!important;
   }
 }
+
+
+/* ============================================================
+   SELECTED WORK + ACTUAL CONTENT · EDITORIAL REBALANCE · 2026-09-26
+   Keep proof visual, reduce explanatory copy, and increase content density.
+   ============================================================ */
+html body main#top>#work.work{
+  padding-top:clamp(82px,7vw,108px)!important;
+  padding-bottom:clamp(84px,7vw,110px)!important;
+}
+html body #work .work-head{
+  max-width:760px!important;
+}
+html body #work .work-story-title{
+  max-width:720px!important;
+  font-size:clamp(38px,3.2vw,50px)!important;
+  line-height:1.04!important;
+  letter-spacing:-.045em!important;
+}
+html body #work .work-curation-note{
+  margin-top:18px!important;
+  color:#7A6D63!important;
+  font-size:12px!important;
+  line-height:1.5!important;
+  letter-spacing:.01em!important;
+}
+html body #work .portfolio{
+  margin-top:42px!important;
+  gap:50px!important;
+}
+html body #work .portfolio-head{
+  margin-bottom:14px!important;
+  align-items:end!important;
+}
+html body #work .portfolio-head span{
+  color:#C96338!important;
+  font-size:9px!important;
+  letter-spacing:.11em!important;
+}
+html body #work .portfolio-head h3{
+  margin-top:6px!important;
+  color:#2A2521!important;
+  font-size:18px!important;
+  font-weight:700!important;
+  line-height:1.1!important;
+  letter-spacing:-.025em!important;
+}
+html body #work .portfolio-head small{
+  color:#8A7D72!important;
+  font-size:9.5px!important;
+  letter-spacing:.08em!important;
+}
+html body #work .portfolio-set{
+  gap:12px!important;
+  padding-right:12px!important;
+}
+html body #work .portfolio-card{
+  flex-basis:clamp(340px,31vw,470px)!important;
+}
+html body #work .portfolio-card.portrait{
+  flex-basis:clamp(190px,15.5vw,240px)!important;
+}
+html body #work .portfolio-country{
+  top:10px!important;
+  left:10px!important;
+  padding:6px 7px!important;
+  font-size:8.5px!important;
+}
+html body #work .portfolio-meta{
+  left:13px!important;
+  right:13px!important;
+  bottom:12px!important;
+}
+html body #work .portfolio-meta span{
+  font-size:8.5px!important;
+}
+html body #work .portfolio-meta b{
+  font-size:10.5px!important;
+}
+
+/* Actual content is a visual proof continuation, not another text-heavy chapter. */
+html body main#top>#youtube.youtube-v2{
+  padding-top:clamp(78px,6.5vw,96px)!important;
+  padding-bottom:clamp(82px,7vw,106px)!important;
+}
+html body #youtube .youtube-v2-head{
+  max-width:720px!important;
+}
+html body #youtube .youtube-v2-head .section-title{
+  max-width:620px!important;
+  font-size:clamp(36px,3vw,48px)!important;
+  line-height:1.04!important;
+  letter-spacing:-.045em!important;
+}
+html body #youtube .luen-content-video{
+  grid-template-columns:minmax(230px,.42fr) minmax(0,1.58fr)!important;
+  max-width:1280px!important;
+  margin-top:34px!important;
+  border-radius:10px!important;
+}
+html body #youtube .luen-content-video-copy{
+  justify-content:flex-end!important;
+  padding:28px 24px 26px!important;
+}
+html body #youtube .luen-content-video-copy>span{
+  font-size:9px!important;
+  letter-spacing:.11em!important;
+}
+html body #youtube .luen-content-video-copy h3{
+  margin-top:24px!important;
+  font-size:clamp(22px,1.9vw,28px)!important;
+  line-height:1.12!important;
+  letter-spacing:-.035em!important;
+}
+html body #youtube .luen-content-video-copy p{
+  max-width:280px!important;
+  margin-top:12px!important;
+  font-size:12px!important;
+  line-height:1.65!important;
+}
+html body #youtube .luen-content-video-frame video{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  aspect-ratio:16/9!important;
+  object-fit:cover!important;
+}
+
+@media(max-width:900px){
+  html body #work .portfolio-card{
+    flex-basis:min(72vw,420px)!important;
+  }
+  html body #work .portfolio-card.portrait{
+    flex-basis:min(40vw,230px)!important;
+  }
+  html body #youtube .luen-content-video{
+    grid-template-columns:minmax(210px,.5fr) minmax(0,1.5fr)!important;
+  }
+}
+
+@media(max-width:767px){
+  html body main#top>#work.work{
+    padding-top:72px!important;
+    padding-bottom:74px!important;
+  }
+  html body #work .work-story-title{
+    font-size:clamp(29px,8vw,34px)!important;
+    line-height:1.06!important;
+  }
+  html body #work .work-curation-note{
+    margin-top:14px!important;
+    font-size:11.5px!important;
+  }
+  html body #work .portfolio{
+    margin-top:34px!important;
+    gap:40px!important;
+  }
+  html body #work .portfolio-head{
+    margin-bottom:12px!important;
+  }
+  html body #work .portfolio-head h3{
+    font-size:17px!important;
+  }
+  html body #work .portfolio-head small{
+    display:block!important;
+    font-size:8.5px!important;
+  }
+  html body #work .portfolio-card{
+    flex-basis:min(80vw,330px)!important;
+  }
+  html body #work .portfolio-card.portrait{
+    flex-basis:min(51vw,205px)!important;
+  }
+
+  html body main#top>#youtube.youtube-v2{
+    padding-top:70px!important;
+    padding-bottom:74px!important;
+  }
+  html body #youtube .youtube-v2-head .section-title{
+    font-size:clamp(28px,7.8vw,33px)!important;
+  }
+  html body #youtube .luen-content-video{
+    display:flex!important;
+    flex-direction:column!important;
+    margin-top:28px!important;
+  }
+  html body #youtube .luen-content-video-copy{
+    padding:22px 20px 20px!important;
+  }
+  html body #youtube .luen-content-video-copy h3{
+    margin-top:16px!important;
+    font-size:21px!important;
+  }
+  html body #youtube .luen-content-video-copy p{
+    max-width:none!important;
+    font-size:11.5px!important;
+  }
+  html body #youtube .luen-content-video-frame{
+    border-left:0!important;
+    border-top:1px solid rgba(93,76,64,.16)!important;
+  }
+  html body #youtube .luen-content-video-frame video{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16/9!important;
+  }
+}
