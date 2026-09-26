@@ -8696,3 +8696,241 @@ html body main#top>.luen-advantage-section.identity-advantage-ready .identity-to
     font-weight:650!important;
   }
 }
+
+
+/* ============================================================
+   CROSS-BORDER EDITORIAL BRIDGE · 2026-09-26
+   One scene, one role line, one quiet platform rail.
+   ============================================================ */
+html body main#top>.luen-advantage-section.identity-advantage-ready{
+  padding-top:78px!important;
+  padding-bottom:80px!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading{
+  display:block!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title{
+  max-width:860px!important;
+  font-size:clamp(36px,3.05vw,46px)!important;
+  line-height:1.03!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+  max-width:560px!important;
+  margin-top:16px!important;
+  padding:0!important;
+  font-size:12.5px!important;
+  line-height:1.65!important;
+}
+
+html body .luen-crossborder-system{
+  margin-top:42px!important;
+}
+html body .luen-crossborder-bridge{
+  display:grid!important;
+  grid-template-columns:minmax(180px,.8fr) minmax(70px,.55fr) 140px minmax(70px,.55fr) minmax(180px,.8fr)!important;
+  align-items:center!important;
+  gap:0!important;
+}
+html body .luen-bridge-side{
+  min-width:0!important;
+}
+html body .luen-bridge-side>span{
+  display:block!important;
+  color:#C96338!important;
+  font:700 9px/1.2 var(--luen-type-ui)!important;
+  letter-spacing:.08em!important;
+}
+html body .luen-bridge-side>b{
+  display:block!important;
+  margin-top:9px!important;
+  color:#2A2521!important;
+  font-size:clamp(15px,1.3vw,18px)!important;
+  font-weight:650!important;
+  line-height:1.3!important;
+  letter-spacing:-.025em!important;
+}
+html body .luen-bridge-market{
+  text-align:right!important;
+}
+html body .luen-bridge-line{
+  position:relative!important;
+  height:1px!important;
+  margin:0 18px!important;
+  background:rgba(93,76,64,.28)!important;
+}
+html body .luen-bridge-line i{
+  position:absolute!important;
+  top:50%!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:50%!important;
+  background:#D56F40!important;
+  transform:translateY(-50%)!important;
+}
+html body .luen-bridge-line:first-of-type i{
+  right:0!important;
+}
+html body .luen-bridge-line:last-of-type i{
+  left:0!important;
+}
+html body .luen-bridge-hub{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:92px!important;
+  text-align:center!important;
+}
+html body .luen-bridge-hub strong{
+  color:#2A2521!important;
+  font:760 28px/1 var(--luen-type-display)!important;
+  letter-spacing:-.045em!important;
+}
+html body .luen-bridge-hub small{
+  margin-top:8px!important;
+  color:#C96338!important;
+  font:700 8px/1.2 var(--luen-type-ui)!important;
+  letter-spacing:.06em!important;
+}
+html body .luen-bridge-roles{
+  margin:22px auto 0!important;
+  color:#62584F!important;
+  font-size:12.5px!important;
+  font-weight:560!important;
+  line-height:1.6!important;
+  letter-spacing:-.015em!important;
+  text-align:center!important;
+}
+html body .luen-bridge-roles i{
+  margin:0 8px!important;
+  color:#C96338!important;
+  font-style:normal!important;
+}
+
+html body .luen-platform-label{
+  margin-top:38px!important;
+  padding-bottom:10px!important;
+  border-bottom:1px solid rgba(93,76,64,.20)!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+  margin-top:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(93,76,64,.14)!important;
+}
+html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid::before{
+  display:none!important;
+}
+@media(min-width:768px){
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:0!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    min-height:92px!important;
+    padding:15px 10px 14px!important;
+    border:0!important;
+    background:transparent!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>span{
+    font-size:8px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>b{
+    margin-top:15px!important;
+    font-size:16px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>p{
+    margin-top:6px!important;
+    font-size:10.5px!important;
+  }
+}
+
+@media(max-width:767px){
+  html body main#top>.luen-advantage-section.identity-advantage-ready{
+    padding-top:66px!important;
+    padding-bottom:68px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading .section-title{
+    font-size:clamp(28px,7.5vw,32px)!important;
+  }
+  html body .luen-crossborder-system{
+    margin-top:30px!important;
+  }
+  html body .luen-crossborder-bridge{
+    grid-template-columns:minmax(0,1fr) 32px 72px 32px minmax(0,1fr)!important;
+  }
+  html body .luen-bridge-side>span{
+    font-size:7.5px!important;
+  }
+  html body .luen-bridge-side>b{
+    margin-top:7px!important;
+    font-size:11.5px!important;
+    line-height:1.35!important;
+  }
+  html body .luen-bridge-line{
+    margin:0 5px!important;
+  }
+  html body .luen-bridge-hub{
+    min-height:72px!important;
+  }
+  html body .luen-bridge-hub strong{
+    font-size:21px!important;
+  }
+  html body .luen-bridge-hub small{
+    margin-top:6px!important;
+    font-size:6.5px!important;
+    line-height:1.25!important;
+  }
+  html body .luen-bridge-roles{
+    max-width:320px!important;
+    margin-top:18px!important;
+    font-size:10.5px!important;
+    line-height:1.8!important;
+  }
+  html body .luen-bridge-roles i{
+    margin:0 4px!important;
+  }
+  html body .luen-platform-label{
+    margin-top:28px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid{
+    display:flex!important;
+    gap:0!important;
+    margin-top:0!important;
+    padding:0 14px 8px 0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+    border-bottom:1px solid rgba(93,76,64,.14)!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid::-webkit-scrollbar{
+    display:none!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    flex:0 0 44vw!important;
+    min-height:88px!important;
+    padding:14px 14px 12px!important;
+    border:0!important;
+    border-right:1px solid rgba(93,76,64,.12)!important;
+    border-radius:0!important;
+    background:transparent!important;
+    scroll-snap-align:start!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:last-child{
+    border-right:0!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>b{
+    margin-top:14px!important;
+    font-size:15px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>p{
+    margin-top:5px!important;
+    font-size:10px!important;
+  }
+}
