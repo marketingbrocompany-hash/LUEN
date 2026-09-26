@@ -116,7 +116,7 @@
     identityTop.innerHTML=`
       <div class="eyebrow">한·일 크리에이터 마케팅 운영</div>
       <div class="luen-advantage-heading">
-        <h2 class="section-title">한국 브랜드와 일본 시장 사이.<br/><em>LUEN이 연결하고 운영합니다.</em></h2>
+        <h2 class="section-title"><span>한국 브랜드와 일본 시장 사이,</span><br/><em>LUEN이 연결하고 운영합니다.</em></h2>
         <p>크리에이터 섭외부터 현지화, 콘텐츠 검수까지 한 팀에서 관리합니다.</p>
       </div>`;
 
