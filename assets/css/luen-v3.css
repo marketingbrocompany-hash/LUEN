@@ -9902,3 +9902,47 @@ html body #cases.case-studies-v7 .case-pop-flow-v8 i{
     padding:12px 20px!important;
   }
 }
+
+
+/* ============================================================
+   CREATOR CONTENT META · TITLE VISIBILITY FIX · 2026-09-27
+   Resolve legacy cascade conflict that hides the campaign name.
+   Keep the left metadata compact and readable.
+   ============================================================ */
+html body #youtube .luen-content-video-copy{
+  position:relative!important;
+  z-index:2!important;
+}
+html body #youtube .luen-content-video-copy h3{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:3!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  margin:18px 0 0!important;
+  color:#403832!important;
+  font-family:var(--luen-type-display),sans-serif!important;
+  font-size:clamp(20px,1.55vw,24px)!important;
+  font-weight:700!important;
+  line-height:1.2!important;
+  letter-spacing:-.03em!important;
+}
+html body #youtube .luen-content-video-copy p{
+  margin-top:10px!important;
+  color:#7A6D63!important;
+  font-size:11px!important;
+  line-height:1.45!important;
+}
+@media(max-width:767px){
+  html body #youtube .luen-content-video-copy h3{
+    margin-top:12px!important;
+    font-size:20px!important;
+  }
+  html body #youtube .luen-content-video-copy p{
+    margin-top:8px!important;
+    font-size:10.5px!important;
+  }
+}
