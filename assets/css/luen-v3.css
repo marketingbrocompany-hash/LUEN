@@ -9786,3 +9786,14 @@ html body #cases.case-studies-v7 .case-story-title-v8{
     line-height:1.42!important;
   }
 }
+
+
+/* ============================================================
+   HERAHERA TITLE · MATCH SUPPORT CASE COLOR · 2026-09-27
+   Match the supporting case creator-name tone while keeping
+   the featured case's existing size and layout.
+   ============================================================ */
+html body #cases.case-studies-v7 .case-content-copy-v7 h3{
+  color:#6A5F56!important;
+  font-weight:700!important;
+}
