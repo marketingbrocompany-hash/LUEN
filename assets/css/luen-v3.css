@@ -9765,3 +9765,24 @@ html body #cases.case-studies-v7 .case-offline-copy-v7 p{
     line-height:1.15!important;
   }
 }
+
+
+/* ============================================================
+   HERAHERA STORY TITLE · LIGHTER HIERARCHY · 2026-09-27
+   Keep this line editorial and readable, not headline-heavy.
+   ============================================================ */
+html body #cases.case-studies-v7 .case-story-title-v8{
+  margin:0!important;
+  color:#2A2521!important;
+  font-size:clamp(18px,1.45vw,21px)!important;
+  font-weight:500!important;
+  line-height:1.38!important;
+  letter-spacing:-.028em!important;
+}
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-story-title-v8{
+    font-size:18px!important;
+    font-weight:500!important;
+    line-height:1.42!important;
+  }
+}
