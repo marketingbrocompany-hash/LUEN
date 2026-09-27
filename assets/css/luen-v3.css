@@ -9077,3 +9077,200 @@ html body #cases.case-studies-v7 .case-secondary-metric-v7 b{
     font-size:13px!important;
   }
 }
+
+
+/* ============================================================
+   SELECTED WORK · WARM EDITORIAL ARCHIVE · 2026-09-27
+   Resolve legacy espresso/light-type cascade conflicts and align the
+   archive with LUEN's warm ivory + burnt orange visual system.
+   ============================================================ */
+html body main#top>#work.work{
+  position:relative!important;
+  overflow:hidden!important;
+  background:#F5F3EE!important;
+  background-image:none!important;
+  color:#2A2521!important;
+  border-top:1px solid rgba(93,76,64,.14)!important;
+  border-bottom:1px solid rgba(93,76,64,.14)!important;
+}
+html body #work .work-head .eyebrow{
+  color:#C96338!important;
+}
+html body #work .work-story-title{
+  color:#2A2521!important;
+}
+html body #work .work-story-title em{
+  color:#C96338!important;
+}
+html body #work .work-curation-note{
+  color:#7A6D63!important;
+}
+
+html body #work .portfolio-lane{
+  position:relative!important;
+  padding-top:20px!important;
+  border-top:1px solid rgba(93,76,64,.18)!important;
+}
+html body #work .portfolio-lane::after{
+  position:absolute!important;
+  top:19px!important;
+  right:max(24px,calc((100vw - min(1280px,calc(100vw - 48px))) / 2))!important;
+  color:#B3A79D!important;
+  font:700 9px/1 var(--luen-type-ui)!important;
+  letter-spacing:.12em!important;
+}
+html body #work .portfolio-lane:first-child::after{
+  content:"01"!important;
+}
+html body #work .portfolio-lane:nth-child(2)::after{
+  content:"02"!important;
+}
+html body #work .portfolio-head{
+  position:relative!important;
+  margin-bottom:16px!important;
+  padding-top:0!important;
+  padding-right:42px!important;
+  border-top:0!important;
+}
+html body #work .portfolio-head span{
+  color:#C96338!important;
+  font-size:9px!important;
+  font-weight:700!important;
+  letter-spacing:.12em!important;
+}
+html body #work .portfolio-head h3{
+  color:#2A2521!important;
+  font-size:19px!important;
+  font-weight:700!important;
+  line-height:1.08!important;
+  letter-spacing:-.025em!important;
+}
+html body #work .portfolio-head small{
+  color:#94877C!important;
+  font-size:9px!important;
+  font-weight:600!important;
+  letter-spacing:.09em!important;
+}
+
+html body #work .portfolio-viewport{
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 3.2%,#000 96.8%,transparent)!important;
+  mask-image:linear-gradient(90deg,transparent,#000 3.2%,#000 96.8%,transparent)!important;
+}
+html body #work .portfolio-card,
+html body #work .portfolio-card.portrait{
+  border:1px solid rgba(93,76,64,.13)!important;
+  border-radius:8px!important;
+  background:#E9E1D7!important;
+  box-shadow:0 8px 24px rgba(75,57,47,.06)!important;
+}
+html body #work .portfolio-card::after{
+  background:linear-gradient(180deg,rgba(17,16,14,0) 48%,rgba(17,16,14,.68) 100%)!important;
+}
+html body #work .portfolio-card img{
+  filter:saturate(.94) contrast(1.01) brightness(.98)!important;
+}
+html body #work .portfolio-card:hover img{
+  transform:scale(1.022)!important;
+  filter:saturate(1) contrast(1.02) brightness(1)!important;
+}
+html body #work .portfolio-country{
+  border:1px solid rgba(93,76,64,.14)!important;
+  background:rgba(248,244,237,.90)!important;
+  color:#3A332E!important;
+  box-shadow:0 4px 12px rgba(75,57,47,.05)!important;
+  backdrop-filter:blur(8px)!important;
+}
+html body #work .portfolio-meta span{
+  color:rgba(255,255,255,.74)!important;
+}
+html body #work .portfolio-meta b{
+  color:#FFF!important;
+  font-weight:650!important;
+}
+
+@media(min-width:901px){
+  html body #work .portfolio-lane:first-child .portfolio-card:nth-child(3n+2){
+    transform:translateY(8px)!important;
+  }
+  html body #work .portfolio-lane:first-child .portfolio-card:nth-child(3n){
+    transform:translateY(3px)!important;
+  }
+  html body #work .portfolio-lane:nth-child(2) .portfolio-card:nth-child(2n){
+    transform:translateY(10px)!important;
+  }
+}
+
+@media(max-width:767px){
+  html body main#top>#work.work{
+    padding-top:70px!important;
+    padding-bottom:72px!important;
+  }
+  html body #work .work-story-title{
+    max-width:330px!important;
+    font-size:clamp(29px,8.2vw,34px)!important;
+    line-height:1.06!important;
+  }
+  html body #work .work-curation-note{
+    margin-top:13px!important;
+    color:#7A6D63!important;
+    font-size:11px!important;
+  }
+  html body #work .portfolio{
+    margin-top:32px!important;
+    gap:38px!important;
+  }
+  html body #work .portfolio-lane{
+    padding-top:16px!important;
+  }
+  html body #work .portfolio-lane::after{
+    top:16px!important;
+    right:20px!important;
+    font-size:8px!important;
+  }
+  html body #work .portfolio-head{
+    margin-bottom:11px!important;
+    padding-right:32px!important;
+  }
+  html body #work .portfolio-head span{
+    font-size:8.5px!important;
+  }
+  html body #work .portfolio-head h3{
+    margin-top:5px!important;
+    font-size:16px!important;
+  }
+  html body #work .portfolio-head small{
+    display:none!important;
+  }
+  html body #work .portfolio-viewport{
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent)!important;
+    mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent)!important;
+  }
+  html body #work .portfolio-set{
+    gap:10px!important;
+    padding-right:10px!important;
+  }
+  html body #work .portfolio-card{
+    flex-basis:min(82vw,330px)!important;
+  }
+  html body #work .portfolio-card.portrait{
+    flex-basis:min(50vw,198px)!important;
+  }
+  html body #work .portfolio-country{
+    top:9px!important;
+    left:9px!important;
+    padding:5px 6px!important;
+    font-size:8px!important;
+  }
+  html body #work .portfolio-meta{
+    left:11px!important;
+    right:11px!important;
+    bottom:10px!important;
+  }
+  html body #work .portfolio-meta span{
+    font-size:8px!important;
+  }
+  html body #work .portfolio-meta b{
+    margin-top:3px!important;
+    font-size:10px!important;
+  }
+}
