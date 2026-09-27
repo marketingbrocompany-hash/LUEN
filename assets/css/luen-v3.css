@@ -9797,3 +9797,108 @@ html body #cases.case-studies-v7 .case-content-copy-v7 h3{
   color:#6A5F56!important;
   font-weight:700!important;
 }
+
+
+/* ============================================================
+   HERAHERA CREATOR POP · EDITORIAL PROOF + EQUAL HEIGHT · 2026-09-27
+   Make the POP itself the case-study proof. Keep 02 the same visual
+   height as 01 on desktop/tablet and prevent square source media
+   from expanding the chapter.
+   ============================================================ */
+html body #cases.case-studies-v7 .case-pop-flow-v8{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-top:26px!important;
+  color:#7A6D63!important;
+  font:700 9px/1.2 var(--luen-type-ui)!important;
+  letter-spacing:.08em!important;
+}
+html body #cases.case-studies-v7 .case-pop-flow-v8 b{
+  color:#C96338!important;
+  font-weight:750!important;
+}
+html body #cases.case-studies-v7 .case-pop-flow-v8 i{
+  color:#B6A89C!important;
+  font-style:normal!important;
+}
+
+@media(min-width:1101px){
+  html body #cases.case-studies-v7 .case-content-chapter-v7,
+  html body #cases.case-studies-v7 .case-content-media-v7,
+  html body #cases.case-studies-v7 .case-offline-chapter-v7,
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    height:420px!important;
+    min-height:420px!important;
+    max-height:420px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    grid-template-columns:minmax(360px,.42fr) minmax(0,.58fr)!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7{
+    padding:36px 34px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+    max-width:380px!important;
+    margin-top:14px!important;
+    font-size:clamp(27px,2.05vw,31px)!important;
+    font-weight:700!important;
+    line-height:1.15!important;
+    letter-spacing:-.045em!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    overflow:hidden!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7 img{
+    width:100%!important;
+    height:100%!important;
+    max-height:420px!important;
+    padding:22px 34px!important;
+    object-fit:contain!important;
+  }
+}
+
+@media(min-width:768px) and (max-width:1100px){
+  html body #cases.case-studies-v7 .case-content-chapter-v7,
+  html body #cases.case-studies-v7 .case-content-media-v7,
+  html body #cases.case-studies-v7 .case-offline-chapter-v7,
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    height:390px!important;
+    min-height:390px!important;
+    max-height:390px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+    grid-template-columns:minmax(300px,.44fr) minmax(0,.56fr)!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7 img{
+    width:100%!important;
+    height:100%!important;
+    max-height:390px!important;
+    object-fit:contain!important;
+  }
+}
+
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+    margin-top:10px!important;
+    font-size:22px!important;
+    font-weight:700!important;
+    line-height:1.18!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-flow-v8{
+    margin-top:18px!important;
+    gap:7px!important;
+    font-size:8.5px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    min-height:190px!important;
+    max-height:210px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7 img{
+    height:100%!important;
+    max-height:210px!important;
+    object-fit:contain!important;
+    padding:12px 20px!important;
+  }
+}
