@@ -139,7 +139,7 @@
           <b>크리에이터 · 플랫폼 · 소비자</b>
         </div>
       </div>
-      <p class="luen-bridge-roles">크리에이터 선정 <i>·</i> 커뮤니케이션 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p>
+      <p class="luen-bridge-roles luen-bridge-roles-desktop">크리에이터 선정 <i>·</i> 커뮤니케이션 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p><p class="luen-bridge-roles luen-bridge-roles-mobile">크리에이터 선정 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p>
       <div class="luen-platform-label"><span>주요 플랫폼</span><small>일본 시장</small></div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
