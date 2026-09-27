@@ -9635,3 +9635,133 @@ html body #cases.case-studies-v7 .case-support-card-v7{
     display:none!important;
   }
 }
+
+
+/* ============================================================
+   HERAHERA CASE · CREATOR SCALE + FAN PILGRIMAGE · 2026-09-27
+   The proof is creator scale + visit behavior, not raw view count.
+   Use rules, spacing and contrast rather than oversized numbers.
+   ============================================================ */
+html body #cases.case-studies-v7 .case-creator-proof-v8{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:space-between!important;
+  gap:18px!important;
+  width:100%!important;
+  max-width:360px!important;
+  margin-top:26px!important;
+  padding:12px 0 11px 13px!important;
+  border-left:2px solid #C96338!important;
+  border-top:1px solid rgba(93,76,64,.15)!important;
+  border-bottom:1px solid rgba(93,76,64,.15)!important;
+}
+html body #cases.case-studies-v7 .case-creator-proof-v8 span{
+  color:#7A6D63!important;
+  font-size:10px!important;
+  font-weight:650!important;
+  line-height:1.35!important;
+  letter-spacing:-.01em!important;
+}
+html body #cases.case-studies-v7 .case-creator-proof-v8 strong{
+  flex:0 0 auto!important;
+  color:#C96338!important;
+  font-size:18px!important;
+  font-weight:760!important;
+  line-height:1.1!important;
+  letter-spacing:-.035em!important;
+}
+
+html body #cases.case-studies-v7 .case-story-v8{
+  max-width:360px!important;
+  margin-top:26px!important;
+}
+html body #cases.case-studies-v7 .case-story-v8>strong{
+  display:block!important;
+  color:#2A2521!important;
+  font-size:clamp(22px,1.8vw,26px)!important;
+  font-weight:680!important;
+  line-height:1.24!important;
+  letter-spacing:-.04em!important;
+}
+html body #cases.case-studies-v7 .case-story-v8>p{
+  margin-top:13px!important;
+  color:#62584F!important;
+  font-size:12.5px!important;
+  line-height:1.65!important;
+}
+html body #cases.case-studies-v7 .case-story-v8>p b{
+  color:#C96338!important;
+  font-weight:700!important;
+}
+
+/* Engagement numbers remain evidence, not the headline. */
+html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7{
+  margin-top:22px!important;
+  padding-top:11px!important;
+  border-top:1px solid rgba(93,76,64,.13)!important;
+  color:#8A7D72!important;
+  font-size:10.5px!important;
+  font-weight:560!important;
+  line-height:1.5!important;
+}
+html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7 b{
+  color:#665B52!important;
+  font-size:10.5px!important;
+  font-weight:700!important;
+}
+html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7 i{
+  padding:0 5px!important;
+}
+
+/* Offline chapter is the second half of the same result story. */
+html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+  max-width:430px!important;
+  font-size:clamp(26px,2.25vw,34px)!important;
+  line-height:1.1!important;
+}
+html body #cases.case-studies-v7 .case-offline-copy-v7 p{
+  max-width:410px!important;
+}
+
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-creator-proof-v8{
+    max-width:none!important;
+    margin-top:18px!important;
+    padding:10px 0 9px 10px!important;
+    gap:12px!important;
+  }
+  html body #cases.case-studies-v7 .case-creator-proof-v8 span{
+    font-size:9.5px!important;
+  }
+  html body #cases.case-studies-v7 .case-creator-proof-v8 strong{
+    font-size:16px!important;
+  }
+
+  html body #cases.case-studies-v7 .case-story-v8{
+    max-width:none!important;
+    margin-top:19px!important;
+  }
+  html body #cases.case-studies-v7 .case-story-v8>strong{
+    font-size:20px!important;
+    line-height:1.28!important;
+  }
+  html body #cases.case-studies-v7 .case-story-v8>p{
+    margin-top:10px!important;
+    font-size:11.5px!important;
+    line-height:1.6!important;
+  }
+
+  html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7{
+    margin-top:17px!important;
+    padding-top:9px!important;
+    font-size:9.5px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7 b{
+    font-size:9.5px!important;
+  }
+
+  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+    font-size:22px!important;
+    line-height:1.15!important;
+  }
+}
