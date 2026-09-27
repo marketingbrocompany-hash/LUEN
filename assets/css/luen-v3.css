@@ -9465,3 +9465,173 @@ html body .luen-bridge-roles-mobile{
     margin-top:22px!important;
   }
 }
+
+
+/* ============================================================
+   CASE STUDIES · DESIGN EMPHASIS + MOBILE COMPRESSION · 2026-09-27
+   Emphasize with composition, contrast, rules and spacing — not scale.
+   Desktop keeps the full case architecture; mobile becomes a tighter proof rail.
+   ============================================================ */
+
+/* Featured metric: smaller type, stronger graphic lockup. */
+html body #cases.case-studies-v7 .case-primary-metric-v7{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:auto auto!important;
+  align-items:end!important;
+  justify-content:start!important;
+  gap:11px!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin-top:28px!important;
+  padding:13px 0 10px 13px!important;
+  border-left:2px solid #C96338!important;
+  border-bottom:1px solid rgba(93,76,64,.15)!important;
+}
+html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
+  display:block!important;
+  color:#2A2521!important;
+  font-size:clamp(40px,3.15vw,46px)!important;
+  font-weight:700!important;
+  line-height:.9!important;
+  letter-spacing:-.055em!important;
+}
+html body #cases.case-studies-v7 .case-primary-metric-v7 span{
+  display:block!important;
+  margin:0 0 3px!important;
+  color:#C96338!important;
+  font-size:9.5px!important;
+  font-weight:750!important;
+  line-height:1.2!important;
+  letter-spacing:.08em!important;
+}
+html body #cases.case-studies-v7 .case-content-note-v7{
+  margin-top:20px!important;
+}
+
+/* Supporting proof remains quiet on desktop. */
+html body #cases.case-studies-v7 .case-support-card-v7{
+  scroll-snap-align:start!important;
+}
+
+@media(max-width:767px){
+  html body main#top>#cases.case-studies-v7{
+    padding-top:64px!important;
+    padding-bottom:66px!important;
+  }
+  html body #cases.case-studies-v7 .case-head-v7 .section-copy{
+    max-width:300px!important;
+    margin-top:12px!important;
+    line-height:1.6!important;
+  }
+
+  /* Featured case: keep the proof, remove excess vertical weight. */
+  html body #cases.case-studies-v7 .case-feature-v7{
+    margin-top:28px!important;
+    gap:14px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-media-v7{
+    aspect-ratio:16/9!important;
+  }
+  html body #cases.case-studies-v7 .case-content-copy-v7{
+    padding:22px 18px 24px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-copy-v7 h3{
+    margin-top:11px!important;
+    font-size:20px!important;
+    line-height:1.35!important;
+  }
+  html body #cases.case-studies-v7 .case-primary-metric-v7{
+    grid-template-columns:auto auto!important;
+    gap:9px!important;
+    margin-top:20px!important;
+    padding:11px 0 9px 11px!important;
+  }
+  html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
+    font-size:38px!important;
+  }
+  html body #cases.case-studies-v7 .case-primary-metric-v7 span{
+    margin-bottom:3px!important;
+    font-size:8.5px!important;
+  }
+  html body #cases.case-studies-v7 .case-content-note-v7{
+    margin-top:16px!important;
+    font-size:12.5px!important;
+    line-height:1.55!important;
+  }
+  html body #cases.case-studies-v7 .case-secondary-metric-v7,
+  html body #cases.case-studies-v7 .case-secondary-metric-v7 b{
+    font-size:11.5px!important;
+  }
+
+  /* Offline proof: same story, less text and less height. */
+  html body #cases.case-studies-v7 .case-offline-copy-v7{
+    padding:22px 18px 18px!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+    margin-top:10px!important;
+    font-size:23px!important;
+    line-height:1.12!important;
+  }
+  html body #cases.case-studies-v7 .case-offline-copy-v7 p{
+    margin-top:11px!important;
+    font-size:11.5px!important;
+    line-height:1.6!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7{
+    min-height:220px!important;
+  }
+  html body #cases.case-studies-v7 .case-pop-media-v7 img{
+    padding:14px 18px!important;
+  }
+
+  /* Three secondary cases become a horizontal proof rail. */
+  html body #cases.case-studies-v7 .case-support-grid-v7{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:14px!important;
+    width:calc(100% + 18px)!important;
+    margin-top:36px!important;
+    padding:0 18px 8px 0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-left:0!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+  html body #cases.case-studies-v7 .case-support-grid-v7::-webkit-scrollbar{
+    display:none!important;
+  }
+  html body #cases.case-studies-v7 .case-support-card-v7{
+    flex:0 0 min(78vw,300px)!important;
+    min-width:0!important;
+  }
+  html body #cases.case-studies-v7 .case-support-card-v7 figure{
+    aspect-ratio:16/10!important;
+    border-radius:8px!important;
+  }
+  html body #cases.case-studies-v7 .case-support-copy-v7{
+    padding:14px 1px 0!important;
+  }
+  html body #cases.case-studies-v7 .case-support-copy-v7>span{
+    font-size:8px!important;
+  }
+  html body #cases.case-studies-v7 .case-support-copy-v7 h3{
+    margin-top:7px!important;
+    font-size:12px!important;
+  }
+  html body #cases.case-studies-v7 .case-support-copy-v7 strong{
+    margin-top:10px!important;
+    font-size:21px!important;
+    line-height:1.15!important;
+  }
+  html body #cases.case-studies-v7 .case-support-copy-v7 p{
+    display:none!important;
+  }
+
+  /* The floating page CTA already handles conversion on mobile. */
+  html body #cases.case-studies-v7 .case-inquiry-v7{
+    display:none!important;
+  }
+}
