@@ -117,7 +117,7 @@
       <div class="eyebrow">한·일 크리에이터 마케팅 운영</div>
       <div class="luen-advantage-heading">
         <h2 class="section-title"><span>한국 브랜드와 일본 시장 사이,</span><br/><em>LUEN이 연결하고 운영합니다.</em></h2>
-        <p>크리에이터 섭외부터 현지화, 콘텐츠 검수까지 한 팀에서 관리합니다.</p>
+        <p>크리에이터 선정부터 현지화, 콘텐츠 검수까지 한 팀에서 관리합니다.</p>
       </div>`;
 
     const operatingSystem=document.createElement('div');
@@ -139,7 +139,7 @@
           <b>크리에이터 · 플랫폼 · 소비자</b>
         </div>
       </div>
-      <p class="luen-bridge-roles">크리에이터 섭외 <i>·</i> 커뮤니케이션 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p>
+      <p class="luen-bridge-roles">크리에이터 선정 <i>·</i> 커뮤니케이션 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p>
       <div class="luen-platform-label"><span>주요 플랫폼</span><small>일본 시장</small></div>`;
 
     identitySection.querySelector('.luen-advantage-grid')?.remove();
