@@ -9392,3 +9392,76 @@ html body #work .portfolio-meta b{
     font-size:9.8px!important;
   }
 }
+
+
+/* ============================================================
+   MOBILE CROSS-BORDER · COPY REDUCTION · 2026-09-27
+   Mobile only: remove repeated explanations and let the bridge +
+   platform names do the work. Desktop remains unchanged.
+   ============================================================ */
+html body .luen-bridge-roles-mobile{
+  display:none!important;
+}
+
+@media(max-width:767px){
+  /* The bridge and role line already explain this, so avoid saying it twice. */
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-heading>p{
+    display:none!important;
+  }
+
+  /* Keep the Korea → LUEN → Japan structure, drop the secondary labels. */
+  html body .luen-bridge-side>b{
+    display:none!important;
+  }
+  html body .luen-crossborder-system{
+    margin-top:22px!important;
+  }
+  html body .luen-crossborder-bridge{
+    grid-template-columns:minmax(0,1fr) 28px 86px 28px minmax(0,1fr)!important;
+  }
+  html body .luen-bridge-side>span{
+    font-size:8px!important;
+    letter-spacing:.045em!important;
+    white-space:nowrap!important;
+  }
+  html body .luen-bridge-hub{
+    min-height:64px!important;
+  }
+  html body .luen-bridge-hub strong{
+    font-size:25px!important;
+  }
+  html body .luen-bridge-hub small{
+    margin-top:5px!important;
+    font-size:7px!important;
+  }
+
+  /* Five desktop roles become four essential mobile roles. */
+  html body .luen-bridge-roles-desktop{
+    display:none!important;
+  }
+  html body .luen-bridge-roles-mobile{
+    display:block!important;
+    margin-top:12px!important;
+    font-size:10.5px!important;
+    line-height:1.65!important;
+    white-space:normal!important;
+  }
+
+  /* On mobile, platform names are enough; descriptions add unnecessary density. */
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>p{
+    display:none!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article,
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(3),
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article:nth-child(n+4){
+    min-height:72px!important;
+    padding:12px 13px 11px!important;
+  }
+  html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid article>b{
+    margin-top:11px!important;
+  }
+
+  html body .luen-platform-label{
+    margin-top:22px!important;
+  }
+}
