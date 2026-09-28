@@ -1682,149 +1682,6 @@ main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid a
    Content → Deliverable → Performance → Process → Client Voice
    ============================================================ */
 
-/* CORE EXPERTISE / CONTENT */
-html body main#top>#youtube.youtube-v2{
-  padding:var(--luen-section-y) 0 104px!important;
-  border-top:1px solid var(--luen-line)!important;
-  background:var(--luen-canvas)!important;
-  background-image:none!important;
-}
-#youtube .youtube-v2-head{
-  display:block!important;
-}
-#youtube .youtube-v2-head .section-title{
-  max-width:860px!important;
-  color:var(--luen-ink)!important;
-}
-#youtube .youtube-v2-head .section-title em{
-  color:var(--luen-orange)!important;
-}
-#youtube .luen-content-video{
-  display:grid!important;
-  grid-template-columns:minmax(300px,.72fr) minmax(0,1.28fr)!important;
-  margin-top:58px!important;
-  overflow:hidden!important;
-  border:1px solid var(--luen-ink)!important;
-  border-radius:var(--luen-radius-xs)!important;
-  background:var(--luen-espresso)!important;
-  box-shadow:none!important;
-}
-#youtube .luen-content-video-copy{
-  display:flex!important;
-  flex-direction:column!important;
-  justify-content:flex-end!important;
-  padding:34px 30px 30px!important;
-  background:var(--luen-espresso)!important;
-  color:#F5F3EE!important;
-}
-#youtube .luen-content-video-copy>span{
-  color:var(--luen-orange-bright)!important;
-  font:700 10px/1 var(--luen-type-ui)!important;
-  letter-spacing:.11em!important;
-}
-#youtube .luen-content-video-copy h3{
-  margin-top:26px!important;
-  color:#F5F3EE!important;
-  font:700 clamp(27px,2.4vw,36px)/1.12 var(--luen-type-display)!important;
-  letter-spacing:-.045em!important;
-}
-#youtube .luen-content-video-copy h3::before{
-  content:none!important;
-  display:none!important;
-}
-#youtube .luen-content-video-copy p{
-  max-width:420px!important;
-  margin-top:18px!important;
-  color:rgba(245,243,238,.58)!important;
-  font-size:13px!important;
-  line-height:1.75!important;
-}
-#youtube .luen-content-video-meta{
-  display:flex!important;
-  flex-wrap:wrap!important;
-  gap:8px 14px!important;
-  margin-top:24px!important;
-  color:rgba(245,243,238,.38)!important;
-}
-#youtube .luen-content-video-meta span{
-  display:inline!important;
-  font-size:9.5px!important;
-  letter-spacing:.09em!important;
-}
-#youtube .luen-content-video-frame{
-  min-width:0!important;
-  border-left:1px solid var(--luen-line-dark)!important;
-  background:#000!important;
-}
-#youtube .luen-content-video-frame video{
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  min-height:430px!important;
-  object-fit:cover!important;
-  background:#000!important;
-}
-
-/* five-step logic becomes a flat numbered rail */
-#youtube .luen-content-expertise-grid{
-  margin-top:42px!important;
-}
-#youtube .yt-action-flow.content-design-flow,
-#youtube .yt-action-flow.content-design-flow-v9,
-#youtube .content-design-flow{
-  position:relative!important;
-  display:grid!important;
-  grid-template-columns:repeat(5,minmax(0,1fr))!important;
-  gap:0!important;
-  padding:0!important;
-  overflow:visible!important;
-  border-top:1px solid var(--luen-ink)!important;
-  border-bottom:1px solid var(--luen-line)!important;
-  border-radius:0!important;
-  background:transparent!important;
-}
-#youtube .yt-action-flow article,
-#youtube .content-design-flow article{
-  position:relative!important;
-  min-height:190px!important;
-  padding:28px 18px 22px!important;
-  border:0!important;
-  border-right:1px solid var(--luen-line)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-#youtube .yt-action-flow article:last-child,
-#youtube .content-design-flow article:last-child{
-  border-right:0!important;
-}
-#youtube .yt-action-flow article>span,
-#youtube .content-design-flow article>span{
-  position:static!important;
-  display:block!important;
-  color:var(--luen-orange)!important;
-  font:700 10px/1 var(--luen-type-ui)!important;
-  letter-spacing:.10em!important;
-}
-#youtube .yt-action-flow article>b,
-#youtube .content-design-flow article>b{
-  display:block!important;
-  margin-top:42px!important;
-  color:var(--luen-ink)!important;
-  font:700 15px/1.25 var(--luen-type-ui)!important;
-  letter-spacing:.03em!important;
-}
-#youtube .yt-action-flow article>p,
-#youtube .content-design-flow article>p{
-  margin-top:12px!important;
-  color:var(--luen-muted)!important;
-  font-size:12.5px!important;
-  line-height:1.7!important;
-}
-#youtube .yt-flow-line{
-  display:none!important;
-}
-
 /* REAL DELIVERABLE */
 html body main#top>#guide-proof.guide-proof{
   padding:104px 0!important;
@@ -2123,27 +1980,11 @@ html body main#top>#client-voice.client-voice{
 }
 
 @media(max-width:1100px){
-  #youtube .luen-content-video,
   #guide-proof .guide-layout,
   #performance .performance-layout,
   #client-voice .voice-layout{
     grid-template-columns:1fr!important;
     gap:38px!important;
-  }
-  #youtube .luen-content-video-frame{
-    border-left:0!important;
-    border-top:1px solid var(--luen-line-dark)!important;
-  }
-  #youtube .yt-action-flow.content-design-flow,
-  #youtube .yt-action-flow.content-design-flow-v9,
-  #youtube .content-design-flow{
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  }
-  #youtube .yt-action-flow article:nth-child(3){
-    border-right:0!important;
-  }
-  #youtube .yt-action-flow article:nth-child(n+4){
-    border-top:1px solid var(--luen-line)!important;
   }
   #process .timeline-shell{
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -2157,51 +1998,12 @@ html body main#top>#client-voice.client-voice{
 }
 
 @media(max-width:767px){
-  html body main#top>#youtube.youtube-v2,
   html body main#top>#guide-proof.guide-proof,
   html body main#top>#performance.performance-lab,
   html body main#top>#process.process-timeline-v2,
   html body main#top>#client-voice.client-voice{
     padding-top:78px!important;
     padding-bottom:78px!important;
-  }
-
-  #youtube .luen-content-video{
-    margin-top:40px!important;
-  }
-  #youtube .luen-content-video-copy{
-    padding:26px 20px 24px!important;
-  }
-  #youtube .luen-content-video-copy h3{
-    font-size:27px!important;
-  }
-  #youtube .luen-content-video-frame video{
-    min-height:0!important;
-    aspect-ratio:16/9!important;
-  }
-  #youtube .yt-action-flow.content-design-flow,
-  #youtube .yt-action-flow.content-design-flow-v9,
-  #youtube .content-design-flow{
-    grid-template-columns:1fr!important;
-    display:block!important;
-  }
-  #youtube .yt-action-flow article,
-  #youtube .content-design-flow article,
-  #youtube .yt-action-flow article:nth-child(3),
-  #youtube .yt-action-flow article:nth-child(n+4){
-    min-height:0!important;
-    padding:20px 0 22px!important;
-    border-right:0!important;
-    border-top:0!important;
-    border-bottom:1px solid var(--luen-line)!important;
-  }
-  #youtube .yt-action-flow article:last-child,
-  #youtube .content-design-flow article:last-child{
-    border-bottom:0!important;
-  }
-  #youtube .yt-action-flow article>b,
-  #youtube .content-design-flow article>b{
-    margin-top:14px!important;
   }
 
   #guide-proof .guide-docs{
@@ -2787,26 +2589,6 @@ html body #contact .contact-copy::after{
   display:none!important;
 }
 
-/* REAL CREATOR CONTENT · V3 uses an ink frame, not the retired orange card edge. */
-html body #youtube .luen-content-video{
-  border-color:var(--luen-ink)!important;
-}
-
-/* CONTENT DESIGN · force the five steps back to a flat rail. */
-html body #youtube .yt-action-flow.content-design-flow>article,
-html body #youtube .yt-action-flow.content-design-flow-v9>article,
-html body #youtube .content-design-flow>article{
-  border:0!important;
-  border-right:1px solid var(--luen-line)!important;
-  border-radius:0!important;
-  background:transparent!important;
-}
-html body #youtube .yt-action-flow.content-design-flow>article:last-child,
-html body #youtube .yt-action-flow.content-design-flow-v9>article:last-child,
-html body #youtube .content-design-flow>article:last-child{
-  border-right:0!important;
-}
-
 /* CROSS-BORDER · keep V3 editorial utility geometry on desktop. */
 @media(min-width:768px){
   html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advantage-grid>article{
@@ -2914,19 +2696,6 @@ html body #youtube .content-design-flow>article:last-child{
     font-size:12.5px!important;
   }
 
-  html body #youtube .yt-action-flow.content-design-flow>article,
-  html body #youtube .yt-action-flow.content-design-flow-v9>article,
-  html body #youtube .content-design-flow>article{
-    border:0!important;
-    border-bottom:1px solid var(--luen-line)!important;
-    border-radius:0!important;
-    background:transparent!important;
-  }
-  html body #youtube .yt-action-flow.content-design-flow>article:last-child,
-  html body #youtube .yt-action-flow.content-design-flow-v9>article:last-child,
-  html body #youtube .content-design-flow>article:last-child{
-    border-bottom:0!important;
-  }
 }
 
 
@@ -2934,12 +2703,6 @@ html body #youtube .content-design-flow>article:last-child{
    V3 CASE / CONTENT SPECIFICITY FIXES · 2026-09-25
    Retire old rounded case media and CSS-generated content copy.
    ============================================================ */
-
-/* CORE EXPERTISE · only the semantic HTML title should render. */
-html body #youtube .luen-content-video .luen-content-video-copy h3::before{
-  content:none!important;
-  display:none!important;
-}
 
 /* SUPPORTING CASES · keep V3's flat editorial media treatment. */
 html body #cases.case-studies .case-support-grid .case-proof-card .case-image{
@@ -5620,70 +5383,6 @@ html body #work .portfolio-meta b{
    Keep the real video, proposal pages and public metrics; remove isolated black UI.
    ============================================================ */
 
-/* 01 · CORE EXPERTISE / REAL CONTENT */
-html body main#top>#youtube.youtube-v2{
-  border-top-color:rgba(93,76,64,.14)!important;
-  background:#F5F0E8!important;
-}
-html body #youtube .youtube-v2-head .section-title{
-  color:#2A2521!important;
-}
-html body #youtube .youtube-v2-head .section-title em{
-  color:#D56F40!important;
-}
-html body #youtube .luen-content-video{
-  border-color:rgba(93,76,64,.20)!important;
-  background:#E4D7C6!important;
-}
-html body #youtube .luen-content-video-copy{
-  background:#E4D7C6!important;
-  color:#2A2521!important;
-}
-html body #youtube .luen-content-video-copy>span{
-  color:#C96338!important;
-}
-html body #youtube .luen-content-video-copy h3{
-  color:#2A2521!important;
-}
-html body #youtube .luen-content-video-copy p{
-  color:#6F655C!important;
-}
-html body #youtube .luen-content-video-meta{
-  color:#8A7C71!important;
-}
-html body #youtube .luen-content-video-frame{
-  border-left-color:rgba(93,76,64,.16)!important;
-  background:#D9CCBC!important;
-}
-html body #youtube .luen-content-video-frame video{
-  background:#D9CCBC!important;
-}
-html body #youtube .yt-action-flow.content-design-flow,
-html body #youtube .yt-action-flow.content-design-flow-v9,
-html body #youtube .content-design-flow{
-  border-top-color:rgba(93,76,64,.42)!important;
-  border-bottom-color:rgba(93,76,64,.16)!important;
-}
-html body #youtube .yt-action-flow article,
-html body #youtube .content-design-flow article,
-html body #youtube .yt-action-flow.content-design-flow>article,
-html body #youtube .yt-action-flow.content-design-flow-v9>article,
-html body #youtube .content-design-flow>article{
-  border-right-color:rgba(93,76,64,.15)!important;
-}
-html body #youtube .yt-action-flow article>span,
-html body #youtube .content-design-flow article>span{
-  color:#C96338!important;
-}
-html body #youtube .yt-action-flow article>b,
-html body #youtube .content-design-flow article>b{
-  color:#2A2521!important;
-}
-html body #youtube .yt-action-flow article>p,
-html body #youtube .content-design-flow article>p{
-  color:#71675E!important;
-}
-
 /* 02 · REAL DELIVERABLE */
 html body main#top>#guide-proof.guide-proof{
   border-top-color:rgba(93,76,64,.14)!important;
@@ -5771,20 +5470,7 @@ html body #performance .performance-growth-v93 .growth-value{
   fill:#A84F29!important;
 }
 
-/* Responsive borders must not fall back to the retired dark system. */
-@media(max-width:1100px){
-  html body #youtube .luen-content-video-frame{
-    border-left:0!important;
-    border-top:1px solid rgba(93,76,64,.16)!important;
-  }
-}
 @media(max-width:767px){
-  html body #youtube .yt-action-flow article,
-  html body #youtube .content-design-flow article,
-  html body #youtube .yt-action-flow.content-design-flow>article,
-  html body #youtube .yt-action-flow.content-design-flow-v9>article{
-    border-bottom-color:rgba(93,76,64,.15)!important;
-  }
   html body #performance .metric-row article:nth-child(-n+2){
     border-bottom-color:rgba(93,76,64,.16)!important;
   }
@@ -6138,23 +5824,6 @@ html body main#top>.luen-advantage-section.identity-advantage-ready .luen-advant
   max-width:760px!important;
   margin:0!important;
   position:static!important;
-}
-
-/* 2) CORE EXPERTISE
-   Retired V8/V9 CSS still imposed min-height:520px on this five-step rail. */
-html body #youtube .yt-action-flow.content-design-flow,
-html body #youtube .yt-action-flow.content-design-flow-v9,
-html body #youtube .content-design-flow{
-  min-height:0!important;
-  height:auto!important;
-}
-@media(min-width:1101px){
-  html body #youtube .yt-action-flow.content-design-flow>article,
-  html body #youtube .yt-action-flow.content-design-flow-v9>article,
-  html body #youtube .content-design-flow>article{
-    min-height:184px!important;
-    height:auto!important;
-  }
 }
 
 /* 3) SELECTED WORK
@@ -7900,52 +7569,78 @@ html body #work .portfolio-meta b{
   font-size:10.5px!important;
 }
 
-/* Actual content is a visual proof continuation, not another text-heavy chapter. */
+/* CREATOR CONTENT · single source of truth */
 html body main#top>#youtube.youtube-v2{
   padding-top:clamp(78px,6.5vw,96px)!important;
   padding-bottom:clamp(82px,7vw,106px)!important;
+  border-top:1px solid rgba(93,76,64,.14)!important;
+  background:#F5F0E8!important;
+  background-image:none!important;
 }
 html body #youtube .youtube-v2-head{
+  display:block!important;
   max-width:720px!important;
 }
 html body #youtube .youtube-v2-head .section-title{
   max-width:620px!important;
+  color:#2A2521!important;
   font-size:clamp(36px,3vw,48px)!important;
   line-height:1.04!important;
   letter-spacing:-.045em!important;
 }
+html body #youtube .youtube-v2-head .section-title em{
+  color:#D56F40!important;
+}
 html body #youtube .luen-content-video{
+  display:grid!important;
   grid-template-columns:minmax(230px,.42fr) minmax(0,1.58fr)!important;
   max-width:1280px!important;
   margin-top:34px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(93,76,64,.20)!important;
   border-radius:10px!important;
+  background:#E4D7C6!important;
+  box-shadow:none!important;
 }
 html body #youtube .luen-content-video-copy{
+  display:flex!important;
+  flex-direction:column!important;
   justify-content:flex-end!important;
   padding:28px 24px 26px!important;
+  background:#E4D7C6!important;
+  color:#2A2521!important;
 }
 html body #youtube .luen-content-video-copy>span{
-  font-size:9px!important;
+  color:#C96338!important;
+  font:700 9px/1 var(--luen-type-ui)!important;
   letter-spacing:.11em!important;
 }
 html body #youtube .luen-content-video-copy h3{
-  margin-top:24px!important;
-  font-size:clamp(22px,1.9vw,28px)!important;
-  line-height:1.12!important;
-  letter-spacing:-.035em!important;
+  margin:18px 0 0!important;
+  color:#403832!important;
+  font:700 clamp(20px,1.55vw,24px)/1.2 var(--luen-type-display)!important;
+  letter-spacing:-.03em!important;
 }
 html body #youtube .luen-content-video-copy p{
   max-width:280px!important;
-  margin-top:12px!important;
-  font-size:12px!important;
-  line-height:1.65!important;
+  margin-top:10px!important;
+  color:#7A6D63!important;
+  font-size:11px!important;
+  line-height:1.45!important;
+}
+html body #youtube .luen-content-video-frame{
+  min-width:0!important;
+  border-left:1px solid rgba(93,76,64,.16)!important;
+  background:#D9CCBC!important;
 }
 html body #youtube .luen-content-video-frame video{
+  display:block!important;
   width:100%!important;
   height:100%!important;
   min-height:0!important;
   aspect-ratio:16/9!important;
   object-fit:cover!important;
+  background:#D9CCBC!important;
 }
 
 @media(max-width:900px){
@@ -7956,7 +7651,7 @@ html body #youtube .luen-content-video-frame video{
     flex-basis:min(40vw,230px)!important;
   }
   html body #youtube .luen-content-video{
-    grid-template-columns:minmax(210px,.5fr) minmax(0,1.5fr)!important;
+    grid-template-columns:minmax(190px,.48fr) minmax(0,1.52fr)!important;
   }
 }
 
@@ -8010,12 +7705,13 @@ html body #youtube .luen-content-video-frame video{
     padding:22px 20px 20px!important;
   }
   html body #youtube .luen-content-video-copy h3{
-    margin-top:16px!important;
-    font-size:21px!important;
+    margin-top:12px!important;
+    font-size:20px!important;
   }
   html body #youtube .luen-content-video-copy p{
     max-width:none!important;
-    font-size:11.5px!important;
+    margin-top:8px!important;
+    font-size:10.5px!important;
   }
   html body #youtube .luen-content-video-frame{
     border-left:0!important;
@@ -9900,49 +9596,5 @@ html body #cases.case-studies-v7 .case-pop-flow-v8 i{
     max-height:210px!important;
     object-fit:contain!important;
     padding:12px 20px!important;
-  }
-}
-
-
-/* ============================================================
-   CREATOR CONTENT META · TITLE VISIBILITY FIX · 2026-09-27
-   Resolve legacy cascade conflict that hides the campaign name.
-   Keep the left metadata compact and readable.
-   ============================================================ */
-html body #youtube .luen-content-video-copy{
-  position:relative!important;
-  z-index:2!important;
-}
-html body #youtube .luen-content-video-copy h3{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  position:relative!important;
-  z-index:3!important;
-  height:auto!important;
-  max-height:none!important;
-  overflow:visible!important;
-  margin:18px 0 0!important;
-  color:#403832!important;
-  font-family:var(--luen-type-display),sans-serif!important;
-  font-size:clamp(20px,1.55vw,24px)!important;
-  font-weight:700!important;
-  line-height:1.2!important;
-  letter-spacing:-.03em!important;
-}
-html body #youtube .luen-content-video-copy p{
-  margin-top:10px!important;
-  color:#7A6D63!important;
-  font-size:11px!important;
-  line-height:1.45!important;
-}
-@media(max-width:767px){
-  html body #youtube .luen-content-video-copy h3{
-    margin-top:12px!important;
-    font-size:20px!important;
-  }
-  html body #youtube .luen-content-video-copy p{
-    margin-top:8px!important;
-    font-size:10.5px!important;
   }
 }
