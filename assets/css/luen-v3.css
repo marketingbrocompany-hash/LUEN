@@ -6088,47 +6088,7 @@ html body #cases.case-studies-v7 .case-content-copy-v7 h3{
   font-size:14px!important;
   font-weight:650!important;
   line-height:1.45!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7{
-  margin-top:38px!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-  display:block!important;
-  color:#2A2521!important;
-  font-size:clamp(58px,6vw,82px)!important;
-  font-weight:700!important;
-  line-height:.88!important;
-  letter-spacing:-.06em!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7 span{
-  display:block!important;
-  margin-top:11px!important;
-  color:#8B7E72!important;
-  font:700 9px/1.2 var(--luen-type-ui)!important;
-  letter-spacing:.11em!important;
-}
-html body #cases.case-studies-v7 .case-content-note-v7{
-  margin-top:26px!important;
-  color:#5F564F!important;
-  font-size:13px!important;
-  line-height:1.65!important;
-}
-html body #cases.case-studies-v7 .case-secondary-metric-v7{
-  margin-top:10px!important;
-  color:#8A7D72!important;
-  font:600 11px/1.5 var(--luen-type-ui)!important;
-}
-html body #cases.case-studies-v7 .case-secondary-metric-v7 b{
-  color:#5E544C!important;
-  font-size:12px!important;
-}
-html body #cases.case-studies-v7 .case-secondary-metric-v7 i{
-  padding:0 7px!important;
-  color:#B4A79B!important;
-  font-style:normal!important;
-}
-
-/* 02 OFFLINE EXTENSION — intentionally its own visual chapter */
+}/* 02 OFFLINE EXTENSION — intentionally its own visual chapter */
 html body #cases.case-studies-v7 .case-offline-chapter-v7{
   display:grid!important;
   grid-template-columns:minmax(320px,.82fr) minmax(520px,1.18fr)!important;
@@ -6340,14 +6300,7 @@ html body #cases.case-studies-v7 .case-inquiry-btn-v7 i{
   }
   html body #cases.case-studies-v7 .case-content-copy-v7{
     padding:28px 20px 30px!important;
-  }
-  html body #cases.case-studies-v7 .case-primary-metric-v7{
-    margin-top:28px!important;
-  }
-  html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-    font-size:58px!important;
-  }
-  html body #cases.case-studies-v7 .case-offline-chapter-v7{
+  }html body #cases.case-studies-v7 .case-offline-chapter-v7{
     grid-template-columns:1fr!important;
     min-height:0!important;
   }
@@ -6463,14 +6416,7 @@ html body #cases.case-studies-v7 .case-head-v7 .section-title{
 html body main#top>section:not(.hero):not(#cases) .section-title,
 html body main#top>.luen-advantage-section .section-title{
   font-size:var(--luen-section-title-max)!important;
-}
-
-/* Large performance numbers are evidence, not headlines. */
-html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-  font-size:var(--luen-key-metric-max)!important;
-}
-
-/* Desktop compression follows the Hero's existing scale exactly. */
+}/* Desktop compression follows the Hero's existing scale exactly. */
 @media(min-width:1121px) and (max-width:1320px){
   html body{
     --luen-display-title:clamp(48px,4.2vw,58px);
@@ -7926,43 +7872,10 @@ html body #cases.case-studies-v7 .case-kicker-v7{
 html body #cases.case-studies-v7 .case-content-copy-v7 h3{
   font-size:clamp(22px,1.75vw,25px)!important;
   line-height:1.35!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-  font-size:clamp(54px,4.4vw,60px)!important;
-  line-height:.9!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7 span{
-  font-size:10.5px!important;
-  line-height:1.2!important;
-  letter-spacing:.075em!important;
-}
-html body #cases.case-studies-v7 .case-content-note-v7{
-  font-size:14.5px!important;
-  line-height:1.6!important;
-}
-html body #cases.case-studies-v7 .case-secondary-metric-v7{
-  font-size:13.5px!important;
-  line-height:1.5!important;
-}
-html body #cases.case-studies-v7 .case-secondary-metric-v7 b{
-  font-size:13.5px!important;
-}
-
-@media(max-width:767px){
+}@media(max-width:767px){
   html body #cases.case-studies-v7 .case-content-copy-v7 h3{
     font-size:22px!important;
-  }
-  html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-    font-size:54px!important;
-  }
-  html body #cases.case-studies-v7 .case-content-note-v7{
-    font-size:14px!important;
-  }
-  html body #cases.case-studies-v7 .case-secondary-metric-v7,
-  html body #cases.case-studies-v7 .case-secondary-metric-v7 b{
-    font-size:13px!important;
-  }
-}
+  }}
 
 
 /* ============================================================
@@ -8350,52 +8263,7 @@ html body .luen-bridge-roles-mobile{
   html body .luen-platform-label{
     margin-top:22px!important;
   }
-}
-
-
-/* ============================================================
-   CASE STUDIES · DESIGN EMPHASIS + MOBILE COMPRESSION · 2026-09-27
-   Emphasize with composition, contrast, rules and spacing — not scale.
-   Desktop keeps the full case architecture; mobile becomes a tighter proof rail.
-   ============================================================ */
-
-/* Featured metric: smaller type, stronger graphic lockup. */
-html body #cases.case-studies-v7 .case-primary-metric-v7{
-  position:relative!important;
-  display:grid!important;
-  grid-template-columns:auto auto!important;
-  align-items:end!important;
-  justify-content:start!important;
-  gap:11px!important;
-  width:max-content!important;
-  max-width:100%!important;
-  margin-top:28px!important;
-  padding:13px 0 10px 13px!important;
-  border-left:2px solid #C96338!important;
-  border-bottom:1px solid rgba(93,76,64,.15)!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-  display:block!important;
-  color:#2A2521!important;
-  font-size:clamp(40px,3.15vw,46px)!important;
-  font-weight:700!important;
-  line-height:.9!important;
-  letter-spacing:-.055em!important;
-}
-html body #cases.case-studies-v7 .case-primary-metric-v7 span{
-  display:block!important;
-  margin:0 0 3px!important;
-  color:#C96338!important;
-  font-size:9.5px!important;
-  font-weight:750!important;
-  line-height:1.2!important;
-  letter-spacing:.08em!important;
-}
-html body #cases.case-studies-v7 .case-content-note-v7{
-  margin-top:20px!important;
-}
-
-/* Supporting proof remains quiet on desktop. */
+}/* Supporting proof remains quiet on desktop. */
 html body #cases.case-studies-v7 .case-support-card-v7{
   scroll-snap-align:start!important;
 }
@@ -8426,31 +8294,7 @@ html body #cases.case-studies-v7 .case-support-card-v7{
     margin-top:11px!important;
     font-size:20px!important;
     line-height:1.35!important;
-  }
-  html body #cases.case-studies-v7 .case-primary-metric-v7{
-    grid-template-columns:auto auto!important;
-    gap:9px!important;
-    margin-top:20px!important;
-    padding:11px 0 9px 11px!important;
-  }
-  html body #cases.case-studies-v7 .case-primary-metric-v7 strong{
-    font-size:38px!important;
-  }
-  html body #cases.case-studies-v7 .case-primary-metric-v7 span{
-    margin-bottom:3px!important;
-    font-size:8.5px!important;
-  }
-  html body #cases.case-studies-v7 .case-content-note-v7{
-    margin-top:16px!important;
-    font-size:12.5px!important;
-    line-height:1.55!important;
-  }
-  html body #cases.case-studies-v7 .case-secondary-metric-v7,
-  html body #cases.case-studies-v7 .case-secondary-metric-v7 b{
-    font-size:11.5px!important;
-  }
-
-  /* Offline proof: same story, less text and less height. */
+  }/* Offline proof: same story, less text and less height. */
   html body #cases.case-studies-v7 .case-offline-copy-v7{
     padding:22px 18px 18px!important;
   }
@@ -8578,28 +8422,7 @@ html body #cases.case-studies-v7 .case-story-v8>p{
 html body #cases.case-studies-v7 .case-story-v8>p b{
   color:#C96338!important;
   font-weight:700!important;
-}
-
-/* Engagement numbers remain evidence, not the headline. */
-html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7{
-  margin-top:22px!important;
-  padding-top:11px!important;
-  border-top:1px solid rgba(93,76,64,.13)!important;
-  color:#8A7D72!important;
-  font-size:10.5px!important;
-  font-weight:560!important;
-  line-height:1.5!important;
-}
-html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7 b{
-  color:#665B52!important;
-  font-size:10.5px!important;
-  font-weight:700!important;
-}
-html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7 i{
-  padding:0 5px!important;
-}
-
-/* Offline chapter is the second half of the same result story. */
+}/* Offline chapter is the second half of the same result story. */
 html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
   max-width:430px!important;
   font-size:clamp(26px,2.25vw,34px)!important;
@@ -8635,18 +8458,7 @@ html body #cases.case-studies-v7 .case-offline-copy-v7 p{
     margin-top:10px!important;
     font-size:11.5px!important;
     line-height:1.6!important;
-  }
-
-  html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7{
-    margin-top:17px!important;
-    padding-top:9px!important;
-    font-size:9.5px!important;
-  }
-  html body #cases.case-studies-v7 .case-content-copy-v7>.case-secondary-metric-v7 b{
-    font-size:9.5px!important;
-  }
-
-  html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
+  }html body #cases.case-studies-v7 .case-offline-copy-v7 h3{
     font-size:22px!important;
     line-height:1.15!important;
   }
