@@ -105,68 +105,6 @@
     });
   }
 
-  /* CROSS-BORDER PLATFORM MIX · place operating advantage after the real proposal proof. */
-  const identitySection=document.querySelector('.identity-platform-section');
-  const identityShell=identitySection?.querySelector('.identity-platform-shell');
-  const identityTop=identitySection?.querySelector('.identity-top');
-  const identitySignature=identitySection?.querySelector('.identity-signature');
-  const platformNetwork=identitySection?.querySelector('#platforms');
-  const guideProofSection=document.querySelector('#guide-proof');
-  if(identitySection&&identityShell&&identityTop&&identitySignature&&platformNetwork&&guideProofSection){
-    identityTop.innerHTML=`
-      <div class="eyebrow">한·일 크리에이터 마케팅 운영</div>
-      <div class="luen-advantage-heading">
-        <h2 class="section-title"><span>한국 브랜드와 일본 시장 사이,</span><br/><em>LUEN이 연결하고 운영합니다.</em></h2>
-        <p>크리에이터 선정부터 현지화, 콘텐츠 검수까지 한 팀에서 관리합니다.</p>
-      </div>`;
-
-    const operatingSystem=document.createElement('div');
-    operatingSystem.className='luen-crossborder-system sr d1';
-    operatingSystem.innerHTML=`
-      <div class="luen-crossborder-bridge" aria-label="한국 브랜드와 일본 시장을 연결하는 LUEN">
-        <div class="luen-bridge-side luen-bridge-brand">
-          <span>한국 브랜드</span>
-          <b>브랜드 · 제품 · 목표</b>
-        </div>
-        <div class="luen-bridge-line" aria-hidden="true"><i></i></div>
-        <div class="luen-bridge-hub">
-          <strong>LUEN</strong>
-          <small>한·일 캠페인 운영</small>
-        </div>
-        <div class="luen-bridge-line" aria-hidden="true"><i></i></div>
-        <div class="luen-bridge-side luen-bridge-market">
-          <span>일본 시장</span>
-          <b>크리에이터 · 플랫폼 · 소비자</b>
-        </div>
-      </div>
-      <p class="luen-bridge-roles luen-bridge-roles-desktop">크리에이터 선정 <i>·</i> 커뮤니케이션 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p><p class="luen-bridge-roles luen-bridge-roles-mobile">크리에이터 선정 <i>·</i> 현지화 <i>·</i> 캠페인 운영 <i>·</i> 콘텐츠 검수</p>
-      <div class="luen-platform-label"><span>주요 플랫폼</span><small>일본 시장</small></div>`;
-
-    identitySection.querySelector('.luen-advantage-grid')?.remove();
-    const advantageGrid=document.createElement('div');
-    advantageGrid.id='platforms';
-    advantageGrid.className='luen-advantage-grid sr d1';
-    advantageGrid.innerHTML=`
-      <article><span>01</span><b>YouTube</b><p>이해 · 신뢰 형성</p></article>
-      <article><span>02</span><b>Instagram</b><p>발견 · 브랜드 경험</p></article>
-      <article><span>03</span><b>TikTok</b><p>트렌드 · 빠른 확산</p></article>
-      <article><span>04</span><b>X</b><p>실시간 화제 · 공유</p></article>
-      <article><span>05</span><b>Ameba Blog</b><p>검색 · 후기 축적</p></article>`;
-
-    const advantageSection=document.createElement('section');
-    advantageSection.id='about';
-    advantageSection.className='luen-advantage-section identity-advantage-ready';
-    advantageSection.setAttribute('aria-label','LUEN Korea to Japan cross-border operations');
-    const advantageShell=document.createElement('div');
-    advantageShell.className='container identity-platform-shell';
-    advantageShell.append(identityTop,operatingSystem,advantageGrid);
-    advantageSection.appendChild(advantageShell);
-    guideProofSection.insertAdjacentElement('afterend',advantageSection);
-
-    /* The old JP/KR platform map is intentionally removed after its content is consolidated above. */
-    identitySection.remove();
-  }
-
   /* FAQ · normalize the initial state before site-core binds accordion behavior. */
   document.querySelectorAll('.faq-item').forEach(item=>{
     item.classList.remove('open');
