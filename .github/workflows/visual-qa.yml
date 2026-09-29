@@ -30,7 +30,7 @@ jobs:
           TARGET_URL: https://luenkorea.com/
         run: |
           mkdir -p qa-artifacts
-          cat > /tmp/luen-visual-qa.cjs <<'NODE'
+          cat > luen-visual-qa.cjs <<'NODE'
           const { chromium } = require('playwright');
           const fs = require('fs');
 
@@ -301,7 +301,7 @@ jobs:
             process.exit(1);
           });
           NODE
-          node /tmp/luen-visual-qa.cjs
+          node ./luen-visual-qa.cjs
 
       - name: Upload QA artifacts
         if: always()
