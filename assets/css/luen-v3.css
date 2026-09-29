@@ -85,13 +85,7 @@ body{
 .inbound-method .section-title{
   font-size:clamp(48px,5vw,66px)!important;
 }
-#youtube .section-title,
-#guide-proof .section-title,
-#performance .section-title,
-#process .section-title,
-#client-voice .section-title,
-#faq .section-title,
-#contact .section-title{
+#youtube .section-title,#performance .section-title,#process .section-title,#client-voice .section-title,#faq .section-title,#contact .section-title{
   font-size:clamp(36px,3.8vw,50px)!important;
 }
 
@@ -114,11 +108,7 @@ body{
 .btn{
   border-radius:var(--luen-radius-sm)!important;
 }
-.creator-network-showcase,
-.performance-dashboard,
-.voice-stage,
-.contact-form,
-.guide-docs{
+.creator-network-showcase,.performance-dashboard,.voice-stage,.contact-form{
   border-radius:var(--luen-radius-md)!important;
 }
 .case-card,
@@ -579,13 +569,7 @@ html body main#top>#cases.case-studies{
   .inbound-method .section-title{
     font-size:clamp(36px,10vw,45px)!important;
   }
-  #youtube .section-title,
-  #guide-proof .section-title,
-  #performance .section-title,
-  #process .section-title,
-  #client-voice .section-title,
-  #faq .section-title,
-  #contact .section-title{
+  #youtube .section-title,#performance .section-title,#process .section-title,#client-voice .section-title,#faq .section-title,#contact .section-title{
     font-size:clamp(30px,8.4vw,37px)!important;
   }
 
@@ -1593,9 +1577,7 @@ html body main#top>#client-voice.client-voice{
 }
 
 @media(max-width:1100px){
-  #guide-proof .guide-layout,
-  #performance .performance-layout,
-  #client-voice .voice-layout{
+  #performance .performance-layout,#client-voice .voice-layout{
     grid-template-columns:1fr!important;
     gap:38px!important;
   }
@@ -1611,10 +1593,7 @@ html body main#top>#client-voice.client-voice{
 }
 
 @media(max-width:767px){
-  html body main#top>#guide-proof.guide-proof,
-  html body main#top>#performance.performance-lab,
-  html body main#top>#process.process-timeline-v2,
-  html body main#top>#client-voice.client-voice{
+  html body main#top>#performance.performance-lab,html body main#top>#process.process-timeline-v2,html body main#top>#client-voice.client-voice{
     padding-top:78px!important;
     padding-bottom:78px!important;
   }
