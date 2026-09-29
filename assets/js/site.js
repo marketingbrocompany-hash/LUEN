@@ -105,14 +105,6 @@
     });
   }
 
-  /* FAQ · normalize the initial state before site-core binds accordion behavior. */
-  document.querySelectorAll('.faq-item').forEach(item=>{
-    item.classList.remove('open');
-    item.querySelector('.faq-q')?.setAttribute('aria-expanded','false');
-    const answer=item.querySelector('.faq-a');
-    if(answer)answer.style.maxHeight='0px';
-  });
-
   /* CASE STUDY · restore the real in-store POP proof into the featured case. */
   if(document.querySelector('[data-herahera-pop-proof]')){
     const offlineScript=document.createElement('script');
