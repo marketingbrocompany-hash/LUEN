@@ -341,35 +341,10 @@ body{
    CLIENT LOGO RAIL V3
    Quiet proof. No floating cards.
    ============================================================ */
-html body main#top>.brand-wall{
-  padding:16px 0 18px!important;
-  border-top:1px solid var(--luen-line)!important;
-  border-bottom:1px solid var(--luen-line)!important;
-  background:var(--luen-canvas)!important;
-}
-main#top>.brand-wall .brand-set{
-  gap:0!important;
-  padding-right:0!important;
-}
-main#top>.brand-wall .client-logo,
-main#top>.brand-wall .brand-set::after{
-  min-width:210px!important;
-  min-height:68px!important;
-  height:68px!important;
-  padding:0 28px!important;
-  border:0!important;
-  border-right:1px solid var(--luen-line)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:rgba(17,16,14,.48)!important;
-  box-shadow:none!important;
-  transform:none!important;
-}
-main#top>.brand-wall .client-logo:hover{
-  color:var(--luen-ink)!important;
-  background:transparent!important;
-  transform:none!important;
-}
+
+
+
+
 
 /* ============================================================
    BUSINESS RESULTS V3
@@ -627,17 +602,8 @@ html body main#top>#cases.case-studies{
     padding:0 14px!important;
   }
 
-  html body main#top>.brand-wall{
-    padding:8px 0 10px!important;
-  }
-  main#top>.brand-wall .client-logo,
-  main#top>.brand-wall .brand-set::after{
-    min-width:154px!important;
-    min-height:56px!important;
-    height:56px!important;
-    padding:0 18px!important;
-    font-size:14px!important;
-  }
+  
+  
 
   .outcome-strip .proof-grid,
   .capability-strip .proof-grid{
@@ -2793,16 +2759,8 @@ html body main#top>.hero .creator-network-foot{
 }
 
 /* Make the Hero → trusted brands handoff quieter and less component-like. */
-html body main#top>.brand-wall{
-  padding-top:12px!important;
-  border-top:0!important;
-  background:var(--luen-canvas)!important;
-}
-html body main#top>.brand-wall .brand-wall-micro-label{
-  color:rgba(17,16,14,.45)!important;
-  font-size:9.5px!important;
-  letter-spacing:.06em!important;
-}
+
+
 
 /* Tablet */
 @media(max-width:1120px){
@@ -2846,9 +2804,7 @@ html body main#top>.brand-wall .brand-wall-micro-label{
     width:132px!important;
     height:132px!important;
   }
-  html body main#top>.brand-wall{
-    padding-top:8px!important;
-  }
+  
 }
 
 
@@ -3084,49 +3040,17 @@ html body main#top>.hero .creator-profile-card:hover img{
 }
 
 /* TRUST HANDOFF */
-html body main#top>.brand-wall{
-  padding:10px 0 14px!important;
-  border-top:0!important;
-  border-bottom:1px solid rgba(17,16,14,.085)!important;
-  background:var(--luen-canvas)!important;
-}
-html body main#top>.brand-wall .brand-wall-micro-label{
-  width:min(1400px,calc(100% - 80px))!important;
-  max-width:1400px!important;
-  margin:0 auto!important;
-  padding:0!important;
-  color:#817B73!important;
-  font:700 9px/1 var(--luen-type-ui)!important;
-  letter-spacing:.10em!important;
-  text-align:left!important;
-}
-html body main#top>.brand-wall .brand-viewport{
-  margin-top:8px!important;
-  padding:0!important;
-}
-html body main#top>.brand-wall .brand-set::after{
-  content:none!important;
-  display:none!important;
-}
 
-html body main#top>.brand-wall .client-logo{
-  min-width:210px!important;
-  min-height:62px!important;
-  height:62px!important;
-  padding:0 26px!important;
-  border-right:1px solid rgba(17,16,14,.085)!important;
-  color:rgba(17,16,14,.58)!important;
-  font-size:15px!important;
-}
-html body main#top>.brand-wall .client-logo:hover{
-  color:rgba(17,16,14,.78)!important;
-}
+
+
+
+
+
+
 
 /* DESKTOP COMPRESSION */
 @media(min-width:1121px) and (max-width:1320px){
-  html body #nav .nav-inner,
-  html body main#top>.hero>.container.hero-layout,
-  html body main#top>.brand-wall .brand-wall-micro-label{
+  html body #nav .nav-inner,html body main#top>.hero>.container.hero-layout{
     width:calc(100% - 64px)!important;
   }
   html body main#top>.hero>.container.hero-layout{
@@ -3183,9 +3107,7 @@ html body main#top>.brand-wall .client-logo:hover{
   html body main#top>.hero .creator-profile-viewport{
     min-height:212px!important;
   }
-  html body main#top>.brand-wall .brand-wall-micro-label{
-    width:min(100% - 48px,980px)!important;
-  }
+  
 }
 
 /* MOBILE */
@@ -3267,24 +3189,10 @@ html body main#top>.brand-wall .client-logo:hover{
     width:30px!important;
   }
 
-  html body main#top>.brand-wall{
-    padding-top:8px!important;
-    padding-bottom:10px!important;
-  }
-  html body main#top>.brand-wall .brand-wall-micro-label{
-    width:calc(100% - 36px)!important;
-    font-size:8.5px!important;
-  }
-  html body main#top>.brand-wall .brand-viewport{
-    margin-top:6px!important;
-  }
-  html body main#top>.brand-wall .client-logo{
-    min-width:150px!important;
-    min-height:54px!important;
-    height:54px!important;
-    padding:0 18px!important;
-    font-size:13px!important;
-  }
+  
+  
+  
+  
 }
 
 @media(max-width:380px){
@@ -3427,20 +3335,10 @@ html body main#top>.hero .creator-profile-card:hover img{
 }
 
 /* SELECTED PARTNERS — softer sand transition into proof */
-html body main#top>.brand-wall{
-  border-bottom-color:rgba(89,68,55,.09)!important;
-  background:#EEE6DA!important;
-}
-html body main#top>.brand-wall .brand-wall-micro-label{
-  color:#81766C!important;
-}
-html body main#top>.brand-wall .client-logo{
-  border-right-color:rgba(89,68,55,.10)!important;
-  color:rgba(74,57,47,.60)!important;
-}
-html body main#top>.brand-wall .client-logo:hover{
-  color:rgba(42,37,33,.82)!important;
-}
+
+
+
+
 
 /* Mobile keeps the same warm hierarchy. */
 @media(max-width:767px){
@@ -3494,179 +3392,49 @@ html body main#top>.hero .creator-profile-card:hover img{
    SELECTED PARTNERS V3.1 · TRUST TRANSITION
    Hero closes with quiet proof. No cards, no auto-loop on desktop.
    ============================================================ */
-html body main#top>.brand-wall{
-  position:relative!important;
-  display:block!important;
-  padding:14px 0 16px!important;
-  border-top:0!important;
-  border-bottom:1px solid rgba(93,76,64,.10)!important;
-  background:#EEE6DA!important;
-  background-image:none!important;
-  overflow:hidden!important;
-}
 
-html body main#top>.brand-wall .brand-wall-head{
-  display:none!important;
-}
 
-html body main#top>.brand-wall .brand-wall-micro-label{
-  width:min(1400px,calc(100% - 80px))!important;
-  max-width:1400px!important;
-  margin:0 auto 10px!important;
-  padding:0!important;
-  color:#8A7E74!important;
-  font:700 9px/1 var(--luen-type-ui)!important;
-  letter-spacing:.11em!important;
-  text-align:left!important;
-}
 
-html body main#top>.brand-wall .brand-viewport{
-  width:min(1400px,calc(100% - 80px))!important;
-  max-width:1400px!important;
-  margin:0 auto!important;
-  padding:0!important;
-  overflow:visible!important;
-  -webkit-mask-image:none!important;
-  mask-image:none!important;
-}
 
-html body main#top>.brand-wall .brand-track{
-  width:100%!important;
-  transform:translate3d(0,0,0);
-  will-change:auto!important;
-}
 
-html body main#top>.brand-wall .brand-set{
-  display:grid!important;
-  grid-template-columns:repeat(8,minmax(0,1fr))!important;
-  width:100%!important;
-  gap:0!important;
-  padding:0!important;
-  transform:none!important;
-}
 
-html body main#top>.brand-wall .client-logo{
-  box-sizing:border-box!important;
-  min-width:0!important;
-  min-height:58px!important;
-  height:58px!important;
-  padding:0 18px!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  border:0!important;
-  border-right:1px solid rgba(93,76,64,.10)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:rgba(74,57,47,.62)!important;
-  font:650 14px/1.1 var(--luen-type-ui)!important;
-  letter-spacing:-.015em!important;
-  text-align:center!important;
-  white-space:nowrap!important;
-  box-shadow:none!important;
-  transform:none!important;
-  transition:color .2s ease,background .2s ease!important;
-}
-html body main#top>.brand-wall .client-logo:first-child{
-  border-left:1px solid rgba(93,76,64,.10)!important;
-}
-html body main#top>.brand-wall .client-logo:hover{
-  color:#2A2521!important;
-  background:rgba(255,249,241,.22)!important;
-  transform:none!important;
-}
+
+
+
+
+
+
+
+
+
 
 /* Long public-organization names get slightly tighter typography. */
-html body main#top>.brand-wall .client-gangneung{
-  font-size:12.5px!important;
-  letter-spacing:-.03em!important;
-}
-html body main#top>.brand-wall .client-eco{
-  letter-spacing:.015em!important;
-}
-html body main#top>.brand-wall .client-edita{
-  letter-spacing:.03em!important;
-}
+
+
+
 
 /* Tablet: keep the trust shelf stable while there is enough width. */
 @media(max-width:1100px){
-  html body main#top>.brand-wall .brand-wall-micro-label,
-  html body main#top>.brand-wall .brand-viewport{
-    width:calc(100% - 48px)!important;
-  }
-  html body main#top>.brand-wall .client-logo,
-  html body main#top>.brand-wall .brand-set::after{
-    min-height:56px!important;
-    height:56px!important;
-    padding:0 12px!important;
-    font-size:12.5px!important;
-  }
-  html body main#top>.brand-wall .client-gangneung{
-    font-size:11px!important;
-  }
+  
+  
+  
 }
 
 /* Mobile / narrow tablet: user-controlled horizontal shelf, no forced motion. */
 @media(max-width:900px){
-  html body main#top>.brand-wall{
-    padding-top:12px!important;
-    padding-bottom:13px!important;
-  }
-  html body main#top>.brand-wall .brand-wall-micro-label{
-    width:calc(100% - 36px)!important;
-    margin-bottom:8px!important;
-    font-size:8.5px!important;
-  }
-  html body main#top>.brand-wall .brand-viewport{
-    width:100%!important;
-    max-width:none!important;
-    overflow-x:auto!important;
-    overflow-y:hidden!important;
-    padding:0 18px!important;
-    scrollbar-width:none!important;
-    -ms-overflow-style:none!important;
-    overscroll-behavior-x:contain!important;
-    scroll-snap-type:x proximity!important;
-    -webkit-overflow-scrolling:touch!important;
-  }
-  html body main#top>.brand-wall .brand-viewport::-webkit-scrollbar{
-    display:none!important;
-  }
-  html body main#top>.brand-wall .brand-track{
-    width:max-content!important;
-  }
-  html body main#top>.brand-wall .brand-set{
-    display:flex!important;
-    width:max-content!important;
-    min-width:max-content!important;
-  }
-  html body main#top>.brand-wall .client-logo,
-  html body main#top>.brand-wall .brand-set::after{
-    flex:0 0 auto!important;
-    min-width:156px!important;
-    width:auto!important;
-    min-height:54px!important;
-    height:54px!important;
-    padding:0 20px!important;
-    font-size:12.5px!important;
-    scroll-snap-align:start!important;
-  }
-  html body main#top>.brand-wall .client-gangneung{
-    min-width:180px!important;
-    font-size:11.5px!important;
-  }
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
 @media(max-width:480px){
-  html body main#top>.brand-wall .client-logo,
-  html body main#top>.brand-wall .brand-set::after{
-    min-width:148px!important;
-    height:52px!important;
-    min-height:52px!important;
-  }
-  html body main#top>.brand-wall .client-gangneung{
-    min-width:174px!important;
-  }
+  
+  
 }
 
 
@@ -3677,85 +3445,20 @@ html body main#top>.brand-wall .client-edita{
 /* Selected Partners: continuous but deliberately slow.
    The label says Selected Partners, so the rail reads as a curated
    sample rather than a complete partner count. */
-html body main#top>.brand-wall .brand-viewport{
-  width:min(1400px,calc(100% - 80px))!important;
-  max-width:1400px!important;
-  margin:0 auto!important;
-  padding:0!important;
-  overflow:hidden!important;
-  scroll-snap-type:none!important;
-  -webkit-mask-image:none!important;
-  mask-image:none!important;
-}
-html body main#top>.brand-wall .brand-track{
-  display:flex!important;
-  align-items:center!important;
-  width:max-content!important;
-  min-width:max-content!important;
-  transform:translate3d(0,0,0);
-  will-change:transform!important;
-}
-html body main#top>.brand-wall .brand-set{
-  display:flex!important;
-  flex:0 0 auto!important;
-  align-items:center!important;
-  width:max-content!important;
-  min-width:max-content!important;
-  gap:0!important;
-  padding:0!important;
-}
-html body main#top>.brand-wall .client-logo{
-  flex:0 0 210px!important;
-  width:210px!important;
-  min-width:210px!important;
-  min-height:58px!important;
-  height:58px!important;
-  padding:0 18px!important;
-  border-right:1px solid rgba(93,76,64,.10)!important;
-  scroll-snap-align:none!important;
-}
-html body main#top>.brand-wall .client-gangneung{
-  flex-basis:235px!important;
-  width:235px!important;
-  min-width:235px!important;
-}
+
+
+
+
+
 @media(max-width:1100px){
-  html body main#top>.brand-wall .brand-viewport{
-    width:calc(100% - 48px)!important;
-    max-width:none!important;
-  }
-  html body main#top>.brand-wall .client-logo{
-    flex-basis:180px!important;
-    width:180px!important;
-    min-width:180px!important;
-  }
-  html body main#top>.brand-wall .client-gangneung{
-    flex-basis:205px!important;
-    width:205px!important;
-    min-width:205px!important;
-  }
+  
+  
+  
 }
 @media(max-width:767px){
-  html body main#top>.brand-wall .brand-viewport{
-    width:calc(100% - 36px)!important;
-    max-width:none!important;
-    margin:0 auto!important;
-    overflow:hidden!important;
-    padding:0!important;
-  }
-  html body main#top>.brand-wall .client-logo{
-    flex-basis:158px!important;
-    width:158px!important;
-    min-width:158px!important;
-    min-height:52px!important;
-    height:52px!important;
-    padding:0 16px!important;
-  }
-  html body main#top>.brand-wall .client-gangneung{
-    flex-basis:182px!important;
-    width:182px!important;
-    min-width:182px!important;
-  }
+  
+  
+  
 }
 
 /* CTA color system: all button-like primary actions use one LUEN orange. */
@@ -7920,6 +7623,174 @@ html body #contact .contact-form.is-success .form-success{
   html body #contact .form-success{
     min-height:280px!important;
     padding:26px 22px!important;
+  }
+}
+
+/* ============================================================
+   SELECTED PARTNERS · SINGLE SOURCE · 2026-09-30
+   Eight original partners. Generic data-loop-strip engine remains active.
+   ============================================================ */
+html body main#top>.brand-wall{
+  position:relative!important;
+  display:block!important;
+  padding:14px 0 16px!important;
+  border-top:0!important;
+  border-bottom:1px solid rgba(93,76,64,.10)!important;
+  background:#EEE6DA!important;
+  background-image:none!important;
+  overflow:hidden!important;
+}
+html body main#top>.brand-wall .brand-wall-head{
+  display:none!important;
+}
+html body main#top>.brand-wall .brand-wall-micro-label{
+  width:min(1400px,calc(100% - 80px))!important;
+  max-width:1400px!important;
+  margin:0 auto 10px!important;
+  padding:0!important;
+  color:#8A7E74!important;
+  font:700 9px/1 var(--luen-type-ui)!important;
+  letter-spacing:.11em!important;
+  text-align:left!important;
+}
+html body main#top>.brand-wall .brand-viewport{
+  width:min(1400px,calc(100% - 80px))!important;
+  max-width:1400px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  overflow:hidden!important;
+  scroll-snap-type:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+}
+html body main#top>.brand-wall .brand-track{
+  display:flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  gap:0!important;
+  animation:none!important;
+  transform:translate3d(0,0,0);
+  will-change:transform!important;
+}
+html body main#top>.brand-wall .brand-set{
+  display:flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  width:max-content!important;
+  min-width:max-content!important;
+  gap:0!important;
+  padding:0!important;
+  transform:none!important;
+}
+html body main#top>.brand-wall .brand-set::after{
+  content:none!important;
+  display:none!important;
+}
+html body main#top>.brand-wall .client-logo{
+  box-sizing:border-box!important;
+  flex:0 0 210px!important;
+  width:210px!important;
+  min-width:210px!important;
+  min-height:58px!important;
+  height:58px!important;
+  padding:0 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:0!important;
+  border-right:1px solid rgba(93,76,64,.10)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:rgba(74,57,47,.62)!important;
+  font:650 14px/1.1 var(--luen-type-ui)!important;
+  letter-spacing:-.015em!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  box-shadow:none!important;
+  transform:none!important;
+  transition:color .2s ease,background .2s ease!important;
+  scroll-snap-align:none!important;
+}
+html body main#top>.brand-wall .client-logo:first-child{
+  border-left:1px solid rgba(93,76,64,.10)!important;
+}
+html body main#top>.brand-wall .client-logo:hover{
+  color:#2A2521!important;
+  background:rgba(255,249,241,.22)!important;
+  transform:none!important;
+}
+html body main#top>.brand-wall .client-gangneung{
+  flex-basis:235px!important;
+  width:235px!important;
+  min-width:235px!important;
+  font-size:12.5px!important;
+  letter-spacing:-.03em!important;
+}
+html body main#top>.brand-wall .client-eco{letter-spacing:.015em!important;}
+html body main#top>.brand-wall .client-edita{letter-spacing:.03em!important;}
+
+@media(max-width:1100px){
+  html body main#top>.brand-wall .brand-wall-micro-label,
+  html body main#top>.brand-wall .brand-viewport{
+    width:calc(100% - 48px)!important;
+    max-width:none!important;
+  }
+  html body main#top>.brand-wall .client-logo{
+    flex-basis:180px!important;
+    width:180px!important;
+    min-width:180px!important;
+    min-height:56px!important;
+    height:56px!important;
+    padding:0 12px!important;
+    font-size:12.5px!important;
+  }
+  html body main#top>.brand-wall .client-gangneung{
+    flex-basis:205px!important;
+    width:205px!important;
+    min-width:205px!important;
+    font-size:11px!important;
+  }
+}
+@media(max-width:900px){
+  html body main#top>.brand-wall{
+    padding-top:12px!important;
+    padding-bottom:13px!important;
+  }
+  html body main#top>.brand-wall .brand-wall-micro-label{
+    width:calc(100% - 36px)!important;
+    margin-bottom:8px!important;
+    font-size:8.5px!important;
+  }
+  html body main#top>.brand-wall .client-gangneung{
+    font-size:11.5px!important;
+  }
+}
+@media(max-width:767px){
+  html body main#top>.brand-wall .brand-viewport{
+    width:calc(100% - 36px)!important;
+    max-width:none!important;
+    margin:0 auto!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  html body main#top>.brand-wall .client-logo{
+    flex-basis:158px!important;
+    width:158px!important;
+    min-width:158px!important;
+    min-height:52px!important;
+    height:52px!important;
+    padding:0 16px!important;
+  }
+  html body main#top>.brand-wall .client-gangneung{
+    flex-basis:182px!important;
+    width:182px!important;
+    min-width:182px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body main#top>.brand-wall .brand-track{
+    transform:translate3d(0,0,0)!important;
   }
 }
 
