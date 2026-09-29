@@ -501,7 +501,6 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
    Reduce repetition and make the proof source easier to understand.
    ========================================================= */
 
-.performance-context,
 .voice-context{
   margin-top:14px;
   max-width:520px;
@@ -512,7 +511,7 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
 .client-voice .voice-context{max-width:460px}
 @media(max-width:767px){
   
-  .performance-context,.voice-context{margin-top:12px;font-size:12px;line-height:1.65}
+  .voice-context{margin-top:12px;font-size:12px;line-height:1.65}
 }
 
 
@@ -815,19 +814,9 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
 
 
 /* PERFORMANCE FOLLOW-UP · explain how LUEN uses post-upload growth data. */
-.performance-followup{
-  margin-top:12px;
-  max-width:520px;
-  color:#A99F94;
-  font-size:12px;
-  line-height:1.75;
-}
+
 @media(max-width:767px){
-  .performance-followup{
-    margin-top:10px;
-    font-size:11.5px;
-    line-height:1.7;
-  }
+  
 }
 
 
