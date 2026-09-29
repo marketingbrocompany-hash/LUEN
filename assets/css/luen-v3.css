@@ -1614,9 +1614,7 @@ html body main#top>section.proof-strip.outcome-strip{
 
 
 /* keep secondary ticker retired; movement belongs to Creator Network only */
-html body main#top>.marquee{
-  display:none!important;
-}
+
 
 /* medium desktop */
 @media(min-width:1121px) and (max-width:1240px){
