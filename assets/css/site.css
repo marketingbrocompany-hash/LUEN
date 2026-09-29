@@ -354,20 +354,15 @@ nav.scrolled{
 
 
 /* FAQ */
-.faq{padding:132px 0;background:var(--bg-2)}
-.faq-layout{display:grid;grid-template-columns:.66fr 1.34fr;gap:80px}
-.faq-list{border-top:1px solid var(--line)}
-.faq-item{border-bottom:1px solid var(--line)}
-.faq-q{
-  width:100%;min-height:82px;padding:0 4px;
-  background:transparent;color:var(--cream);
-  display:flex;align-items:center;justify-content:space-between;gap:24px;
-  text-align:left;cursor:pointer;font-size:15px;font-weight:600;
-}
-.faq-icon{font-size:24px;color:var(--orange);font-weight:400;transition:transform .25s ease}
-.faq-item.open .faq-icon{transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
-.faq-a p{padding:0 54px 26px 0;color:var(--muted);font-size:13px;line-height:1.9}
+
+
+
+
+
+
+
+
+
 
 /* CONTACT */
 .contact{
@@ -562,7 +557,7 @@ nav.scrolled{box-shadow:0 18px 45px rgba(0,0,0,.14)}
   .container,.nav-inner{width:min(100% - 56px,var(--max))}
   .hero-layout{grid-template-columns:1fr;gap:50px}
   
-  .faq-layout,.contact-layout{grid-template-columns:1fr;gap:48px}
+  .contact-layout{grid-template-columns:1fr;gap:48px}
   
   
   
@@ -588,7 +583,7 @@ nav.scrolled{box-shadow:0 18px 45px rgba(0,0,0,.14)}
   
   
   
-  .identity,.market-section,.youtube-section,.services,.work,.process,.faq,.contact{padding:92px 0}
+  .identity,.market-section,.youtube-section,.services,.work,.process,.contact{padding:92px 0}
   
   
   
@@ -616,7 +611,7 @@ h1,h2,h3,h4,.section-title,.identity-statement{
   text-wrap:balance;
 }
 
-p,.hero-desc,.section-copy,.case-desc,.faq-a p,.contact-copy{
+p,.hero-desc,.section-copy,.case-desc,.contact-copy{
   word-break:keep-all;
   overflow-wrap:break-word;
   text-wrap:pretty;
@@ -1364,7 +1359,7 @@ body{word-break:keep-all;overflow-x:hidden}
 img{max-width:100%}
 .section-copy h2,.identity-signature h2,.work-head h2,.youtube-v2-head h2,.market-v2-head h2,.case-head h2,.campaign-v2-head h2,.process-v2-head h2{word-break:keep-all;line-height:1.02}
 .section-copy p,.identity-signature p,.case-desc,.contact-copy p{word-break:keep-all;line-height:1.72}
-.work,.identity,.market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.faq,.contact{overflow:hidden}
+.work,.identity,.market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.contact{overflow:hidden}
 
 /* Section rhythm */
 .market-v2-head,.youtube-v2-head,.case-head,.campaign-v2-head,.process-v2-head{align-items:end}
@@ -1452,7 +1447,7 @@ img{max-width:100%}
   
   
 
-  .work,.identity,.market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.faq,.contact{padding:88px 0}
+  .work,.identity,.market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.contact{padding:88px 0}
   .section-copy h2,.identity-signature h2,.work-head h2,.youtube-v2-head h2,.market-v2-head h2,.case-head h2,.campaign-v2-head h2,.process-v2-head h2{font-size:clamp(34px,11vw,48px);line-height:.96}
   .section-copy p,.identity-signature p{font-size:14px;line-height:1.72}
 
@@ -1509,8 +1504,8 @@ img{max-width:100%}
   .timeline-shell article b{font-size:18px}
   .timeline-shell article p{font-size:14px}
 
-  .faq-list{margin-top:24px}
-  .faq-item{padding:18px 0}
+  
+  
   
   
 
@@ -1882,8 +1877,8 @@ button,input,select,textarea{font-family:var(--type-body)}
 .timeline-shell article p{font-size:12.5px!important;line-height:1.65!important}
 
 /* FAQ */
-.faq-q{font-family:var(--type-display)!important;font-size:16px!important;line-height:1.5!important;font-weight:600!important}
-.faq-a p{font-size:14px!important;line-height:1.78!important}
+
+
 
 /* Final conversion section */
 .final-scene h2{
@@ -1976,8 +1971,8 @@ label{font-size:12.5px}
   
   .timeline-shell article b{font-size:16px!important}
   .timeline-shell article p{font-size:12.5px!important}
-  .faq-q{font-size:15px!important}
-  .faq-a p{font-size:13.5px!important}
+  
+  
   .final-scene h2{font-size:clamp(38px,11vw,54px)!important;line-height:1.07!important;letter-spacing:-.045em!important}
   .final-scene p{font-size:14.5px!important;line-height:1.7!important}
 }
@@ -2317,19 +2312,19 @@ label{font-size:12.5px}
 
 
 /* V9.5 — FAQ: real pre-contact questions + conversion CTA */
-.faq-intro .section-title{max-width:9.8em}
-.faq-intro .section-copy{max-width:35em;line-height:1.8}
-.faq-q{min-height:88px!important;padding:0 8px!important}
-.faq-q>span:first-child{max-width:92%;word-break:keep-all}
-.faq-a p{padding:0 64px 28px 8px!important;max-width:760px;color:rgba(248,229,207,.58)!important}
-.faq-conversion{margin-top:30px;padding:28px 30px;border:1px solid rgba(244,125,53,.24);border-radius:20px;background:linear-gradient(135deg,rgba(244,125,53,.07),rgba(255,255,255,.01));display:flex;align-items:center;justify-content:space-between;gap:28px}
-.faq-conversion p{margin:0;max-width:560px;font-size:13px;line-height:1.75;color:rgba(248,229,207,.56);word-break:keep-all}
-.faq-conversion p strong{color:rgba(248,229,207,.9);font-weight:650}
-.faq-cta{display:inline-flex;align-items:center;gap:14px;flex:0 0 auto;padding:15px 20px;border-radius:999px;background:var(--orange);color:#120b07;font:750 13px/1 "Pretendard Variable","Pretendard","Inter",sans-serif;letter-spacing:-.02em;transition:transform .22s ease,filter .22s ease}
-.faq-cta:hover{transform:translateY(-2px);filter:brightness(1.06)}
-.faq-cta span{font-family:"Inter",sans-serif;font-size:15px}
-@media(max-width:1100px){.faq-layout{grid-template-columns:.78fr 1.22fr;gap:54px}.faq-conversion{align-items:flex-start;flex-direction:column}.faq-cta{align-self:flex-start}}
-@media(max-width:767px){.faq-conversion{padding:22px 20px}.faq-cta{white-space:normal;line-height:1.35}.faq-q{min-height:78px!important}.faq-a p{padding-right:22px!important}}
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:1100px){}
+@media(max-width:767px){}
 
 @media(max-width:1240px) and (min-width:768px){.luen-content-expertise-grid{grid-template-columns:1fr!important;gap:28px!important}.content-design-flow-v9{min-height:500px!important}}
 /* =========================================================
@@ -2415,7 +2410,7 @@ label{font-size:12.5px}
   .section-title{font-size:clamp(36px,10.7vw,47px)!important;line-height:1.08!important;letter-spacing:-.055em!important}
   .section-copy{font-size:14px!important;line-height:1.78!important;max-width:none!important}
   .title-two-line span{white-space:normal!important}
-  .market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.faq,.contact{padding:84px 0!important}
+  .market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.contact{padding:84px 0!important}
 
   /* Hero */
   .hero{padding:52px 0 76px!important;min-height:auto!important}
@@ -2578,13 +2573,13 @@ label{font-size:12.5px}
   .timeline-shell article:last-child{border-bottom:0!important}.timeline-axis{display:none!important}
 
   /* FAQ */
-  .faq-layout{grid-template-columns:1fr!important;gap:38px!important}
-  .faq-intro .section-copy br{display:none}
-  .faq-q{min-height:76px!important;padding:0 2px!important;gap:16px!important;font-size:14px!important;line-height:1.45!important}
-  .faq-q>span:first-child{padding:18px 0!important}.faq-icon{flex:0 0 auto!important}
-  .faq-a p{padding:0 32px 22px 0!important;font-size:12px!important;line-height:1.75!important}.faq-a p br{display:none}
-  .faq-conversion{margin-top:26px!important;padding:20px 18px!important;gap:18px!important;border-radius:18px!important}
-  .faq-conversion p{font-size:12px!important;line-height:1.7!important}.faq-cta{width:100%!important;justify-content:center!important;text-align:center!important}
+  
+  
+  
+  
+  
+  
+  
 
   /* Final signature */
   .final-scene{min-height:570px!important;padding:90px 0!important}
@@ -2629,7 +2624,7 @@ label{font-size:12.5px}
 .mobile-case-more{display:none}
 @media (max-width:767px){
   /* Shorter mobile rhythm: retain hierarchy, remove excess empty travel. */
-  .market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.faq,.contact{padding:66px 0!important}
+  .market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2,.contact{padding:66px 0!important}
   
   .brand-wall{padding:50px 0!important}
   .identity{padding:68px 0!important}
@@ -2700,10 +2695,10 @@ label{font-size:12.5px}
 
   /* Remaining conversion sections: tighter without reducing tap targets. */
   
-  .faq-layout{gap:28px!important}
-  .faq-q{min-height:64px!important}
-  .faq-q>span:first-child{padding:14px 0!important}
-  .faq-conversion{margin-top:20px!important}
+  
+  
+  
+  
   .contact-layout{gap:28px!important}
 }
 @media (max-width:420px){
@@ -2771,13 +2766,8 @@ label{font-size:12.5px}
   
 
   /* 08 FAQ -> Final Scene — continuous dark-brown fade, no hard color jump. */
-  .faq{
-    background:linear-gradient(180deg,#0c0705 0%,#0b0604 70%,#090503 100%)!important;
-    padding-bottom:72px!important;
-  }
-  .faq-conversion{
-    background:linear-gradient(135deg,rgba(244,125,53,.055),rgba(9,5,3,.20))!important;
-  }
+  
+  
   .final-scene{background:#090503!important;border-top:0!important}
   .contact .section-title{max-width:8.4em!important}
 }
@@ -2970,7 +2960,7 @@ label{font-size:12.5px}
 }
 body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
-.hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.proof-item>p,.case-desc,.case-inquiry-copy>p,.faq-a>p,.faq-conversion>p{
+.hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.proof-item>p,.case-desc,.case-inquiry-copy>p{
   font-size:var(--luen-text-lg)!important;line-height:1.72!important;letter-spacing:-.018em;word-break:keep-all;overflow-wrap:break-word
 }
 .hero-kicker,.hero-meta span{font-size:var(--luen-label)!important}
@@ -2978,7 +2968,7 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 
 
-.nav-links a,.nav-contact,.btn,.case-inquiry-btn,.faq-cta,.mobile-case-more,.form-reset{font-size:var(--luen-ui)!important;line-height:1.25}
+.nav-links a,.nav-contact,.btn,.case-inquiry-btn,.mobile-case-more,.form-reset{font-size:var(--luen-ui)!important;line-height:1.25}
 .top-strip-set span,.top-strip-set b,.marquee-set span{font-size:clamp(11px,.66vw,13px)!important}
 
 .eyebrow,.proof-kicker,.work-lane-code,.final-kicker,.signature-label,.form-success-kicker{font-size:var(--luen-label)!important;line-height:1.35!important}
@@ -3022,7 +3012,7 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 
 
-.faq-q{font-size:clamp(17px,1.02vw,19px)!important;line-height:1.48!important}.faq-icon{font-size:22px!important}
+
 
 .field label,.privacy-check-copy b,.privacy-details summary{font-size:clamp(14px,.82vw,16px)!important;line-height:1.45!important}
 .field input,.field select,.field textarea{font-size:16px!important;line-height:1.5!important}
@@ -3032,7 +3022,7 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 .footer-brand p,.footer-links a,.footer-bottom p{font-size:clamp(13px,.76vw,15px)!important;line-height:1.45!important}
 
-.section-copy,.case-desc,.faq-a p,.contact-copy,.campaign-control p,.timeline-shell p,.yt-action-flow p{max-width:68ch}
+.section-copy,.case-desc,.contact-copy,.campaign-control p,.timeline-shell p,.yt-action-flow p{max-width:68ch}
 
 @media(max-width:900px){
   :root{--luen-text-lg:clamp(16.5px,2.1vw,18px);--luen-text-md:clamp(15.5px,1.95vw,17px);--luen-text-sm:clamp(14px,1.8vw,15.5px);--luen-label:clamp(12px,1.55vw,13.5px);--luen-ui:clamp(14px,1.8vw,16px)}
@@ -3041,8 +3031,8 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media(max-width:640px){
   body{font-size:16px}
   :root{--luen-text-lg:16.5px;--luen-text-md:16px;--luen-text-sm:14.5px;--luen-label:12px;--luen-ui:15px}
-  .hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.faq-a>p,.faq-conversion>p{line-height:1.68!important}
-  .faq-q{font-size:16.5px!important}
+  .hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p{line-height:1.68!important}
+  
   .case-body h3{font-size:22px!important}.field input,.field select,.field textarea{font-size:16px!important}
 }
 /* === LUEN READABILITY OVERRIDE V11 END === */
