@@ -7014,6 +7014,28 @@ html body main#top>.hero .creator-network-showcase::before{
   content:none!important;
   display:none!important;
 }
+html body main#top>.hero .creator-network-head{
+  position:relative!important;
+  z-index:5!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  min-height:48px!important;
+  padding:0 16px!important;
+  border-bottom:1px solid rgba(93,76,64,.10)!important;
+  background:#E4D7C6!important;
+}
+html body main#top>.hero .creator-network-head>span{
+  color:#C96338!important;
+  font:700 9px/1 var(--luen-type-ui)!important;
+  letter-spacing:.11em!important;
+}
+html body main#top>.hero .creator-network-head>strong{
+  color:#6F655C!important;
+  font:700 9px/1 var(--luen-type-ui)!important;
+  letter-spacing:.08em!important;
+}
 html body main#top>.hero .creator-network-showcase::after{
   content:""!important;
   position:absolute!important;
@@ -7250,6 +7272,14 @@ html body .scroll-progress{
     justify-content:center!important;
   }
   html body main#top>.hero .hero-cta .btn-secondary{width:max-content!important;}
+  html body main#top>.hero .creator-network-head{
+    min-height:42px!important;
+    padding:0 12px!important;
+  }
+  html body main#top>.hero .creator-network-head>span,
+  html body main#top>.hero .creator-network-head>strong{
+    font-size:8px!important;
+  }
   html body main#top>.hero .creator-profile-viewport{
     min-height:160px!important;
     padding:12px 0!important;
