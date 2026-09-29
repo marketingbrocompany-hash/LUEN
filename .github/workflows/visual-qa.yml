@@ -1,0 +1,312 @@
+name: LUEN Visual QA
+
+on:
+  push:
+    branches:
+      - 'qa/visual-*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Run visual QA
+        env:
+          TARGET_URL: https://luenkorea.com/
+        run: |
+          mkdir -p qa-artifacts
+          cat > /tmp/luen-visual-qa.cjs <<'NODE'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+
+          const target = process.env.TARGET_URL;
+          const viewports = [
+            { name: 'pc-1440', width: 1440, height: 1000 },
+            { name: 'pc-1280', width: 1280, height: 900 },
+            { name: 'mobile-390', width: 390, height: 844 },
+            { name: 'mobile-375', width: 375, height: 812 },
+            { name: 'mobile-320', width: 320, height: 700 },
+          ];
+
+          function sanitize(v) {
+            return JSON.parse(JSON.stringify(v));
+          }
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const report = {
+              target,
+              capturedAt: new Date().toISOString(),
+              viewports: []
+            };
+
+            for (const vp of viewports) {
+              const context = await browser.newContext({
+                viewport: { width: vp.width, height: vp.height },
+                deviceScaleFactor: 1
+              });
+              const page = await context.newPage();
+
+              const consoleErrors = [];
+              const pageErrors = [];
+              page.on('console', msg => {
+                if (msg.type() === 'error') consoleErrors.push(msg.text());
+              });
+              page.on('pageerror', err => pageErrors.push(String(err)));
+
+              let status = null;
+              try {
+                const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 60000 });
+                status = response ? response.status() : null;
+                await page.waitForTimeout(2500);
+                await page.evaluate(async () => {
+                  if (document.fonts && document.fonts.ready) {
+                    try { await document.fonts.ready; } catch (_) {}
+                  }
+                });
+                await page.addStyleTag({ content: `
+                  *, *::before, *::after {
+                    animation-duration: 0s !important;
+                    animation-delay: 0s !important;
+                    transition-duration: 0s !important;
+                    transition-delay: 0s !important;
+                    caret-color: transparent !important;
+                  }
+                ` });
+                await page.waitForTimeout(300);
+
+                const audit = await page.evaluate(() => {
+                  const vw = window.innerWidth;
+                  const vh = window.innerHeight;
+                  const all = Array.from(document.querySelectorAll('body *'));
+
+                  const visible = (el) => {
+                    const s = getComputedStyle(el);
+                    const r = el.getBoundingClientRect();
+                    return s.display !== 'none' &&
+                      s.visibility !== 'hidden' &&
+                      Number(s.opacity || 1) > 0 &&
+                      r.width > 0 && r.height > 0;
+                  };
+
+                  const meta = (el) => {
+                    const r = el.getBoundingClientRect();
+                    return {
+                      tag: el.tagName.toLowerCase(),
+                      id: el.id || null,
+                      class: typeof el.className === 'string' ? el.className.slice(0, 160) : null,
+                      text: (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120),
+                      left: Math.round(r.left * 10) / 10,
+                      right: Math.round(r.right * 10) / 10,
+                      top: Math.round((r.top + window.scrollY) * 10) / 10,
+                      width: Math.round(r.width * 10) / 10,
+                      height: Math.round(r.height * 10) / 10
+                    };
+                  };
+
+                  const docWidth = Math.max(
+                    document.documentElement.scrollWidth,
+                    document.body ? document.body.scrollWidth : 0
+                  );
+                  const docHeight = Math.max(
+                    document.documentElement.scrollHeight,
+                    document.body ? document.body.scrollHeight : 0
+                  );
+
+                  const horizontalOutside = all
+                    .filter(visible)
+                    .filter(el => {
+                      const r = el.getBoundingClientRect();
+                      return r.left < -1 || r.right > vw + 1;
+                    })
+                    .slice(0, 80)
+                    .map(meta);
+
+                  const interactiveOutside = Array.from(document.querySelectorAll('a,button,input,select,textarea'))
+                    .filter(visible)
+                    .filter(el => {
+                      const r = el.getBoundingClientRect();
+                      return r.left < -1 || r.right > vw + 1 || r.top < -200 || r.bottom > vh + 200;
+                    })
+                    .slice(0, 60)
+                    .map(meta);
+
+                  const clippedText = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,span,a,button,li,label,strong,em'))
+                    .filter(visible)
+                    .filter(el => {
+                      const t = (el.innerText || el.textContent || '').trim();
+                      if (!t) return false;
+                      const s = getComputedStyle(el);
+                      const clippedX = el.scrollWidth > el.clientWidth + 1 && ['hidden','clip'].includes(s.overflowX);
+                      const clippedY = el.scrollHeight > el.clientHeight + 1 && ['hidden','clip'].includes(s.overflowY);
+                      return clippedX || clippedY;
+                    })
+                    .slice(0, 80)
+                    .map(meta);
+
+                  const imagesBroken = Array.from(document.images)
+                    .filter(img => visible(img) && (!img.complete || img.naturalWidth === 0 || img.naturalHeight === 0))
+                    .map(img => ({
+                      ...meta(img),
+                      src: img.currentSrc || img.src || null
+                    }))
+                    .slice(0, 40);
+
+                  const fixedOrSticky = all
+                    .filter(visible)
+                    .filter(el => {
+                      const p = getComputedStyle(el).position;
+                      return p === 'fixed' || p === 'sticky';
+                    })
+                    .slice(0, 50)
+                    .map(el => ({
+                      ...meta(el),
+                      position: getComputedStyle(el).position,
+                      zIndex: getComputedStyle(el).zIndex
+                    }));
+
+                  const smallText = all
+                    .filter(visible)
+                    .filter(el => {
+                      const t = (el.innerText || el.textContent || '').trim();
+                      if (!t || el.children.length > 0) return false;
+                      const fs = parseFloat(getComputedStyle(el).fontSize);
+                      return Number.isFinite(fs) && fs < 11;
+                    })
+                    .slice(0, 100)
+                    .map(el => ({
+                      ...meta(el),
+                      fontSize: getComputedStyle(el).fontSize
+                    }));
+
+                  const sections = Array.from(document.querySelectorAll('main > section, main > .marquee, footer'))
+                    .filter(visible)
+                    .map((el, i) => {
+                      const r = el.getBoundingClientRect();
+                      const h = el.querySelector('h1,h2,h3');
+                      return {
+                        index: i,
+                        tag: el.tagName.toLowerCase(),
+                        id: el.id || null,
+                        class: typeof el.className === 'string' ? el.className.slice(0,160) : null,
+                        heading: h ? (h.innerText || '').replace(/\s+/g,' ').trim().slice(0,140) : null,
+                        top: Math.round((r.top + window.scrollY) * 10) / 10,
+                        bottom: Math.round((r.bottom + window.scrollY) * 10) / 10,
+                        height: Math.round(r.height * 10) / 10
+                      };
+                    });
+
+                  const sectionRelations = [];
+                  for (let i = 1; i < sections.length; i++) {
+                    sectionRelations.push({
+                      from: sections[i - 1].heading || sections[i - 1].id || sections[i - 1].class || sections[i - 1].tag,
+                      to: sections[i].heading || sections[i].id || sections[i].class || sections[i].tag,
+                      gap: Math.round((sections[i].top - sections[i - 1].bottom) * 10) / 10
+                    });
+                  }
+
+                  const ctaIssues = Array.from(document.querySelectorAll('a,button'))
+                    .filter(visible)
+                    .filter(el => {
+                      const r = el.getBoundingClientRect();
+                      return r.width < 24 || r.height < 24 || r.left < -1 || r.right > vw + 1;
+                    })
+                    .slice(0, 80)
+                    .map(meta);
+
+                  return {
+                    viewport: { width: vw, height: vh },
+                    document: { width: docWidth, height: docHeight },
+                    horizontalOverflowPx: Math.max(0, docWidth - vw),
+                    horizontalOutside,
+                    interactiveOutside,
+                    clippedText,
+                    imagesBroken,
+                    fixedOrSticky,
+                    smallText,
+                    ctaIssues,
+                    sections,
+                    sectionRelations
+                  };
+                });
+
+                const fullPath = `qa-artifacts/${vp.name}-full.png`;
+                const topPath = `qa-artifacts/${vp.name}-top.png`;
+                await page.screenshot({ path: fullPath, fullPage: true });
+                await page.screenshot({ path: topPath, fullPage: false });
+
+                report.viewports.push({
+                  ...vp,
+                  status,
+                  url: page.url(),
+                  consoleErrors: consoleErrors.slice(0, 30),
+                  pageErrors: pageErrors.slice(0, 30),
+                  audit: sanitize(audit),
+                  screenshots: { full: fullPath, top: topPath }
+                });
+              } catch (err) {
+                report.viewports.push({
+                  ...vp,
+                  status,
+                  error: String(err),
+                  consoleErrors: consoleErrors.slice(0, 30),
+                  pageErrors: pageErrors.slice(0, 30)
+                });
+              } finally {
+                await context.close();
+              }
+            }
+
+            fs.writeFileSync('qa-artifacts/report.json', JSON.stringify(report, null, 2));
+
+            let md = '# LUEN Visual QA\n\n';
+            md += `Target: ${target}\n\nCaptured: ${report.capturedAt}\n\n`;
+            for (const r of report.viewports) {
+              md += `## ${r.name} (${r.width}×${r.height})\n\n`;
+              if (r.error) {
+                md += `- ERROR: ${r.error}\n\n`;
+                continue;
+              }
+              const a = r.audit;
+              md += `- HTTP: ${r.status}\n`;
+              md += `- Document: ${a.document.width}×${a.document.height}\n`;
+              md += `- Horizontal overflow: ${a.horizontalOverflowPx}px\n`;
+              md += `- Outside elements: ${a.horizontalOutside.length}\n`;
+              md += `- Clipped text candidates: ${a.clippedText.length}\n`;
+              md += `- Broken images: ${a.imagesBroken.length}\n`;
+              md += `- CTA issues: ${a.ctaIssues.length}\n`;
+              md += `- Console errors: ${r.consoleErrors.length}\n`;
+              md += `- Page errors: ${r.pageErrors.length}\n\n`;
+            }
+            fs.writeFileSync('qa-artifacts/summary.md', md);
+
+            await browser.close();
+          })().catch(err => {
+            console.error(err);
+            process.exit(1);
+          });
+          NODE
+          node /tmp/luen-visual-qa.cjs
+
+      - name: Upload QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-visual-qa
+          path: qa-artifacts/
+          retention-days: 7
