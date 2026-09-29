@@ -85,7 +85,7 @@ body{
 .inbound-method .section-title{
   font-size:clamp(48px,5vw,66px)!important;
 }
-#youtube .section-title,#process .section-title,#client-voice .section-title,#faq .section-title,#contact .section-title{
+#youtube .section-title,#process .section-title,#faq .section-title,#contact .section-title{
   font-size:clamp(36px,3.8vw,50px)!important;
 }
 
@@ -99,7 +99,7 @@ body{
 .btn{
   border-radius:var(--luen-radius-sm)!important;
 }
-.creator-network-showcase,.voice-stage,.contact-form{
+.creator-network-showcase,.contact-form{
   border-radius:var(--luen-radius-md)!important;
 }
 .case-card,
@@ -560,7 +560,7 @@ html body main#top>#cases.case-studies{
   .inbound-method .section-title{
     font-size:clamp(36px,10vw,45px)!important;
   }
-  #youtube .section-title,#process .section-title,#client-voice .section-title,#faq .section-title,#contact .section-title{
+  #youtube .section-title,#process .section-title,#faq .section-title,#contact .section-title{
     font-size:clamp(30px,8.4vw,37px)!important;
   }
 
@@ -1416,98 +1416,24 @@ html body main#top>#process.process-timeline-v2{
 }
 
 /* CLIENT VOICE: typography is the proof */
-html body main#top>#client-voice.client-voice{
-  padding:104px 0!important;
-  border-top:1px solid var(--luen-line)!important;
-  border-bottom:1px solid var(--luen-line)!important;
-  background:var(--luen-surface)!important;
-  background-image:none!important;
-}
-#client-voice .voice-layout{
-  grid-template-columns:minmax(280px,.68fr) minmax(0,1.32fr)!important;
-  gap:72px!important;
-  align-items:start!important;
-}
-#client-voice .voice-left .section-title{
-  color:var(--luen-ink)!important;
-}
-#client-voice .voice-left .section-title em{
-  color:var(--luen-orange)!important;
-}
-#client-voice .actual-voice-badge{
-  display:inline-block!important;
-  margin-top:26px!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:var(--luen-orange)!important;
-  font:700 10px/1 var(--luen-type-ui)!important;
-  letter-spacing:.10em!important;
-}
-#client-voice .voice-context{
-  color:var(--luen-muted)!important;
-}
-#client-voice .voice-stage{
-  min-height:380px!important;
-  overflow:hidden!important;
-  border:0!important;
-  border-top:1px solid var(--luen-ink)!important;
-  border-bottom:1px solid var(--luen-line)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-#client-voice .voice-stage::before{
-  content:"“";
-  position:absolute;
-  right:12px;
-  top:-34px;
-  color:rgba(217,101,50,.08);
-  font:700 190px/1 Georgia,serif;
-  pointer-events:none;
-}
-#client-voice .voice-item{
-  padding:34px 30px 70px!important;
-}
-#client-voice .voice-item>span{
-  color:var(--luen-orange)!important;
-  font-size:10px!important;
-}
-#client-voice .voice-item blockquote{
-  max-width:24em!important;
-  margin-top:44px!important;
-  color:var(--luen-ink)!important;
-  font:650 clamp(25px,2.45vw,35px)/1.42 var(--luen-type-display)!important;
-  letter-spacing:-.035em!important;
-}
-#client-voice .voice-item p{
-  left:30px!important;
-  bottom:30px!important;
-  color:var(--luen-muted)!important;
-  font-size:10px!important;
-  letter-spacing:.08em!important;
-}
-#client-voice .voice-dots{
-  right:24px!important;
-  bottom:28px!important;
-}
-#client-voice .voice-dots button{
-  width:22px!important;
-  height:2px!important;
-  border-radius:0!important;
-  background:rgba(17,16,14,.15)!important;
-}
-#client-voice .voice-dots button.active{
-  background:var(--luen-orange)!important;
-  box-shadow:none!important;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media(max-width:1100px){
-  #client-voice .voice-layout{
-    grid-template-columns:1fr!important;
-    gap:38px!important;
-  }
+  
   #process .timeline-shell{
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
   }
@@ -1520,7 +1446,7 @@ html body main#top>#client-voice.client-voice{
 }
 
 @media(max-width:767px){
-  html body main#top>#process.process-timeline-v2,html body main#top>#client-voice.client-voice{
+  html body main#top>#process.process-timeline-v2{
     padding-top:78px!important;
     padding-bottom:78px!important;
   }
@@ -1557,26 +1483,11 @@ html body main#top>#client-voice.client-voice{
     display:none!important;
   }
 
-  #client-voice .voice-stage{
-    min-height:370px!important;
-  }
-  #client-voice .voice-item{
-    padding:28px 0 58px!important;
-  }
-  #client-voice .voice-item blockquote{
-    max-width:none!important;
-    margin-top:34px!important;
-    font-size:clamp(22px,6.5vw,28px)!important;
-  }
-  #client-voice .voice-item p{
-    left:0!important;
-    bottom:26px!important;
-    font-size:9px!important;
-  }
-  #client-voice .voice-dots{
-    right:0!important;
-    bottom:24px!important;
-  }
+  
+  
+  
+  
+  
 }
 
 
@@ -4699,46 +4610,18 @@ html body #process .timeline-shell article p{
    The client words are the visual proof. Remove oversized decoration
    and keep the carousel quiet, warm and legible.
    ============================================================ */
-html body main#top>#client-voice.client-voice{
-  border-top-color:rgba(93,76,64,.14)!important;
-  border-bottom-color:rgba(93,76,64,.14)!important;
-  background:#EEE6DA!important;
-}
-html body #client-voice .voice-left .section-title{
-  color:#2A2521!important;
-}
-html body #client-voice .voice-left .section-title em{
-  color:#D56F40!important;
-}
-html body #client-voice .actual-voice-badge{
-  color:#C96338!important;
-}
-html body #client-voice .voice-context{
-  color:#6F655C!important;
-}
-html body #client-voice .voice-stage{
-  border-top-color:rgba(93,76,64,.42)!important;
-  border-bottom-color:rgba(93,76,64,.16)!important;
-}
-html body #client-voice .voice-stage::before{
-  content:none!important;
-  display:none!important;
-}
-html body #client-voice .voice-item>span{
-  color:#C96338!important;
-}
-html body #client-voice .voice-item blockquote{
-  color:#2A2521!important;
-}
-html body #client-voice .voice-item p{
-  color:#7A6E65!important;
-}
-html body #client-voice .voice-dots button{
-  background:rgba(93,76,64,.18)!important;
-}
-html body #client-voice .voice-dots button.active{
-  background:#D56F40!important;
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* ============================================================
@@ -7569,6 +7452,182 @@ html body #performance .chart-labels.growth-labels-v93 span:nth-child(3){
   }
   html body #performance .performance-growth-v93 .growth-stage{
     opacity:1!important;
+  }
+}
+
+/* ============================================================
+   CLIENT VOICE · SINGLE SOURCE · 2026-09-30
+   Four anonymous feedback slides. Existing 5.2s JS rotation preserved.
+   ============================================================ */
+html body main#top>#client-voice.client-voice{
+  overflow:hidden!important;
+  padding:104px 0!important;
+  border-top:1px solid rgba(93,76,64,.14)!important;
+  border-bottom:1px solid rgba(93,76,64,.14)!important;
+  background:#EEE6DA!important;
+  background-image:none!important;
+}
+html body #client-voice .voice-layout{
+  display:grid!important;
+  grid-template-columns:minmax(280px,.68fr) minmax(0,1.32fr)!important;
+  gap:72px!important;
+  align-items:start!important;
+}
+html body #client-voice .voice-left .section-title{
+  color:#2A2521!important;
+  font-size:clamp(36px,3.8vw,50px)!important;
+}
+html body #client-voice .voice-left .section-title em{
+  color:#D56F40!important;
+}
+html body #client-voice .actual-voice-badge{
+  display:inline-block!important;
+  margin-top:26px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#C96338!important;
+  font:700 10px/1 var(--luen-type-ui)!important;
+  letter-spacing:.10em!important;
+}
+html body #client-voice .voice-context{
+  max-width:460px!important;
+  margin-top:14px!important;
+  color:#6F655C!important;
+  font-size:13px!important;
+  line-height:1.7!important;
+}
+
+html body #client-voice .voice-stage{
+  position:relative!important;
+  min-height:380px!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-top:1px solid rgba(93,76,64,.42)!important;
+  border-bottom:1px solid rgba(93,76,64,.16)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+html body #client-voice .voice-item{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+  padding:34px 30px 70px!important;
+  opacity:0!important;
+  transform:translateY(14px)!important;
+  pointer-events:none!important;
+  transition:opacity .55s ease,transform .55s ease!important;
+}
+html body #client-voice .voice-item.active{
+  opacity:1!important;
+  transform:none!important;
+  pointer-events:auto!important;
+}
+html body #client-voice .voice-item>span{
+  flex:0 0 auto!important;
+  color:#C96338!important;
+  font:650 10px/1.35 var(--luen-type-ui)!important;
+  letter-spacing:.11em!important;
+}
+html body #client-voice .voice-item blockquote{
+  max-width:24em!important;
+  margin-top:44px!important;
+  color:#2A2521!important;
+  font:650 clamp(25px,2.45vw,35px)/1.42 var(--luen-type-display)!important;
+  letter-spacing:-.035em!important;
+  text-wrap:pretty!important;
+  word-break:keep-all!important;
+  overflow-wrap:break-word!important;
+}
+html body #client-voice .voice-item p{
+  position:absolute!important;
+  left:30px!important;
+  right:250px!important;
+  bottom:30px!important;
+  color:#7A6E65!important;
+  font:650 10px/1.45 var(--luen-type-ui)!important;
+  letter-spacing:.08em!important;
+  white-space:normal!important;
+}
+
+html body #client-voice .voice-dots{
+  position:absolute!important;
+  z-index:5!important;
+  right:24px!important;
+  bottom:28px!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-end!important;
+  gap:5px!important;
+  max-width:180px!important;
+}
+html body #client-voice .voice-dots button{
+  width:22px!important;
+  height:2px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:rgba(93,76,64,.18)!important;
+  opacity:.8!important;
+  cursor:pointer!important;
+}
+html body #client-voice .voice-dots button.active{
+  background:#D56F40!important;
+  box-shadow:none!important;
+}
+
+@media(max-width:1100px){
+  html body #client-voice .voice-layout{
+    grid-template-columns:1fr!important;
+    gap:38px!important;
+  }
+  html body #client-voice .voice-left{
+    max-width:760px!important;
+  }
+}
+
+@media(max-width:767px){
+  html body main#top>#client-voice.client-voice{
+    padding-top:78px!important;
+    padding-bottom:78px!important;
+  }
+  html body #client-voice .voice-left .section-title{
+    font-size:clamp(30px,8.4vw,37px)!important;
+  }
+  html body #client-voice .voice-context{
+    margin-top:12px!important;
+    font-size:12px!important;
+    line-height:1.65!important;
+  }
+  html body #client-voice .voice-stage{
+    min-height:370px!important;
+  }
+  html body #client-voice .voice-item{
+    padding:28px 0 58px!important;
+  }
+  html body #client-voice .voice-item blockquote{
+    max-width:none!important;
+    margin-top:34px!important;
+    font-size:clamp(22px,6.5vw,28px)!important;
+  }
+  html body #client-voice .voice-item p{
+    position:static!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    margin-top:26px!important;
+    font-size:9px!important;
+    line-height:1.5!important;
+  }
+  html body #client-voice .voice-dots{
+    left:20px!important;
+    right:0!important;
+    bottom:24px!important;
+    justify-content:flex-start!important;
   }
 }
 
