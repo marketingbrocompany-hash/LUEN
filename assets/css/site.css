@@ -998,18 +998,6 @@ p,.hero-desc,.section-copy,.case-desc{
 
 
 
-.brand-wall{padding:74px 0 80px;background:#090503;border-block:1px solid var(--line);overflow:hidden}
-.brand-wall-head{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:60px;margin-bottom:34px}
-.brand-wall-head h3{font:750 clamp(24px,3vw,38px)/1.1 "Pretendard","Inter",sans-serif;color:var(--cream);letter-spacing:-.04em}
-.brand-wall-head p{font-size:10px;line-height:1.7;color:#735f52;max-width:470px}
-.brand-viewport{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.brand-track{display:flex;width:max-content;gap:14px;animation:brandLoop 34s linear infinite}
-.brand-set{display:flex;gap:14px;flex:0 0 auto}
-@keyframes brandLoop{to{transform:translateX(calc(-50% - 7px))}}
-
-
-
-
 
 
 
@@ -1018,17 +1006,17 @@ p,.hero-desc,.section-copy,.case-desc{
 
 
 @media(max-width:1020px){
-  .brand-wall-head{grid-template-columns:1fr;gap:22px}
+  
   
 }
 @media(max-width:820px){
   
   
   
-  .brand-wall{padding:60px 0 66px}
+  
 }
 
-@media(prefers-reduced-motion:reduce){.brand-track{animation:none}.brand-viewport{overflow-x:auto;-webkit-mask-image:none;mask-image:none}}
+@media(prefers-reduced-motion:reduce){}
 
 
 /* ============================================================
@@ -1803,8 +1791,8 @@ button,input,select,textarea{font-family:var(--type-body)}
 /* Portfolio / selected work */
 
 
-.brand-wall-head h3{font-size:20px!important;line-height:1.3!important}
-.brand-wall-head p{font-size:13.5px!important;line-height:1.65!important}
+
+
 
 /* Identity */
 .identity-side strong{font-size:clamp(30px,3vw,42px)!important;line-height:1.12!important;letter-spacing:-.038em!important;font-weight:650!important}
@@ -2225,22 +2213,22 @@ label{font-size:12.5px}
 
 
 /* V9 — real client name wall, monochrome and seamless measured loop */
-.brand-wall{padding:76px 0 82px;background:#090503;border-block:1px solid var(--line);overflow:hidden}
-.brand-wall-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);align-items:end;gap:64px;margin-bottom:34px}
-.brand-wall-head h3{margin-top:10px;font-family:var(--type-display,"Pretendard Variable","Pretendard",sans-serif)!important;font-size:clamp(28px,2.6vw,38px)!important;font-weight:700!important;line-height:1.12!important;letter-spacing:-.04em!important;color:var(--cream)!important}
-.brand-wall-head p{justify-self:end;max-width:430px;margin:0;font-size:14px!important;line-height:1.7!important;color:rgba(248,229,207,.50)!important}
-.brand-viewport{position:relative;overflow:hidden;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.brand-track{display:flex!important;width:max-content!important;gap:0!important;animation:none!important;will-change:transform}
-.brand-set{display:flex!important;flex:0 0 auto!important;align-items:center;gap:18px!important;padding-right:18px!important}
-.client-logo{display:grid;place-items:center;min-width:214px;height:86px;padding:0 28px;border:1px solid rgba(248,229,207,.105);border-radius:16px;background:rgba(255,255,255,.006);color:rgba(248,229,207,.50);white-space:nowrap;transition:color .28s ease,border-color .28s ease,background .28s ease,transform .28s ease}
-.client-logo:hover{color:rgba(248,229,207,.94);border-color:rgba(248,229,207,.20);background:rgba(255,255,255,.018);transform:translateY(-2px)}
-.client-cj{font:800 21px/1 "Pretendard Variable","Pretendard",sans-serif;letter-spacing:-.035em}
-.client-gangneung{font:650 18px/1 "Pretendard Variable","Pretendard",sans-serif;letter-spacing:-.035em;min-width:246px}
-.client-bibigo{font:700 24px/1 Georgia,"Times New Roman",serif;letter-spacing:-.035em}
-.client-eco{font:800 17px/1 "Inter",sans-serif;letter-spacing:.09em;min-width:224px}
-.client-confier{font:500 25px/1 Georgia,"Times New Roman",serif;letter-spacing:.015em}
-.client-quadthera{font:650 22px/1 "Pretendard Variable","Pretendard",sans-serif;letter-spacing:-.035em;min-width:228px}
-@media(max-width:820px){.brand-wall-head{grid-template-columns:1fr;gap:16px}.brand-wall-head p{justify-self:start}.client-logo{min-width:176px;height:76px;padding:0 22px}.client-gangneung{min-width:220px}.client-eco,.client-quadthera{min-width:196px}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:820px){}
 
 
 /* V9.2 — Core Expertise headline/copy spacing matches Real Deliverable rhythm. */
@@ -2447,11 +2435,11 @@ label{font-size:12.5px}
   
 
   /* Client wall */
-  .brand-wall{padding:68px 0!important}
-  .brand-wall-head{grid-template-columns:1fr!important;gap:12px!important}
-  .brand-wall-head h3{font-size:27px!important}.brand-wall-head p{font-size:12px!important;line-height:1.65!important}
-  .client-logo{min-width:160px!important;height:68px!important;padding:0 18px!important;font-size:16px!important}
-  .client-gangneung{min-width:210px!important;font-size:15px!important}.client-eco,.client-quadthera{min-width:184px!important}
+  
+  
+  
+  
+  
 
   /* Identity: vertical logic */
   .identity{padding:84px 0!important}
@@ -2610,7 +2598,7 @@ label{font-size:12.5px}
   /* Shorter mobile rhythm: retain hierarchy, remove excess empty travel. */
   .market-network-v2,.youtube-v2,.case-studies,.campaign-system-v2,.process-timeline-v2{padding:66px 0!important}
   
-  .brand-wall{padding:50px 0!important}
+  
   .identity{padding:68px 0!important}
   .final-scene{min-height:480px!important;padding:70px 0!important}
   .portfolio{margin-top:42px!important}
@@ -2941,9 +2929,9 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 
 
-.brand-wall-head h3{font-size:clamp(22px,1.45vw,28px)!important}
-.brand-wall-head p{font-size:var(--luen-text-md)!important;line-height:1.6!important}
-.client-logo{font-size:clamp(15px,.95vw,18px)!important}
+
+
+
 
 .market-side-label span{font-size:clamp(13px,.8vw,15px)!important}
 .market-side-label small,.market-hub small{font-size:clamp(11px,.68vw,13px)!important}
