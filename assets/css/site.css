@@ -202,15 +202,10 @@ img{max-width:100%;display:block}
 
 
 /* MARQUEE */
-.marquee{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden}
-.marquee-track{display:flex;width:max-content;animation:marquee 30s linear infinite;padding:13px 0}
-.marquee-track span{
-  padding:0 26px;
-  color:var(--muted);
-  font:600 10px/1 "Inter","Pretendard",sans-serif;
-  letter-spacing:.16em;text-transform:uppercase;
-}
-.marquee-track b{color:var(--orange);font-weight:700}
+
+
+
+
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 /* IDENTITY */
@@ -952,9 +947,9 @@ p,.hero-desc,.section-copy,.case-desc{
    LUEN V2.2 VERIFIED SAFE PATCH
    original PROOF / IDENTITY CSS preserved intact
    ============================================================ */
-.marquee{overflow:hidden}
-.marquee-track{animation:none!important;display:flex;width:max-content;padding:13px 0;will-change:transform}
-.marquee-set{display:flex;flex:0 0 auto;white-space:nowrap}
+
+
+
 .portfolio{margin-top:76px;display:grid;gap:70px}
 
 
@@ -983,7 +978,7 @@ p,.hero-desc,.section-copy,.case-desc{
   
 }
 @media(max-width:480px){}
-@media(prefers-reduced-motion:reduce){.portfolio-viewport,.marquee{overflow-x:auto;scrollbar-width:none}.portfolio-viewport::-webkit-scrollbar,.marquee::-webkit-scrollbar{display:none}}
+@media(prefers-reduced-motion:reduce){.portfolio-viewport{overflow-x:auto;scrollbar-width:none}.portfolio-viewport::-webkit-scrollbar{display:none}}
 
 
 
@@ -2836,7 +2831,7 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 
 .btn,.case-inquiry-btn,.mobile-case-more{font-size:var(--luen-ui)!important;line-height:1.25}
-.top-strip-set span,.top-strip-set b,.marquee-set span{font-size:clamp(11px,.66vw,13px)!important}
+.top-strip-set span,.top-strip-set b{font-size:clamp(11px,.66vw,13px)!important}
 
 .eyebrow,.proof-kicker,.work-lane-code,.final-kicker,.signature-label{font-size:var(--luen-label)!important;line-height:1.35!important}
 
