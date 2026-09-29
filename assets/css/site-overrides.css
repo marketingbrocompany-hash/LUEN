@@ -501,17 +501,11 @@ main#top>.luen-advantage-section.identity-advantage-ready .identity-top{
    Reduce repetition and make the proof source easier to understand.
    ========================================================= */
 
-.voice-context{
-  margin-top:14px;
-  max-width:520px;
-  color:#77736C;
-  font-size:13px;
-  line-height:1.7;
-}
-.client-voice .voice-context{max-width:460px}
+
+.client-voice 
 @media(max-width:767px){
   
-  .voice-context{margin-top:12px;font-size:12px;line-height:1.65}
+  
 }
 
 
