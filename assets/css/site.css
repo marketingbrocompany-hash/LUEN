@@ -206,7 +206,7 @@ img{max-width:100%;display:block}
 
 
 
-@keyframes marquee{to{transform:translateX(-50%)}}
+
 
 /* IDENTITY */
 .identity{padding:132px 0;background:var(--bg)}
