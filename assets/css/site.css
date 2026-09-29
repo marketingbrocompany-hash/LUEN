@@ -1302,8 +1302,8 @@ p,.hero-desc,.section-copy,.case-desc,.faq-a p,.contact-copy{
 
 .final-scene{position:relative;min-height:780px;display:flex;align-items:center;justify-content:center;background:#090503;overflow:hidden;border-top:1px solid var(--line)}.final-scene-inner{position:relative;z-index:3;text-align:center;max-width:920px}.final-kicker{font:700 9px/1 "Inter",sans-serif;letter-spacing:.18em;color:var(--orange)}.final-scene h2{margin-top:28px;font-size:clamp(48px,7.5vw,104px);line-height:.95;letter-spacing:-.065em}.final-scene h2 em{font-style:normal;color:var(--orange)}.final-scene p{margin:34px auto 0;max-width:620px;font-size:14px;line-height:1.9;color:var(--muted)}.final-scene .btn{margin-top:34px}
 
-@media(max-width:1100px){.market-v2-head,.youtube-v2-head,.case-head,.campaign-v2-head,.process-v2-head,.guide-layout,.performance-layout,.voice-layout{grid-template-columns:1fr;gap:42px}.market-map{min-height:650px}.metric-row{grid-template-columns:repeat(2,1fr)}.metric-row article:nth-child(2){border-right:0}.metric-row article:nth-child(-n/**/+2){border-bottom:1px solid var(--line)}.case-card{grid-column:span 12}.campaign-control{grid-template-columns:repeat(3,1fr)}.campaign-control article:nth-child(3){border-right:0}.campaign-control article:nth-child(-n/**/+3){border-bottom:1px solid var(--line)}.timeline-shell{grid-template-columns:repeat(2,1fr)}.timeline-shell article{border-top:1px solid var(--line)}}
-@media(max-width:767px){.market-network-v2,.youtube-v2,.guide-proof,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2{padding:96px 0}.market-map{min-height:760px;border-radius:24px}.market-map-lines{display:none}.market-hub{width:130px;height:130px;top:49%}.platform-node{min-width:102px;padding:10px 11px}.yt-action-flow{padding:18px}.metric-row{grid-template-columns:1fr 1fr}.chart-shell{padding:22px 16px}.signal-chart{height:220px}.case-grid{grid-template-columns:1fr}.case-card{grid-column:auto;grid-template-columns:1fr;min-height:0}.case-image{aspect-ratio:16/9}.case-body{min-height:300px}.campaign-control{grid-template-columns:1fr}.campaign-control article{min-height:190px;border-right:0;border-bottom:1px solid var(--line)}.campaign-control article b{margin-top:34px}.campaign-control article:last-child{border-bottom:0}.voice-stage{min-height:500px}.voice-item{padding:34px 26px 72px}.voice-item blockquote{margin-top:42px;font-size:25px}.voice-item p{left:26px;right:26px;bottom:36px;line-height:1.5}.timeline-shell{grid-template-columns:1fr}.timeline-shell article{min-height:170px;border-right:1px solid var(--line)}.final-scene{min-height:680px}.final-scene h2{font-size:clamp(46px,15vw,72px)}}
+@media(max-width:1100px){.market-v2-head,.youtube-v2-head,.case-head,.campaign-v2-head,.process-v2-head,.performance-layout,.voice-layout{grid-template-columns:1fr;gap:42px}.market-map{min-height:650px}.metric-row{grid-template-columns:repeat(2,1fr)}.metric-row article:nth-child(2){border-right:0}.metric-row article:nth-child(-n/**/+2){border-bottom:1px solid var(--line)}.case-card{grid-column:span 12}.campaign-control{grid-template-columns:repeat(3,1fr)}.campaign-control article:nth-child(3){border-right:0}.campaign-control article:nth-child(-n/**/+3){border-bottom:1px solid var(--line)}.timeline-shell{grid-template-columns:repeat(2,1fr)}.timeline-shell article{border-top:1px solid var(--line)}}
+@media(max-width:767px){.market-network-v2,.youtube-v2,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2{padding:96px 0}.market-map{min-height:760px;border-radius:24px}.market-map-lines{display:none}.market-hub{width:130px;height:130px;top:49%}.platform-node{min-width:102px;padding:10px 11px}.yt-action-flow{padding:18px}.metric-row{grid-template-columns:1fr 1fr}.chart-shell{padding:22px 16px}.signal-chart{height:220px}.case-grid{grid-template-columns:1fr}.case-card{grid-column:auto;grid-template-columns:1fr;min-height:0}.case-image{aspect-ratio:16/9}.case-body{min-height:300px}.campaign-control{grid-template-columns:1fr}.campaign-control article{min-height:190px;border-right:0;border-bottom:1px solid var(--line)}.campaign-control article b{margin-top:34px}.campaign-control article:last-child{border-bottom:0}.voice-stage{min-height:500px}.voice-item{padding:34px 26px 72px}.voice-item blockquote{margin-top:42px;font-size:25px}.voice-item p{left:26px;right:26px;bottom:36px;line-height:1.5}.timeline-shell{grid-template-columns:1fr}.timeline-shell article{min-height:170px;border-right:1px solid var(--line)}.final-scene{min-height:680px}.final-scene h2{font-size:clamp(46px,15vw,72px)}}
 @media(prefers-reduced-motion:reduce){.market-map-lines path,.platform-node,.yt-flow-line i,.chart-line,.timeline-axis span{animation:none!important}}
 
 
@@ -1364,7 +1364,7 @@ body{word-break:keep-all;overflow-x:hidden}
 img{max-width:100%}
 .section-copy h2,.identity-signature h2,.work-head h2,.youtube-v2-head h2,.market-v2-head h2,.case-head h2,.campaign-v2-head h2,.process-v2-head h2{word-break:keep-all;line-height:1.02}
 .section-copy p,.identity-signature p,.case-desc,.voice-item p,.contact-copy p{word-break:keep-all;line-height:1.72}
-.work,.identity,.market-network-v2,.youtube-v2,.guide-proof,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{overflow:hidden}
+.work,.identity,.market-network-v2,.youtube-v2,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{overflow:hidden}
 
 /* Section rhythm */
 .market-v2-head,.youtube-v2-head,.case-head,.campaign-v2-head,.process-v2-head{align-items:end}
@@ -1452,7 +1452,7 @@ img{max-width:100%}
   
   
 
-  .work,.identity,.market-network-v2,.youtube-v2,.guide-proof,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{padding:88px 0}
+  .work,.identity,.market-network-v2,.youtube-v2,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{padding:88px 0}
   .section-copy h2,.identity-signature h2,.work-head h2,.youtube-v2-head h2,.market-v2-head h2,.case-head h2,.campaign-v2-head h2,.process-v2-head h2{font-size:clamp(34px,11vw,48px);line-height:.96}
   .section-copy p,.identity-signature p{font-size:14px;line-height:1.72}
 
@@ -1474,7 +1474,7 @@ img{max-width:100%}
   .market-node{min-width:96px!important;max-width:112px;padding:9px 10px!important}
   .market-node b{font-size:11px!important}.market-node span{font-size:9px!important;line-height:1.35}
 
-  .youtube-v2-head,.market-v2-head,.case-head,.campaign-v2-head,.process-v2-head,.guide-layout,.performance-layout,.voice-layout{gap:28px!important}
+  .youtube-v2-head,.market-v2-head,.case-head,.campaign-v2-head,.process-v2-head,.performance-layout,.voice-layout{gap:28px!important}
   
   
   
@@ -1876,8 +1876,8 @@ button,input,select,textarea{font-family:var(--type-body)}
 /* YouTube / real guide / performance */
 
 .yt-action-flow{font-size:11px!important;line-height:1.5!important}
-.guide-copy h3,.performance-copy h3{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.25!important;font-weight:650!important}
-.guide-copy p,.performance-copy p{font-size:14.5px!important;line-height:1.75!important}
+.performance-copy h3{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.25!important;font-weight:650!important}
+.performance-copy p{font-size:14.5px!important;line-height:1.75!important}
 .metric-row article strong{font-family:var(--type-ui)!important;font-size:clamp(27px,2.8vw,40px)!important}
 .metric-row article p{font-size:12.5px!important;line-height:1.55!important}
 
@@ -1965,7 +1965,7 @@ label{font-size:12.5px}
 
 
 /* Microcopy normalization: no meaningful UI copy below ~10px */
-.sample-badge,.metric-row span,.metric-row small,.market-side-label small,.yt-action-flow article span,.guide-tags span,.guide-proof-note b,.guide-page figcaption,.case-image>span,.portfolio-meta span,.portfolio-meta b{
+.sample-badge,.metric-row span,.metric-row small,.market-side-label small,.yt-action-flow article span,.case-image>span,.portfolio-meta span,.portfolio-meta b{
   font-family:var(--type-ui)!important;
   font-size:10px!important;
   line-height:1.35!important;
@@ -1973,7 +1973,7 @@ label{font-size:12.5px}
   font-weight:650!important;
 }
 .metric-row span,.metric-row small{font-size:10.5px!important}
-.yt-action-flow article p,.guide-proof-note p{font-size:12.5px!important;line-height:1.6!important}
+.yt-action-flow article p{font-size:12.5px!important;line-height:1.6!important}
 
 
 
@@ -2399,8 +2399,8 @@ label{font-size:12.5px}
   .work-head,.market-v2-head,.youtube-v2-head,.case-head,.campaign-v2-head,.process-v2-head{align-items:start}
   .identity{padding-top:116px}
   .identity-signature{margin-top:56px}
-  .guide-layout,.performance-layout,.voice-layout{grid-template-columns:1fr;gap:46px}
-  .guide-copy,.performance-copy,.voice-left{max-width:760px}
+  .performance-layout,.voice-layout{grid-template-columns:1fr;gap:46px}
+  .performance-copy,.voice-left{max-width:760px}
   
   .performance-dashboard,.voice-stage{width:100%}
   .contact-layout{grid-template-columns:1fr;gap:46px}
@@ -2466,7 +2466,7 @@ label{font-size:12.5px}
   .section-title{font-size:clamp(36px,10.7vw,47px)!important;line-height:1.08!important;letter-spacing:-.055em!important}
   .section-copy{font-size:14px!important;line-height:1.78!important;max-width:none!important}
   .title-two-line span{white-space:normal!important}
-  .market-network-v2,.youtube-v2,.guide-proof,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{padding:84px 0!important}
+  .market-network-v2,.youtube-v2,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{padding:84px 0!important}
 
   /* Hero */
   .hero{padding:52px 0 76px!important;min-height:auto!important}
@@ -2680,7 +2680,7 @@ label{font-size:12.5px}
 .mobile-case-more{display:none}
 @media (max-width:767px){
   /* Shorter mobile rhythm: retain hierarchy, remove excess empty travel. */
-  .market-network-v2,.youtube-v2,.guide-proof,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{padding:66px 0!important}
+  .market-network-v2,.youtube-v2,.performance-lab,.case-studies,.campaign-system-v2,.client-voice,.process-timeline-v2,.faq,.contact{padding:66px 0!important}
   
   .brand-wall{padding:50px 0!important}
   .identity{padding:68px 0!important}
@@ -3021,7 +3021,7 @@ label{font-size:12.5px}
 }
 body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
-.hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.proof-item>p,.case-desc,.case-inquiry-copy>p,.guide-proof-note>p,.faq-a>p,.faq-conversion>p{
+.hero-desc,.section-copy,.work-story-copy,.identity-purpose,.contact-copy,.final-scene-inner>p,.proof-item>p,.case-desc,.case-inquiry-copy>p,.faq-a>p,.faq-conversion>p{
   font-size:var(--luen-text-lg)!important;line-height:1.72!important;letter-spacing:-.018em;word-break:keep-all;overflow-wrap:break-word
 }
 .hero-kicker,.hero-meta span{font-size:var(--luen-label)!important}
@@ -3057,7 +3057,7 @@ body{font-size:17px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
 
 
-.guide-proof-note b,.guide-page figcaption,.chart-head span,.chart-head b,.chart-labels span,.metric-row article span,.metric-row article small{font-size:clamp(11px,.68vw,13px)!important;line-height:1.35!important}
+.chart-head span,.chart-head b,.chart-labels span,.metric-row article span,.metric-row article small{font-size:clamp(11px,.68vw,13px)!important;line-height:1.35!important}
 .growth-value{font-size:14px!important}
 
 .case-body>small,.case-cat,.case-metric span{font-size:var(--luen-text-sm)!important;line-height:1.5!important}
