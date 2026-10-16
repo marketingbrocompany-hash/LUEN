@@ -26,7 +26,7 @@ jobs:
 
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luen-homepage-git-fea-39453b-marketingbrocompany-hashs-projects.vercel.app/
+          TARGET_URL: https://luen-homepage-git-fea-4f054b-marketingbrocompany-hashs-projects.vercel.app/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
@@ -430,6 +430,84 @@ jobs:
                   );
                   add(label + ' ' + viewport + ' case images are visibly painted', visibleImages.length === painted.length && painted.length > 0, { painted });
                   await caseGrid.screenshot({ path: 'qa-artifacts/' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-cases-' + viewport + '.png' });
+                }
+              });
+            }
+
+            // CASE STUDIES QA — Phase 5
+            await auditSubpage(browser, 'cases/', 'Case Studies Hub', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                cards: document.querySelectorAll('.case-hub-card').length,
+                links: [...document.querySelectorAll('.case-hub-card')].map(a => a.getAttribute('href')),
+                schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                currentNav: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || ''
+              }));
+              const expected = [
+                '/cases/herahera-seoul-fnb/',
+                '/cases/ikeda-edita/',
+                '/cases/yuki-clinic/',
+                '/cases/masubuchi-bibigo/'
+              ];
+              add('Case Studies Hub ' + viewport + ' has four cases', state.cards === 4, state);
+              add('Case Studies Hub ' + viewport + ' links all four detail pages', expected.every(href => state.links.includes(href)), state);
+              add('Case Studies Hub ' + viewport + ' structured data present', state.schemaScripts >= 2, state);
+              add('Case Studies Hub ' + viewport + ' keeps Case Studies nav active', state.currentNav === '/cases/', state);
+
+              const grid = page.locator('.case-hub-grid');
+              if (await grid.count()) {
+                await grid.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(900);
+                const imgs = await page.evaluate(() => [...document.querySelectorAll('.case-hub-card img')].map(img => ({
+                  complete: img.complete,
+                  naturalWidth: img.naturalWidth,
+                  opacity: getComputedStyle(img).opacity,
+                  width: img.getBoundingClientRect().width,
+                  height: img.getBoundingClientRect().height
+                })));
+                add('Case Studies Hub ' + viewport + ' case images visibly load', imgs.length === 4 && imgs.every(i => i.complete && i.naturalWidth > 0 && Number(i.opacity) > 0 && i.width > 40 && i.height > 40), { imgs });
+                await grid.screenshot({ path: 'qa-artifacts/case-studies-hub-grid-' + viewport + '.png' });
+              }
+            });
+
+            const casePages = [
+              ['cases/herahera-seoul-fnb/', 'Herahera Case'],
+              ['cases/ikeda-edita/', 'Ikeda EDITA Case'],
+              ['cases/yuki-clinic/', 'YUKI Clinic Case'],
+              ['cases/masubuchi-bibigo/', 'Masubuchi bibigo Case']
+            ];
+
+            for (const [path, label] of casePages) {
+              await auditSubpage(browser, path, label, async (page, viewport) => {
+                const state = await page.evaluate(() => ({
+                  flowSteps: document.querySelectorAll('.jcm-flow > li').length,
+                  metrics: document.querySelectorAll('.luen-proof-metric').length,
+                  schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                  bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length,
+                  canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                  currentNav: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || '',
+                  relatedLinks: document.querySelectorAll('.case-study-next a').length
+                }));
+                add(label + ' ' + viewport + ' has six-step action flow', state.flowSteps === 6, state);
+                add(label + ' ' + viewport + ' has three result metrics', state.metrics === 3, state);
+                add(label + ' ' + viewport + ' structured data present', state.schemaScripts >= 2, state);
+                add(label + ' ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+                add(label + ' ' + viewport + ' canonical matches route', state.canonical.endsWith('/' + path), state);
+                add(label + ' ' + viewport + ' keeps Case Studies nav active', state.currentNav === '/cases/', state);
+                add(label + ' ' + viewport + ' has related navigation', state.relatedLinks === 2, state);
+
+                const visual = page.locator('.case-study-visual').first();
+                if (await visual.count()) {
+                  await visual.scrollIntoViewIfNeeded();
+                  await page.waitForTimeout(700);
+                  const imageState = await visual.locator('img').evaluate(img => ({
+                    complete: img.complete,
+                    naturalWidth: img.naturalWidth,
+                    opacity: getComputedStyle(img).opacity,
+                    width: img.getBoundingClientRect().width,
+                    height: img.getBoundingClientRect().height
+                  }));
+                  add(label + ' ' + viewport + ' hero case image visibly loads', imageState.complete && imageState.naturalWidth > 0 && Number(imageState.opacity) > 0 && imageState.width > 100 && imageState.height > 80, imageState);
+                  await visual.screenshot({ path: 'qa-artifacts/' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-visual-' + viewport + '.png' });
                 }
               });
             }
