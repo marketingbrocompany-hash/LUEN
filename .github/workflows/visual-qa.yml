@@ -26,7 +26,7 @@ jobs:
 
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luen-homepage-git-fea-71de26-marketingbrocompany-hashs-projects.vercel.app/
+          TARGET_URL: https://luen-homepage-git-fea-39453b-marketingbrocompany-hashs-projects.vercel.app/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
@@ -323,10 +323,16 @@ jobs:
             await auditSubpage(browser, 'services/', 'Services Hub', async (page, viewport) => {
               const state = await page.evaluate(() => ({
                 serviceRows: document.querySelectorAll('.service-hub-item').length,
-                creatorLink: document.querySelector('.service-hub-item--featured a')?.getAttribute('href') || ''
+                links: [...document.querySelectorAll('.service-hub-item a')].map(a => a.getAttribute('href'))
               }));
+              const expected = [
+                '/services/japan-marketing/',
+                '/services/japan-creator-marketing/',
+                '/services/japan-inbound/',
+                '/services/youtube-creator-marketing/'
+              ];
               add('Services Hub ' + viewport + ' has four service entries', state.serviceRows === 4, state);
-              add('Services Hub ' + viewport + ' links to Japan Creator Marketing', state.creatorLink === '/services/japan-creator-marketing/', state);
+              add('Services Hub ' + viewport + ' links all four service pages', expected.every(href => state.links.includes(href)), state);
             });
 
             await auditSubpage(browser, 'services/japan-creator-marketing/', 'Japan Creator Marketing', async (page, viewport) => {
@@ -354,6 +360,45 @@ jobs:
               add('Japan Creator Marketing ' + viewport + ' creator images load after scroll', creatorImages.total === 4 && creatorImages.loaded === 4 && creatorImages.failed.length === 0, creatorImages);
               await page.locator('#creator-fit').screenshot({ path: 'qa-artifacts/japan-creator-fit-' + viewport + '.png' });
             });
+
+            const phase4Pages = [
+              ['services/japan-marketing/', 'Japan Marketing'],
+              ['services/japan-inbound/', 'Japan Inbound'],
+              ['services/youtube-creator-marketing/', 'YouTube Creator Marketing']
+            ];
+
+            for (const [path, label] of phase4Pages) {
+              await auditSubpage(browser, path, label, async (page, viewport) => {
+                const state = await page.evaluate(() => ({
+                  schemaScripts: [...document.querySelectorAll('script[type="application/ld+json"]')].length,
+                  bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length,
+                  canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                  serviceCurrent: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || ''
+                }));
+                add(label + ' ' + viewport + ' has structured data', state.schemaScripts >= 3, state);
+                add(label + ' ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+                add(label + ' ' + viewport + ' canonical matches route', state.canonical.endsWith('/' + path), state);
+                add(label + ' ' + viewport + ' keeps Services nav active', state.serviceCurrent === '/services/', state);
+
+                await page.evaluate(async () => {
+                  const step = Math.max(500, Math.floor(innerHeight * 0.8));
+                  for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+                    scrollTo(0, y);
+                    await new Promise(r => setTimeout(r, 60));
+                  }
+                  scrollTo(0, 0);
+                });
+                await page.waitForTimeout(500);
+                const lazy = await page.evaluate(() => {
+                  const images = [...document.images];
+                  return {
+                    total: images.length,
+                    failed: images.filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src)
+                  };
+                });
+                add(label + ' ' + viewport + ' images load after full scroll', lazy.failed.length === 0, lazy);
+              });
+            }
 
             add('No uncaught page errors', report.pageErrors.length === 0, { errors: report.pageErrors });
             add('No console errors', report.consoleErrors.length === 0, { errors: report.consoleErrors });
