@@ -147,6 +147,8 @@ jobs:
               await page.locator('#company').fill('LUEN QA');
               await page.locator('#name').fill('QA');
               await page.locator('#market').selectOption({ label: '일본 시장' });
+              await page.locator('#privacyConsent').check();
+              await page.locator('#overseasConsent').check();
 
               const submit = page.locator('#contactForm .form-submit');
               if (await submit.count()) {
