@@ -7720,3 +7720,27 @@ html body .scroll-progress{
     font-size:26px;
   }
 }
+
+
+/* Case Study detail entry links */
+.case-detail-link-v7{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  min-height:34px;
+  margin-top:18px;
+  border-bottom:1px solid rgba(17,16,14,.42);
+  color:var(--luen-ink-soft);
+  font:700 10px/1 var(--luen-type-ui);
+  letter-spacing:.04em;
+  text-decoration:none;
+  transition:color .2s ease,border-color .2s ease;
+}
+.case-detail-link-v7:hover,
+.case-detail-link-v7:focus-visible{
+  color:var(--luen-orange);
+  border-color:var(--luen-orange);
+}
+.case-offline-copy-v7 .case-detail-link-v7{
+  border-color:rgba(17,16,14,.35);
+}
