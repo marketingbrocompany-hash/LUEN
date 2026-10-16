@@ -569,6 +569,21 @@ jobs:
               add('About Page ' + viewport + ' keeps About nav active', state.currentNav === '/about/', state);
               add('About Page ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
 
+              if (viewport === 'desktop') {
+                const bridgeLayout = await page.evaluate(() => {
+                  const nodes = [...document.querySelectorAll('.about-bridge-node')].map(el => {
+                    const r = el.getBoundingClientRect();
+                    return { left: r.left, top: r.top, width: r.width, height: r.height };
+                  });
+                  return { nodes };
+                });
+                const sameRow = bridgeLayout.nodes.length === 3 &&
+                  Math.max(...bridgeLayout.nodes.map(n => n.top)) - Math.min(...bridgeLayout.nodes.map(n => n.top)) <= 4 &&
+                  bridgeLayout.nodes[0].left < bridgeLayout.nodes[1].left &&
+                  bridgeLayout.nodes[1].left < bridgeLayout.nodes[2].left;
+                add('About Page desktop cross-border bridge stays on one row', sameRow, bridgeLayout);
+              }
+
               const bridge = page.locator('.about-bridge');
               if (await bridge.count()) {
                 await bridge.scrollIntoViewIfNeeded();
