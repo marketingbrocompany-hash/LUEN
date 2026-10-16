@@ -15,6 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout Phase 8 branch
+        run: |
+          git fetch origin feat/insights-phase8-20261016
+          git checkout --detach origin/feat/insights-phase8-20261016
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -24,9 +29,22 @@ jobs:
           npm install --no-save playwright
           npx playwright install --with-deps chromium
 
+      - name: Start local site
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/luen-http.log 2>&1 &
+          echo $! > /tmp/luen-http.pid
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/luen-http.log
+          exit 1
+
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luen-homepage-git-fea-aac523-marketingbrocompany-hashs-projects.vercel.app/
+          TARGET_URL: http://127.0.0.1:4173/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
@@ -647,6 +665,81 @@ jobs:
                 await page.locator('.contact-page-form').screenshot({ path: 'qa-artifacts/contact-form-success-mobile.png' });
               }
             });
+
+            // INSIGHTS QA — Phase 8
+            await auditSubpage(browser, 'insights/', 'Insights Hub', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                cards: document.querySelectorAll('.insight-card').length,
+                schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                currentNav: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || '',
+                oldWorkNav: [...document.querySelectorAll('.nav-links a')].some(a => a.textContent.trim() === 'WORK'),
+                oldProcessNav: [...document.querySelectorAll('.nav-links a')].some(a => a.textContent.trim() === 'PROCESS'),
+                projectGuideLabel: [...document.querySelectorAll('.nav-links a')].some(a => a.textContent.trim() === 'PROJECT GUIDE')
+              }));
+              add('Insights Hub ' + viewport + ' has five insight cards', state.cards === 5, state);
+              add('Insights Hub ' + viewport + ' structured data present', state.schemaScripts >= 2, state);
+              add('Insights Hub ' + viewport + ' canonical matches route', state.canonical.endsWith('/insights/'), state);
+              add('Insights Hub ' + viewport + ' keeps Insights nav active', state.currentNav === '/insights/', state);
+              add('Insights Hub ' + viewport + ' uses new primary navigation', !state.oldWorkNav && !state.oldProcessNav && state.projectGuideLabel, state);
+            });
+
+            const insightPages = [
+              ['insights/japan-influencer-marketing-cost/', 'Insight Cost'],
+              ['insights/japan-youtuber-matching-guide/', 'Insight YouTuber Matching'],
+              ['insights/how-to-choose-japan-marketing-agency/', 'Insight Agency Guide'],
+              ['insights/youtube-creator-marketing-metrics/', 'Insight YouTube Metrics'],
+              ['insights/japan-inbound-creator-marketing/', 'Insight Japan Inbound']
+            ];
+
+            for (const [path, label] of insightPages) {
+              await auditSubpage(browser, path, label, async (page, viewport) => {
+                const state = await page.evaluate(() => {
+                  const sections = [...document.querySelectorAll('.insight-section')];
+                  const tocLinks = [...document.querySelectorAll('.insight-toc a')];
+                  const ids = [...document.querySelectorAll('[id]')].map(el => el.id);
+                  const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
+                  const sourceLinks = [...document.querySelectorAll('.insight-sources a[href^="http"]')];
+                  return {
+                    sections: sections.length,
+                    tocLinks: tocLinks.length,
+                    tocTargetsValid: tocLinks.every(a => {
+                      const href = a.getAttribute('href') || '';
+                      return href.startsWith('#') && Boolean(document.querySelector(href));
+                    }),
+                    relatedLinks: document.querySelectorAll('.insight-related a').length,
+                    schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                    canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                    currentNav: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || '',
+                    sourceLinks: sourceLinks.length,
+                    duplicateIds: [...new Set(duplicates)],
+                    bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length
+                  };
+                });
+                add(label + ' ' + viewport + ' has substantial article sections', state.sections >= 5, state);
+                add(label + ' ' + viewport + ' TOC matches article sections', state.tocLinks === state.sections && state.tocTargetsValid, state);
+                add(label + ' ' + viewport + ' has three related links', state.relatedLinks === 3, state);
+                add(label + ' ' + viewport + ' structured data present', state.schemaScripts >= 3, state);
+                add(label + ' ' + viewport + ' canonical matches route', state.canonical.endsWith('/' + path), state);
+                add(label + ' ' + viewport + ' keeps Insights nav active', state.currentNav === '/insights/', state);
+                add(label + ' ' + viewport + ' includes source references', state.sourceLinks >= 2, state);
+                add(label + ' ' + viewport + ' has no duplicate IDs', state.duplicateIds.length === 0, state);
+                add(label + ' ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+
+                if (viewport === 'mobile') {
+                  const firstToc = page.locator('.insight-toc a').first();
+                  if (await firstToc.count()) {
+                    await firstToc.click();
+                    await page.waitForTimeout(180);
+                    const targetState = await page.evaluate(() => ({
+                      hash: location.hash,
+                      targetExists: Boolean(location.hash && document.querySelector(location.hash))
+                    }));
+                    add(label + ' mobile TOC navigation works', Boolean(targetState.hash) && targetState.targetExists, targetState);
+                  }
+                }
+              });
+            }
 
             add('No uncaught page errors', report.pageErrors.length === 0, { errors: report.pageErrors });
             add('No console errors', report.consoleErrors.length === 0, { errors: report.consoleErrors });
