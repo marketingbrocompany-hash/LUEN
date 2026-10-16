@@ -26,7 +26,7 @@ jobs:
 
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luen-homepage-git-fea-1e857d-marketingbrocompany-hashs-projects.vercel.app/
+          TARGET_URL: https://luen-homepage-git-fea-aac523-marketingbrocompany-hashs-projects.vercel.app/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
@@ -550,6 +550,90 @@ jobs:
                 })));
                 add('Project Guide ' + viewport + ' proposal images visibly load', imageState.length === 2 && imageState.every(img => img.complete && img.naturalWidth > 0 && img.width > 100 && img.height > 100 && Number(img.opacity) > 0), { imageState });
                 await docs.screenshot({ path: 'qa-artifacts/project-guide-docs-' + viewport + '.png' });
+              }
+            });
+
+            // ABOUT + CONTACT QA — Phase 7
+            await auditSubpage(browser, 'about/', 'About Page', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                bridgeNodes: document.querySelectorAll('.about-bridge-node').length,
+                principles: document.querySelectorAll('.about-principle').length,
+                platforms: document.querySelectorAll('.about-platform').length,
+                operations: document.querySelectorAll('.about-operating-grid > article').length,
+                schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                currentNav: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || '',
+                bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length
+              }));
+              add('About Page ' + viewport + ' has three cross-border nodes', state.bridgeNodes === 3, state);
+              add('About Page ' + viewport + ' has four operating principles', state.principles === 4, state);
+              add('About Page ' + viewport + ' has five platform roles', state.platforms === 5, state);
+              add('About Page ' + viewport + ' has six operation items', state.operations === 6, state);
+              add('About Page ' + viewport + ' structured data present', state.schemaScripts >= 2, state);
+              add('About Page ' + viewport + ' canonical matches route', state.canonical.endsWith('/about/'), state);
+              add('About Page ' + viewport + ' keeps About nav active', state.currentNav === '/about/', state);
+              add('About Page ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+
+              const bridge = page.locator('.about-bridge');
+              if (await bridge.count()) {
+                await bridge.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(450);
+                await bridge.screenshot({ path: 'qa-artifacts/about-bridge-' + viewport + '.png' });
+              }
+            });
+
+            await auditSubpage(browser, 'contact/', 'Contact Page', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                formExists: Boolean(document.getElementById('contactForm')),
+                source: document.querySelector('#contactForm input[name="source"]')?.value || '',
+                privacyRequired: Boolean(document.getElementById('privacyConsent')?.required),
+                overseasRequired: Boolean(document.getElementById('overseasConsent')?.required),
+                schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                contactCurrent: document.querySelector('.nav-contact[aria-current="page"]')?.getAttribute('href') || '',
+                bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length
+              }));
+              add('Contact Page ' + viewport + ' form exists', state.formExists, state);
+              add('Contact Page ' + viewport + ' uses dedicated source label', state.source === 'LUEN Contact Page', state);
+              add('Contact Page ' + viewport + ' keeps required consent fields', state.privacyRequired && state.overseasRequired, state);
+              add('Contact Page ' + viewport + ' structured data present', state.schemaScripts >= 2, state);
+              add('Contact Page ' + viewport + ' canonical matches route', state.canonical.endsWith('/contact/'), state);
+              add('Contact Page ' + viewport + ' keeps Contact nav active', state.contactCurrent === '/contact/', state);
+              add('Contact Page ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+
+              if (viewport === 'mobile') {
+                await page.locator('#company').fill('LUEN QA');
+                await page.locator('#name').fill('QA');
+                await page.locator('#market').selectOption({ label: '일본 시장' });
+                await page.locator('label[for="privacyConsent"]').click();
+                await page.locator('label[for="overseasConsent"]').click();
+
+                const submit = page.locator('#contactForm .form-submit');
+                await submit.click();
+                await page.waitForTimeout(120);
+                const requiredState = await page.evaluate(() => {
+                  const email = document.getElementById('email');
+                  return {
+                    emailValid: email?.validity.valid,
+                    activeId: document.activeElement?.id || null,
+                    emailMessage: email?.validationMessage || ''
+                  };
+                });
+                add('Contact Page mobile requires email or phone', requiredState.emailValid === false && requiredState.activeId === 'email', requiredState);
+
+                await page.locator('#email').fill('qa@example.invalid');
+                await page.route('https://formspree.io/**', async route => {
+                  await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+                });
+                await submit.click();
+                await page.waitForTimeout(350);
+                const success = await page.evaluate(() => ({
+                  successClass: document.getElementById('contactForm')?.classList.contains('is-success'),
+                  successVisible: document.getElementById('formSuccess')?.getBoundingClientRect().height > 0,
+                  submitDisabled: document.querySelector('#contactForm .form-submit')?.disabled || false
+                }));
+                add('Contact Page mobile mocked submission shows success UI', success.successClass && success.successVisible && !success.submitDisabled, success);
+                await page.locator('.contact-page-form').screenshot({ path: 'qa-artifacts/contact-form-success-mobile.png' });
               }
             });
 
