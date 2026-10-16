@@ -746,8 +746,10 @@
     border-left:0;
   }
   .jcm-creator-grid{
-    display:flex;
+    display:flex!important;
+    grid-template-columns:none!important;
     overflow-x:auto;
+    overflow-y:hidden;
     gap:12px;
     scroll-snap-type:x mandatory;
     scrollbar-width:none;
@@ -756,7 +758,10 @@
   }
   .jcm-creator-grid::-webkit-scrollbar{display:none;}
   .jcm-creator-card{
-    flex:0 0:min(82vw,320px);
+    flex:0 0 82vw!important;
+    width:82vw!important;
+    min-width:280px!important;
+    max-width:320px!important;
     scroll-snap-align:start;
   }
   .jcm-flow,
