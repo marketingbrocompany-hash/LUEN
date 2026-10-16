@@ -1,322 +1,286 @@
-name: LUEN Visual QA
+name: LUEN Interaction QA
 
 on:
   push:
     branches:
       - 'qa/visual-*'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  visual-qa:
+  interaction-qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Playwright
         run: |
           npm install --no-save playwright
           npx playwright install --with-deps chromium
 
-      - name: Run visual QA
+      - name: Run interaction QA
         env:
           TARGET_URL: https://luenkorea.com/
         run: |
           mkdir -p qa-artifacts
-          cat > luen-visual-qa.cjs <<'NODE'
+          cat > interaction-qa.cjs <<'NODE'
           const { chromium } = require('playwright');
           const fs = require('fs');
 
           const target = process.env.TARGET_URL;
-          const viewports = [
-            { name: 'pc-1440', width: 1440, height: 1000 },
-            { name: 'pc-1280', width: 1280, height: 900 },
-            { name: 'mobile-390', width: 390, height: 844 },
-            { name: 'mobile-375', width: 375, height: 812 },
-            { name: 'mobile-320', width: 320, height: 700 },
-          ];
+          const report = { target, capturedAt: new Date().toISOString(), tests: [], consoleErrors: [], pageErrors: [] };
+          const add = (name, pass, detail = {}) => report.tests.push({ name, pass: Boolean(pass), ...detail });
+          const round = n => Math.round(n * 10) / 10;
 
-          function sanitize(v) {
-            return JSON.parse(JSON.stringify(v));
+          async function openPage(page) {
+            const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            add('HTTP 200', response && response.status() === 200, { status: response ? response.status() : null, url: page.url() });
+            await page.waitForTimeout(1800);
+            await page.evaluate(async () => {
+              if (document.fonts?.ready) {
+                try { await document.fonts.ready; } catch (_) {}
+              }
+            });
           }
 
           (async () => {
             const browser = await chromium.launch({ headless: true });
-            const report = {
-              target,
-              capturedAt: new Date().toISOString(),
-              viewports: []
-            };
 
-            for (const vp of viewports) {
-              const context = await browser.newContext({
-                viewport: { width: vp.width, height: vp.height },
-                deviceScaleFactor: 1
-              });
+            // MOBILE 390
+            {
+              const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
               const page = await context.newPage();
+              page.on('console', msg => { if (msg.type() === 'error') report.consoleErrors.push('mobile: ' + msg.text()); });
+              page.on('pageerror', err => report.pageErrors.push('mobile: ' + String(err)));
 
-              const consoleErrors = [];
-              const pageErrors = [];
-              page.on('console', msg => {
-                if (msg.type() === 'error') consoleErrors.push(msg.text());
-              });
-              page.on('pageerror', err => pageErrors.push(String(err)));
+              await openPage(page);
 
-              let status = null;
-              try {
-                const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 60000 });
-                status = response ? response.status() : null;
-                await page.waitForTimeout(2500);
-                await page.evaluate(async () => {
-                  if (document.fonts && document.fonts.ready) {
-                    try { await document.fonts.ready; } catch (_) {}
-                  }
-                });
+              const docWidth = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth));
+              add('Mobile no page-level horizontal overflow', docWidth <= 391, { documentWidth: docWidth, viewportWidth: 390 });
 
-                const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-                const step = Math.max(420, Math.floor(vp.height * 0.72));
-                for (let y = 0; y < pageHeight; y += step) {
-                  await page.evaluate(scrollY => window.scrollTo(0, scrollY), y);
-                  await page.waitForTimeout(90);
-                }
-                await page.evaluate(() => window.scrollTo(0, 0));
-                await page.waitForTimeout(450);
+              const hamburgerVisible = await page.locator('#hamburger').isVisible();
+              add('Mobile hamburger visible', hamburgerVisible);
+              if (hamburgerVisible) {
+                await page.locator('#hamburger').click();
+                await page.waitForTimeout(250);
+                const openState = await page.evaluate(() => ({
+                  open: document.getElementById('mobileMenu')?.classList.contains('open'),
+                  ariaHidden: document.getElementById('mobileMenu')?.getAttribute('aria-hidden'),
+                  ariaExpanded: document.getElementById('hamburger')?.getAttribute('aria-expanded'),
+                  bodyOverflow: document.body.style.overflow,
+                  active: document.activeElement?.id || document.activeElement?.getAttribute?.('aria-label') || document.activeElement?.tagName
+                }));
+                add('Mobile menu opens accessibly', openState.open && openState.ariaHidden === 'false' && openState.ariaExpanded === 'true' && openState.bodyOverflow === 'hidden', openState);
+                await page.screenshot({ path: 'qa-artifacts/mobile-menu-open.png', fullPage: false });
 
-                await page.addStyleTag({ content: `
-                  *, *::before, *::after {
-                    animation-duration: 0s !important;
-                    animation-delay: 0s !important;
-                    transition-duration: 0s !important;
-                    transition-delay: 0s !important;
-                    caret-color: transparent !important;
-                  }
-                ` });
-                await page.waitForTimeout(300);
+                await page.keyboard.press('Escape');
+                await page.waitForTimeout(150);
+                const closedState = await page.evaluate(() => ({
+                  open: document.getElementById('mobileMenu')?.classList.contains('open'),
+                  ariaHidden: document.getElementById('mobileMenu')?.getAttribute('aria-hidden'),
+                  ariaExpanded: document.getElementById('hamburger')?.getAttribute('aria-expanded'),
+                  bodyOverflow: document.body.style.overflow,
+                  activeId: document.activeElement?.id || null
+                }));
+                add('Mobile menu closes with Escape and restores focus', !closedState.open && closedState.ariaHidden === 'true' && closedState.ariaExpanded === 'false' && closedState.bodyOverflow === '' && closedState.activeId === 'hamburger', closedState);
 
-                const audit = await page.evaluate(() => {
-                  const vw = window.innerWidth;
-                  const vh = window.innerHeight;
-                  const all = Array.from(document.querySelectorAll('body *'));
-
-                  const visible = (el) => {
-                    const s = getComputedStyle(el);
-                    const r = el.getBoundingClientRect();
-                    return s.display !== 'none' &&
-                      s.visibility !== 'hidden' &&
-                      Number(s.opacity || 1) > 0 &&
-                      r.width > 0 && r.height > 0;
-                  };
-
-                  const meta = (el) => {
-                    const r = el.getBoundingClientRect();
-                    return {
-                      tag: el.tagName.toLowerCase(),
-                      id: el.id || null,
-                      class: typeof el.className === 'string' ? el.className.slice(0, 160) : null,
-                      text: (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120),
-                      left: Math.round(r.left * 10) / 10,
-                      right: Math.round(r.right * 10) / 10,
-                      top: Math.round((r.top + window.scrollY) * 10) / 10,
-                      width: Math.round(r.width * 10) / 10,
-                      height: Math.round(r.height * 10) / 10
-                    };
-                  };
-
-                  const docWidth = Math.max(
-                    document.documentElement.scrollWidth,
-                    document.body ? document.body.scrollWidth : 0
-                  );
-                  const docHeight = Math.max(
-                    document.documentElement.scrollHeight,
-                    document.body ? document.body.scrollHeight : 0
-                  );
-
-                  const horizontalOutside = all
-                    .filter(visible)
-                    .filter(el => {
-                      const r = el.getBoundingClientRect();
-                      return r.left < -1 || r.right > vw + 1;
-                    })
-                    .slice(0, 80)
-                    .map(meta);
-
-                  const interactiveOutside = Array.from(document.querySelectorAll('a,button,input,select,textarea'))
-                    .filter(visible)
-                    .filter(el => {
-                      const r = el.getBoundingClientRect();
-                      return r.left < -1 || r.right > vw + 1 || r.top < -200 || r.bottom > vh + 200;
-                    })
-                    .slice(0, 60)
-                    .map(meta);
-
-                  const clippedText = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,span,a,button,li,label,strong,em'))
-                    .filter(visible)
-                    .filter(el => {
-                      const t = (el.innerText || el.textContent || '').trim();
-                      if (!t) return false;
-                      const s = getComputedStyle(el);
-                      const clippedX = el.scrollWidth > el.clientWidth + 1 && ['hidden','clip'].includes(s.overflowX);
-                      const clippedY = el.scrollHeight > el.clientHeight + 1 && ['hidden','clip'].includes(s.overflowY);
-                      return clippedX || clippedY;
-                    })
-                    .slice(0, 80)
-                    .map(meta);
-
-                  const imagesBroken = Array.from(document.images)
-                    .filter(img => visible(img) && (!img.complete || img.naturalWidth === 0 || img.naturalHeight === 0))
-                    .map(img => ({
-                      ...meta(img),
-                      src: img.currentSrc || img.src || null
-                    }))
-                    .slice(0, 40);
-
-                  const fixedOrSticky = all
-                    .filter(visible)
-                    .filter(el => {
-                      const p = getComputedStyle(el).position;
-                      return p === 'fixed' || p === 'sticky';
-                    })
-                    .slice(0, 50)
-                    .map(el => ({
-                      ...meta(el),
-                      position: getComputedStyle(el).position,
-                      zIndex: getComputedStyle(el).zIndex
-                    }));
-
-                  const smallText = all
-                    .filter(visible)
-                    .filter(el => {
-                      const t = (el.innerText || el.textContent || '').trim();
-                      if (!t || el.children.length > 0) return false;
-                      const fs = parseFloat(getComputedStyle(el).fontSize);
-                      return Number.isFinite(fs) && fs < 11;
-                    })
-                    .slice(0, 100)
-                    .map(el => ({
-                      ...meta(el),
-                      fontSize: getComputedStyle(el).fontSize
-                    }));
-
-                  const sections = Array.from(document.querySelectorAll('main > section, main > .marquee, footer'))
-                    .filter(visible)
-                    .map((el, i) => {
-                      const r = el.getBoundingClientRect();
-                      const h = el.querySelector('h1,h2,h3');
-                      return {
-                        index: i,
-                        tag: el.tagName.toLowerCase(),
-                        id: el.id || null,
-                        class: typeof el.className === 'string' ? el.className.slice(0,160) : null,
-                        heading: h ? (h.innerText || '').replace(/\s+/g,' ').trim().slice(0,140) : null,
-                        top: Math.round((r.top + window.scrollY) * 10) / 10,
-                        bottom: Math.round((r.bottom + window.scrollY) * 10) / 10,
-                        height: Math.round(r.height * 10) / 10
-                      };
-                    });
-
-                  const sectionRelations = [];
-                  for (let i = 1; i < sections.length; i++) {
-                    sectionRelations.push({
-                      from: sections[i - 1].heading || sections[i - 1].id || sections[i - 1].class || sections[i - 1].tag,
-                      to: sections[i].heading || sections[i].id || sections[i].class || sections[i].tag,
-                      gap: Math.round((sections[i].top - sections[i - 1].bottom) * 10) / 10
-                    });
-                  }
-
-                  const ctaIssues = Array.from(document.querySelectorAll('a,button'))
-                    .filter(visible)
-                    .filter(el => {
-                      const r = el.getBoundingClientRect();
-                      return r.width < 24 || r.height < 24 || r.left < -1 || r.right > vw + 1;
-                    })
-                    .slice(0, 80)
-                    .map(meta);
-
+                await page.locator('#hamburger').click();
+                await page.locator('.mobile-link[href="#about"]').click();
+                await page.waitForTimeout(850);
+                const anchor = await page.evaluate(() => {
+                  const nav = document.getElementById('nav')?.getBoundingClientRect();
+                  const targetEl = document.getElementById('about')?.getBoundingClientRect();
                   return {
-                    viewport: { width: vw, height: vh },
-                    document: { width: docWidth, height: docHeight },
-                    horizontalOverflowPx: Math.max(0, docWidth - vw),
-                    horizontalOutside,
-                    interactiveOutside,
-                    clippedText,
-                    imagesBroken,
-                    fixedOrSticky,
-                    smallText,
-                    ctaIssues,
-                    sections,
-                    sectionRelations
+                    hash: location.hash,
+                    menuOpen: document.getElementById('mobileMenu')?.classList.contains('open'),
+                    bodyOverflow: document.body.style.overflow,
+                    navBottom: nav ? nav.bottom : null,
+                    targetTop: targetEl ? targetEl.top : null
                   };
                 });
-
-                const fullPath = `qa-artifacts/${vp.name}-full.png`;
-                const topPath = `qa-artifacts/${vp.name}-top.png`;
-                await page.screenshot({ path: fullPath, fullPage: true });
-                await page.screenshot({ path: topPath, fullPage: false });
-
-                report.viewports.push({
-                  ...vp,
-                  status,
-                  url: page.url(),
-                  consoleErrors: consoleErrors.slice(0, 30),
-                  pageErrors: pageErrors.slice(0, 30),
-                  audit: sanitize(audit),
-                  screenshots: { full: fullPath, top: topPath }
-                });
-              } catch (err) {
-                report.viewports.push({
-                  ...vp,
-                  status,
-                  error: String(err),
-                  consoleErrors: consoleErrors.slice(0, 30),
-                  pageErrors: pageErrors.slice(0, 30)
-                });
-              } finally {
-                await context.close();
+                add('Mobile menu link closes menu and reaches ABOUT', anchor.hash === '#about' && !anchor.menuOpen && anchor.bodyOverflow === '', anchor);
+                add('Mobile ABOUT anchor not materially hidden by nav', anchor.targetTop === null || anchor.navBottom === null || anchor.targetTop >= anchor.navBottom - 12, anchor);
               }
+
+              await page.locator('#faq').scrollIntoViewIfNeeded();
+              await page.waitForTimeout(300);
+              const faqButtons = page.locator('.faq-q');
+              if (await faqButtons.count() >= 2) {
+                await faqButtons.nth(1).click();
+                await page.waitForTimeout(180);
+                const faqState = await page.evaluate(() => {
+                  const items = [...document.querySelectorAll('.faq-item')];
+                  const second = items[1];
+                  const first = items[0];
+                  const a = second?.querySelector('.faq-a');
+                  return {
+                    firstExpanded: first?.querySelector('.faq-q')?.getAttribute('aria-expanded'),
+                    secondExpanded: second?.querySelector('.faq-q')?.getAttribute('aria-expanded'),
+                    secondOpen: second?.classList.contains('open'),
+                    secondMaxHeight: a?.style.maxHeight || '',
+                    secondHeight: a?.getBoundingClientRect().height || 0
+                  };
+                });
+                add('FAQ accordion switches correctly', faqState.firstExpanded === 'false' && faqState.secondExpanded === 'true' && faqState.secondOpen && faqState.secondHeight > 0, faqState);
+                await page.screenshot({ path: 'qa-artifacts/mobile-faq-open.png', fullPage: false });
+              }
+
+              const more = page.locator('.faq-more-toggle');
+              if (await more.count()) {
+                await more.click();
+                await page.waitForTimeout(150);
+                const moreState = await page.evaluate(() => ({
+                  expanded: document.querySelector('.faq-more-toggle')?.getAttribute('aria-expanded'),
+                  hiddenExtra: [...document.querySelectorAll('.faq-list > .faq-item')].slice(3).filter(x => x.hidden).length
+                }));
+                add('FAQ more toggle reveals extra questions', moreState.expanded === 'true' && moreState.hiddenExtra === 0, moreState);
+              }
+
+              await page.locator('#contact').scrollIntoViewIfNeeded();
+              await page.waitForTimeout(250);
+              await page.locator('#company').fill('LUEN QA');
+              await page.locator('#name').fill('QA');
+              await page.locator('#market').selectOption({ label: '일본 시장' });
+
+              const submit = page.locator('#contactForm .form-submit');
+              if (await submit.count()) {
+                await submit.click();
+                await page.waitForTimeout(120);
+                const contactValidity = await page.evaluate(() => {
+                  const email = document.getElementById('email');
+                  return {
+                    emailValid: email?.validity.valid,
+                    emailMessage: email?.validationMessage || '',
+                    activeId: document.activeElement?.id || null
+                  };
+                });
+                add('Contact form requires email or phone', contactValidity.emailValid === false && contactValidity.activeId === 'email', contactValidity);
+
+                await page.locator('#email').fill('qa@example.invalid');
+                await page.route('https://formspree.io/**', async route => {
+                  await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+                });
+                await submit.click();
+                await page.waitForTimeout(350);
+                const formState = await page.evaluate(() => ({
+                  successClass: document.getElementById('contactForm')?.classList.contains('is-success'),
+                  submitDisabled: document.querySelector('#contactForm .form-submit')?.disabled || false
+                }));
+                add('Contact form success UI works with mocked successful response', formState.successClass && !formState.submitDisabled, formState);
+                await page.screenshot({ path: 'qa-artifacts/mobile-form-success.png', fullPage: false });
+              }
+
+              const heroCases = page.locator('.hero-cta a[href="#cases"]');
+              if (await heroCases.count()) {
+                await page.evaluate(() => window.scrollTo(0, 0));
+                await page.waitForTimeout(250);
+                await heroCases.click();
+                await page.waitForTimeout(850);
+                const heroAnchor = await page.evaluate(() => {
+                  const nav = document.getElementById('nav')?.getBoundingClientRect();
+                  const el = document.getElementById('cases')?.getBoundingClientRect();
+                  return { hash: location.hash, navBottom: nav?.bottom ?? null, targetTop: el?.top ?? null };
+                });
+                add('Hero case CTA reaches cases', heroAnchor.hash === '#cases', heroAnchor);
+                add('Cases anchor not materially hidden by nav', heroAnchor.targetTop === null || heroAnchor.navBottom === null || heroAnchor.targetTop >= heroAnchor.navBottom - 12, heroAnchor);
+              }
+
+              await context.close();
             }
 
-            fs.writeFileSync('qa-artifacts/report.json', JSON.stringify(report, null, 2));
+            // DESKTOP 1440
+            {
+              const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
+              const page = await context.newPage();
+              page.on('console', msg => { if (msg.type() === 'error') report.consoleErrors.push('desktop: ' + msg.text()); });
+              page.on('pageerror', err => report.pageErrors.push('desktop: ' + String(err)));
 
-            let md = '# LUEN Visual QA\n\n';
-            md += `Target: ${target}\n\nCaptured: ${report.capturedAt}\n\n`;
-            for (const r of report.viewports) {
-              md += `## ${r.name} (${r.width}×${r.height})\n\n`;
-              if (r.error) {
-                md += `- ERROR: ${r.error}\n\n`;
-                continue;
+              await openPage(page);
+
+              await page.evaluate(() => window.scrollTo(0, Math.max(900, innerHeight)));
+              await page.waitForTimeout(250);
+              const navState = await page.evaluate(() => {
+                const nav = document.getElementById('nav');
+                const r = nav?.getBoundingClientRect();
+                const s = nav ? getComputedStyle(nav) : null;
+                const floatCta = document.getElementById('floatCta');
+                return {
+                  scrolledClass: nav?.classList.contains('scrolled'),
+                  position: s?.position || null,
+                  top: r ? r.top : null,
+                  bottom: r ? r.bottom : null,
+                  floatCtaExists: Boolean(floatCta),
+                  floatCtaShown: floatCta?.classList.contains('show') || false
+                };
+              });
+              add('Desktop nav enters scrolled state', navState.scrolledClass, navState);
+              add('Desktop nav remains pinned at viewport top', navState.position === 'fixed' || navState.position === 'sticky' || Math.abs(navState.top || 0) <= 2, navState);
+              await page.screenshot({ path: 'qa-artifacts/desktop-scrolled.png', fullPage: false });
+
+              const loop = page.locator('[data-loop-strip]').first();
+              if (await loop.count()) {
+                await loop.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(250);
+                const t1 = await loop.locator('.loop-track').evaluate(el => getComputedStyle(el).transform);
+                await page.waitForTimeout(600);
+                const t2 = await loop.locator('.loop-track').evaluate(el => getComputedStyle(el).transform);
+                add('Loop strip is moving', t1 !== t2, { transformBefore: t1, transformAfter: t2 });
               }
-              const a = r.audit;
-              md += `- HTTP: ${r.status}\n`;
-              md += `- Document: ${a.document.width}×${a.document.height}\n`;
-              md += `- Horizontal overflow: ${a.horizontalOverflowPx}px\n`;
-              md += `- Outside elements: ${a.horizontalOutside.length}\n`;
-              md += `- Clipped text candidates: ${a.clippedText.length}\n`;
-              md += `- Broken images: ${a.imagesBroken.length}\n`;
-              md += `- CTA issues: ${a.ctaIssues.length}\n`;
-              md += `- Console errors: ${r.consoleErrors.length}\n`;
-              md += `- Page errors: ${r.pageErrors.length}\n\n`;
+
+              const voiceDots = page.locator('.voice-dots button');
+              if (await voiceDots.count() >= 2) {
+                await voiceDots.nth(1).click();
+                await page.waitForTimeout(100);
+                const voiceState = await page.evaluate(() => ({
+                  activeDot: [...document.querySelectorAll('.voice-dots button')].findIndex(x => x.classList.contains('active')),
+                  activeVoice: [...document.querySelectorAll('.voice-item')].findIndex(x => x.classList.contains('active'))
+                }));
+                add('Client Voice dot navigation works', voiceState.activeDot === 1 && voiceState.activeVoice === 1, voiceState);
+              }
+
+              await page.locator('#contact').scrollIntoViewIfNeeded();
+              await page.waitForTimeout(350);
+              const contactFloat = await page.evaluate(() => {
+                const f = document.getElementById('floatCta');
+                return { exists: Boolean(f), shown: f?.classList.contains('show') || false };
+              });
+              if (contactFloat.exists) add('Floating CTA hides at contact section', !contactFloat.shown, contactFloat);
+
+              await context.close();
             }
-            fs.writeFileSync('qa-artifacts/summary.md', md);
+
+            add('No uncaught page errors', report.pageErrors.length === 0, { errors: report.pageErrors });
+            add('No console errors', report.consoleErrors.length === 0, { errors: report.consoleErrors });
+
+            report.pass = report.tests.every(t => t.pass);
+            fs.writeFileSync('qa-artifacts/interaction-report.json', JSON.stringify(report, null, 2));
+
+            let md = '# LUEN Interaction QA\n\n';
+            md += 'Target: ' + target + '\n\n';
+            for (const t of report.tests) md += '- ' + (t.pass ? 'PASS' : 'FAIL') + ' — ' + t.name + '\n';
+            md += '\nOverall: ' + (report.pass ? 'PASS' : 'FAIL') + '\n';
+            fs.writeFileSync('qa-artifacts/interaction-summary.md', md);
 
             await browser.close();
+            if (!report.pass) process.exitCode = 2;
           })().catch(err => {
+            fs.writeFileSync('qa-artifacts/fatal.txt', String(err.stack || err));
             console.error(err);
             process.exit(1);
           });
           NODE
-          node ./luen-visual-qa.cjs
+          node ./interaction-qa.cjs
 
       - name: Upload QA artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: luen-visual-qa
+          name: luen-interaction-qa
           path: qa-artifacts/
           retention-days: 7
