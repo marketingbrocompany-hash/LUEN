@@ -1904,6 +1904,12 @@
   color:var(--luen-ink-soft);
   font:750 10px/1.2 var(--luen-type-ui);
 }
+.insight-card:last-child:nth-child(odd){
+  grid-column:1/-1;
+  min-height:300px;
+  padding-right:0;
+  border-right:0;
+}
 .insight-card:hover h2,
 .insight-card:hover h3,
 .insight-card:focus-visible h2,
