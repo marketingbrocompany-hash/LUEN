@@ -26,7 +26,7 @@ jobs:
 
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luenkorea.com/
+          TARGET_URL: https://luen-homepage-git-fea-18f75b-marketingbrocompany-hashs-projects.vercel.app/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
