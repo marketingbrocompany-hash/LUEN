@@ -153,21 +153,16 @@ jobs:
                 add('Mobile menu closes with Escape and restores focus', !closedState.open && closedState.ariaHidden === 'true' && closedState.ariaExpanded === 'false' && closedState.bodyOverflow === '' && closedState.activeId === 'hamburger', closedState);
 
                 await page.locator('#hamburger').click();
-                await page.locator('.mobile-link[href="#about"]').click();
-                await page.waitForTimeout(850);
-                const anchor = await page.evaluate(() => {
-                  const nav = document.getElementById('nav')?.getBoundingClientRect();
-                  const targetEl = document.getElementById('about')?.getBoundingClientRect();
-                  return {
-                    hash: location.hash,
-                    menuOpen: document.getElementById('mobileMenu')?.classList.contains('open'),
-                    bodyOverflow: document.body.style.overflow,
-                    navBottom: nav ? nav.bottom : null,
-                    targetTop: targetEl ? targetEl.top : null
-                  };
-                });
-                add('Mobile menu link closes menu and reaches ABOUT', anchor.hash === '#about' && !anchor.menuOpen && anchor.bodyOverflow === '', anchor);
-                add('Mobile ABOUT anchor not materially hidden by nav', anchor.targetTop === null || anchor.navBottom === null || anchor.targetTop >= anchor.navBottom - 12, anchor);
+                const aboutLink = page.locator('.mobile-link[href="/about/"]');
+                const aboutHref = await aboutLink.getAttribute('href');
+                add('Mobile menu links to dedicated ABOUT page', aboutHref === '/about/', { aboutHref });
+                await page.keyboard.press('Escape');
+                await page.waitForTimeout(120);
+                const afterAboutCheck = await page.evaluate(() => ({
+                  menuOpen: document.getElementById('mobileMenu')?.classList.contains('open'),
+                  bodyOverflow: document.body.style.overflow
+                }));
+                add('Mobile menu closes after ABOUT route check', !afterAboutCheck.menuOpen && afterAboutCheck.bodyOverflow === '', afterAboutCheck);
               }
 
               await page.locator('#faq').scrollIntoViewIfNeeded();
