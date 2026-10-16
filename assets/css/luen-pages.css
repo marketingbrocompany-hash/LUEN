@@ -1490,7 +1490,7 @@
 
 .about-bridge{
   display:grid;
-  grid-template-columns:minmax(180px,.82fr) minmax(180px,.82fr) minmax(180px,.82fr);
+  grid-template-columns:minmax(180px,1fr) minmax(44px,.22fr) minmax(180px,1fr) minmax(44px,.22fr) minmax(180px,1fr);
   align-items:center;
   min-height:220px;
   border-top:1px solid var(--luen-line);
