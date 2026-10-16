@@ -26,7 +26,7 @@ jobs:
 
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luen-homepage-git-fea-18f75b-marketingbrocompany-hashs-projects.vercel.app/
+          TARGET_URL: https://luen-homepage-git-fea-71de26-marketingbrocompany-hashs-projects.vercel.app/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
@@ -47,6 +47,68 @@ jobs:
                 try { await document.fonts.ready; } catch (_) {}
               }
             });
+          }
+
+          async function auditSubpage(browser, path, label, extraCheck) {
+            const url = new URL(path, target).href;
+
+            for (const spec of [
+              { key: 'mobile', width: 390, height: 844 },
+              { key: 'desktop', width: 1440, height: 1000 }
+            ]) {
+              const context = await browser.newContext({ viewport: { width: spec.width, height: spec.height }, deviceScaleFactor: 1 });
+              const page = await context.newPage();
+              page.on('console', msg => { if (msg.type() === 'error') report.consoleErrors.push(label + ' ' + spec.key + ': ' + msg.text()); });
+              page.on('pageerror', err => report.pageErrors.push(label + ' ' + spec.key + ': ' + String(err)));
+
+              const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+              add(label + ' ' + spec.key + ' HTTP 200', response && response.status() === 200, { status: response ? response.status() : null, url: page.url() });
+              await page.waitForTimeout(1500);
+              await page.evaluate(async () => {
+                if (document.fonts?.ready) {
+                  try { await document.fonts.ready; } catch (_) {}
+                }
+              });
+
+              const basic = await page.evaluate(() => {
+                const docWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+                const h1 = document.querySelector('h1');
+                const broken = [...document.images].filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src);
+                return {
+                  docWidth,
+                  viewportWidth: window.innerWidth,
+                  h1Visible: Boolean(h1 && h1.getBoundingClientRect().width > 0 && h1.getBoundingClientRect().height > 0),
+                  h1Text: h1?.textContent?.replace(/\s+/g, ' ').trim() || '',
+                  brokenImages: broken
+                };
+              });
+              add(label + ' ' + spec.key + ' no page-level horizontal overflow', basic.docWidth <= spec.width + 1, basic);
+              add(label + ' ' + spec.key + ' H1 visible', basic.h1Visible, { h1Text: basic.h1Text });
+              add(label + ' ' + spec.key + ' no broken images', basic.brokenImages.length === 0, { brokenImages: basic.brokenImages });
+
+              if (spec.key === 'mobile') {
+                const hamburger = page.locator('#hamburger');
+                const visible = await hamburger.isVisible();
+                add(label + ' mobile hamburger visible', visible);
+                if (visible) {
+                  await hamburger.click();
+                  await page.waitForTimeout(150);
+                  const menuOpen = await page.evaluate(() => ({
+                    open: document.getElementById('mobileMenu')?.classList.contains('open'),
+                    ariaHidden: document.getElementById('mobileMenu')?.getAttribute('aria-hidden'),
+                    bodyOverflow: document.body.style.overflow
+                  }));
+                  add(label + ' mobile menu opens', menuOpen.open && menuOpen.ariaHidden === 'false' && menuOpen.bodyOverflow === 'hidden', menuOpen);
+                  await page.keyboard.press('Escape');
+                  await page.waitForTimeout(100);
+                }
+              }
+
+              if (typeof extraCheck === 'function') await extraCheck(page, spec.key);
+
+              await page.screenshot({ path: 'qa-artifacts/' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + spec.key + '.png', fullPage: true });
+              await context.close();
+            }
           }
 
           (async () => {
@@ -256,6 +318,29 @@ jobs:
 
               await context.close();
             }
+
+            // MULTI-PAGE QA — new Phase 3 routes
+            await auditSubpage(browser, 'services/', 'Services Hub', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                serviceRows: document.querySelectorAll('.service-hub-item').length,
+                creatorLink: document.querySelector('.service-hub-item--featured a')?.getAttribute('href') || ''
+              }));
+              add('Services Hub ' + viewport + ' has four service entries', state.serviceRows === 4, state);
+              add('Services Hub ' + viewport + ' links to Japan Creator Marketing', state.creatorLink === '/services/japan-creator-marketing/', state);
+            });
+
+            await auditSubpage(browser, 'services/japan-creator-marketing/', 'Japan Creator Marketing', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                creatorFitExists: Boolean(document.getElementById('creator-fit')),
+                creatorCards: document.querySelectorAll('.jcm-creator-card').length,
+                schemaScripts: [...document.querySelectorAll('script[type="application/ld+json"]')].length,
+                bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length
+              }));
+              add('Japan Creator Marketing ' + viewport + ' creator-fit section exists', state.creatorFitExists, state);
+              add('Japan Creator Marketing ' + viewport + ' has four creator-fit cards', state.creatorCards === 4, state);
+              add('Japan Creator Marketing ' + viewport + ' has structured data', state.schemaScripts >= 3, state);
+              add('Japan Creator Marketing ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+            });
 
             add('No uncaught page errors', report.pageErrors.length === 0, { errors: report.pageErrors });
             add('No console errors', report.consoleErrors.length === 0, { errors: report.consoleErrors });
