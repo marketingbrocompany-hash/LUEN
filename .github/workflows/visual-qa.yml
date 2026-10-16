@@ -340,6 +340,19 @@ jobs:
               add('Japan Creator Marketing ' + viewport + ' has four creator-fit cards', state.creatorCards === 4, state);
               add('Japan Creator Marketing ' + viewport + ' has structured data', state.schemaScripts >= 3, state);
               add('Japan Creator Marketing ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+
+              await page.locator('#creator-fit').scrollIntoViewIfNeeded();
+              await page.waitForTimeout(900);
+              const creatorImages = await page.evaluate(() => {
+                const images = [...document.querySelectorAll('.jcm-creator-card img')];
+                return {
+                  total: images.length,
+                  loaded: images.filter(img => img.complete && img.naturalWidth > 0).length,
+                  failed: images.filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src)
+                };
+              });
+              add('Japan Creator Marketing ' + viewport + ' creator images load after scroll', creatorImages.total === 4 && creatorImages.loaded === 4 && creatorImages.failed.length === 0, creatorImages);
+              await page.locator('#creator-fit').screenshot({ path: 'qa-artifacts/japan-creator-fit-' + viewport + '.png' });
             });
 
             add('No uncaught page errors', report.pageErrors.length === 0, { errors: report.pageErrors });
