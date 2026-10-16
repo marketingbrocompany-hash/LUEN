@@ -577,8 +577,9 @@ jobs:
                   });
                   return { nodes };
                 });
+                const centers = bridgeLayout.nodes.map(n => n.top + n.height / 2);
                 const sameRow = bridgeLayout.nodes.length === 3 &&
-                  Math.max(...bridgeLayout.nodes.map(n => n.top)) - Math.min(...bridgeLayout.nodes.map(n => n.top)) <= 4 &&
+                  Math.max(...centers) - Math.min(...centers) <= 4 &&
                   bridgeLayout.nodes[0].left < bridgeLayout.nodes[1].left &&
                   bridgeLayout.nodes[1].left < bridgeLayout.nodes[2].left;
                 add('About Page desktop cross-border bridge stays on one row', sameRow, bridgeLayout);
