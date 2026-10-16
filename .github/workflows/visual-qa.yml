@@ -26,7 +26,7 @@ jobs:
 
       - name: Run interaction QA
         env:
-          TARGET_URL: https://luen-homepage-git-fea-4f054b-marketingbrocompany-hashs-projects.vercel.app/
+          TARGET_URL: https://luen-homepage-git-fea-1e857d-marketingbrocompany-hashs-projects.vercel.app/
         run: |
           mkdir -p qa-artifacts
           cat > interaction-qa.cjs <<'NODE'
@@ -511,6 +511,47 @@ jobs:
                 }
               });
             }
+
+            // PROJECT GUIDE QA — Phase 6
+            await auditSubpage(browser, 'project-guide/', 'Project Guide', async (page, viewport) => {
+              const state = await page.evaluate(() => ({
+                processSteps: document.querySelectorAll('.jcm-process > article').length,
+                deliverables: document.querySelectorAll('.project-guide-deliverable').length,
+                timelineSteps: document.querySelectorAll('.project-guide-timeline > article').length,
+                budgetCards: document.querySelectorAll('.project-guide-budget > article').length,
+                factors: document.querySelectorAll('.project-guide-factor').length,
+                faqItems: document.querySelectorAll('.luen-page-faq details').length,
+                schemaScripts: document.querySelectorAll('script[type="application/ld+json"]').length,
+                bannedTermCount: (document.body.innerText.match(/크리에이터 섭외/g) || []).length,
+                canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+                currentNav: document.querySelector('.nav-links a[aria-current="page"]')?.getAttribute('href') || ''
+              }));
+              add('Project Guide ' + viewport + ' has six campaign process steps', state.processSteps === 6, state);
+              add('Project Guide ' + viewport + ' has six deliverables', state.deliverables === 6, state);
+              add('Project Guide ' + viewport + ' has five timeline steps', state.timelineSteps === 5, state);
+              add('Project Guide ' + viewport + ' has four budget structures', state.budgetCards === 4, state);
+              add('Project Guide ' + viewport + ' has eight cost factors', state.factors === 8, state);
+              add('Project Guide ' + viewport + ' has five FAQ items', state.faqItems === 5, state);
+              add('Project Guide ' + viewport + ' structured data present', state.schemaScripts >= 3, state);
+              add('Project Guide ' + viewport + ' uses creator matching terminology', state.bannedTermCount === 0, state);
+              add('Project Guide ' + viewport + ' canonical matches route', state.canonical.endsWith('/project-guide/'), state);
+              add('Project Guide ' + viewport + ' keeps Process nav active', state.currentNav === '/project-guide/', state);
+
+              const docs = page.locator('.project-guide-docs');
+              if (await docs.count()) {
+                await docs.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(900);
+                const imageState = await page.evaluate(() => [...document.querySelectorAll('.project-guide-doc img')].map(img => ({
+                  complete: img.complete,
+                  naturalWidth: img.naturalWidth,
+                  width: img.getBoundingClientRect().width,
+                  height: img.getBoundingClientRect().height,
+                  opacity: getComputedStyle(img).opacity
+                })));
+                add('Project Guide ' + viewport + ' proposal images visibly load', imageState.length === 2 && imageState.every(img => img.complete && img.naturalWidth > 0 && img.width > 100 && img.height > 100 && Number(img.opacity) > 0), { imageState });
+                await docs.screenshot({ path: 'qa-artifacts/project-guide-docs-' + viewport + '.png' });
+              }
+            });
 
             add('No uncaught page errors', report.pageErrors.length === 0, { errors: report.pageErrors });
             add('No console errors', report.consoleErrors.length === 0, { errors: report.consoleErrors });
