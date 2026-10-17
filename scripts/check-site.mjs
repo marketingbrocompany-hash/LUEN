@@ -79,6 +79,14 @@ const services=fs.readFileSync(path.join(root,'services/index.html'),'utf8');
 const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion.css'),'utf8');
 const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion.js'),'utf8');
 const checks=[
+  ['only Services and Signature Campaigns descriptions removed',
+    home.includes('<div class="eyebrow">SERVICES</div>')
+    &&!home.includes('설명이 필요하면 YouTube, 여러 인플루언서로 확산하려면 Instagram')
+    &&!home.includes('예약, 랭킹, 매장 방문. 조회수 밖에서 확인된 결과들입니다.')
+    &&home.includes('복잡한 과정은 줄이고,')
+    &&home.includes('업로드 직후만 보지 않고')
+    &&home.includes('문의 전,')
+    &&home.includes('프로젝트에 대해')],
   ['Services and Case Studies headings match approved copy',
     home.includes('id="services-title">채널마다 <em>다른 역할</em></h2>')
     &&home.includes('<h2 class="section-title">프로젝트 <em>성과</em></h2>')],
