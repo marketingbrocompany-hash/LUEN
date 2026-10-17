@@ -108,7 +108,7 @@
   /* CASE STUDY · restore the real in-store POP proof into the featured case. */
   if(document.querySelector('[data-herahera-pop-proof]')){
     const offlineScript=document.createElement('script');
-    offlineScript.src='assets/js/offline-activation-core.js?v=20260925-2';
+    offlineScript.src='/assets/js/offline-activation-core.js?v=20260925-2';
     offlineScript.async=false;
     offlineScript.dataset.offlineActivationCore='true';
     document.body.appendChild(offlineScript);
