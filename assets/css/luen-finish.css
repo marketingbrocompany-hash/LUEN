@@ -184,7 +184,7 @@ html body main#top .luen-section-primary-title{
   max-width:100%;
   margin:0!important;
   padding:0;
-  color:var(--luen-ink)!important;
+  color:var(--luen-finish-cta)!important;
   font-family:var(--luen-type-ui)!important;
   font-size:clamp(42px,5.2vw,68px)!important;
   font-weight:750!important;
@@ -193,10 +193,6 @@ html body main#top .luen-section-primary-title{
   text-transform:none;
   text-wrap:balance;
   overflow-wrap:normal;
-}
-/* Orange emphasis is intentional for the HOW LUEN WORKS heading only. */
-html body main#top #content-flow .luen-section-primary-title{
-  color:var(--luen-finish-cta)!important;
 }
 html body main#top .luen-section-subheading{
   max-width:38ch;
