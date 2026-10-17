@@ -6813,7 +6813,7 @@ html body #nav .hamburger{
   width:42px!important;
   height:42px!important;
   padding:0!important;
-  border:1px solid var(--line)!important;
+  border:1px solid rgba(74,66,60,.38)!important;
   border-radius:50%!important;
   background:transparent!important;
   cursor:pointer!important;
@@ -6821,9 +6821,9 @@ html body #nav .hamburger{
 html body #nav .hamburger span{
   display:block!important;
   width:17px!important;
-  height:1px!important;
+  height:1.5px!important;
   margin:0!important;
-  background:var(--cream)!important;
+  background:#2A2521!important;
 }
 
 html body .mobile-menu{
@@ -6836,7 +6836,19 @@ html body .mobile-menu{
   align-items:center!important;
   gap:26px!important;
   padding:88px 20px 22px!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
   background:rgba(13,8,5,.98)!important;
+}
+/* Compact-height mobile browsers and landscape: links must remain reachable. */
+@media(max-height:600px) and (max-width:820px){
+  html body .mobile-menu{
+    justify-content:flex-start!important;
+    gap:14px!important;
+  }
+  html body .mobile-menu a{
+    font-size:clamp(17px,4vh,22px)!important;
+  }
 }
 html body .mobile-menu.open{display:flex!important;}
 html body .mobile-menu a{
