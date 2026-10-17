@@ -172,3 +172,70 @@ html body main#top #services .luen-service-choice:target{
   border-color:rgba(185,85,42,.48)!important;
   box-shadow:0 12px 36px rgba(77,49,30,.07);
 }
+
+
+/* Homepage section-title hierarchy.
+   English labels are the visible h2 headings; the existing Korean copy
+   in HOW LUEN WORKS / PERFORMANCE / FAQ / PROJECT INQUIRY is a smaller
+   secondary line. No additional visibility gates or scroll observers. */
+html body main#top .luen-section-primary-title{
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0!important;
+  padding:0;
+  color:var(--luen-ink)!important;
+  font-family:var(--luen-type-ui)!important;
+  font-size:clamp(42px,5.2vw,68px)!important;
+  font-weight:750!important;
+  line-height:1.05!important;
+  letter-spacing:-.055em!important;
+  text-transform:none;
+  text-wrap:balance;
+  overflow-wrap:normal;
+}
+html body main#top .luen-section-subheading{
+  max-width:38ch;
+  margin:clamp(14px,2vw,22px) 0 0!important;
+  padding:0;
+  color:var(--luen-ink-soft)!important;
+  font-family:var(--luen-type-display)!important;
+  font-size:clamp(18px,2vw,26px)!important;
+  font-weight:630!important;
+  line-height:1.48!important;
+  letter-spacing:-.032em!important;
+  word-break:keep-all;
+  overflow-wrap:break-word;
+}
+html body main#top .luen-section-subheading em{
+  color:var(--luen-finish-label);
+  font-style:normal;
+}
+
+/* The old Services header was a two-column title/description grid.
+   With a single large heading, it should use the full width. */
+html body main#top #services .luen-home-services-head{
+  display:block;
+  max-width:none;
+}
+
+/* Preserve short explanatory text beneath the HOW LUEN WORKS subtitle. */
+html body main#top #content-flow .luen-section-subheading + .section-copy{
+  margin-top:14px!important;
+}
+/* Keep supporting proof and inquiry notes visually below the new subhead. */
+html body main#top #contact .luen-section-subheading + .contact-copy{
+  margin-top:16px!important;
+}
+
+@media(max-width:767px){
+  html body main#top .luen-section-primary-title{
+    font-size:clamp(30px,8.6vw,42px)!important;
+    line-height:1.08!important;
+    letter-spacing:-.048em!important;
+  }
+  html body main#top .luen-section-subheading{
+    font-size:clamp(16px,4.6vw,20px)!important;
+    line-height:1.5!important;
+  }
+}
