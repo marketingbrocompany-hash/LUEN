@@ -1,0 +1,164 @@
+/*
+ * LUEN — Homepage Design Finish / 2026-10-17
+ *
+ * Non-destructive final layer for the homepage. This replaces neither
+ * the legacy CSS nor the motion layer. Subpages remain unchanged.
+ *
+ * Editorial hierarchy:
+ *   canvas: warm ivory       #F5F3EE
+ *   card/surface: warm cream #FFF9F1
+ *   CTA: accessible orange   #B9552A  (white text contrast >4.5:1)
+ *   small-label orange:      #A74722  (cream contrast >4.5:1)
+ *   panel radius:            20px
+ *   media radius:            18px (16px mobile)
+ *   rectangular CTA radius:  10px; floating CTA remains a pill
+ */
+:root{
+  --luen-finish-cta:#B9552A;
+  --luen-finish-cta-hover:#A74722;
+  --luen-finish-label:#A74722;
+  --luen-finish-panel-radius:20px;
+  --luen-finish-media-radius:18px;
+  --luen-finish-button-radius:10px;
+}
+
+/* Consistent rounded media and editorial cards. Images keep their
+   original aspect ratios and the moving thumbnail lanes are untouched. */
+html body main#top>.hero .creator-network-showcase,
+html body #cases.case-studies-v7 .case-content-chapter-v7,
+html body #performance .performance-dashboard,
+html body #contact .contact-form {
+  border-radius:var(--luen-finish-panel-radius)!important;
+}
+
+html body main#top #services .luen-service-choice {
+  border-radius:var(--luen-finish-panel-radius)!important;
+}
+
+html body #cases.case-studies-v7 .case-support-card-v7 figure{
+  border-radius:var(--luen-finish-media-radius)!important;
+}
+
+/* Keep the 18/16px rounded thumbnails already implemented in
+   .case-selected-work-v10; do not override their animation transforms. */
+
+/* A consistent action color for each primary conversion CTA.
+   Text links stay understated and the floating CTA keeps its pill shape. */
+html body #nav .nav-contact,
+html body main#top>.hero .hero-cta .btn-primary,
+html body #cases.case-studies-v7 .case-inquiry-btn-v7,
+html body #contact .form-submit,
+html body .float-cta,
+html body .mobile-menu .btn-primary{
+  border-color:var(--luen-finish-cta)!important;
+  background:var(--luen-finish-cta)!important;
+  color:#FFF9F1!important;
+}
+html body #nav .nav-contact:hover,
+html body main#top>.hero .hero-cta .btn-primary:hover,
+html body #cases.case-studies-v7 .case-inquiry-btn-v7:hover,
+html body #contact .form-submit:hover,
+html body .float-cta:hover,
+html body .mobile-menu .btn-primary:hover{
+  border-color:var(--luen-finish-cta-hover)!important;
+  background:var(--luen-finish-cta-hover)!important;
+  color:#FFF9F1!important;
+}
+
+html body #nav .nav-contact,
+html body main#top>.hero .hero-cta .btn-primary,
+html body #contact .form-submit,
+html body .mobile-menu .btn-primary{
+  border-radius:var(--luen-finish-button-radius)!important;
+}
+html body main#top #services .luen-service-choice>a{
+  color:var(--luen-finish-label)!important;
+  border-bottom-color:rgba(167,71,34,.45)!important;
+}
+html body main#top #services .luen-service-choice>a:hover{
+  border-bottom-color:var(--luen-finish-label)!important;
+}
+
+/* Small labels were historically 8–9px on several sections.
+   Keep them editorial but readable, including narrow mobile screens. */
+html body main#top>.brand-wall .brand-wall-micro-label,
+html body main#top>.hero .creator-network-head>span,
+html body main#top>.hero .creator-network-head>strong,
+html body main#top #services .luen-service-choice-index,
+html body main#top #services .luen-service-choice-channel,
+html body #cases.case-studies-v7 .case-support-copy-v7>span,
+html body #work .portfolio-head span,
+html body main#top #services .luen-service-help span{
+  font-size:10.5px!important;
+  line-height:1.35!important;
+}
+html body main#top>.brand-wall .brand-wall-micro-label,
+html body main#top>.hero .creator-network-head>span,
+html body main#top #services .luen-service-choice-index,
+html body main#top #services .luen-service-choice-channel,
+html body #cases.case-studies-v7 .case-support-copy-v7>span,
+html body #work .portfolio-head span,
+html body main#top #services .luen-service-help span{
+  color:var(--luen-finish-label)!important;
+}
+html body main#top #services .luen-service-choice-options-detail strong{
+  font-size:12px!important;
+  line-height:1.45!important;
+}
+html body main#top #services .luen-service-choice-options-detail small{
+  font-size:12px!important;
+  line-height:1.55!important;
+  overflow-wrap:anywhere;
+}
+
+/* The legacy mobile supporting-case title shrank to 12px.
+   Give creator / brand names a distinct, readable typographic tier. */
+@media(max-width:767px){
+  html body #cases.case-studies-v7 .case-support-copy-v7 h3{
+    font-size:clamp(16px,4.6vw,19px)!important;
+    line-height:1.32!important;
+    overflow-wrap:anywhere;
+  }
+  html body #cases.case-studies-v7 .case-support-card-v7 figure,
+  html body #cases.case-studies-v7 .case-content-chapter-v7{
+    border-radius:16px!important;
+  }
+  html body main#top>.hero .creator-network-showcase,
+  html body #performance .performance-dashboard,
+  html body #contact .contact-form,
+  html body main#top #services .luen-service-choice{
+    border-radius:18px!important;
+  }
+  html body main#top #services .luen-service-choice-options-detail>div{
+    grid-template-columns:minmax(76px,.38fr) minmax(0,1fr);
+    gap:10px;
+  }
+}
+
+/* Warm beige instead of a separate dark/brown footer block.
+   The homepage already uses dark text and orange signals here. */
+html body>footer{
+  background:#EAE4DA!important;
+  border-top-color:rgba(93,76,64,.14)!important;
+}
+html body footer .footer-brand p,
+html body footer .footer-bottom p,
+html body footer .footer-business-info,
+html body footer .footer-business-info a{
+  color:#61564E!important;
+}
+html body footer .footer-business-info{
+  font-size:11px!important;
+  line-height:1.6!important;
+}
+
+/* Keyboard and assistive input: focus remains visible on pale panels. */
+html body main#top a:focus-visible,
+html body #nav a:focus-visible,
+html body .mobile-menu a:focus-visible,
+html body footer a:focus-visible,
+html body #contact .form-submit:focus-visible,
+html body .float-cta:focus-visible{
+  outline:2px solid var(--luen-finish-label)!important;
+  outline-offset:3px!important;
+}
