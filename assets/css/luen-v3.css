@@ -6840,16 +6840,6 @@ html body .mobile-menu{
   overscroll-behavior:contain;
   background:rgba(13,8,5,.98)!important;
 }
-/* Compact-height mobile browsers and landscape: links must remain reachable. */
-@media(max-height:600px) and (max-width:820px){
-  html body .mobile-menu{
-    justify-content:flex-start!important;
-    gap:14px!important;
-  }
-  html body .mobile-menu a{
-    font-size:clamp(17px,4vh,22px)!important;
-  }
-}
 html body .mobile-menu.open{display:flex!important;}
 html body .mobile-menu a{
   color:var(--cream)!important;
@@ -6872,6 +6862,17 @@ html body .mobile-close{
   color:var(--cream)!important;
   font-size:24px!important;
   cursor:pointer!important;
+}
+
+/* Compact-height mobile browsers and landscape: links must remain reachable. */
+@media(max-height:600px) and (max-width:820px){
+  html body .mobile-menu{
+    justify-content:flex-start!important;
+    gap:14px!important;
+  }
+  html body .mobile-menu a{
+    font-size:clamp(17px,4vh,22px)!important;
+  }
 }
 
 /* Hero */
