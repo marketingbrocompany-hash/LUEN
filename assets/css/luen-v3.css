@@ -6747,6 +6747,11 @@ html body #nav .logo{
   font:800 21px/1 var(--luen-type-ui)!important;
   letter-spacing:.18em!important;
 }
+/* Legacy .logo-word cream overrides its dark parent on ivory surfaces. */
+html body #nav .logo .logo-word,
+html body footer .logo .logo-word{
+  color:#2A2521!important;
+}
 html body #nav .logo-signal{
   width:6px!important;
   height:6px!important;
