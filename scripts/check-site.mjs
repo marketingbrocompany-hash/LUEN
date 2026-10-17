@@ -79,7 +79,19 @@ const services=fs.readFileSync(path.join(root,'services/index.html'),'utf8');
 const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion.css'),'utf8');
 const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion.js'),'utf8');
 const finish=fs.readFileSync(path.join(root,'assets/css/luen-finish.css'),'utf8');
+const designedPages=htmlFiles.filter(filename=>
+  fs.readFileSync(path.join(root,filename),'utf8').includes('luen-v3.css?v=')
+);
 const checks=[
+  ['LUEN wordmark has accessible dark contrast on ivory navigation and footer',
+    design.includes('html body #nav .logo .logo-word,')
+    &&design.includes('html body footer .logo .logo-word{')
+    &&design.includes('color:#2A2521!important;')
+    &&design.includes('background:#D56F40!important;')],
+  ['all styled pages load the refreshed logo stylesheet',
+    designedPages.length>=20
+    &&designedPages.every(filename=>fs.readFileSync(path.join(root,filename),'utf8')
+      .includes('luen-v3.css?v=20261017-7'))],
   ['all six section headlines share LUEN orange',
     finish.includes('html body main#top .luen-section-primary-title{')
     &&finish.includes('color:var(--luen-finish-cta)!important;')
