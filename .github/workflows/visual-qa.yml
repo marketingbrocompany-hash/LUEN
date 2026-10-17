@@ -24,9 +24,9 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install Playwright and Lighthouse
+      - name: Install Playwright
         run: |
-          npm install --no-save playwright lighthouse
+          npm install --no-save playwright
           npx playwright install --with-deps chromium
 
       - name: Start local site
@@ -41,36 +41,6 @@ jobs:
           done
           cat /tmp/luen-http.log
           exit 1
-
-      - name: Run Lighthouse sample audit
-        run: |
-          mkdir -p qa-artifacts
-          npx lighthouse http://127.0.0.1:4173/             --quiet             --chrome-flags="--headless --no-sandbox"             --only-categories=performance,accessibility,best-practices,seo             --output=json             --output-path=qa-artifacts/lighthouse-home-mobile.json
-          npx lighthouse http://127.0.0.1:4173/insights/japan-influencer-marketing-cost/             --quiet             --chrome-flags="--headless --no-sandbox"             --only-categories=performance,accessibility,best-practices,seo             --output=json             --output-path=qa-artifacts/lighthouse-insight-mobile.json
-          node - <<'NODE'
-          const fs = require('fs');
-          const files = [
-            ['home', 'qa-artifacts/lighthouse-home-mobile.json'],
-            ['insight', 'qa-artifacts/lighthouse-insight-mobile.json']
-          ];
-          const summary = {};
-          for (const [name, path] of files) {
-            const d = JSON.parse(fs.readFileSync(path, 'utf8'));
-            const a = d.audits || {};
-            summary[name] = {
-              scores: Object.fromEntries(Object.entries(d.categories || {}).map(([k,v]) => [k, Math.round((v.score || 0) * 100)])),
-              metrics: {
-                fcp: a['first-contentful-paint']?.displayValue || null,
-                lcp: a['largest-contentful-paint']?.displayValue || null,
-                cls: a['cumulative-layout-shift']?.displayValue || null,
-                tbt: a['total-blocking-time']?.displayValue || null,
-                speedIndex: a['speed-index']?.displayValue || null
-              }
-            };
-          }
-          fs.writeFileSync('qa-artifacts/lighthouse-summary.json', JSON.stringify(summary, null, 2));
-          console.log(JSON.stringify(summary, null, 2));
-          NODE
 
       - name: Run interaction QA
         env:
@@ -792,6 +762,88 @@ jobs:
           });
           NODE
           node ./interaction-qa.cjs
+
+      - name: Run narrow mobile QA
+        env:
+          TARGET_URL: http://127.0.0.1:4173/
+        run: |
+          cat > narrow-mobile-qa.cjs <<'NODE'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+
+          const base = process.env.TARGET_URL;
+          const routes = [
+            ['', 'Home'],
+            ['services/', 'Services Hub'],
+            ['services/japan-creator-marketing/', 'Japan Creator Marketing'],
+            ['cases/', 'Case Studies Hub'],
+            ['project-guide/', 'Project Guide'],
+            ['about/', 'About'],
+            ['contact/', 'Contact'],
+            ['insights/', 'Insights Hub'],
+            ['insights/japan-influencer-marketing-cost/', 'Insight Cost']
+          ];
+          const viewports = [
+            { key: '375x812', width: 375, height: 812 },
+            { key: '320x700', width: 320, height: 700 }
+          ];
+          const report = { tests: [], consoleErrors: [], pageErrors: [] };
+          const add = (name, pass, detail={}) => report.tests.push({ name, pass: Boolean(pass), ...detail });
+
+          (async()=>{
+            const browser = await chromium.launch({headless:true});
+            for(const [route,label] of routes){
+              for(const vp of viewports){
+                const context = await browser.newContext({viewport:{width:vp.width,height:vp.height},deviceScaleFactor:1});
+                const page = await context.newPage();
+                page.on('console', msg => { if(msg.type()==='error') report.consoleErrors.push(label+' '+vp.key+': '+msg.text()); });
+                page.on('pageerror', err => report.pageErrors.push(label+' '+vp.key+': '+String(err)));
+                const response = await page.goto(new URL(route,base).href,{waitUntil:'domcontentloaded',timeout:60000});
+                await page.waitForTimeout(700);
+                const state = await page.evaluate(() => {
+                  const h1=document.querySelector('h1');
+                  const docWidth=Math.max(document.documentElement.scrollWidth,document.body.scrollWidth);
+                  return {
+                    docWidth,
+                    viewportWidth:innerWidth,
+                    h1Visible:Boolean(h1 && h1.getBoundingClientRect().width>0 && h1.getBoundingClientRect().height>0),
+                    broken:[...document.images].filter(img=>img.complete&&img.naturalWidth===0).map(img=>img.currentSrc||img.src)
+                  };
+                });
+                add(label+' '+vp.key+' HTTP 200', response && response.status()===200, {status:response?.status()});
+                add(label+' '+vp.key+' no page-level horizontal overflow', state.docWidth<=vp.width+1, state);
+                add(label+' '+vp.key+' H1 visible', state.h1Visible, state);
+                add(label+' '+vp.key+' no broken images', state.broken.length===0, state);
+
+                const hamburger=page.locator('#hamburger');
+                const visible=await hamburger.isVisible().catch(()=>false);
+                add(label+' '+vp.key+' hamburger visible', visible);
+                if(visible){
+                  await hamburger.click();
+                  await page.waitForTimeout(120);
+                  const menu=await page.evaluate(()=>({
+                    open:document.getElementById('mobileMenu')?.classList.contains('open'),
+                    ariaHidden:document.getElementById('mobileMenu')?.getAttribute('aria-hidden'),
+                    bodyOverflow:document.body.style.overflow
+                  }));
+                  add(label+' '+vp.key+' mobile menu opens', menu.open && menu.ariaHidden==='false' && menu.bodyOverflow==='hidden', menu);
+                }
+                await context.close();
+              }
+            }
+            add('Narrow QA has no uncaught page errors', report.pageErrors.length===0, {errors:report.pageErrors});
+            add('Narrow QA has no console errors', report.consoleErrors.length===0, {errors:report.consoleErrors});
+            report.pass=report.tests.every(t=>t.pass);
+            fs.writeFileSync('qa-artifacts/narrow-mobile-report.json',JSON.stringify(report,null,2));
+            let md='# LUEN Narrow Mobile QA\n\n';
+            for(const t of report.tests) md+='- '+(t.pass?'PASS':'FAIL')+' — '+t.name+'\n';
+            md+='\nOverall: '+(report.pass?'PASS':'FAIL')+'\n';
+            fs.writeFileSync('qa-artifacts/narrow-mobile-summary.md',md);
+            await browser.close();
+            if(!report.pass) process.exitCode=2;
+          })().catch(err=>{console.error(err);process.exit(1);});
+          NODE
+          node narrow-mobile-qa.cjs
 
       - name: Upload QA artifacts
         if: always()
