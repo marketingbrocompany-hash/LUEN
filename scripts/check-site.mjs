@@ -79,7 +79,9 @@ const services=fs.readFileSync(path.join(root,'services/index.html'),'utf8');
 const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion.css'),'utf8');
 const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion.js'),'utf8');
 const checks=[
-  ['Services and Case Studies headings remain in markup',home.includes('id="services-title"')&&home.includes('대표 <em>캠페인</em>')],
+  ['Services and Case Studies headings match approved copy',
+    home.includes('id="services-title">채널마다 <em>다른 역할</em></h2>')
+    &&home.includes('<h2 class="section-title">프로젝트 <em>성과</em></h2>')],
   ['headings are not hidden by a separate motion observer',!motionCss.includes('luen-motion-title')&&!motionCss.includes('clip-path:inset(0 0 100%')&&!motionJs.includes("classList.add('luen-motion-title')")],
   ['Instagram deep-link target',home.includes('id="instagram-reels"')&&services.includes('href="/#instagram-reels"')],
   ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
