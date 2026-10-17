@@ -24,9 +24,9 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install Playwright
+      - name: Install Playwright and Lighthouse
         run: |
-          npm install --no-save playwright
+          npm install --no-save playwright lighthouse
           npx playwright install --with-deps chromium
 
       - name: Start local site
@@ -41,6 +41,36 @@ jobs:
           done
           cat /tmp/luen-http.log
           exit 1
+
+      - name: Run Lighthouse sample audit
+        run: |
+          mkdir -p qa-artifacts
+          npx lighthouse http://127.0.0.1:4173/             --quiet             --chrome-flags="--headless --no-sandbox"             --only-categories=performance,accessibility,best-practices,seo             --output=json             --output-path=qa-artifacts/lighthouse-home-mobile.json
+          npx lighthouse http://127.0.0.1:4173/insights/japan-influencer-marketing-cost/             --quiet             --chrome-flags="--headless --no-sandbox"             --only-categories=performance,accessibility,best-practices,seo             --output=json             --output-path=qa-artifacts/lighthouse-insight-mobile.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const files = [
+            ['home', 'qa-artifacts/lighthouse-home-mobile.json'],
+            ['insight', 'qa-artifacts/lighthouse-insight-mobile.json']
+          ];
+          const summary = {};
+          for (const [name, path] of files) {
+            const d = JSON.parse(fs.readFileSync(path, 'utf8'));
+            const a = d.audits || {};
+            summary[name] = {
+              scores: Object.fromEntries(Object.entries(d.categories || {}).map(([k,v]) => [k, Math.round((v.score || 0) * 100)])),
+              metrics: {
+                fcp: a['first-contentful-paint']?.displayValue || null,
+                lcp: a['largest-contentful-paint']?.displayValue || null,
+                cls: a['cumulative-layout-shift']?.displayValue || null,
+                tbt: a['total-blocking-time']?.displayValue || null,
+                speedIndex: a['speed-index']?.displayValue || null
+              }
+            };
+          }
+          fs.writeFileSync('qa-artifacts/lighthouse-summary.json', JSON.stringify(summary, null, 2));
+          console.log(JSON.stringify(summary, null, 2));
+          NODE
 
       - name: Run interaction QA
         env:
