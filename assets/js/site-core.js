@@ -93,6 +93,15 @@
       lastMenuFocus.focus();
     }
   }
+  /* A menu left open during a responsive transition must not lock desktop scroll. */
+  const desktopMenu=window.matchMedia('(min-width:821px)');
+  const closeOnDesktop=()=>{
+    if(!desktopMenu.matches||!mobileMenu?.classList.contains('open'))return;
+    setMenu(false,{restoreFocus:false});
+    nav?.querySelector('.logo')?.focus();
+  };
+  if(desktopMenu.addEventListener)desktopMenu.addEventListener('change',closeOnDesktop);
+  else desktopMenu.addListener?.(closeOnDesktop);
   hamburger?.addEventListener('click',()=>setMenu(true));
   mobileClose?.addEventListener('click',()=>setMenu(false));
   document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>setMenu(false,{restoreFocus:false})));
@@ -207,6 +216,19 @@
     if(loopVisibilityObserver)loopVisibilityObserver.observe(viewport);else startLoop(viewport);
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
+  /* Respond to OS reduced-motion changes while the page remains open. */
+  const syncLoopMotionPreference=()=>{
+    if(reducedMotion.matches){
+      loopControllers.forEach((controller,viewport)=>{
+        stopLoop(viewport);
+        controller.track?.style.setProperty('transform','none');
+      });
+    }else{
+      window.requestAnimationFrame(initLoopStrips);
+    }
+  };
+  if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
+  else reducedMotion.addListener?.(syncLoopMotionPreference);
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});

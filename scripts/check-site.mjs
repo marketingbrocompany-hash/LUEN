@@ -83,6 +83,29 @@ const designedPages=htmlFiles.filter(filename=>
   fs.readFileSync(path.join(root,filename),'utf8').includes('luen-v3.css?v=')
 );
 const checks=[
+  ['mobile nav controls have warm-ivory contrast',
+    design.includes('border:1px solid rgba(74,66,60,.38)!important;')
+    &&design.includes('background:#2A2521!important;')
+    &&design.includes('html body #nav .hamburger span{')],
+  ['mobile navigation remains scrollable in landscape',
+    design.includes('overflow-y:auto!important;')
+    &&design.includes('overscroll-behavior:contain;')
+    &&design.includes('@media(max-height:600px) and (max-width:820px)')],
+  ['mobile menu closes when desktop navigation returns',
+    core.includes('closeOnDesktop')
+    &&core.includes('setMenu(false,{restoreFocus:false})')
+    &&core.includes('min-width:821px')],
+  ['reduced-motion preference changes stop and restart marquee loops',
+    core.includes('syncLoopMotionPreference')
+    &&core.includes('controller.track?.style.setProperty')
+    &&core.includes('window.requestAnimationFrame(initLoopStrips)')],
+  ['all shared pages load updated mobile CSS and JS',
+    designedPages.length>=20
+    &&designedPages.every(filename=>{
+      const content=fs.readFileSync(path.join(root,filename),'utf8');
+      return content.includes('luen-v3.css?v=20261017-8')
+        &&content.includes('site-core.js?v=20261017-2');
+    })],
   ['LUEN wordmark has accessible dark contrast on ivory navigation and footer',
     design.includes('html body #nav .logo .logo-word,')
     &&design.includes('html body footer .logo .logo-word{')
@@ -91,7 +114,7 @@ const checks=[
   ['all styled pages load the refreshed logo stylesheet',
     designedPages.length>=20
     &&designedPages.every(filename=>fs.readFileSync(path.join(root,filename),'utf8')
-      .includes('luen-v3.css?v=20261017-7'))],
+      .includes('luen-v3.css?v=20261017-8'))],
   ['all six section headlines share LUEN orange',
     finish.includes('html body main#top .luen-section-primary-title{')
     &&finish.includes('color:var(--luen-finish-cta)!important;')
