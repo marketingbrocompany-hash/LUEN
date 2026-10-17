@@ -1,3 +1,14 @@
+LUEN WEBSITE — CURRENT REPOSITORY NOTES (2026-10-17)
+
+Repository: marketingbrocompany-hash/LUEN
+Current deployment workflow: GitHub pull requests → Vercel Preview → verified merge → Vercel Production.
+Do not follow the older GitHub Pages copy/deploy instruction.
+Static integrity check: node scripts/check-site.mjs
+Detailed code audit: docs/luen-code-audit-20261017.md
+Do not delete historical stylesheets or replace asset-manifest.json without verifying dependencies.
+
+--- HISTORICAL V10.8 ANALYTICS NOTES (retained for reference) ---
+
 LUEN V10.8 — GA4 Analytics Patch
 
 Measurement ID: G-QXBK6XEK7G
@@ -18,4 +29,4 @@ Tracked events:
 Privacy:
 No name, email, phone, company, budget, project message, or other form field values are sent to Google Analytics.
 
-Apply by copying these files over the existing LUEN project files, then test locally and deploy to GitHub Pages.
+Legacy note: the former GitHub Pages deployment instruction is obsolete.

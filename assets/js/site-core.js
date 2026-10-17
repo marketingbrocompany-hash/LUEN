@@ -111,18 +111,31 @@
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
   });
 
-  if('IntersectionObserver' in window){
-    const io=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
+  /* Progressive reveal: content is visible by default if JS is blocked.
+     Only switch on hidden-until-in-view styling after the observer works. */
+  const revealTargets=[...document.querySelectorAll('.sr')];
+  const reduceReveal=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  if(!reduceReveal && 'IntersectionObserver' in window){
+    try{
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+      revealTargets.forEach(el=>{
+        /* Keep already visible/above-the-fold content from flashing away. */
+        if(el.getBoundingClientRect().top<=window.innerHeight+40)el.classList.add('in');
+        else io.observe(el);
       });
-    },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-    document.querySelectorAll('.sr').forEach(el=>io.observe(el));
+      document.documentElement.classList.add('js-scroll-reveal');
+    }catch(_error){
+      revealTargets.forEach(el=>el.classList.add('in'));
+    }
   }else{
-    document.querySelectorAll('.sr').forEach(el=>el.classList.add('in'));
+    revealTargets.forEach(el=>el.classList.add('in'));
   }
 
   document.querySelectorAll('.faq-q').forEach(btn=>{
