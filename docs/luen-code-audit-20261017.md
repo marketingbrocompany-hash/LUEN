@@ -43,3 +43,12 @@ These 8 stylesheets were not linked from the audited 23 HTML pages (approximatel
 - Browser rendering and real device behavior (PC, mobile Safari, Android Chrome).
 - Thumbnail strip actual loop continuity, responsive image cropping, case POP media, form success/failure, CLS/LCP and reduced-motion.
 - The static checker cannot verify those behaviors or detect CSS visual overlap.
+
+## 2026-10-17 incremental Services cleanup
+
+After comparing the current 23 HTML pages and runtime scripts, the following selectors were confirmed to have no runtime markup consumers and were removed from `assets/css/luen-v3.css`:
+- `.luen-service-goal-strip` and related descendant/hover rules
+- `.luen-service-choice-desc`
+- `.luen-service-choice-options>span` (current options use detail rows and the separate `.luen-service-choice-episodes`)
+
+The remaining `.luen-service-choice`, `.luen-service-choice-options-detail`, and TikTok episode styles were retained. The eight unreferenced historical CSS files remain in version control for now. This cleanup does not change business claims, copy, page structure, or animation handlers.
