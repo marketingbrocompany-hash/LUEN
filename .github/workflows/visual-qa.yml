@@ -15,10 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Checkout Phase 8 branch
+      - name: Checkout latest main
         run: |
-          git fetch origin feat/insights-phase8-20261016
-          git checkout --detach origin/feat/insights-phase8-20261016
+          git fetch origin main
+          git checkout --detach origin/main
 
       - uses: actions/setup-node@v4
         with:
