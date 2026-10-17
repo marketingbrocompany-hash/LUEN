@@ -8221,3 +8221,19 @@ html body .scroll-progress{
     border-radius:16px!important;
   }
 }
+
+
+/* RELIABILITY FIX — content is readable even if the JS bundle is blocked.
+   site-core.js enables .js-scroll-reveal only after observer setup succeeds.
+   Keep all content visible for reduced-motion preferences. */
+html:not(.js-scroll-reveal) body .sr {
+  opacity:1!important;
+  transform:none!important;
+}
+@media(prefers-reduced-motion:reduce) {
+  html body .sr {
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+}
