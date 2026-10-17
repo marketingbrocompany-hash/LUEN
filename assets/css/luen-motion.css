@@ -3,21 +3,8 @@
  * Scope: homepage only. Existing hero typography, thumbnail marquee,
  * mobile gestures and CTA handlers remain untouched.
  */
-@media (prefers-reduced-motion: no-preference) {
-  html.luen-motion-enhanced .luen-motion-title {
-    opacity:.18;
-    clip-path:inset(0 0 100% 0);
-    translate:0 12px;
-    transition:opacity .78s cubic-bezier(.22,1,.36,1),
-               clip-path .92s cubic-bezier(.22,1,.36,1),
-               translate .92s cubic-bezier(.22,1,.36,1);
-  }
-  html.luen-motion-enhanced .luen-motion-title.is-visible {
-    opacity:1;
-    clip-path:inset(0);
-    translate:0 0;
-  }
-}
+/* Section headings are intentionally never clipped or hidden.
+   The existing .sr parent controls their subtle entry animation. */
 
 /* The main site already animates .sr containers. Stagger only their
    children, without changing the parent transform or the card hover. */
@@ -73,12 +60,6 @@
 
 /* Small screens show titles immediately; no scroll-driven transforms. */
 @media (max-width:767px), (prefers-reduced-motion:reduce) {
-  html.luen-motion-enhanced .luen-motion-title {
-    opacity:1!important;
-    clip-path:none!important;
-    translate:none!important;
-    transition:none!important;
-  }
   html.luen-motion-enhanced .luen-service-choice-grid.sr > .luen-service-choice,
   html.luen-motion-enhanced .case-support-grid-v7.sr > .case-support-card-v7,
   html.luen-motion-enhanced .luen-flow-list-v2.sr > li {
