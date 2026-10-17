@@ -7513,6 +7513,348 @@ html body .scroll-progress{
   border-color:var(--luen-orange);
 }
 
+
+/* Homepage campaign options */
+.luen-campaign-options{
+  padding:clamp(96px,10vw,148px) 0;
+  background:var(--luen-canvas);
+  border-bottom:1px solid var(--luen-line);
+}
+.luen-campaign-options-head{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(300px,.72fr);
+  column-gap:clamp(54px,8vw,120px);
+  max-width:none;
+  align-items:end;
+}
+.luen-campaign-options-head .eyebrow,
+.luen-campaign-options-head .section-title{
+  grid-column:1;
+}
+.luen-campaign-options-head .section-copy{
+  grid-column:2;
+  grid-row:1 / span 2;
+  align-self:end;
+  margin:0 0 4px;
+}
+.luen-campaign-channel-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.luen-campaign-channel{
+  position:relative;
+  overflow:hidden;
+  min-height:520px;
+  padding:clamp(28px,3.4vw,48px);
+  border:1px solid var(--luen-line);
+  border-radius:28px;
+  background:var(--luen-surface);
+  transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+.luen-campaign-youtube{
+  grid-column:1 / -1;
+  min-height:470px;
+}
+.luen-campaign-channel::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  right:-80px;
+  top:-95px;
+  border:1px solid var(--luen-line);
+  border-radius:50%;
+  opacity:.65;
+  pointer-events:none;
+  transition:transform .5s ease,border-color .35s ease;
+}
+.luen-campaign-channel-label{
+  display:block;
+  margin-bottom:clamp(42px,5vw,68px);
+  color:var(--luen-orange);
+  font:800 10px/1.2 var(--luen-type-ui);
+  letter-spacing:.11em;
+}
+.luen-campaign-channel-head h3{
+  max-width:760px;
+  margin:0;
+  color:var(--luen-ink);
+  font:720 clamp(30px,3vw,44px)/1.08 var(--luen-type-display);
+  letter-spacing:-.045em;
+}
+.luen-campaign-channel-head>p{
+  max-width:690px;
+  margin:22px 0 0;
+  color:var(--luen-muted);
+  font-size:13.5px;
+  line-height:1.72;
+}
+.luen-campaign-channel-head>p strong{
+  color:var(--luen-ink-soft);
+  font-weight:700;
+}
+.luen-youtube-options{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:42px;
+  border-top:1px solid var(--luen-line);
+  border-bottom:1px solid var(--luen-line);
+}
+.luen-youtube-option{
+  min-height:150px;
+  padding:24px 28px 24px 0;
+  border-right:1px solid var(--luen-line);
+}
+.luen-youtube-option+ .luen-youtube-option{
+  padding-left:28px;
+}
+.luen-youtube-option:last-child{
+  padding-right:0;
+  border-right:0;
+}
+.luen-youtube-option>span{
+  display:block;
+  margin-bottom:25px;
+  color:var(--luen-orange);
+  font:800 10px/1 var(--luen-type-ui);
+}
+.luen-youtube-option>strong{
+  display:block;
+  color:var(--luen-ink);
+  font:700 18px/1.25 var(--luen-type-display);
+  letter-spacing:-.025em;
+}
+.luen-youtube-option>p{
+  margin:10px 0 0;
+  color:var(--luen-muted);
+  font-size:12.5px;
+  line-height:1.6;
+}
+.luen-youtube-option-group{
+  background:linear-gradient(90deg,transparent,rgba(244,125,53,.045));
+}
+.luen-instagram-options{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  margin-top:42px;
+  border-top:1px solid var(--luen-line);
+  border-bottom:1px solid var(--luen-line);
+}
+.luen-instagram-options>div{
+  min-height:150px;
+  padding:24px 24px 24px 0;
+}
+.luen-instagram-options>div+div{
+  padding-left:24px;
+  border-left:1px solid var(--luen-line);
+}
+.luen-instagram-options strong{
+  display:block;
+  color:var(--luen-ink);
+  font:720 clamp(40px,4vw,58px)/.95 var(--luen-type-display);
+  letter-spacing:-.055em;
+}
+.luen-instagram-options span,
+.luen-instagram-options small{
+  display:block;
+  margin-top:8px;
+  color:var(--luen-muted);
+  font:700 10px/1.2 var(--luen-type-ui);
+  letter-spacing:.08em;
+}
+.luen-instagram-options small{
+  margin-top:5px;
+  color:var(--luen-orange);
+}
+.luen-tiktok-episodes{
+  display:flex;
+  align-items:center;
+  margin-top:58px;
+  padding:30px 0;
+  border-top:1px solid var(--luen-line);
+  border-bottom:1px solid var(--luen-line);
+}
+.luen-tiktok-episodes span{
+  flex:0 0 auto;
+  color:var(--luen-ink);
+  font:800 11px/1 var(--luen-type-ui);
+  letter-spacing:.08em;
+}
+.luen-tiktok-episodes i{
+  position:relative;
+  flex:1 1 auto;
+  height:1px;
+  margin:0 13px;
+  background:var(--luen-line);
+}
+.luen-tiktok-episodes i::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  right:0;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--luen-orange);
+  transform:translate(50%,-50%);
+}
+.luen-campaign-link{
+  display:inline-flex;
+  align-items:center;
+  min-height:40px;
+  margin-top:30px;
+  border-bottom:1px solid rgba(17,16,14,.4);
+  color:var(--luen-ink-soft);
+  font:700 11px/1 var(--luen-type-ui);
+  text-decoration:none;
+  transition:color .2s ease,border-color .2s ease;
+}
+.luen-campaign-link:hover,
+.luen-campaign-link:focus-visible{
+  color:var(--luen-orange);
+  border-color:var(--luen-orange);
+}
+.luen-campaign-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:18px;
+  border-top:1px solid var(--luen-line);
+  border-bottom:1px solid var(--luen-line);
+}
+.luen-campaign-summary>div{
+  padding:22px 26px 22px 0;
+  border-right:1px solid var(--luen-line);
+}
+.luen-campaign-summary>div+div{
+  padding-left:26px;
+}
+.luen-campaign-summary>div:last-child{
+  border-right:0;
+}
+.luen-campaign-summary span{
+  display:block;
+  margin-bottom:8px;
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.1em;
+}
+.luen-campaign-summary strong{
+  color:var(--luen-ink-soft);
+  font:700 14px/1.4 var(--luen-type-display);
+  letter-spacing:-.02em;
+}
+@media(hover:hover) and (pointer:fine){
+  .luen-campaign-channel:hover{
+    transform:translateY(-4px);
+    border-color:rgba(244,125,53,.3);
+    box-shadow:0 18px 44px rgba(17,16,14,.055);
+  }
+  .luen-campaign-channel:hover::after{
+    transform:translate(-10px,10px) scale(1.08);
+    border-color:rgba(244,125,53,.28);
+  }
+}
+@media(max-width:900px){
+  .luen-campaign-options-head{
+    display:block;
+  }
+  .luen-campaign-options-head .section-copy{
+    margin-top:18px;
+  }
+  .luen-campaign-channel-grid{
+    grid-template-columns:1fr;
+  }
+  .luen-campaign-youtube{
+    grid-column:auto;
+  }
+  .luen-youtube-options{
+    grid-template-columns:1fr;
+  }
+  .luen-youtube-option,
+  .luen-youtube-option+ .luen-youtube-option,
+  .luen-youtube-option:last-child{
+    min-height:0;
+    padding:22px 0;
+    border-right:0;
+    border-bottom:1px solid var(--luen-line);
+  }
+  .luen-youtube-option:last-child{
+    border-bottom:0;
+  }
+}
+@media(max-width:767px){
+  .luen-campaign-options{
+    padding:78px 0;
+  }
+  .luen-campaign-channel{
+    min-height:0;
+    padding:26px 22px 28px;
+    border-radius:22px;
+  }
+  .luen-campaign-channel-label{
+    margin-bottom:34px;
+  }
+  .luen-campaign-channel-head h3{
+    font-size:30px;
+  }
+  .luen-campaign-channel-head>p{
+    margin-top:16px;
+    font-size:13px;
+  }
+  .luen-youtube-options,
+  .luen-instagram-options{
+    margin-top:30px;
+  }
+  .luen-youtube-option>span{
+    margin-bottom:14px;
+  }
+  .luen-instagram-options>div{
+    min-height:130px;
+    padding:22px 16px 22px 0;
+  }
+  .luen-instagram-options>div+div{
+    padding-left:16px;
+  }
+  .luen-tiktok-episodes{
+    margin-top:36px;
+    padding:25px 0;
+  }
+  .luen-tiktok-episodes i{
+    margin:0 7px;
+  }
+  .luen-tiktok-episodes span{
+    font-size:9px;
+  }
+  .luen-campaign-summary{
+    display:block;
+  }
+  .luen-campaign-summary>div,
+  .luen-campaign-summary>div+div,
+  .luen-campaign-summary>div:last-child{
+    padding:18px 0;
+    border-right:0;
+    border-bottom:1px solid var(--luen-line);
+  }
+  .luen-campaign-summary>div:last-child{
+    border-bottom:0;
+  }
+}
+@media(max-width:380px){
+  .luen-campaign-options{
+    padding:68px 0;
+  }
+  .luen-campaign-channel{
+    padding:23px 18px 25px;
+  }
+  .luen-campaign-channel-head h3{
+    font-size:27px;
+  }
+  .luen-instagram-options strong{
+    font-size:38px;
+  }
+}
+
 /* LUEN Content Flow */
 .luen-home-flow{
   background:var(--luen-canvas);
