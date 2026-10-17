@@ -84,7 +84,17 @@ const checks=[
     finish.includes('html body main#top .luen-section-primary-title{')
     &&finish.includes('color:var(--luen-finish-cta)!important;')
     &&!finish.includes('html body main#top #content-flow .luen-section-primary-title{')
-    &&home.includes('luen-finish.css?v=20261017-5')],
+    &&home.includes('luen-finish.css?v=20261017-6')],
+  ['homepage heading and subheading typography remains restrained',
+    finish.includes('font-size:clamp(40px,4vw,52px)!important;')
+    &&finish.includes('font-size:clamp(30px,8vw,34px)!important;')
+    &&finish.includes('font-weight:700!important;')
+    &&finish.includes('font-size:clamp(18px,1.65vw,21px)!important;')
+    &&finish.includes('font-size:clamp(16px,4vw,17px)!important;')
+    &&finish.includes('#services .luen-home-services-head')
+    &&finish.includes('#cases.case-studies-v7 .case-feature-v7')
+    &&finish.includes('#faq .faq-layout')
+    &&finish.includes('#contact .contact-layout')],
   ['six English section labels are semantic large headings',
     [
       ['services-title','SERVICES'],
