@@ -186,22 +186,22 @@ html body main#top .luen-section-primary-title{
   padding:0;
   color:var(--luen-finish-cta)!important;
   font-family:var(--luen-type-ui)!important;
-  font-size:clamp(42px,5.2vw,68px)!important;
-  font-weight:750!important;
-  line-height:1.05!important;
-  letter-spacing:-.055em!important;
+  font-size:clamp(40px,4vw,52px)!important;
+  font-weight:700!important;
+  line-height:1.08!important;
+  letter-spacing:-.046em!important;
   text-transform:none;
   text-wrap:balance;
   overflow-wrap:normal;
 }
 html body main#top .luen-section-subheading{
   max-width:38ch;
-  margin:clamp(14px,2vw,22px) 0 0!important;
+  margin:18px 0 0!important;
   padding:0;
   color:var(--luen-ink-soft)!important;
   font-family:var(--luen-type-display)!important;
-  font-size:clamp(18px,2vw,26px)!important;
-  font-weight:630!important;
+  font-size:clamp(18px,1.65vw,21px)!important;
+  font-weight:600!important;
   line-height:1.48!important;
   letter-spacing:-.032em!important;
   word-break:keep-all;
@@ -230,12 +230,57 @@ html body main#top #contact .luen-section-subheading + .contact-copy{
 
 @media(max-width:767px){
   html body main#top .luen-section-primary-title{
-    font-size:clamp(30px,8.6vw,42px)!important;
+    font-size:clamp(30px,8vw,34px)!important;
     line-height:1.08!important;
     letter-spacing:-.048em!important;
   }
   html body main#top .luen-section-subheading{
-    font-size:clamp(16px,4.6vw,20px)!important;
+    font-size:clamp(16px,4vw,17px)!important;
     line-height:1.5!important;
+  }
+}
+
+/* Controlled editorial rhythm: headline-to-content gaps are section-specific.
+   Existing imagery, moving strips and card layouts remain unchanged. */
+html body main#top #services .luen-home-services-head,
+html body main#top #content-flow .luen-home-section-head{
+  margin-bottom:clamp(42px,4vw,56px)!important;
+}
+html body main#top #cases.case-studies-v7 .case-feature-v7{
+  margin-top:clamp(40px,4vw,54px)!important;
+}
+html body main#top #performance .performance-layout,
+html body main#top #faq .faq-layout,
+html body main#top #contact .contact-layout{
+  gap:clamp(42px,4vw,56px)!important;
+}
+html body main#top #performance .luen-section-subheading + .data-source-badge{
+  margin-top:20px!important;
+}
+@media(max-width:1100px){
+  html body main#top #performance .performance-layout,
+  html body main#top #faq .faq-layout,
+  html body main#top #contact .contact-layout{
+    gap:36px!important;
+  }
+}
+@media(max-width:767px){
+  html body main#top .luen-section-subheading{
+    margin-top:12px!important;
+  }
+  html body main#top #services .luen-home-services-head,
+  html body main#top #content-flow .luen-home-section-head{
+    margin-bottom:32px!important;
+  }
+  html body main#top #cases.case-studies-v7 .case-feature-v7{
+    margin-top:30px!important;
+  }
+  html body main#top #performance .performance-layout,
+  html body main#top #faq .faq-layout,
+  html body main#top #contact .contact-layout{
+    gap:30px!important;
+  }
+  html body main#top #performance .luen-section-subheading + .data-source-badge{
+    margin-top:16px!important;
   }
 }
