@@ -7806,24 +7806,6 @@ html body .scroll-progress{
   border-top:1px solid var(--luen-line);
   border-bottom:1px solid var(--luen-line);
 }
-.luen-service-choice-options>span{
-  display:inline-flex;
-  align-items:center;
-  min-height:28px;
-  padding:0 10px;
-  border:1px solid rgba(17,16,14,.13);
-  border-radius:999px;
-  color:var(--luen-ink-soft);
-  background:rgba(255,255,255,.25);
-  font:700 10px/1 var(--luen-type-ui);
-  white-space:nowrap;
-}
-.luen-service-choice-desc{
-  margin:0 0 28px;
-  color:var(--luen-muted);
-  font-size:12.8px;
-  line-height:1.72;
-}
 .luen-service-choice>a{
   display:inline-flex;
   align-items:center;
@@ -7868,39 +7850,6 @@ html body .scroll-progress{
   border-radius:50%;
   background:var(--luen-orange);
   transform:translate(50%,-50%);
-}
-.luen-service-goal-strip{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  margin-top:18px;
-  padding:22px 0;
-  border-top:1px solid var(--luen-line);
-  border-bottom:1px solid var(--luen-line);
-}
-.luen-service-goal-strip p{
-  margin:0;
-  color:var(--luen-muted);
-  font-size:12.8px;
-  line-height:1.65;
-}
-.luen-service-goal-strip p strong{
-  color:var(--luen-ink-soft);
-}
-.luen-service-goal-strip>div{
-  display:flex;
-  gap:18px;
-  flex:0 0 auto;
-}
-.luen-service-goal-strip a{
-  color:var(--luen-ink-soft);
-  font:700 10px/1 var(--luen-type-ui);
-  text-decoration:none;
-}
-.luen-service-goal-strip a:hover,
-.luen-service-goal-strip a:focus-visible{
-  color:var(--luen-orange);
 }
 
 .luen-home-flow-v2{
@@ -7981,17 +7930,6 @@ html body .scroll-progress{
     margin-bottom:20px;
     padding:17px 0;
   }
-  .luen-service-choice-desc{
-    margin-bottom:22px;
-    font-size:12.5px;
-  }
-  .luen-service-goal-strip{
-    display:block;
-    padding:20px 0;
-  }
-  .luen-service-goal-strip>div{
-    margin-top:14px;
-  }
   .luen-flow-list-v2{
     display:block;
   }
@@ -8048,9 +7986,6 @@ html body .scroll-progress{
   color:var(--luen-muted);
   font-size:11px;
   line-height:1.45;
-}
-.luen-service-choice-desc{
-  display:none;
 }
 .luen-service-choice>a{
   margin-top:auto;
