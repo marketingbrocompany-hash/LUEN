@@ -28,7 +28,8 @@
     opacity:0;
     translate:0 17px;
     transition:opacity .65s cubic-bezier(.22,1,.36,1),
-               translate .72s cubic-bezier(.22,1,.36,1);
+               translate .72s cubic-bezier(.22,1,.36,1),
+               transform .28s ease,border-color .28s ease,box-shadow .28s ease;
   }
   html.luen-motion-enhanced .luen-service-choice-grid.sr.in > .luen-service-choice,
   html.luen-motion-enhanced .case-support-grid-v7.sr.in > .case-support-card-v7,
