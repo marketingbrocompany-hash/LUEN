@@ -2334,3 +2334,115 @@
   }
   .insight-related strong{margin-top:18px;}
 }
+
+
+/* Herahera case — offline POP proof */
+.case-offline-detail-grid{
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:clamp(28px,5vw,72px);
+  align-items:stretch;
+}
+.case-offline-detail-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:520px;
+  padding:clamp(28px,4vw,48px);
+  border:1px solid var(--luen-line);
+  border-radius:26px;
+  background:var(--luen-canvas);
+}
+.case-offline-detail-copy>span{
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.1em;
+}
+.case-offline-detail-copy h3{
+  margin:clamp(42px,5vw,68px) 0 0;
+  color:var(--luen-ink);
+  font:720 clamp(30px,3vw,44px)/1.08 var(--luen-type-display);
+  letter-spacing:-.045em;
+}
+.case-offline-detail-copy>p{
+  margin:22px 0 0;
+  color:var(--luen-muted);
+  font-size:13px;
+  line-height:1.78;
+}
+.case-offline-detail-flow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:auto;
+  padding-top:30px;
+  border-top:1px solid var(--luen-line);
+}
+.case-offline-detail-flow b{
+  color:var(--luen-ink-soft);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.08em;
+}
+.case-offline-detail-flow i{
+  color:var(--luen-orange);
+  font-style:normal;
+}
+.case-offline-detail-media{
+  position:relative;
+  overflow:hidden;
+  min-height:520px;
+  margin:0;
+  border-radius:26px;
+  background:rgba(17,16,14,.05);
+}
+.case-offline-detail-media img{
+  width:100%;
+  height:100%;
+  min-height:520px;
+  display:block;
+  object-fit:cover;
+}
+.case-offline-detail-media figcaption{
+  position:absolute;
+  right:16px;
+  bottom:14px;
+  z-index:2;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(17,16,14,.72);
+  color:#fff;
+  font:700 9px/1.2 var(--luen-type-ui);
+  letter-spacing:.02em;
+}
+@media(max-width:900px){
+  .case-offline-detail-grid{
+    grid-template-columns:1fr;
+  }
+  .case-offline-detail-copy,
+  .case-offline-detail-media,
+  .case-offline-detail-media img{
+    min-height:0;
+  }
+  .case-offline-detail-media{
+    aspect-ratio:4/3;
+  }
+}
+@media(max-width:767px){
+  .case-offline-detail-copy{
+    padding:24px 20px;
+    border-radius:20px;
+  }
+  .case-offline-detail-copy h3{
+    margin-top:34px;
+    font-size:30px;
+  }
+  .case-offline-detail-flow{
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:28px;
+    padding-top:22px;
+  }
+  .case-offline-detail-media{
+    border-radius:20px;
+  }
+}
