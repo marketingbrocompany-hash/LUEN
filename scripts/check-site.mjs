@@ -80,10 +80,11 @@ const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion.css'),'ut
 const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion.js'),'utf8');
 const finish=fs.readFileSync(path.join(root,'assets/css/luen-finish.css'),'utf8');
 const checks=[
-  ['HOW LUEN WORKS headline uses LUEN orange',
-    finish.includes('html body main#top #content-flow .luen-section-primary-title{')
+  ['all six section headlines share LUEN orange',
+    finish.includes('html body main#top .luen-section-primary-title{')
     &&finish.includes('color:var(--luen-finish-cta)!important;')
-    &&home.includes('luen-finish.css?v=20261017-4')],
+    &&!finish.includes('html body main#top #content-flow .luen-section-primary-title{')
+    &&home.includes('luen-finish.css?v=20261017-5')],
   ['six English section labels are semantic large headings',
     [
       ['services-title','SERVICES'],
