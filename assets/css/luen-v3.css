@@ -8146,9 +8146,7 @@ html body .scroll-progress{
 
 /* Case studies — moving selected work */
 .case-selected-work-v10{
-  margin-top:clamp(54px,7vw,88px);
-  padding-top:clamp(34px,4vw,52px);
-  border-top:1px solid var(--luen-line);
+  margin-top:clamp(28px,4vw,48px);
 }
 .case-selected-work-head-v10{
   display:grid;
@@ -8208,8 +8206,7 @@ html body .scroll-progress{
 }
 @media(max-width:767px){
   .case-selected-work-v10{
-    margin-top:48px;
-    padding-top:30px;
+    margin-top:28px;
   }
   .case-selected-work-head-v10{
     margin-bottom:26px;
