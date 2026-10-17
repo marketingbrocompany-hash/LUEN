@@ -162,3 +162,13 @@ html body .float-cta:focus-visible{
   outline:2px solid var(--luen-finish-label)!important;
   outline-offset:3px!important;
 }
+
+/* Services hub deep links: keep selected channel visible beneath the
+   sticky navbar, without changing the existing card grid or motion. */
+html body main#top #services .luen-service-choice[id]{
+  scroll-margin-top:clamp(80px,9vw,112px);
+}
+html body main#top #services .luen-service-choice:target{
+  border-color:rgba(185,85,42,.48)!important;
+  box-shadow:0 12px 36px rgba(77,49,30,.07);
+}

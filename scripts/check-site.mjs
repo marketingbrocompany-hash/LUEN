@@ -75,7 +75,11 @@ const home=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const cases=fs.readFileSync(path.join(root,'cases/herahera-seoul-fnb/index.html'),'utf8');
 const core=fs.readFileSync(path.join(root,'assets/js/site-core.js'),'utf8');
 const design=fs.readFileSync(path.join(root,'assets/css/luen-v3.css'),'utf8');
+const services=fs.readFileSync(path.join(root,'services/index.html'),'utf8');
 const checks=[
+  ['Instagram deep-link target',home.includes('id="instagram-reels"')&&services.includes('href="/#instagram-reels"')],
+  ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
+  ['Services hub lists all six offerings',(services.match(/class="service-hub-item/g)||[]).length===6],
   ['three moving brand/YouTube/Instagram strips',(home.match(/\bdata-loop-strip\s*=/g)||[]).length===3],
   ['Instagram Basic / Standard / Premium',['Basic','Standard','Premium'].every(x=>home.includes('<strong>'+x+'</strong>'))],
   ['deleted More Content heading stays deleted',!home.includes('class="case-selected-work-head-v10"')],
