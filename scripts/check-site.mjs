@@ -78,18 +78,41 @@ const design=fs.readFileSync(path.join(root,'assets/css/luen-v3.css'),'utf8');
 const services=fs.readFileSync(path.join(root,'services/index.html'),'utf8');
 const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion.css'),'utf8');
 const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion.js'),'utf8');
+const finish=fs.readFileSync(path.join(root,'assets/css/luen-finish.css'),'utf8');
 const checks=[
-  ['only Services and Signature Campaigns descriptions removed',
-    home.includes('<div class="eyebrow">SERVICES</div>')
+  ['all six section headlines share LUEN orange',
+    finish.includes('html body main#top .luen-section-primary-title{')
+    &&finish.includes('color:var(--luen-finish-cta)!important;')
+    &&!finish.includes('html body main#top #content-flow .luen-section-primary-title{')
+    &&home.includes('luen-finish.css?v=20261017-5')],
+  ['six English section labels are semantic large headings',
+    [
+      ['services-title','SERVICES'],
+      ['cases-title','Signature Campaigns'],
+      ['content-flow-title','HOW LUEN WORKS'],
+      ['performance-title','PERFORMANCE'],
+      ['faq-title','FAQ'],
+      ['contact-title','PROJECT INQUIRY']
+    ].every(([id,label])=>home.includes('<h2 class="luen-section-primary-title" id="'+id+'">'+label+'</h2>'))
+    &&(home.match(/class="luen-section-primary-title"/g)||[]).length===6
+    &&finish.includes('.luen-section-primary-title{')],
+  ['numbered section labels and obsolete Korean display titles removed',
+    !/0[3-8] · (?:SERVICES|HOW LUEN WORKS|PERFORMANCE|FAQ|PROJECT INQUIRY)/.test(home)
+    &&!home.includes('채널마다 <em>다른 역할</em>')
+    &&!home.includes('프로젝트 <em>성과</em>')
     &&!home.includes('설명이 필요하면 YouTube, 여러 인플루언서로 확산하려면 Instagram')
-    &&!home.includes('예약, 랭킹, 매장 방문. 조회수 밖에서 확인된 결과들입니다.')
+    &&!home.includes('예약, 랭킹, 매장 방문. 조회수 밖에서 확인된 결과들입니다.')],
+  ['four secondary Korean headlines retained beneath English headings',
+    (home.match(/class="luen-section-subheading"/g)||[]).length===4
     &&home.includes('복잡한 과정은 줄이고,')
     &&home.includes('업로드 직후만 보지 않고')
     &&home.includes('문의 전,')
-    &&home.includes('프로젝트에 대해')],
-  ['Services and Case Studies headings match approved copy',
-    home.includes('id="services-title">채널마다 <em>다른 역할</em></h2>')
-    &&home.includes('<h2 class="section-title">프로젝트 <em>성과</em></h2>')],
+    &&home.includes('프로젝트에 대해')
+    &&finish.includes('.luen-section-subheading{')],
+  ['remaining section descriptions preserved',
+    home.includes('크리에이터 매칭부터 일정·가이드·콘텐츠 확인·발행까지 한 흐름으로 관리합니다.')
+    &&home.includes('첫 주 이후 +31.4% 성장한 공개 지표를 추적하고')
+    &&home.includes('브랜드, 목표 시장, 현재 고민만 알려주세요.')],
   ['headings are not hidden by a separate motion observer',!motionCss.includes('luen-motion-title')&&!motionCss.includes('clip-path:inset(0 0 100%')&&!motionJs.includes("classList.add('luen-motion-title')")],
   ['Instagram deep-link target',home.includes('id="instagram-reels"')&&services.includes('href="/#instagram-reels"')],
   ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
