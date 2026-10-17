@@ -5,27 +5,8 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reduced.matches) return;
 
-  const headings = [...document.querySelectorAll([
-    '.luen-home-services-head .section-title',
-    '#cases .case-head-v7 .section-title',
-    '.luen-home-flow .section-title',
-    '.performance-copy .section-title',
-    '.faq-intro .section-title',
-    '#contact .section-title'
-  ].join(','))];
-
-  const reveal = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      reveal.unobserve(entry.target);
-    });
-  }, {threshold:0.08,rootMargin:'0px 0px -24px 0px'});
-
-  headings.forEach(heading => {
-    heading.classList.add('luen-motion-title');
-    reveal.observe(heading);
-  });
+  /* Existing .sr section reveal already includes every heading.
+     Never gate heading visibility on a second IntersectionObserver. */
   document.documentElement.classList.add('luen-motion-enhanced');
 
   const media = document.querySelector('#case-herahera .case-content-media-v7 img');
