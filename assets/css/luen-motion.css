@@ -1,0 +1,88 @@
+/*
+ * LUEN | Homepage editorial motion — additive layer
+ * Scope: homepage only. Existing hero typography, thumbnail marquee,
+ * mobile gestures and CTA handlers remain untouched.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.luen-motion-enhanced .luen-motion-title {
+    opacity:.18;
+    clip-path:inset(0 0 100% 0);
+    translate:0 12px;
+    transition:opacity .78s cubic-bezier(.22,1,.36,1),
+               clip-path .92s cubic-bezier(.22,1,.36,1),
+               translate .92s cubic-bezier(.22,1,.36,1);
+  }
+  html.luen-motion-enhanced .luen-motion-title.is-visible {
+    opacity:1;
+    clip-path:inset(0);
+    translate:0 0;
+  }
+}
+
+/* The main site already animates .sr containers. Stagger only their
+   children, without changing the parent transform or the card hover. */
+@media (min-width:768px) and (prefers-reduced-motion: no-preference) {
+  html.luen-motion-enhanced .luen-service-choice-grid.sr > .luen-service-choice,
+  html.luen-motion-enhanced .case-support-grid-v7.sr > .case-support-card-v7,
+  html.luen-motion-enhanced .luen-flow-list-v2.sr > li {
+    opacity:0;
+    translate:0 17px;
+    transition:opacity .65s cubic-bezier(.22,1,.36,1),
+               translate .72s cubic-bezier(.22,1,.36,1);
+  }
+  html.luen-motion-enhanced .luen-service-choice-grid.sr.in > .luen-service-choice,
+  html.luen-motion-enhanced .case-support-grid-v7.sr.in > .case-support-card-v7,
+  html.luen-motion-enhanced .luen-flow-list-v2.sr.in > li {
+    opacity:1;
+    translate:0 0;
+  }
+  html.luen-motion-enhanced .luen-service-choice-grid.sr > :nth-child(2),
+  html.luen-motion-enhanced .case-support-grid-v7.sr > :nth-child(2),
+  html.luen-motion-enhanced .luen-flow-list-v2.sr > :nth-child(2) {
+    transition-delay:.09s;
+  }
+  html.luen-motion-enhanced .luen-service-choice-grid.sr > :nth-child(3),
+  html.luen-motion-enhanced .case-support-grid-v7.sr > :nth-child(3),
+  html.luen-motion-enhanced .luen-flow-list-v2.sr > :nth-child(3) {
+    transition-delay:.18s;
+  }
+  html.luen-motion-enhanced .luen-flow-list-v2.sr > :nth-child(4) {
+    transition-delay:.27s;
+  }
+}
+
+/* Gentle movement on one editorial hero case image, never on the
+   continuously moving long-form / reels thumbnail rails. */
+@media (min-width:901px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  html.luen-motion-enhanced #case-herahera .case-content-media-v7 img.luen-motion-parallax {
+    transform:translate3d(0,var(--luen-motion-y,0px),0) scale(1.06);
+    will-change:transform;
+  }
+  html.luen-motion-enhanced #cases .case-support-card-v7 figure {
+    overflow:hidden;
+  }
+  html.luen-motion-enhanced #cases .case-support-card-v7 figure img {
+    transition:transform .7s cubic-bezier(.22,1,.36,1)!important;
+  }
+  html.luen-motion-enhanced #cases .case-support-card-v7:hover figure img,
+  html.luen-motion-enhanced #cases .case-support-card-v7:focus-within figure img {
+    transform:scale(1.045);
+  }
+}
+
+/* Small screens show titles immediately; no scroll-driven transforms. */
+@media (max-width:767px), (prefers-reduced-motion:reduce) {
+  html.luen-motion-enhanced .luen-motion-title {
+    opacity:1!important;
+    clip-path:none!important;
+    translate:none!important;
+    transition:none!important;
+  }
+  html.luen-motion-enhanced .luen-service-choice-grid.sr > .luen-service-choice,
+  html.luen-motion-enhanced .case-support-grid-v7.sr > .case-support-card-v7,
+  html.luen-motion-enhanced .luen-flow-list-v2.sr > li {
+    opacity:1!important;
+    translate:none!important;
+    transition-delay:0s!important;
+  }
+}
