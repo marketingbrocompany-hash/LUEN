@@ -141,6 +141,16 @@ html body>footer{
   background:#EAE4DA!important;
   border-top-color:rgba(93,76,64,.14)!important;
 }
+html body footer .footer-brand p,
+html body footer .footer-bottom p,
+html body footer .footer-business-info,
+html body footer .footer-business-info a{
+  color:#61564E!important;
+}
+html body footer .footer-business-info{
+  font-size:11px!important;
+  line-height:1.6!important;
+}
 
 /* Keyboard and assistive input: focus remains visible on pale panels. */
 html body main#top a:focus-visible,
