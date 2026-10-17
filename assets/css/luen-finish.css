@@ -194,6 +194,10 @@ html body main#top .luen-section-primary-title{
   text-wrap:balance;
   overflow-wrap:normal;
 }
+/* Orange emphasis is intentional for the HOW LUEN WORKS heading only. */
+html body main#top #content-flow .luen-section-primary-title{
+  color:var(--luen-finish-cta)!important;
+}
 html body main#top .luen-section-subheading{
   max-width:38ch;
   margin:clamp(14px,2vw,22px) 0 0!important;
