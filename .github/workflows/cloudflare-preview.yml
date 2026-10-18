@@ -54,6 +54,11 @@ jobs:
           # stale asset-manifest.json and CNAME (the live custom domain).
           echo "Prepared isolated Cloudflare Pages site payload."
 
+      - name: Minify public CSS without removing selectors
+        run: |
+          npm install --no-save --no-package-lock lightningcss@1.30.2
+          node scripts/minify-preview-css.mjs
+
       - name: Confirm deployment credentials exist
         shell: bash
         env:
