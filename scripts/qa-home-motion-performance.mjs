@@ -83,7 +83,14 @@ try{
      await page.waitForTimeout(350);
      const m2=await lastRail.locator('.loop-track').evaluate(el=>getComputedStyle(el).transform);
      if(m1===m2)failures.push(v.name+': reduced-motion was disabled but autoplay did not resume');
-     await page.evaluate(()=>window.scrollTo(0,0));
+     // Capture the genuine top fold, never the last moving rail after QA.
+     // Site-wide smooth-scroll CSS otherwise leaves window.scrollTo(0,0)
+     // in flight while the screenshot is taken.
+     await page.evaluate(()=>{
+       document.documentElement.style.scrollBehavior='auto';
+       window.scrollTo(0,0);
+     });
+     await page.waitForFunction(()=>window.scrollY<2,{timeout:4500});
      if(v.name!=='mobile-320')await page.screenshot({
        path:path.join(dir,v.name+'-first-fold.jpg'),type:'jpeg',quality:70,animations:'disabled'
      });
