@@ -21,7 +21,7 @@ jobs:
     # sets LUEN_PAGES_DEPLOY_ENABLED=true in GitHub Actions variables.
     if: ${{ vars.LUEN_PAGES_DEPLOY_ENABLED == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Checkout approved preview code
         uses: actions/checkout@v4
@@ -73,3 +73,23 @@ jobs:
           # Cloudflare Direct Upload project uses "main" as production branch.
           # This updates luen-preview.pages.dev, NOT luenkorea.com.
           command: pages deploy _site --project-name=luen-preview --branch=main
+
+      - name: Install browser test runner
+        shell: bash
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Verify live Cloudflare page on desktop and mobile
+        env:
+          LUEN_QA_URL: https://luen-preview.pages.dev
+        run: node scripts/qa-live.mjs
+
+      - name: Keep screenshots and QA findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-live-qa-screenshots
+          path: qa-screenshots/
+          if-no-files-found: warn
+          retention-days: 14
