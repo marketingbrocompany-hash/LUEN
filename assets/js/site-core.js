@@ -235,9 +235,16 @@
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   /* Respond to OS reduced-motion changes while the page remains open. */
   const syncLoopMotionPreference=()=>{
-    // Rebuild on both transitions: drop clones in reduced-motion, restore
-    // the minimum seamless copies when motion becomes allowed again.
+    // Stop all three moving strips immediately when the OS requests less motion.
+    // A deferred animation frame may not run promptly after the preference
+    // changes (especially in a throttled/background tab), leaving cloned
+    // images and their last translation visible. Clear them synchronously.
     loopControllers.forEach((_controller,viewport)=>stopLoop(viewport));
+    if(reducedMotion.matches){
+      initLoopStrips();
+      return;
+    }
+    // Normal motion is restored through the original minimal-clone setup.
     window.requestAnimationFrame(initLoopStrips);
   };
   if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
