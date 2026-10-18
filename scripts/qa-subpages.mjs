@@ -10,6 +10,7 @@ const routes=[
   '/', '/about/', '/services/',
   '/services/japan-marketing/', '/services/japan-creator-marketing/',
   '/services/japan-inbound/', '/services/youtube-creator-marketing/',
+  '/services/instagram-influencer-marketing/',
   '/cases/', '/cases/herahera-seoul-fnb/', '/cases/ikeda-edita/',
   '/cases/yuki-clinic/', '/cases/masubuchi-bibigo/',
   '/insights/', '/insights/how-to-choose-japan-marketing-agency/',
@@ -19,6 +20,19 @@ const routes=[
   '/insights/youtube-creator-marketing-metrics/',
   '/project-guide/', '/contact/'
 ];
+// Verify every indexed public route is covered before browser QA starts.
+// Do not silently skip newly added service/case/insight pages.
+const sitemapUrls=[...fs.readFileSync(path.resolve('sitemap.xml'),'utf8')
+  .matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
+const sitemapPaths=new Set(sitemapUrls
+  .filter(url=>url.startsWith('https://luenkorea.com/'))
+  .map(url=>new URL(url).pathname));
+const uncovered=[...sitemapPaths].filter(route=>!routes.includes(route));
+const unindexed=routes.filter(route=>!sitemapPaths.has(route));
+if(uncovered.length||unindexed.length)throw new Error(
+  'QA routes differ from sitemap: missing='+JSON.stringify(uncovered)+
+  ', unindexed='+JSON.stringify(unindexed)
+);
 const configs=[
   {name:'desktop',width:1440,height:900},
   {name:'mobile',width:390,height:844},
