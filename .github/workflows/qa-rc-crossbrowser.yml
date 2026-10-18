@@ -1,0 +1,41 @@
+name: LUEN RC iOS Android browser engine smoke QA
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa-rc-crossbrowser.mjs'
+      - '.github/workflows/qa-rc-crossbrowser.yml'
+permissions:
+  contents: read
+jobs:
+  browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static integrity
+        run: node scripts/check-site.mjs
+      - name: Install Playwright and WebKit/Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps webkit chromium
+      - name: Run test server for release candidate
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-rc-browser.log 2>&1 &
+          for i in {1..25}; do
+            curl -fsS -o /dev/null 'http://127.0.0.1:4173/' && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Test WebKit iPhone and Chromium Android emulation
+        run: node scripts/qa-rc-crossbrowser.mjs
+      - name: Archive mobile compatibility screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-release-crossbrowser-qa
+          path: qa-screenshots/release-crossbrowser/
+          if-no-files-found: warn
+          retention-days: 14
