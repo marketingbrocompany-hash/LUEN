@@ -163,7 +163,18 @@ const checks=[
     &&home.includes('첫 주 이후 +31.4% 성장한 공개 지표를 추적하고')
     &&home.includes('브랜드, 목표 시장, 현재 고민만 알려주세요.')],
   ['headings are not hidden by a separate motion observer',!motionCss.includes('luen-motion-title')&&!motionCss.includes('clip-path:inset(0 0 100%')&&!motionJs.includes("classList.add('luen-motion-title')")],
-  ['Instagram deep-link target',home.includes('id="instagram-reels"')&&services.includes('href="/#instagram-reels"')],
+  ['Instagram navigation links remain valid',
+    home.includes('id="instagram-reels"')
+    &&(services.includes('href="/#instagram-reels"')
+      ||(services.includes('href="/services/instagram-influencer-marketing/"')
+        &&known.has('services/instagram-influencer-marketing/index.html')))],
+  ['Instagram detailed Premium offer stays consistent with homepage',
+    !known.has('services/instagram-influencer-marketing/index.html')
+    ||(home.includes('<strong>Premium</strong>')
+      &&fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
+        .includes('크리에이터 규모 · Reels 편수 맞춤 협의')
+      &&!fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
+        .includes('20인 · 20 Reels'))],
   ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
   ['Services hub lists all six offerings',(services.match(/class="service-hub-item/g)||[]).length===6],
   ['three moving brand/YouTube/Instagram strips',(home.match(/\bdata-loop-strip\s*=/g)||[]).length===3],
