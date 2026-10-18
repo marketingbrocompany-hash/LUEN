@@ -235,6 +235,7 @@
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   /* Respond to OS reduced-motion changes while the page remains open. */
   const syncLoopMotionPreference=()=>{
+    window.__luenMotionPreferenceEvents=(window.__luenMotionPreferenceEvents||0)+1; // temporary test instrumentation
     // Stop all three moving strips immediately when the OS requests less motion.
     // A deferred animation frame may not run promptly after the preference
     // changes (especially in a throttled/background tab), leaving cloned
