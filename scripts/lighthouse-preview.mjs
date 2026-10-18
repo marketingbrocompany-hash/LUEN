@@ -8,6 +8,21 @@ import {chromium} from 'playwright';
 const target=process.env.LUEN_LIGHTHOUSE_URL || 'https://luen-preview.pages.dev/';
 const dir=path.resolve('lighthouse-results');
 fs.mkdirSync(dir,{recursive:true});
+// Keep CI measurements tied to the *newly deployed* page rather than the
+// previous Cloudflare production version when push/deploy jobs overlap.
+const localIndex=fs.readFileSync(path.resolve('index.html'),'utf8').trim();
+let siteReady=false;
+for(let tryCount=0;tryCount<45;tryCount++){
+  try {
+    const url=target+(target.includes('?')?'&':'?')+'lhverify='+Date.now();
+    const response=await fetch(url,{headers:{'Cache-Control':'no-cache'},signal:AbortSignal.timeout(10000)});
+    if(response.ok && (await response.text()).trim()===localIndex){siteReady=true;break;}
+  }catch(error){
+    if(tryCount===44)console.log('Cloudflare preview fetch failed',String(error).slice(0,230));
+  }
+  await new Promise(resolve=>setTimeout(resolve,4000));
+}
+if(!siteReady)throw new Error('Cloudflare preview did not match checked-out index.html; refusing to audit stale deployment.');
 const chrome=chromium.executablePath();
 if(!fs.existsSync(chrome))throw new Error('Playwright Chromium is not installed: '+chrome);
 const binary=path.resolve('node_modules/.bin/lighthouse');
@@ -28,7 +43,7 @@ for(const formFactor of ['mobile','desktop']){
   if(formFactor==='desktop'){
     args.push('--screenEmulation.mobile=false','--screenEmulation.width=1350',
       '--screenEmulation.height=940','--screenEmulation.deviceScaleFactor=1',
-      '--emulatedUserAgent=desktop');
+      '--screenEmulation.disabled=false');
   }
   console.log('Running Lighthouse',formFactor,'at',target);
   const p=spawnSync(binary,args,{env:{...process.env,CHROME_PATH:chrome},encoding:'utf8',timeout:180000,maxBuffer:1024*1024*3});
