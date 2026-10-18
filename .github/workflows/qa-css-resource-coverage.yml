@@ -1,0 +1,41 @@
+name: LUEN CSS usage and external resources audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa-css-resource-coverage.mjs'
+      - '.github/workflows/qa-css-resource-coverage.yml'
+permissions:
+  contents: read
+jobs:
+  diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static integrity baseline
+        run: node scripts/check-site.mjs
+      - name: Install local browser
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve checkout locally without deployment
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-css-audit-server.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS -o /dev/null 'http://127.0.0.1:4173/' && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Sample CSS usage across key responsive routes
+        run: node scripts/qa-css-resource-coverage.mjs
+      - name: Preserve audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-css-resource-audit
+          path: qa-screenshots/css-resource-audit/
+          retention-days: 14
+          if-no-files-found: warn
