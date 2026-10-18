@@ -77,10 +77,16 @@ try {
         loopCloneSets:document.querySelectorAll('.loop-clone').length,
         lazyImages:document.querySelectorAll('img[loading="lazy"]').length,
         htmlScrollBehavior:getComputedStyle(html).scrollBehavior,
+        analyticsConfigured:Array.isArray(window.dataLayer) &&
+          typeof window.gtag==='function' &&
+          window.dataLayer.some(x=>x?.[0]==='config' && x?.[1]==='G-QXBK6XEK7G'),
+        analyticsScriptAsync:(()=>{const s=document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
+          return Boolean(s?.async && s?.fetchPriority==='low');})(),
         overflowCandidates,
       };
     });
     if(doc.h1Count!==1)serious(v.name,'Expected exactly one H1, got '+doc.h1Count);
+    if(!doc.analyticsConfigured || !doc.analyticsScriptAsync)serious(v.name,'GA4 config or nonblocking low-priority loader missing');
     if(doc.documentWidth>doc.clientWidth+3)serious(v.name,'Horizontal page overflow '+doc.documentWidth+'px > '+doc.clientWidth+'px');
     if(!doc.heroVisible || !doc.ctaCount)serious(v.name,'Hero or CTA is hidden');
     if(doc.titleCount!==6)serious(v.name,'Expected 6 home section H2 headings; found '+doc.titleCount);
