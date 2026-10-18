@@ -22,7 +22,7 @@ try{
       posts++;
       const req=r.request();
       if(req.method()!=='POST')fail(route,'method','Unexpected Formspree method '+req.method());
-      const fields=await req.postDataBuffer().catch(()=>Buffer.from(''));
+      const fields=req.postDataBuffer()||Buffer.from('');
       const body=fields.toString('utf8');
       for(const key of ['name="company"','name="name"','name="email"','name="market"',
         'name="privacy_consent"','name="overseas_transfer_consent"','name="_subject"']){
