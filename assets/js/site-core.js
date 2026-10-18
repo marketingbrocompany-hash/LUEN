@@ -199,9 +199,26 @@
     track.querySelectorAll('.loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
     const baseWidth=source.getBoundingClientRect().width;if(!baseWidth)return;
-    const copies=Math.max(2,Math.ceil((viewport.clientWidth+baseWidth*2)/baseWidth));
-    for(let i=0;i<copies;i++){const clone=source.cloneNode(true);clone.classList.add('loop-clone');clone.setAttribute('aria-hidden','true');clone.querySelectorAll('img').forEach(img=>{img.loading='eager';img.fetchPriority='low';});track.appendChild(clone);}
-    if(reducedMotion.matches){loopControllers.set(viewport,{raf:0,visible:false});return;}
+    // Respect reduced-motion before creating duplicate cards or decoding images.
+    // The original cards remain visible and accessible without animation.
+    if(reducedMotion.matches){
+      loopControllers.set(viewport,{raf:0,visible:false,track});
+      return;
+    }
+    // One clone is enough when the original strip fills the viewport.
+    // If it is shorter, add only enough copies to cover the visible width
+    // even at the end of a full-loop translation (seamless wrap).
+    const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
+    for(let i=0;i<copies;i++){
+      const clone=source.cloneNode(true);
+      clone.classList.add('loop-clone');
+      clone.setAttribute('aria-hidden','true');
+      clone.querySelectorAll('img').forEach(img=>{
+        img.loading='lazy';
+        img.fetchPriority='low';
+      });
+      track.appendChild(clone);
+    }
     const controller={raf:0,visible:!loopVisibilityObserver,offset:0,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
     controller.tick=now=>{
       controller.raf=0;
@@ -218,14 +235,10 @@
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   /* Respond to OS reduced-motion changes while the page remains open. */
   const syncLoopMotionPreference=()=>{
-    if(reducedMotion.matches){
-      loopControllers.forEach((controller,viewport)=>{
-        stopLoop(viewport);
-        controller.track?.style.setProperty('transform','none');
-      });
-    }else{
-      window.requestAnimationFrame(initLoopStrips);
-    }
+    // Rebuild on both transitions: drop clones in reduced-motion, restore
+    // the minimum seamless copies when motion becomes allowed again.
+    loopControllers.forEach((_controller,viewport)=>stopLoop(viewport));
+    window.requestAnimationFrame(initLoopStrips);
   };
   if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
   else reducedMotion.addListener?.(syncLoopMotionPreference);
