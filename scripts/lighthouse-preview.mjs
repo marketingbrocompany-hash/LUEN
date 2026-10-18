@@ -28,8 +28,8 @@ if(!fs.existsSync(chrome))throw new Error('Playwright Chromium is not installed:
 const binary=path.resolve('node_modules/.bin/lighthouse');
 if(!fs.existsSync(binary))throw new Error('Lighthouse npm binary is missing.');
 const runs=[];
-for(const formFactor of ['mobile','desktop']){
-  const outputPath=path.join(dir,formFactor);
+for(const [sampleIndex,formFactor] of ['mobile','mobile','mobile','desktop','desktop'].entries()){
+  const outputPath=path.join(dir,formFactor+'-'+sampleIndex);
   const args=[
     target,
     '--quiet',
@@ -70,7 +70,7 @@ for(const formFactor of ['mobile','desktop']){
     .map(([id,x])=>({id,title:x.title,savingsMs:x.details.overallSavingsMs||0,savingsBytes:x.details.overallSavingsBytes||0}))
     .sort((a,b)=>b.savingsMs-a.savingsMs||b.savingsBytes-a.savingsBytes).slice(0,14);
   const summary={
-    formFactor,url:r.finalDisplayedUrl,
+    formFactor,sampleIndex,url:r.finalDisplayedUrl,
     score:Math.round((r.categories.performance?.score||0)*100),
     metrics:{LCP_ms:value('largest-contentful-paint'),FCP_ms:value('first-contentful-paint'),
       SpeedIndex_ms:value('speed-index'),TBT_ms:value('total-blocking-time'),CLS:value('cumulative-layout-shift')},
@@ -83,7 +83,16 @@ for(const formFactor of ['mobile','desktop']){
   runs.push(summary);
   console.log('LUEN_LIGHTHOUSE_RESULT '+JSON.stringify(summary).slice(0,14000));
 }
-fs.writeFileSync(path.join(dir,'summary.json'),JSON.stringify({url:target,date:new Date().toISOString(),runs},null,2));
+const median=values=>{const sorted=values.filter(Number.isFinite).sort((a,b)=>a-b);return sorted[Math.floor(sorted.length/2)]??null;};
+const medians=['mobile','desktop'].map(device=>{
+  const samples=runs.filter(r=>r.formFactor===device);
+  return {device,samples:samples.length,score:median(samples.map(x=>x.score)),
+    LCP_ms:median(samples.map(x=>x.metrics.LCP_ms)),TBT_ms:median(samples.map(x=>x.metrics.TBT_ms)),
+    FCP_ms:median(samples.map(x=>x.metrics.FCP_ms)),CLS:median(samples.map(x=>x.metrics.CLS)),
+    transferredBytes:median(samples.map(x=>x.loading.totalByteWeight))};
+});
+console.log('LUEN_LIGHTHOUSE_MEDIANS '+JSON.stringify(medians));
+fs.writeFileSync(path.join(dir,'summary.json'),JSON.stringify({url:target,date:new Date().toISOString(),runs,medians},null,2));
 if(process.env.GITHUB_STEP_SUMMARY){
   let md='\n## LUEN Lighthouse Performance — '+target+'\n\n';
   md+='| Device | Score | LCP | FCP | TBT | CLS | Transferred |\n|---|---:|---:|---:|---:|---:|---:|\n';
@@ -94,4 +103,4 @@ if(process.env.GITHUB_STEP_SUMMARY){
   md+='\nLighthouse lab values are one run per device with simulated network throttling; not real user INP or field Core Web Vitals.\n\nJSON and HTML reports in the workflow artifact.\n';
   fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,md);
 }
-if(runs.length!==2)process.exitCode=1;
+if(runs.length!==5)process.exitCode=1;
