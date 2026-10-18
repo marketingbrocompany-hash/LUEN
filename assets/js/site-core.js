@@ -247,10 +247,14 @@
   // Some embedded browsers fail to deliver MediaQueryList change events.
   // A small state-only check restores/reduces motion without extra animation
   // frames or reflows; no work is done when the preference stays the same.
-  window.setInterval(()=>{
-    if(!document.hidden && reducedMotion.matches!==lastReducedMotion)
-      syncLoopMotionPreference();
-  },250);
+  // Only the homepage owns the three motion strips; other LUEN pages
+  // must not pay for an unused fallback preference check.
+  if(document.querySelector('[data-loop-strip]')){
+    window.setInterval(()=>{
+      if(!document.hidden && reducedMotion.matches!==lastReducedMotion)
+        syncLoopMotionPreference();
+    },250);
+  }
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
