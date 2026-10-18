@@ -1,0 +1,44 @@
+name: LUEN CORS preconnect Lighthouse A/B
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'scripts/serve-cors-lighthouse.mjs'
+      - 'scripts/qa-cors-lighthouse.mjs'
+      - '.github/workflows/qa-cors-lighthouse.yml'
+permissions:
+  contents: read
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 27
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static integrity
+        run: node scripts/check-site.mjs
+      - name: Install Lighthouse and browser
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start same-origin A/B static test server
+        run: |
+          node scripts/serve-cors-lighthouse.mjs > /tmp/luen-cors-lh.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS -o /dev/null 'http://127.0.0.1:4175/?font-ab=baseline' && exit 0
+            sleep 1
+          done
+          cat /tmp/luen-cors-lh.log
+          exit 1
+      - name: Compare simulated-mobile Lighthouse for control and candidate
+        run: node scripts/qa-cors-lighthouse.mjs
+      - name: Archive Lighthouse JSON and median report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-cors-lighthouse-ab
+          path: qa-screenshots/cors-lighthouse-ab/
+          retention-days: 14
+          if-no-files-found: warn
