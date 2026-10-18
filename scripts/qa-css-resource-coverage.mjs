@@ -27,15 +27,16 @@ function unionSize(items){
 }
 try{
  for(const layout of layouts){
-  const ctx=await browser.newContext({
-   viewport:{width:layout.width,height:layout.height},deviceScaleFactor:1,reducedMotion:'reduce'
-  });
-  // Do not contaminate production Analytics with synthetic QA traffic.
-  await ctx.route(/https:\/\/(www\.)?googletagmanager\.com\//,r=>r.abort());
-  await ctx.route(/https:\/\/(www\.)?google-analytics\.com\//,r=>r.abort());
-  const page=await ctx.newPage();
-  page.setDefaultTimeout(9000);
   for(const route of routes){
+   // Each route is a fresh, cold browser context; otherwise caching the
+   // first route's font requests would falsely make later routes look cheap.
+   const ctx=await browser.newContext({
+    viewport:{width:layout.width,height:layout.height},deviceScaleFactor:1,reducedMotion:'reduce'
+   });
+   await ctx.route(/https:\/\/(www\.)?googletagmanager\.com\//,r=>r.abort());
+   await ctx.route(/https:\/\/(www\.)?google-analytics\.com\//,r=>r.abort());
+   const page=await ctx.newPage();
+   page.setDefaultTimeout(9000);
    const cdp=await ctx.newCDPSession(page);
    const styles=new Map(),network=new Map(),loaded=[],pageErrors=[];
    cdp.on('CSS.styleSheetAdded',event=>styles.set(event.header.styleSheetId,event.header));
@@ -115,8 +116,8 @@ try{
      font:summary.font,resources:summary.resourceBytes}).slice(0,3900));
    }catch(e){problems.push(route+' '+layout.label+' '+String(e.message).slice(0,260));}
    await cdp.detach().catch(()=>{});
+   await ctx.close();
   }
-  await ctx.close();
  }
 }finally{await browser.close()}
 const reports={source:'Unminified local code; sampled states only; do NOT delete unobserved rules',
