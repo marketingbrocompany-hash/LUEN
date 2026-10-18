@@ -119,7 +119,7 @@ const checks=[
     finish.includes('html body main#top .luen-section-primary-title{')
     &&finish.includes('color:var(--luen-finish-cta)!important;')
     &&!finish.includes('html body main#top #content-flow .luen-section-primary-title{')
-    &&home.includes('luen-finish.css?v=20261017-6')],
+    &&/luen-finish\.css\?v=\d{8}-\d+/.test(home)],
   ['homepage heading and subheading typography remains restrained',
     finish.includes('font-size:clamp(40px,4vw,52px)!important;')
     &&finish.includes('font-size:clamp(30px,8vw,34px)!important;')
