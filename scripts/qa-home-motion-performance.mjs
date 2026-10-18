@@ -53,14 +53,24 @@ try{
        paths.push({rail:i,clones,moved:a!==b,transformBefore:a,transformAfter:b});
      }
      // Test *live* OS preference transitions, not only initial load.
+     await page.evaluate(()=>{
+       window.__luenReducedChanges=[];
+       window.__luenReducedQuery=matchMedia('(prefers-reduced-motion: reduce)');
+       window.__luenReducedQuery.addEventListener('change',event=>window.__luenReducedChanges.push(event.matches));
+     });
      await page.emulateMedia({reducedMotion:'reduce'});
      await page.waitForTimeout(320);
      const reduced=await page.evaluate(()=>({
        clones:document.querySelectorAll('.loop-clone').length,
        viewportWidth:document.documentElement.clientWidth,
-       scrollWidth:document.documentElement.scrollWidth
+       scrollWidth:document.documentElement.scrollWidth,
+       mediaMatches:matchMedia('(prefers-reduced-motion: reduce)').matches,
+       storedMediaMatches:window.__luenReducedQuery?.matches,
+       mediaChangeEvents:window.__luenReducedChanges,
+       htmlClass:document.documentElement.className,
+       transforms:[...document.querySelectorAll('[data-loop-strip] .loop-track')].map(e=>getComputedStyle(e).transform)
      }));
-     if(reduced.clones!==0)failures.push(v.name+': toggling reduced-motion left '+reduced.clones+' clones');
+     if(reduced.clones!==0)failures.push(v.name+': toggling reduced-motion left '+reduced.clones+' clones; trace '+JSON.stringify(reduced));
      if(reduced.scrollWidth>v.width+2)failures.push(v.name+': reduced-motion overflow '+reduced.scrollWidth);
      await page.emulateMedia({reducedMotion:'no-preference'});
      await page.waitForTimeout(350);
