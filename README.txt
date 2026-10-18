@@ -1,7 +1,7 @@
 LUEN WEBSITE — CURRENT REPOSITORY NOTES (2026-10-17)
 
 Repository: marketingbrocompany-hash/LUEN
-Current deployment workflow: GitHub pull requests → Vercel Preview → verified merge → Vercel Production.
+Development deployment: luen-preview branch → GitHub Actions integrity → Cloudflare Pages luen-preview.pages.dev. Official luenkorea.com Production remains unchanged; see docs/cloudflare-preview-deployment.md. Existing PRs still require visual QA before any production merge.
 Do not follow the older GitHub Pages copy/deploy instruction.
 Static integrity check: node scripts/check-site.mjs
 Detailed code audit: docs/luen-code-audit-20261017.md
