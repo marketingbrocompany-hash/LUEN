@@ -1,0 +1,47 @@
+name: LUEN YouTube service visual QA
+on:
+  pull_request:
+    paths:
+      - 'services/youtube-creator-marketing/index.html'
+      - 'assets/css/luen-pages.css'
+      - 'scripts/qa-youtube-longform.mjs'
+      - '.github/workflows/qa-youtube-longform.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout candidate PR
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify static site before browser QA
+        run: node scripts/check-site.mjs
+      - name: Install local browser runner
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve candidate locally without publishing
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/luen-yt-server.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS -o /dev/null http://127.0.0.1:4173/services/youtube-creator-marketing/ && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Check 9 responsive viewports and page interactions
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-youtube-longform.mjs
+      - name: Retain visual screenshots and JSON report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-youtube-longform-visual
+          path: qa-screenshots/youtube-longform/
+          if-no-files-found: warn
+          retention-days: 14
