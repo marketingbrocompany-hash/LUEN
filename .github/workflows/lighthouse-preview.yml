@@ -1,0 +1,51 @@
+name: LUEN Lighthouse Preview
+
+on:
+  push:
+    branches:
+      - luen-preview
+    paths:
+      - .github/workflows/lighthouse-preview.yml
+      - scripts/lighthouse-preview.mjs
+      - index.html
+      - assets/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: luen-lighthouse-preview
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout preview QA scripts
+        uses: actions/checkout@v4
+
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Chrome browser and Lighthouse
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Measure Cloudflare preview mobile and desktop performance
+        env:
+          LUEN_LIGHTHOUSE_URL: https://luen-preview.pages.dev/
+        run: node scripts/lighthouse-preview.mjs
+
+      - name: Archive performance reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-lighthouse-reports
+          path: lighthouse-results/
+          retention-days: 14
+          if-no-files-found: warn
