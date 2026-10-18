@@ -2334,3 +2334,519 @@
   }
   .insight-related strong{margin-top:18px;}
 }
+
+
+/* Herahera case — offline POP proof */
+.case-offline-detail-grid{
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:clamp(28px,5vw,72px);
+  align-items:stretch;
+}
+.case-offline-detail-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:520px;
+  padding:clamp(28px,4vw,48px);
+  border:1px solid var(--luen-line);
+  border-radius:26px;
+  background:var(--luen-canvas);
+}
+.case-offline-detail-copy>span{
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.1em;
+}
+.case-offline-detail-copy h3{
+  margin:clamp(42px,5vw,68px) 0 0;
+  color:var(--luen-ink);
+  font:720 clamp(30px,3vw,44px)/1.08 var(--luen-type-display);
+  letter-spacing:-.045em;
+}
+.case-offline-detail-copy>p{
+  margin:22px 0 0;
+  color:var(--luen-muted);
+  font-size:13px;
+  line-height:1.78;
+}
+.case-offline-detail-flow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:auto;
+  padding-top:30px;
+  border-top:1px solid var(--luen-line);
+}
+.case-offline-detail-flow b{
+  color:var(--luen-ink-soft);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.08em;
+}
+.case-offline-detail-flow i{
+  color:var(--luen-orange);
+  font-style:normal;
+}
+.case-offline-detail-media{
+  position:relative;
+  overflow:hidden;
+  min-height:520px;
+  margin:0;
+  border-radius:26px;
+  background:rgba(17,16,14,.05);
+}
+.case-offline-detail-media img{
+  width:100%;
+  height:100%;
+  min-height:520px;
+  display:block;
+  object-fit:cover;
+}
+.case-offline-detail-media figcaption{
+  position:absolute;
+  right:16px;
+  bottom:14px;
+  z-index:2;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(17,16,14,.72);
+  color:#fff;
+  font:700 9px/1.2 var(--luen-type-ui);
+  letter-spacing:.02em;
+}
+@media(max-width:900px){
+  .case-offline-detail-grid{
+    grid-template-columns:1fr;
+  }
+  .case-offline-detail-copy,
+  .case-offline-detail-media,
+  .case-offline-detail-media img{
+    min-height:0;
+  }
+  .case-offline-detail-media{
+    aspect-ratio:4/3;
+  }
+}
+@media(max-width:767px){
+  .case-offline-detail-copy{
+    padding:24px 20px;
+    border-radius:20px;
+  }
+  .case-offline-detail-copy h3{
+    margin-top:34px;
+    font-size:30px;
+  }
+  .case-offline-detail-flow{
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:28px;
+    padding-top:22px;
+  }
+  .case-offline-detail-media{
+    border-radius:20px;
+  }
+}
+
+/* ============================================================
+   YOUTUBE LONG-FORM SERVICE — client decision UX
+   ============================================================ */
+.yt-longform-hero .luen-page-hero-copy p{
+  max-width:760px;
+}
+.yt-type-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.yt-type-card{
+  display:flex;
+  flex-direction:column;
+  min-height:410px;
+  padding:30px 28px 28px;
+  border:1px solid var(--luen-line);
+  border-radius:24px;
+  background:var(--luen-canvas);
+}
+.yt-type-card>span{
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.1em;
+}
+.yt-type-card h3{
+  margin:52px 0 0;
+  color:var(--luen-ink);
+  font:720 clamp(26px,2.7vw,38px)/1.08 var(--luen-type-display);
+  letter-spacing:-.045em;
+}
+.yt-type-card>strong{
+  display:block;
+  margin-top:16px;
+  color:var(--luen-ink-soft);
+  font:700 14px/1.4 var(--luen-type-display);
+}
+.yt-type-card>p{
+  margin:20px 0 0;
+  color:var(--luen-muted);
+  font-size:13px;
+  line-height:1.72;
+}
+.yt-type-card>small{
+  display:block;
+  margin-top:auto;
+  padding-top:32px;
+  border-top:1px solid var(--luen-line);
+  color:var(--luen-muted);
+  font:700 10px/1.5 var(--luen-type-ui);
+}
+.yt-type-card--trial{
+  background:linear-gradient(180deg,rgba(244,125,53,.05),transparent 55%),var(--luen-canvas);
+}
+
+.yt-compare{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  border-top:1px solid var(--luen-line);
+  border-bottom:1px solid var(--luen-line);
+}
+.yt-compare>article{
+  padding:32px 36px 34px 0;
+}
+.yt-compare>article+article{
+  padding-left:36px;
+  padding-right:0;
+  border-left:1px solid var(--luen-line);
+}
+.yt-compare>article>span{
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.1em;
+}
+.yt-compare h3{
+  margin:30px 0 0;
+  color:var(--luen-ink);
+  font:720 clamp(25px,2.5vw,34px)/1.1 var(--luen-type-display);
+  letter-spacing:-.04em;
+}
+.yt-compare dl{
+  margin:30px 0 0;
+}
+.yt-compare dl>div{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr);
+  gap:18px;
+  padding:14px 0;
+  border-top:1px solid var(--luen-line);
+}
+.yt-compare dt{
+  color:var(--luen-muted);
+  font:750 10px/1.5 var(--luen-type-ui);
+}
+.yt-compare dd{
+  margin:0;
+  color:var(--luen-ink-soft);
+  font-size:12.5px;
+  line-height:1.6;
+}
+
+.yt-process-compact{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.yt-process-compact article:nth-child(n+5){
+  display:none;
+}
+.yt-proof-strip{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.yt-related .insight-related{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.jcm-creator-copy a{
+  display:inline-flex;
+  margin-top:18px;
+  color:var(--luen-ink-soft);
+  border-bottom:1px solid rgba(17,16,14,.35);
+  font:700 10px/1.4 var(--luen-type-ui);
+  text-decoration:none;
+}
+.jcm-creator-copy a:hover,
+.jcm-creator-copy a:focus-visible{
+  color:var(--luen-orange);
+  border-color:var(--luen-orange);
+}
+
+@media(hover:hover) and (pointer:fine){
+  .yt-type-card{
+    transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;
+  }
+  .yt-type-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(244,125,53,.3);
+    box-shadow:0 18px 40px rgba(17,16,14,.045);
+  }
+}
+
+@media(max-width:980px){
+  .yt-type-grid{
+    grid-template-columns:1fr;
+  }
+  .yt-type-card{
+    min-height:0;
+  }
+  .yt-type-card h3{
+    margin-top:34px;
+  }
+  .yt-type-card>small{
+    margin-top:28px;
+  }
+  .yt-process-compact{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:767px){
+  .yt-type-grid{
+    gap:12px;
+  }
+  .yt-type-card{
+    padding:24px 20px 22px;
+    border-radius:20px;
+  }
+  .yt-type-card h3{
+    margin-top:28px;
+    font-size:28px;
+  }
+  .yt-type-card>p{
+    font-size:12.5px;
+  }
+  .yt-compare{
+    grid-template-columns:1fr;
+  }
+  .yt-compare>article,
+  .yt-compare>article+article{
+    padding:26px 0;
+    border-left:0;
+    border-bottom:1px solid var(--luen-line);
+  }
+  .yt-compare>article:last-child{
+    border-bottom:0;
+  }
+  .yt-compare dl>div{
+    grid-template-columns:92px minmax(0,1fr);
+    gap:14px;
+  }
+  .yt-process-compact{
+    grid-template-columns:1fr;
+  }
+  .yt-related .insight-related{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Screenshot QA corrections, YouTube long-form page only (2026-10-18).
+   Warm ivory background requires a dark, readable secondary action. */
+.yt-longform-hero .luen-page-actions .btn-secondary{
+  background:rgba(255,249,241,.48);
+  border-color:rgba(43,40,36,.34);
+  color:#2B2824;
+}
+.yt-longform-hero .luen-page-actions .btn-secondary:hover,
+.yt-longform-hero .luen-page-actions .btn-secondary:focus-visible{
+  border-color:var(--luen-orange);
+  color:#A74722;
+}
+/* Existing JCM process rules use dark text; override only inside
+   this specifically dark YouTube service section. */
+.luen-page-section--ink .yt-process-compact h3{
+  color:#F5F3EE;
+}
+.luen-page-section--ink .yt-process-compact p{
+  color:rgba(245,243,238,.82);
+}
+/* LUEN media cards should have softly rounded edges. */
+.yt-selected-work .jcm-creator-card{
+  border-radius:18px;
+}
+.yt-selected-work .jcm-creator-media{
+  border-radius:18px 18px 0 0;
+}
+
+/* ============================================================
+   INSTAGRAM REELS SERVICE — client decision UX
+   ============================================================ */
+.instagram-plan-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.instagram-plan-card{
+  display:flex;
+  flex-direction:column;
+  min-height:360px;
+  padding:30px 28px 28px;
+  border:1px solid var(--luen-line);
+  border-radius:24px;
+  background:var(--luen-canvas);
+}
+.instagram-plan-card>span{
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.1em;
+}
+.instagram-plan-card h3{
+  margin:52px 0 0;
+  color:var(--luen-ink);
+  font:720 clamp(28px,3vw,40px)/1.08 var(--luen-type-display);
+  letter-spacing:-.045em;
+}
+.instagram-plan-card>strong{
+  display:block;
+  margin-top:16px;
+  color:var(--luen-ink-soft);
+  font:700 16px/1.35 var(--luen-type-display);
+}
+.instagram-plan-card>p{
+  margin:24px 0 0;
+  color:var(--luen-muted);
+  font-size:13px;
+  line-height:1.72;
+}
+.instagram-plan-card--standard{
+  background:linear-gradient(180deg,rgba(244,125,53,.06),transparent 58%),var(--luen-canvas);
+}
+
+.instagram-flow-visual{
+  display:grid;
+  grid-template-columns:minmax(180px,.72fr) auto minmax(0,1.6fr);
+  gap:28px;
+  align-items:center;
+  padding:36px 0;
+  border-top:1px solid var(--luen-line);
+  border-bottom:1px solid var(--luen-line);
+}
+.instagram-flow-brand{
+  min-height:160px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:24px;
+  border:1px solid var(--luen-line);
+  border-radius:22px;
+  background:var(--luen-canvas);
+}
+.instagram-flow-brand span,
+.instagram-flow-creators span{
+  color:var(--luen-orange);
+  font:800 9px/1 var(--luen-type-ui);
+  letter-spacing:.09em;
+}
+.instagram-flow-brand strong{
+  display:block;
+  margin-top:22px;
+  color:var(--luen-ink);
+  font:720 19px/1.25 var(--luen-type-display);
+}
+.instagram-flow-arrow{
+  color:var(--luen-orange);
+  font:700 22px/1 var(--luen-type-ui);
+}
+.instagram-flow-creators{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.instagram-flow-creators article{
+  min-height:160px;
+  padding:22px 18px;
+  border:1px solid var(--luen-line);
+  border-radius:20px;
+  background:var(--luen-canvas);
+}
+.instagram-flow-creators strong{
+  display:block;
+  margin-top:44px;
+  color:var(--luen-ink);
+  font:720 18px/1.15 var(--luen-type-display);
+}
+.instagram-process-compact{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.instagram-process-compact article:nth-child(n+5){
+  display:none;
+}
+.instagram-related .insight-related{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+@media(hover:hover) and (pointer:fine){
+  .instagram-plan-card{
+    transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;
+  }
+  .instagram-plan-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(244,125,53,.3);
+    box-shadow:0 18px 40px rgba(17,16,14,.045);
+  }
+}
+@media(max-width:980px){
+  .instagram-plan-grid{
+    grid-template-columns:1fr;
+  }
+  .instagram-plan-card{
+    min-height:0;
+  }
+  .instagram-plan-card h3{
+    margin-top:34px;
+  }
+  .instagram-flow-visual{
+    grid-template-columns:1fr;
+  }
+  .instagram-flow-arrow{
+    transform:rotate(90deg);
+    justify-self:center;
+  }
+  .instagram-process-compact{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:767px){
+  .instagram-plan-grid{
+    gap:12px;
+  }
+  .instagram-plan-card{
+    padding:24px 20px 22px;
+    border-radius:20px;
+  }
+  .instagram-plan-card h3{
+    margin-top:28px;
+    font-size:28px;
+  }
+  .instagram-flow-creators{
+    grid-template-columns:1fr;
+  }
+  .instagram-flow-creators article{
+    min-height:110px;
+  }
+  .instagram-flow-creators strong{
+    margin-top:26px;
+  }
+  .instagram-process-compact{
+    grid-template-columns:1fr;
+  }
+  .instagram-related .insight-related{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* Scoped visual-contrast corrections for Instagram Reels service. */
+.instagram-reels-hero .luen-page-actions .btn-secondary{
+  background:rgba(255,249,241,.48);
+  border-color:rgba(43,40,36,.34);
+  color:#2B2824;
+}
+.instagram-reels-hero .luen-page-actions .btn-secondary:hover,
+.instagram-reels-hero .luen-page-actions .btn-secondary:focus-visible{
+  border-color:var(--luen-orange);
+  color:#A74722;
+}
+.luen-page-section--ink .instagram-process-compact h3{color:#F5F3EE;}
+.luen-page-section--ink .instagram-process-compact p{color:rgba(245,243,238,.82);}
+

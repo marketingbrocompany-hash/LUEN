@@ -6747,6 +6747,11 @@ html body #nav .logo{
   font:800 21px/1 var(--luen-type-ui)!important;
   letter-spacing:.18em!important;
 }
+/* Legacy .logo-word cream overrides its dark parent on ivory surfaces. */
+html body #nav .logo .logo-word,
+html body footer .logo .logo-word{
+  color:#2A2521!important;
+}
 html body #nav .logo-signal{
   width:6px!important;
   height:6px!important;
@@ -6808,7 +6813,7 @@ html body #nav .hamburger{
   width:42px!important;
   height:42px!important;
   padding:0!important;
-  border:1px solid var(--line)!important;
+  border:1px solid rgba(74,66,60,.38)!important;
   border-radius:50%!important;
   background:transparent!important;
   cursor:pointer!important;
@@ -6816,9 +6821,9 @@ html body #nav .hamburger{
 html body #nav .hamburger span{
   display:block!important;
   width:17px!important;
-  height:1px!important;
+  height:1.5px!important;
   margin:0!important;
-  background:var(--cream)!important;
+  background:#2A2521!important;
 }
 
 html body .mobile-menu{
@@ -6831,6 +6836,8 @@ html body .mobile-menu{
   align-items:center!important;
   gap:26px!important;
   padding:88px 20px 22px!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
   background:rgba(13,8,5,.98)!important;
 }
 html body .mobile-menu.open{display:flex!important;}
@@ -6855,6 +6862,17 @@ html body .mobile-close{
   color:var(--cream)!important;
   font-size:24px!important;
   cursor:pointer!important;
+}
+
+/* Compact-height mobile browsers and landscape: links must remain reachable. */
+@media(max-height:600px) and (max-width:820px){
+  html body .mobile-menu{
+    justify-content:flex-start!important;
+    gap:14px!important;
+  }
+  html body .mobile-menu a{
+    font-size:clamp(17px,4vh,22px)!important;
+  }
 }
 
 /* Hero */
@@ -7806,24 +7824,6 @@ html body .scroll-progress{
   border-top:1px solid var(--luen-line);
   border-bottom:1px solid var(--luen-line);
 }
-.luen-service-choice-options>span{
-  display:inline-flex;
-  align-items:center;
-  min-height:28px;
-  padding:0 10px;
-  border:1px solid rgba(17,16,14,.13);
-  border-radius:999px;
-  color:var(--luen-ink-soft);
-  background:rgba(255,255,255,.25);
-  font:700 10px/1 var(--luen-type-ui);
-  white-space:nowrap;
-}
-.luen-service-choice-desc{
-  margin:0 0 28px;
-  color:var(--luen-muted);
-  font-size:12.8px;
-  line-height:1.72;
-}
 .luen-service-choice>a{
   display:inline-flex;
   align-items:center;
@@ -7868,39 +7868,6 @@ html body .scroll-progress{
   border-radius:50%;
   background:var(--luen-orange);
   transform:translate(50%,-50%);
-}
-.luen-service-goal-strip{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  margin-top:18px;
-  padding:22px 0;
-  border-top:1px solid var(--luen-line);
-  border-bottom:1px solid var(--luen-line);
-}
-.luen-service-goal-strip p{
-  margin:0;
-  color:var(--luen-muted);
-  font-size:12.8px;
-  line-height:1.65;
-}
-.luen-service-goal-strip p strong{
-  color:var(--luen-ink-soft);
-}
-.luen-service-goal-strip>div{
-  display:flex;
-  gap:18px;
-  flex:0 0 auto;
-}
-.luen-service-goal-strip a{
-  color:var(--luen-ink-soft);
-  font:700 10px/1 var(--luen-type-ui);
-  text-decoration:none;
-}
-.luen-service-goal-strip a:hover,
-.luen-service-goal-strip a:focus-visible{
-  color:var(--luen-orange);
 }
 
 .luen-home-flow-v2{
@@ -7981,17 +7948,6 @@ html body .scroll-progress{
     margin-bottom:20px;
     padding:17px 0;
   }
-  .luen-service-choice-desc{
-    margin-bottom:22px;
-    font-size:12.5px;
-  }
-  .luen-service-goal-strip{
-    display:block;
-    padding:20px 0;
-  }
-  .luen-service-goal-strip>div{
-    margin-top:14px;
-  }
   .luen-flow-list-v2{
     display:block;
   }
@@ -8048,9 +8004,6 @@ html body .scroll-progress{
   color:var(--luen-muted);
   font-size:11px;
   line-height:1.45;
-}
-.luen-service-choice-desc{
-  display:none;
 }
 .luen-service-choice>a{
   margin-top:auto;
@@ -8140,5 +8093,53 @@ html body .scroll-progress{
   .luen-service-help nav{
     flex-wrap:wrap;
     gap:12px 18px;
+  }
+}
+
+
+/* Case studies — moving selected work */
+.case-selected-work-v10{
+  margin-top:clamp(28px,4vw,48px);
+}
+.case-selected-work-v10 .case-portfolio-v10{
+  margin-top:0!important;
+}
+.case-selected-work-v10 .portfolio-head.container{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+.case-selected-work-v10 .portfolio-lane + .portfolio-lane{
+  margin-top:38px;
+}
+.case-selected-work-v10 .portfolio-card{
+  border-radius:18px!important;
+}
+@media(max-width:767px){
+  .case-selected-work-v10{
+    margin-top:28px;
+  }
+  .case-selected-work-v10 .portfolio-lane + .portfolio-lane{
+    margin-top:30px;
+  }
+  .case-selected-work-v10 .portfolio-card{
+    border-radius:16px!important;
+  }
+}
+
+
+/* RELIABILITY FIX — content is readable even if the JS bundle is blocked.
+   site-core.js enables .js-scroll-reveal only after observer setup succeeds.
+   Keep all content visible for reduced-motion preferences. */
+html:not(.js-scroll-reveal) body .sr {
+  opacity:1!important;
+  transform:none!important;
+}
+@media(prefers-reduced-motion:reduce) {
+  html body .sr {
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
   }
 }
