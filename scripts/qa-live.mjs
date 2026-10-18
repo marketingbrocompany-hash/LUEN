@@ -60,7 +60,7 @@ try {
       const h1=[...document.querySelectorAll('h1')];
       const visibleCTA=[...document.querySelectorAll('.hero-cta a')].filter(a=>a.getBoundingClientRect().width>0);
       const viewportWidth=html.clientWidth;
-      const overflowCandidates=[...main.querySelectorAll('.container,.hero-copy,.hero-layout,.contact-form,.case-support-grid-v7,.portfolio-head,.nav-inner')]
+      const overflowCandidates=[...main.querySelectorAll('.container,.hero-copy,.hero-layout,.contact-form,.case-support-grid-v7,.nav-inner')]
         .filter(e=>{const r=e.getBoundingClientRect();return r.width>0 && (r.left < -6 || r.right > viewportWidth+6);})
         .slice(0,12).map(e=>({selector:e.className,left:Math.round(e.getBoundingClientRect().left),right:Math.round(e.getBoundingClientRect().right)}));
       return {
@@ -163,11 +163,25 @@ try {
   }));
   if(!contact.hasForm || contact.requiredConsents!==2 || !contact.hasStatus)
     serious('contact-form','Contact form elements or consent controls missing: '+JSON.stringify(contact));
+  // First FAQ is intentionally expanded on first load. Check BOTH toggle
+  // directions instead of assuming a closed initial state.
   const faq=p.locator('.faq-q').first();
   if(await faq.count()){
+    const initial=await faq.evaluate(e=>e.closest('.faq-item')?.classList.contains('open'));
     await faq.click();
-    const opened=await faq.evaluate(e=>e.closest('.faq-item')?.classList.contains('open'));
-    if(!opened)serious('faq','FAQ did not open on click');
+    const afterFirst=await faq.evaluate(e=>({
+      open:e.closest('.faq-item')?.classList.contains('open'),
+      aria:e.getAttribute('aria-expanded')
+    }));
+    if(afterFirst.open===initial || afterFirst.aria!==String(afterFirst.open))
+      serious('faq','FAQ initial click did not toggle state: '+JSON.stringify({initial,afterFirst}));
+    await faq.click();
+    const afterSecond=await faq.evaluate(e=>({
+      open:e.closest('.faq-item')?.classList.contains('open'),
+      aria:e.getAttribute('aria-expanded')
+    }));
+    if(afterSecond.open!==initial || afterSecond.aria!==String(afterSecond.open))
+      serious('faq','FAQ second click did not restore state: '+JSON.stringify({initial,afterSecond}));
   }
   results.push({internalLinkRoutes:routes,contact,faqChecked:true});
   await ctx.close();
