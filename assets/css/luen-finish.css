@@ -318,3 +318,27 @@ html body .mobile-menu .mobile-close:focus-visible{
   outline:2px solid #A74722!important;
   outline-offset:3px!important;
 }
+
+
+/* 2026-10-18 performance QA: the portfolio rail's max-content track must
+   never enlarge its viewport/parent. Intrinsic grid/flex sizing previously
+   allowed a moving strip to grow to several thousand px on mobile.
+   Keep the track wide for seamless motion; clip it at a real viewport width. */
+html body #cases #work{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+html body #cases #work .case-portfolio-v10,
+html body #cases #work .portfolio-lane,
+html body #cases #work .portfolio-viewport{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #cases #work .portfolio-track{
+    will-change:auto!important;
+  }
+}
