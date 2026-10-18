@@ -90,6 +90,11 @@ jobs:
           LUEN_QA_URL: https://luen-preview.pages.dev
         run: node scripts/qa-live.mjs
 
+      - name: Verify all public routes before production approval
+        env:
+          LUEN_QA_URL: https://luen-preview.pages.dev
+        run: node scripts/qa-subpages.mjs
+
       - name: Keep screenshots and QA findings
         if: always()
         uses: actions/upload-artifact@v4
