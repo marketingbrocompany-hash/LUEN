@@ -230,8 +230,54 @@ try {
     }
     await motionContext.close();
   }
-  results.push({internalLinkRoutes:routes,contact,faqChecked:true,motionAudit});
+  // Chromium user-agent simulation exercises LUEN's separate iOS loop code.
+  // This is a JS-path smoke test, not a substitute for physical Safari QA.
+  const iosAudit=[];
+  const iphoneUserAgent='Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
+  for(const mode of ['no-preference','reduce']){
+    const iosContext=await browser.newContext({
+      viewport:{width:390,height:844},
+      deviceScaleFactor:2,
+      isMobile:true,hasTouch:true,
+      userAgent:iphoneUserAgent,
+      reducedMotion:mode
+    });
+    const iosPage=await iosContext.newPage();
+    await iosPage.goto(BASE,{waitUntil:'load',timeout:60000});
+    const pathEnabled=await iosPage.evaluate(()=>document.documentElement.classList.contains('ios-light-loops'));
+    if(!pathEnabled)serious('ios-simulation','iOS-specific lightweight marquee controller did not initialize');
+    const iosStrips=iosPage.locator('.portfolio-viewport');
+    const iosCount=await iosStrips.count();
+    if(iosCount!==2)serious('ios-simulation','Expected 2 iOS portfolio strips, found '+iosCount);
+    for(let i=0;i<iosCount;i++){
+      const strip=iosStrips.nth(i);
+      await strip.scrollIntoViewIfNeeded();
+      await iosPage.waitForTimeout(600);
+      const first=await strip.locator('.loop-track').evaluate(e=>getComputedStyle(e).transform);
+      await iosPage.waitForTimeout(600);
+      const second=await strip.locator('.loop-track').evaluate(e=>getComputedStyle(e).transform);
+      const info=await strip.evaluate(e=>{
+        const source=e.querySelector('.loop-set:not(.ios-loop-clone)');
+        const width=source?.getBoundingClientRect().width||0;
+        return {
+          clones:e.querySelectorAll('.ios-loop-clone').length,
+          needed:Math.max(1,Math.ceil(e.clientWidth/width||0)),
+          viewportWidth:e.clientWidth,
+          width
+        };
+      });
+      const moved=first!==second;
+      if(mode==='no-preference' && (!moved || info.clones!==info.needed))
+        serious('ios-simulation','iOS motion/clone regression: '+JSON.stringify({mode,i,moved,...info}));
+      if(mode==='reduce' && (moved || info.clones!==0))
+        serious('ios-simulation','iOS reduced-motion regression: '+JSON.stringify({mode,i,moved,...info}));
+      iosAudit.push({mode,strip:i===0?'YouTube':'Reels',moved,...info});
+    }
+    await iosContext.close();
+  }
+  results.push({internalLinkRoutes:routes,contact,faqChecked:true,motionAudit,iosAudit});
   console.log('LUEN_MOTION_QA '+JSON.stringify(motionAudit));
+  console.log('LUEN_IOS_SIM_QA '+JSON.stringify(iosAudit));
   await ctx.close();
 }catch(e){
   serious('test-harness','Unexpected exception: '+(e.stack||e.message).slice(0,900));
