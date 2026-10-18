@@ -1,0 +1,29 @@
+name: LUEN RC GitHub Pages build compatibility
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa-pages-built-site.mjs'
+      - '.github/workflows/qa-pages-built-site.yml'
+permissions:
+  contents: read
+jobs:
+  jekyll-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build as GitHub Pages does (never deploy)
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Verify 21 built routes, assets, canonical and domain
+        run: node scripts/qa-pages-built-site.mjs
+      - name: Archive built-site validation report only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-rc-github-pages-build-proof
+          path: qa-reports/pages-rc-build.json
+          if-no-files-found: warn
+          retention-days: 14
