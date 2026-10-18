@@ -1,0 +1,36 @@
+name: LUEN Pretendard single-file A/B
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'scripts/qa-font-ab.mjs'
+      - '.github/workflows/qa-font-ab.yml'
+permissions:
+  contents: read
+jobs:
+  font-ab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check static site integrity
+        run: node scripts/check-site.mjs
+      - name: Install Chromium and Playwright
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: A/B test same HTML with two official Pretendard CSS variants
+        run: node scripts/qa-font-ab.mjs
+      - name: Retain resource reports and visual screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-pretendard-font-ab
+          path: qa-screenshots/font-ab/
+          if-no-files-found: warn
+          retention-days: 14
