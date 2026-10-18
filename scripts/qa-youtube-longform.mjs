@@ -56,6 +56,35 @@ try{
        errors.push(label+': key navigation, FAQ or sections missing');
      if(info.documentWidth>width+2)errors.push(label+': horizontal page overflow '+info.documentWidth+' > '+width);
      if(info.offscreen.length)errors.push(label+': offscreen content '+info.offscreen.join(','));
+     // Check legibility using actual browser-computed colors, not just layout.
+     const visual=await page.evaluate(()=>{
+       const bgEl=document.querySelector('.luen-page-section--ink');
+       const secondary=document.querySelector('.yt-longform-hero .btn-secondary');
+       const inkHeading=document.querySelector('.yt-process-compact h3');
+       const inkBody=document.querySelector('.yt-process-compact p');
+       const media=document.querySelector('.yt-selected-work .jcm-creator-card');
+       const baseBg=getComputedStyle(document.body).backgroundColor;
+       const darkBg=getComputedStyle(bgEl).backgroundColor;
+       const rgb=v=>{const arr=(v.match(/[\\d.]+/g)||[]).map(Number);
+         return {rgb:arr.slice(0,3),alpha:arr[3]??1}};
+       const composite=(fg,bg)=>fg.rgb.map((v,i)=>v*fg.alpha+bg.rgb[i]*(1-fg.alpha));
+       const lum=val=>{
+         const linear=val.map(v=>{const s=v/255;return s<=.04045?s/12.92:Math.pow((s+.055)/1.055,2.4)});
+         return .2126*linear[0]+.7152*linear[1]+.0722*linear[2];
+       };
+       const ratio=(fg,bg)=>{const a=lum(composite(rgb(fg),rgb(bg))),b=lum(rgb(bg).rgb);
+         return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
+       return {
+         secondaryContrast:ratio(getComputedStyle(secondary).color,baseBg),
+         headingContrast:ratio(getComputedStyle(inkHeading).color,darkBg),
+         bodyContrast:ratio(getComputedStyle(inkBody).color,darkBg),
+         cardRadius:parseFloat(getComputedStyle(media).borderTopLeftRadius)
+       };
+     });
+     for(const [type,score] of Object.entries({secondary:visual.secondaryContrast,heading:visual.headingContrast,processBody:visual.bodyContrast}))
+       if(score<4.5)errors.push(label+': '+type+' contrast below 4.5:1: '+score.toFixed(2));
+     if(visual.cardRadius<16)errors.push(label+': selected work lacks rounded image card');
+
      if(info.brokenImages.length)errors.push(label+': broken image(s): '+info.brokenImages.join(','));
      if(width>=1280 && new Set(info.cardRects.map(x=>x.left)).size!==3)
        errors.push(label+': desktop cards did not form three columns');
