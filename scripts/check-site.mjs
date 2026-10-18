@@ -95,16 +95,20 @@ const checks=[
     core.includes('closeOnDesktop')
     &&core.includes('setMenu(false,{restoreFocus:false})')
     &&core.includes('min-width:821px')],
-  ['reduced-motion preference changes stop and restart marquee loops',
+  ['reduced-motion preference stops, clears and restores marquee loops',
     core.includes('syncLoopMotionPreference')
-    &&core.includes('controller.track?.style.setProperty')
+    &&core.includes('loopControllers.forEach((_controller,viewport)=>stopLoop(viewport))')
     &&core.includes('window.requestAnimationFrame(initLoopStrips)')],
+  ['marquee uses only necessary clones and lazy-loads duplicate imagery',
+    core.includes('Math.max(1,Math.ceil(viewport.clientWidth/baseWidth))')
+    &&core.includes("img.loading='lazy'")
+    &&core.includes("loopControllers.set(viewport,{raf:0,visible:false,track})")],
   ['all shared pages load updated mobile CSS and JS',
     designedPages.length>=20
     &&designedPages.every(filename=>{
       const content=fs.readFileSync(path.join(root,filename),'utf8');
       return content.includes('luen-v3.css?v=20261017-8')
-        &&content.includes('site-core.js?v=20261017-2');
+        &&/site-core\.js\?v=\d{8}-\d+/.test(content);
     })],
   ['LUEN wordmark has accessible dark contrast on ivory navigation and footer',
     design.includes('html body #nav .logo .logo-word,')
