@@ -234,14 +234,27 @@
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   /* Respond to OS reduced-motion changes while the page remains open. */
+  let lastReducedMotion=reducedMotion.matches;
   const syncLoopMotionPreference=()=>{
-    // Rebuild on both transitions: drop clones in reduced-motion, restore
-    // the minimum seamless copies when motion becomes allowed again.
+    lastReducedMotion=reducedMotion.matches;
     loopControllers.forEach((_controller,viewport)=>stopLoop(viewport));
-    window.requestAnimationFrame(initLoopStrips);
+    // Reduced motion must remove cloned imagery synchronously.
+    if(reducedMotion.matches) initLoopStrips();
+    else window.requestAnimationFrame(initLoopStrips);
   };
   if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
   else reducedMotion.addListener?.(syncLoopMotionPreference);
+  // Some embedded browsers fail to deliver MediaQueryList change events.
+  // A small state-only check restores/reduces motion without extra animation
+  // frames or reflows; no work is done when the preference stays the same.
+  // Only the homepage owns the three motion strips; other LUEN pages
+  // must not pay for an unused fallback preference check.
+  if(document.querySelector('[data-loop-strip]')){
+    window.setInterval(()=>{
+      if(!document.hidden && reducedMotion.matches!==lastReducedMotion)
+        syncLoopMotionPreference();
+    },250);
+  }
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
