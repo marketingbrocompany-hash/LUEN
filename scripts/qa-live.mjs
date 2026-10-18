@@ -184,7 +184,38 @@ try {
     if(afterSecond.open!==initial || afterSecond.aria!==String(afterSecond.open))
       serious('faq','FAQ second click did not restore state: '+JSON.stringify({initial,afterSecond}));
   }
-  results.push({internalLinkRoutes:routes,contact,faqChecked:true});
+  // Functional motion QA: thumbnails must actually move for normal users,
+  // while reduced-motion mode must remain readable without animation.
+  const motionAudit=[];
+  for(const mode of ['no-preference','reduce']){
+    const motionContext=await browser.newContext({
+      viewport:{width:390,height:844},
+      reducedMotion:mode
+    });
+    const motionPage=await motionContext.newPage();
+    await motionPage.goto(BASE,{waitUntil:'load',timeout:60000});
+    const strips=motionPage.locator('[data-loop-strip].portfolio-viewport');
+    const count=await strips.count();
+    if(count!==2)serious('portfolio-motion','Expected YouTube and Reels strips, found '+count);
+    for(let i=0;i<count;i++){
+      const strip=strips.nth(i);
+      await strip.scrollIntoViewIfNeeded();
+      await motionPage.waitForTimeout(550);
+      const first=await strip.locator('.loop-track').evaluate(e=>getComputedStyle(e).transform);
+      await motionPage.waitForTimeout(600);
+      const second=await strip.locator('.loop-track').evaluate(e=>getComputedStyle(e).transform);
+      const moved=first!==second;
+      const label=i===0?'YouTube Long Form':'Instagram Reels';
+      if(mode==='no-preference'&&!moved)
+        serious('portfolio-motion',label+' marquee is static with motion enabled: '+first);
+      if(mode==='reduce'&&moved)
+        serious('portfolio-motion',label+' marquee moves even under reduced-motion: '+first+' → '+second);
+      motionAudit.push({mode,label,moved});
+    }
+    await motionContext.close();
+  }
+  results.push({internalLinkRoutes:routes,contact,faqChecked:true,motionAudit});
+  console.log('LUEN_MOTION_QA '+JSON.stringify(motionAudit));
   await ctx.close();
 }catch(e){
   serious('test-harness','Unexpected exception: '+(e.stack||e.message).slice(0,900));
