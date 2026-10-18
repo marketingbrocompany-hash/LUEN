@@ -37,14 +37,12 @@ for(const [sampleIndex,formFactor] of ['mobile','mobile','mobile','desktop','des
     '--output=json','--output=html',
     '--output-path='+outputPath,
     '--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage',
-    '--form-factor='+formFactor,
     '--throttling-method=simulate',
   ];
-  if(formFactor==='desktop'){
-    args.push('--screenEmulation.mobile=false','--screenEmulation.width=1350',
-      '--screenEmulation.height=940','--screenEmulation.deviceScaleFactor=1',
-      '--screenEmulation.disabled=false');
-  }
+  // Lighthouse's official desktop preset includes correct desktop CPU/network
+  // calibration and UA. form-factor alone does NOT set that environment.
+  if(formFactor==='desktop')args.push('--preset=desktop');
+  else args.push('--form-factor=mobile');
   console.log('Running Lighthouse',formFactor,'at',target);
   const p=spawnSync(binary,args,{env:{...process.env,CHROME_PATH:chrome},encoding:'utf8',timeout:180000,maxBuffer:1024*1024*3});
   if(p.status!==0){
@@ -83,7 +81,10 @@ for(const [sampleIndex,formFactor] of ['mobile','mobile','mobile','desktop','des
   runs.push(summary);
   console.log('LUEN_LIGHTHOUSE_RESULT '+JSON.stringify(summary).slice(0,14000));
 }
-const median=values=>{const sorted=values.filter(Number.isFinite).sort((a,b)=>a-b);return sorted[Math.floor(sorted.length/2)]??null;};
+const median=values=>{const sorted=values.filter(Number.isFinite).sort((a,b)=>a-b);
+  const n=sorted.length;
+  return !n?null:n%2?sorted[Math.floor(n/2)]:(sorted[n/2-1]+sorted[n/2])/2;
+};
 const medians=['mobile','desktop'].map(device=>{
   const samples=runs.filter(r=>r.formFactor===device);
   return {device,samples:samples.length,score:median(samples.map(x=>x.score)),
