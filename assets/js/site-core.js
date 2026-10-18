@@ -169,6 +169,8 @@
 
   const loopControllers=new Map();
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Keep the MediaQueryList strongly reachable for live OS preference events.
+  window.__luenLoopMotionPreferenceQuery=reducedMotion;
   const startLoop=viewport=>{
     const controller=loopControllers.get(viewport);
     if(!controller||controller.raf||!controller.visible||document.hidden||reducedMotion.matches)return;
