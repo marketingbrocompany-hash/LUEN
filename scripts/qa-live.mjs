@@ -61,7 +61,8 @@ try {
       const visibleCTA=[...document.querySelectorAll('.hero-cta a')].filter(a=>a.getBoundingClientRect().width>0);
       const viewportWidth=html.clientWidth;
       const overflowCandidates=[...main.querySelectorAll('.container,.hero-copy,.hero-layout,.contact-form,.case-support-grid-v7,.nav-inner')]
-        .filter(e=>{const r=e.getBoundingClientRect();return r.width>0 && (r.left < -6 || r.right > viewportWidth+6);})
+        .filter(e=>{if(e.classList.contains('portfolio-head'))return false; // intentional moving rail clone
+          const r=e.getBoundingClientRect();return r.width>0 && (r.left < -6 || r.right > viewportWidth+6);})
         .slice(0,12).map(e=>({selector:e.className,left:Math.round(e.getBoundingClientRect().left),right:Math.round(e.getBoundingClientRect().right)}));
       return {
         documentWidth:html.scrollWidth,clientWidth:viewportWidth,bodyWidth:body.scrollWidth,
