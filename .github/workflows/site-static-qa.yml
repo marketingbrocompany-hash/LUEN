@@ -2,7 +2,7 @@ name: LUEN static QA
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, luen-preview]
 permissions:
   contents: read
 jobs:
