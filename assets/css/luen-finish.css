@@ -284,3 +284,37 @@ html body main#top #performance .luen-section-subheading + .data-source-badge{
     margin-top:16px!important;
   }
 }
+
+
+/* 2026-10-18 real-screen QA — mobile navigation should belong to LUEN's
+   ivory/orange editorial system, not the retired near-black theme.
+   Keep overlay behavior, click targets and existing menu transitions intact. */
+html body .mobile-menu{
+  background:#F5F3EE!important;
+  color:#2A2521!important;
+}
+html body .mobile-menu::before{
+  content:"LUEN";
+  position:absolute;
+  top:32px;
+  left:22px;
+  font:800 20px/1 "Inter","Pretendard",sans-serif;
+  letter-spacing:.17em;
+  color:#2A2521;
+  pointer-events:none;
+}
+html body .mobile-menu .mobile-link:not(.btn-primary){
+  color:#2A2521!important;
+}
+html body .mobile-menu .mobile-link:not(.btn-primary):hover{
+  color:#A74722!important;
+}
+html body .mobile-menu .mobile-close{
+  border-color:#D7CCBD!important;
+  background:#FFF9F1!important;
+  color:#2A2521!important;
+}
+html body .mobile-menu .mobile-close:focus-visible{
+  outline:2px solid #A74722!important;
+  outline-offset:3px!important;
+}
