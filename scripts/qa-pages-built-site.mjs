@@ -37,8 +37,17 @@ for(const asset of assetRefs){
 }
 const builtCname=read('CNAME');
 const originalCname=fs.readFileSync(path.join(root,'CNAME'),'utf8').trim();
-if(builtCname?.toString('utf8').trim()!=='luenkorea.com'||originalCname!=='luenkorea.com')
-  errs.push('CNAME not preserved as luenkorea.com');
+// GitHub Pages branch-publishing domain binding is checked in the SOURCE
+// repository CNAME, not necessarily in Jekyll's temporary _site artifact.
+// Requiring it in _site was a false positive in the first diagnostic run.
+if(originalCname!=='luenkorea.com')
+  errs.push('Repository publishing-source CNAME is incorrect: '+originalCname);
+if(builtCname && builtCname.toString('utf8').trim()!=='luenkorea.com')
+  errs.push('Built CNAME exists but contradicts repository domain');
+console.log('LUEN_GH_PAGES_CNAME_SOURCE '+JSON.stringify({
+ source:originalCname,built:builtCname?.toString('utf8').trim()||null,
+ note:'Branch source CNAME remains authoritative'
+}));
 for(const required of ['assets/css/site.css','assets/css/luen-v3.css','assets/css/luen-pages.css',
   'assets/js/site-core.js','assets/js/site.js','assets/js/luen-motion.js']){
   if(!read(required))errs.push('Missing critical runtime asset '+required);
