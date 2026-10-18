@@ -1,0 +1,192 @@
+/* LUEN — Korean / Japanese client entry (region gate + language switch). */
+
+/* Nav language switch */
+html body #nav .nav-lang{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  min-height:38px!important;
+  padding:0 12px!important;
+  border-radius:8px!important;
+  border:1px solid transparent!important;
+  background:transparent!important;
+  color:#4A423C!important;
+  font:650 11px/1 var(--luen-type-ui)!important;
+  letter-spacing:.04em!important;
+  white-space:nowrap!important;
+  transition:border-color .2s ease,color .2s ease!important;
+}
+html body #nav .nav-lang::before{
+  content:""!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:50%!important;
+  background:var(--luen-orange)!important;
+}
+html body #nav .nav-lang:hover{
+  border-color:#D7CCBD!important;
+  color:#2A2521!important;
+}
+html body #nav .nav-lang:focus-visible{
+  outline:2px solid #D56F40!important;
+  outline-offset:3px!important;
+}
+
+/* Region gate */
+html body .region-gate{
+  position:fixed!important;
+  inset:0!important;
+  z-index:10000!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:24px 16px!important;
+  background:rgba(17,16,14,.62)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+  backdrop-filter:blur(10px)!important;
+  overflow-y:auto!important;
+  opacity:1;
+  transition:opacity .28s var(--luen-ease,ease);
+}
+html body .region-gate[hidden]{display:none!important;}
+html body .region-gate.is-leaving{opacity:0;}
+html.region-gate-open,
+html.region-gate-open body{overflow:hidden!important;}
+
+html body .region-gate-panel{
+  width:100%!important;
+  max-width:760px!important;
+  margin:auto!important;
+  padding:clamp(28px,5vw,48px)!important;
+  border-radius:16px!important;
+  background:var(--luen-canvas)!important;
+  color:var(--luen-ink)!important;
+  box-shadow:0 30px 80px rgba(17,16,14,.28)!important;
+}
+html body .region-gate-head{margin:0 0 28px!important;}
+html body .region-gate-brand{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0 0 22px!important;
+  color:var(--luen-muted)!important;
+  font:650 10.5px/1.4 var(--luen-type-ui)!important;
+  letter-spacing:.14em!important;
+}
+html body .region-gate-brand b{
+  color:var(--luen-ink)!important;
+  font:800 17px/1 var(--luen-type-ui)!important;
+  letter-spacing:.06em!important;
+}
+html body .region-gate-brand i{
+  width:6px!important;
+  height:6px!important;
+  border-radius:50%!important;
+  background:var(--luen-orange)!important;
+}
+html body .region-gate-title{
+  margin:0!important;
+  color:var(--luen-ink)!important;
+  font:700 clamp(25px,4vw,34px)/1.25 var(--luen-type-display)!important;
+  letter-spacing:-.02em!important;
+}
+html body .region-gate-title span{
+  display:block!important;
+  margin-top:6px!important;
+  color:var(--luen-muted)!important;
+  font:600 clamp(15px,2.2vw,18px)/1.4 "Noto Sans JP",var(--luen-type-body)!important;
+  letter-spacing:0!important;
+}
+
+html body .region-gate-options{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:14px!important;
+}
+html body .region-gate-option{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+  min-height:220px!important;
+  padding:26px 24px 22px!important;
+  border:1px solid var(--luen-line)!important;
+  border-radius:12px!important;
+  background:#FBFAF7!important;
+  color:var(--luen-ink)!important;
+  text-decoration:none!important;
+  transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease!important;
+}
+html body .region-gate-option:hover,
+html body .region-gate-option:focus-visible{
+  border-color:var(--luen-orange)!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 14px 32px rgba(17,16,14,.08)!important;
+  outline:none!important;
+}
+html body .region-gate-code{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  color:var(--luen-orange)!important;
+  font:700 11px/1 var(--luen-type-ui)!important;
+  letter-spacing:.14em!important;
+}
+html body .region-gate-code::before{
+  content:""!important;
+  width:6px!important;
+  height:6px!important;
+  border-radius:50%!important;
+  background:var(--luen-orange)!important;
+}
+html body .region-gate-option strong{
+  color:var(--luen-ink)!important;
+  font:700 21px/1.3 var(--luen-type-display)!important;
+  letter-spacing:-.01em!important;
+}
+html body .region-gate-option p{
+  margin:0!important;
+  color:var(--luen-muted)!important;
+  font:500 13.5px/1.65 var(--luen-type-body)!important;
+}
+html body .region-gate-option em{
+  margin-top:auto!important;
+  padding-top:14px!important;
+  color:var(--luen-ink)!important;
+  font:650 13px/1 var(--luen-type-body)!important;
+  font-style:normal!important;
+}
+html body .region-gate-option:hover em,
+html body .region-gate-option:focus-visible em{color:var(--luen-orange)!important;}
+html body .region-gate-option[lang="ja"] strong,
+html body .region-gate-option[lang="ja"] p,
+html body .region-gate-option[lang="ja"] em{font-family:"Noto Sans JP",var(--luen-type-body)!important;}
+html body .region-gate-note{
+  margin:20px 0 0!important;
+  color:var(--luen-muted-light)!important;
+  font:500 12px/1.6 var(--luen-type-body)!important;
+}
+
+@media(max-width:640px){
+  html body .region-gate{align-items:flex-start!important;}
+  html body .region-gate-options{grid-template-columns:1fr!important;}
+  html body .region-gate-option{min-height:0!important;padding:22px 20px 18px!important;}
+  html body .region-gate-option strong{font-size:19px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  html body .region-gate,
+  html body .region-gate-option{transition:none!important;}
+}
+
+/* Japanese pages — the shared CSS sets word-break:keep-all for Korean, which never breaks Japanese text. */
+html[lang="ja"] body,
+html[lang="ja"] body *{
+  word-break:normal!important;
+  word-break:auto-phrase!important;
+  line-break:strict!important;
+  overflow-wrap:anywhere;
+}
+html[lang="ja"] body{
+  font-family:"Noto Sans JP","Pretendard Variable","Pretendard",sans-serif;
+}

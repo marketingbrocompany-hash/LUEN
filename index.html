@@ -17,6 +17,19 @@ gtag('config', 'G-QXBK6XEK7G');
 <meta name="description" content="LUEN은 한국과 일본을 잇는 크리에이터 마케팅 에이전시입니다. YouTube 롱폼·Instagram Reels·TikTok 숏폼부터 일본 마케팅 전략까지, 크리에이터 매칭·콘텐츠 운영·성과 확인을 한 흐름으로 관리합니다."/>
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"/>
 <link rel="canonical" href="https://luenkorea.com/"/>
+<link rel="alternate" hreflang="ko" href="https://luenkorea.com/"/>
+<link rel="alternate" hreflang="ja" href="https://luenkorea.com/ja/"/>
+<link rel="alternate" hreflang="x-default" href="https://luenkorea.com/"/>
+<script>
+/* Region entry: ?region=ko saves the Korean choice; a saved Japanese choice opens /ja/. */
+(()=>{try{
+const key='luen_client_region';
+const params=new URLSearchParams(location.search);
+if(params.get('region')==='ko'){localStorage.setItem(key,'ko');params.delete('region');const query=params.toString();history.replaceState(null,'',location.pathname+(query?'?'+query:'')+location.hash);return;}
+const fromSameSite=Boolean(document.referrer)&&new URL(document.referrer).host===location.host;
+if(localStorage.getItem(key)==='ja'&&!location.hash&&!fromSameSite)location.replace('/ja/');
+}catch(_err){}})();
+</script>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="LUEN"/>
 <meta property="og:locale" content="ko_KR"/>
@@ -65,8 +78,33 @@ gtag('config', 'G-QXBK6XEK7G');
 <link rel="stylesheet" href="assets/css/site.css?v=20260930-13"/>
 <style id="critical-warm-ivory-canvas">html,body,main{background:#F5F3EE!important}html body main#top>section[class]{background:#F5F3EE!important;background-image:none!important}html body>footer{background:#11100E!important;background-image:none!important}</style>
 <link rel="stylesheet" href="assets/css/luen-v3.css?v=20261017-2" data-luen-design-system="v3"/>
+<link rel="stylesheet" href="/assets/css/luen-region.css?v=20261018-1"/>
 </head>
 <body>
+<!-- REGION GATE · 한국 / 일본 클라이언트 선택 -->
+<div class="region-gate" id="regionGate" role="dialog" aria-modal="true" aria-labelledby="regionGateTitle" hidden>
+<div class="region-gate-panel">
+<div class="region-gate-head">
+<p class="region-gate-brand"><b>LUEN</b><i aria-hidden="true"></i>KOREA ↔ JAPAN CREATOR MARKETING</p>
+<h2 class="region-gate-title" id="regionGateTitle">어떤 고객이신가요?<span lang="ja">どちらのお客様ですか？</span></h2>
+</div>
+<div class="region-gate-options">
+<a class="region-gate-option" href="/" data-region-choice="ko">
+<span class="region-gate-code">KOREA</span>
+<strong>한국 클라이언트</strong>
+<p>일본 시장 진출 · 일본 크리에이터 마케팅 · 방한 인바운드</p>
+<em>한국어 페이지 보기 →</em>
+</a>
+<a class="region-gate-option" href="/ja/" hreflang="ja" lang="ja" data-region-choice="ja">
+<span class="region-gate-code">JAPAN</span>
+<strong>日本のクライアント</strong>
+<p>韓国クリエイターマーケティング · 韓国市場進出 · 訪日韓国人インバウンド</p>
+<em>日本語ページへ →</em>
+</a>
+</div>
+<p class="region-gate-note">선택은 이 브라우저에 저장되며, 상단 메뉴에서 언제든 바꿀 수 있습니다.</p>
+</div>
+</div>
 <div aria-hidden="true" class="scroll-progress" id="scrollProgress"></div>
 <nav aria-label="주요 메뉴" id="nav">
 <div class="nav-inner">
@@ -81,6 +119,7 @@ gtag('config', 'G-QXBK6XEK7G');
 <li><a href="/about/">ABOUT</a></li>
 </ul>
 <div class="nav-actions">
+<a class="nav-lang" href="/ja/" hreflang="ja" lang="ja" data-region-choice="ja" aria-label="日本のお客様向けページ（日本語）">JP</a>
 <a class="nav-client-login" href="https://content-intelligence-hub-dusky.vercel.app/client">고객 로그인</a>
 <a class="nav-contact" href="/contact/">프로젝트 문의 →</a>
 <button aria-expanded="false" aria-label="모바일 메뉴 열기" class="hamburger" id="hamburger">
@@ -97,6 +136,7 @@ gtag('config', 'G-QXBK6XEK7G');
 <a class="mobile-link" href="/project-guide/">PROJECT GUIDE</a>
 <a class="mobile-link" href="/about/">ABOUT</a>
 <a class="mobile-link" href="https://content-intelligence-hub-dusky.vercel.app/client">고객 로그인</a>
+<a class="mobile-link" href="/ja/" hreflang="ja" lang="ja" data-region-choice="ja">日本のお客様 →</a>
 <a class="btn btn-primary mobile-link" href="/contact/">프로젝트 문의</a>
 </div>
 <main id="top">
@@ -374,9 +414,10 @@ gtag('config', 'G-QXBK6XEK7G');
 <!-- CONTACT -->
 <section class="contact" id="contact"><div class="container contact-layout"><div class="sr"><div class="eyebrow">08 · PROJECT INQUIRY</div><h2 class="section-title">프로젝트에 대해<br/><em>알려주세요.</em></h2><p class="contact-copy">브랜드, 목표 시장, 현재 고민만 알려주세요. 확인 후 적합한 캠페인 방향을 함께 논의합니다.</p></div><form action="https://formspree.io/f/xaewddev" class="contact-form sr d1" id="contactForm" method="POST"><input name="source" type="hidden" value="LUEN Website"/><input name="source_case" type="hidden" value=""/><div aria-hidden="true" class="form-honeypot"><label for="website">웹사이트</label><input autocomplete="off" id="website" name="_gotcha" tabindex="-1" type="text"/></div><aside class="inquiry-reassurance" aria-label="상담 안내"><span>BEFORE YOU INQUIRE</span><strong>계약 전 단계에서도 상담 가능합니다.</strong><p>예산·크리에이터가 아직 정해지지 않아도 괜찮습니다.</p></aside><div class="form-grid"><div class="field"><label for="company">브랜드 / 회사명</label><input autocomplete="organization" id="company" name="company" placeholder="예: LUEN" required type="text"/></div><div class="field"><label for="name">담당자명</label><input autocomplete="name" id="name" name="name" placeholder="담당자명을 입력해주세요" required type="text"/></div><div class="field"><label for="email">이메일</label><input autocomplete="email" id="email" name="email" placeholder="회신받을 이메일을 입력해주세요" type="email"/></div><div class="field"><label for="phone">연락처</label><input autocomplete="tel" id="phone" name="phone" placeholder="예: 010-1234-5678 / +81 ..." type="tel"/></div><div class="field"><label for="market">목표 시장</label><select id="market" name="market" required><option value="" selected disabled>목표 시장을 선택해주세요</option><option value="일본 시장">일본 시장</option><option value="한국 시장">한국 시장</option><option value="한국 + 일본">한국 + 일본</option><option value="아직 정하지 않음">아직 정하지 않음</option></select></div><div class="field"><label for="platform">관심 플랫폼 (선택)</label><select id="platform" name="platform"><option value="" selected>아직 미정 / 제안 필요</option><option value="YouTube">YouTube</option><option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="X">X</option><option value="Ameba Blog">Ameba Blog</option><option value="Naver">Naver</option><option value="Google">Google</option><option value="복수 플랫폼 / 제안 필요">복수 플랫폼 / 제안 필요</option></select></div><div class="field full"><label for="budget">예산 범위 <span class="field-note">(선택)</span></label><select id="budget" name="budget"><option value="">아직 미정 / 상담 후 결정</option><option value="500만원 이하">500만원 이하</option><option value="500~1,000만원">500~1,000만원</option><option value="1,000~3,000만원">1,000~3,000만원</option><option value="3,000만원 이상">3,000만원 이상</option><option value="협의 필요">협의 필요</option></select></div><div class="field full"><label for="message">프로젝트 내용 (선택)</label><textarea id="message" name="message" placeholder="브랜드, 목표, 일정, 원하는 크리에이터 유형 등을 자유롭게 적어주세요."></textarea></div></div><div class="privacy-consent-group" aria-label="개인정보 동의"><div class="privacy-consent-item"><label class="privacy-check" for="privacyConsent"><input id="privacyConsent" name="privacy_consent" required type="checkbox" value="동의"/><span class="privacy-checkmark" aria-hidden="true"></span><span class="privacy-check-copy"><b>[필수] 개인정보 수집·이용에 동의합니다.</b><small>프로젝트 문의 접수와 회신을 위해 필요한 정보만 수집합니다.</small></span></label><details class="privacy-details"><summary>수집·이용 내용 보기</summary><div class="privacy-detail-body"><dl><div><dt>수집·이용 목적</dt><dd>프로젝트 문의 접수, 상담 및 회신, 캠페인 제안과 관련 업무 협의</dd></div><div><dt>필수 항목</dt><dd>브랜드/회사명, 담당자명, 목표 시장, 이메일 또는 연락처 중 1개</dd></div><div><dt>선택 항목</dt><dd>입력하지 않은 연락 수단, 관심 플랫폼, 예산 범위, 프로젝트 내용</dd></div><div><dt>보유·이용 기간</dt><dd>문의 처리 및 상담 종료 후 1년. 단, 관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관할 수 있습니다.</dd></div><div><dt>동의 거부</dt><dd>동의를 거부할 권리가 있으나, 필수 개인정보 수집·이용에 동의하지 않으면 홈페이지 문의폼을 통한 접수가 어렵습니다.</dd></div></dl></div></details></div><div class="privacy-consent-item"><label class="privacy-check" for="overseasConsent"><input id="overseasConsent" name="overseas_transfer_consent" required type="checkbox" value="동의"/><span class="privacy-checkmark" aria-hidden="true"></span><span class="privacy-check-copy"><b>[필수] 문의 처리를 위한 개인정보 국외 이전에 동의합니다.</b><small>Formspree(미국)를 통해 문의 내용을 전송·저장하기 때문에 필요한 동의입니다.</small></span></label><details class="privacy-details"><summary>국외 이전 내용 보기</summary><div class="privacy-detail-body"><dl><div><dt>이전받는 자</dt><dd>Formspree, Inc. · team@formspree.io</dd></div><div><dt>이전 국가</dt><dd>미국</dd></div><div><dt>이전 시기·방법</dt><dd>문의 제출 시 암호화된 HTTPS/TLS 통신을 통해 전송</dd></div><div><dt>이전 항목</dt><dd>문의폼에 입력한 정보 및 전송 과정에서 처리될 수 있는 IP 주소, 브라우저·접속 정보</dd></div><div><dt>이용 목적</dt><dd>문의 전송 처리, 제출 내용 저장, 이메일 알림, 서비스 보안 및 스팸 방지</dd></div><div><dt>보유·이용 기간</dt><dd>LUEN은 문의 처리 및 상담 종료 후 1년 내 제출 데이터를 삭제합니다. Formspree는 법적 의무, 보안 및 분쟁 해결 등에 필요한 범위에서 일부 정보를 추가 보관할 수 있습니다.</dd></div><div><dt>동의 거부</dt><dd>국외 이전 동의를 거부할 권리가 있으나, Formspree를 이용하는 홈페이지 문의폼 접수는 진행할 수 없습니다.</dd></div></dl><a class="privacy-external" href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Formspree 개인정보 처리 안내 ↗</a></div></details></div></div><button class="btn btn-primary form-submit" type="submit"><span class="form-submit-label">프로젝트 문의하기 →</span></button><p aria-live="polite" class="form-feedback" id="copyStatus"></p><div aria-live="polite" class="form-success" id="formSuccess" role="status"><span class="form-success-kicker">INQUIRY RECEIVED</span><strong>문의가 접수되었습니다.</strong><p>내용을 확인 후 담당자가 입력해주신 연락처로 회신드리겠습니다.</p><button class="form-reset" id="formReset" type="button">추가 문의 작성하기</button></div></form></div></section>
 </main>
-<footer><div class="container"><div class="footer-top"><div class="footer-brand"><div class="logo"><span class="logo-word">LUEN</span><span aria-hidden="true" class="logo-signal"></span></div><p>Creator Network for Korea &amp; Japan</p></div><div class="footer-links"><a href="/services/">Services</a><a href="/cases/">Case Studies</a><a href="/insights/">Insights</a><a href="/project-guide/">Project Guide</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="https://content-intelligence-hub-dusky.vercel.app/client">고객 로그인</a></div></div><div class="footer-bottom"><p>© 2026 LUEN. All rights reserved.</p><p>KOREA × JAPAN CREATOR MARKETING</p></div><div class="footer-business-info" aria-label="LUEN 사업자 정보"><span>루엔</span><span>대표 이호규</span><span>사업자등록번호 412-43-01039</span><span>서울특별시 마포구 동교로17안길 10, 3층(서교동)</span><span><a href="privacy.html">개인정보처리방침</a></span></div></div></footer>
+<footer><div class="container"><div class="footer-top"><div class="footer-brand"><div class="logo"><span class="logo-word">LUEN</span><span aria-hidden="true" class="logo-signal"></span></div><p>Creator Network for Korea &amp; Japan</p></div><div class="footer-links"><a href="/services/">Services</a><a href="/cases/">Case Studies</a><a href="/insights/">Insights</a><a href="/project-guide/">Project Guide</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="https://content-intelligence-hub-dusky.vercel.app/client">고객 로그인</a><a href="/ja/" hreflang="ja" lang="ja" data-region-choice="ja">日本語</a></div></div><div class="footer-bottom"><p>© 2026 LUEN. All rights reserved.</p><p>KOREA × JAPAN CREATOR MARKETING</p></div><div class="footer-business-info" aria-label="LUEN 사업자 정보"><span>루엔</span><span>대표 이호규</span><span>사업자등록번호 412-43-01039</span><span>서울특별시 마포구 동교로17안길 10, 3층(서교동)</span><span><a href="privacy.html">개인정보처리방침</a></span></div></div></footer>
 <a aria-label="프로젝트 상담하기" class="float-cta" href="#contact" id="floatCta"><span class="float-cta-label">프로젝트 상담</span><span aria-hidden="true" class="float-cta-arrow">→</span></a>
-<script src="assets/js/site.js?v=20260930-13"></script>
-<script src="assets/js/site-core.js?v=20260925-5"></script>
+<script src="assets/js/site.js?v=20261018-1"></script>
+<script src="assets/js/site-core.js?v=20261018-1"></script>
+<script src="/assets/js/region-gate.js?v=20261018-1"></script>
 </body>
 </html>

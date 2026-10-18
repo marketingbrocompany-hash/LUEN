@@ -1,4 +1,18 @@
 (function(){
+  const isJa=document.documentElement.lang==='ja';
+  const copy=isJa?{
+    contactMethod:'メールアドレスまたは電話番号のいずれかをご入力ください。',
+    submit:'お問い合わせを送信 →',
+    submitting:'送信中...',
+    failed:'送信に失敗しました。しばらくしてから再度お試しください。',
+    network:'ネットワーク接続をご確認のうえ、再度お試しください。'
+  }:{
+    contactMethod:'이메일 또는 연락처 중 하나를 입력해주세요.',
+    submit:'프로젝트 문의하기 →',
+    submitting:'문의 전송 중...',
+    failed:'문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.',
+    network:'네트워크 연결을 확인한 뒤 다시 시도해주세요.'
+  };
   const track=(eventName,params={})=>{
     if(typeof window.gtag==='function'){
       window.gtag('event',eventName,params);
@@ -245,7 +259,7 @@
         field_name:'contact_method',
         page_path:window.location.pathname
       });
-      email?.setCustomValidity('이메일 또는 연락처 중 하나를 입력해주세요.');
+      email?.setCustomValidity(copy.contactMethod);
       email?.reportValidity();
       email?.focus();
       event.preventDefault();
@@ -261,11 +275,11 @@
     form.addEventListener('focusin',markFormStarted,{once:true});
     form.addEventListener('input',markFormStarted,{once:true});
 
-    const defaultSubmitLabel=submitLabel?.textContent || '프로젝트 문의하기 →';
+    const defaultSubmitLabel=submitLabel?.textContent || copy.submit;
     const setSubmitting=(isSubmitting)=>{
       form.classList.toggle('is-submitting',isSubmitting);
       if(submitButton) submitButton.disabled=isSubmitting;
-      if(submitLabel) submitLabel.textContent=isSubmitting?'문의 전송 중...':defaultSubmitLabel;
+      if(submitLabel) submitLabel.textContent=isSubmitting?copy.submitting:defaultSubmitLabel;
     };
 
     form.addEventListener('submit',async e=>{
@@ -278,7 +292,7 @@
 
       const data=new FormData(form);
       const company=(data.get('company')||'프로젝트 문의').toString().trim();
-      data.set('_subject','[LUEN 홈페이지 문의] '+company);
+      data.set('_subject',(isJa?'[LUEN 일본어 홈페이지 문의] ':'[LUEN 홈페이지 문의] ')+company);
       data.set('_replyto',(data.get('email')||'').toString());
       data.set('page_url',window.location.href);
       data.set('submitted_at',new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}));
@@ -308,7 +322,7 @@
             status_code:response.status,
             page_path:window.location.pathname
           });
-          let message='문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+          let message=copy.failed;
           try{
             const result=await response.json();
             if(result?.errors?.length){message=result.errors.map(err=>err.message).filter(Boolean).join(' ');}
@@ -322,7 +336,7 @@
           stage:'network',
           page_path:window.location.pathname
         });
-        status.textContent='네트워크 연결을 확인한 뒤 다시 시도해주세요.';
+        status.textContent=copy.network;
         status.className='form-feedback is-error';
       }finally{
         setSubmitting(false);

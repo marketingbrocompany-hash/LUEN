@@ -191,13 +191,16 @@
       toggle.type='button';
       toggle.className='faq-more-toggle';
       toggle.setAttribute('aria-expanded','false');
-      toggle.textContent=`질문 더보기 +${extraItems.length}`;
+      const isJa=document.documentElement.lang==='ja';
+      const moreLabel=isJa?`質問をもっと見る +${extraItems.length}`:`질문 더보기 +${extraItems.length}`;
+      const lessLabel=isJa?'閉じる':'질문 접기';
+      toggle.textContent=moreLabel;
       faqList.insertBefore(toggle,faqConversion||null);
       toggle.addEventListener('click',()=>{
         const nextExpanded=toggle.getAttribute('aria-expanded')!=='true';
         toggle.setAttribute('aria-expanded',String(nextExpanded));
         extraItems.forEach(item=>{item.hidden=!nextExpanded;});
-        toggle.textContent=nextExpanded?'질문 접기':`질문 더보기 +${extraItems.length}`;
+        toggle.textContent=nextExpanded?lessLabel:moreLabel;
         if(!nextExpanded){
           extraItems.forEach(item=>{
             item.classList.remove('open');
