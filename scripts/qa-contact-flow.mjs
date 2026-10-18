@@ -55,8 +55,12 @@ try{
       await page.locator('#company').fill('LUEN QA SIMULATED');
       await page.locator('#name').fill('Automation Test');
       await page.locator('#market').selectOption({label:'일본 시장'});
-      await page.locator('#privacyConsent').check({force:true});
-      await page.locator('#overseasConsent').check({force:true});
+      await page.locator('label[for="privacyConsent"]').click();
+      if(!await page.locator('#privacyConsent').isChecked())
+        fail(route,'consent-toggle','Human-style label click did not check privacyConsent');
+      await page.locator('label[for="overseasConsent"]').click();
+      if(!await page.locator('#overseasConsent').isChecked())
+        fail(route,'consent-toggle','Human-style label click did not check overseasConsent');
 
       // Missing both email and phone MUST fail before any POST occurs.
       await form.locator('button[type="submit"]').click();
@@ -94,8 +98,12 @@ try{
       await page.locator('#name').fill('Automation Test');
       await page.locator('#email').fill('test@invalid.example');
       await page.locator('#market').selectOption({label:'일본 시장'});
-      await page.locator('#privacyConsent').check({force:true});
-      await page.locator('#overseasConsent').check({force:true});
+      await page.locator('label[for="privacyConsent"]').click();
+      if(!await page.locator('#privacyConsent').isChecked())
+        fail(route,'consent-toggle','Human-style label click did not check privacyConsent');
+      await page.locator('label[for="overseasConsent"]').click();
+      if(!await page.locator('#overseasConsent').isChecked())
+        fail(route,'consent-toggle','Human-style label click did not check overseasConsent');
       await form.locator('button[type="submit"]').click();
       await page.waitForTimeout(230);
       const failure=await page.evaluate(()=>({
