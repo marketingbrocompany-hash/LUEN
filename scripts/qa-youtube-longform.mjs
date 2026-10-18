@@ -65,7 +65,7 @@ try{
        const media=document.querySelector('.yt-selected-work .jcm-creator-card');
        const baseBg=getComputedStyle(document.body).backgroundColor;
        const darkBg=getComputedStyle(bgEl).backgroundColor;
-       const rgb=v=>{const arr=(v.match(/[\\d.]+/g)||[]).map(Number);
+       const rgb=v=>{const arr=(v.match(/[\d.]+/g)||[]).map(Number);
          return {rgb:arr.slice(0,3),alpha:arr[3]??1}};
        const composite=(fg,bg)=>fg.rgb.map((v,i)=>v*fg.alpha+bg.rgb[i]*(1-fg.alpha));
        const lum=val=>{
@@ -82,8 +82,8 @@ try{
        };
      });
      for(const [type,score] of Object.entries({secondary:visual.secondaryContrast,heading:visual.headingContrast,processBody:visual.bodyContrast}))
-       if(score<4.5)errors.push(label+': '+type+' contrast below 4.5:1: '+score.toFixed(2));
-     if(visual.cardRadius<16)errors.push(label+': selected work lacks rounded image card');
+       if(!Number.isFinite(score)||score<4.5)errors.push(label+': '+type+' contrast below 4.5:1: '+score.toFixed(2));
+     if(!Number.isFinite(visual.cardRadius)||visual.cardRadius<16)errors.push(label+': selected work lacks rounded image card');
 
      if(info.brokenImages.length)errors.push(label+': broken image(s): '+info.brokenImages.join(','));
      if(width>=1280 && new Set(info.cardRects.map(x=>x.left)).size!==3)
