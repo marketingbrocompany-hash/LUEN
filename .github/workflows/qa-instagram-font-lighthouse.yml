@@ -1,0 +1,44 @@
+name: LUEN Instagram font throttled Lighthouse A/B
+on:
+  pull_request:
+    paths:
+      - 'services/instagram-influencer-marketing/index.html'
+      - 'scripts/serve-instagram-font-lighthouse.mjs'
+      - 'scripts/qa-instagram-font-lighthouse.mjs'
+      - '.github/workflows/qa-instagram-font-lighthouse.yml'
+permissions:
+  contents: read
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check LUEN integrity
+        run: node scripts/check-site.mjs
+      - name: Install Lighthouse and Chromium
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start isolated test server (no Analytics)
+        run: |
+          node scripts/serve-instagram-font-lighthouse.mjs >/tmp/luen-ig-font-lh.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS -o /dev/null 'http://127.0.0.1:4175/services/instagram-influencer-marketing/?variant=control' && exit 0
+            sleep 1
+          done
+          cat /tmp/luen-ig-font-lh.log
+          exit 1
+      - name: Compare mobile and desktop Lighthouse A/B
+        run: node scripts/qa-instagram-font-lighthouse.mjs
+      - name: Preserve raw Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-instagram-font-lighthouse-ab
+          path: qa-screenshots/instagram-font-lighthouse/
+          retention-days: 14
+          if-no-files-found: warn
