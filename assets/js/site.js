@@ -29,12 +29,16 @@
 
     const baseWidth=source.getBoundingClientRect().width;
     if(!baseWidth)return;
+    if(reducedMotion.matches){
+      lightLoopControllers.delete(viewport);
+      return; // no duplicate images needed for a stationary strip
+    }
     const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
     for(let i=0;i<copies;i++){
       const clone=source.cloneNode(true);
       clone.classList.add('loop-clone','ios-loop-clone');
       clone.setAttribute('aria-hidden','true');
-      clone.querySelectorAll('img').forEach(img=>{img.loading='eager';img.fetchPriority='low';});
+      clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
       track.appendChild(clone);
     }
     if(reducedMotion.matches)return;
@@ -99,9 +103,8 @@
       });
     });
     reducedMotion.addEventListener?.('change',()=>{
-      iosLoopStrips.forEach(viewport=>{
-        if(reducedMotion.matches)stopLightLoop(viewport);else setupIOSLightLoop(viewport);
-      });
+      // Recreate strips to remove duplicate images when motion is reduced.
+      iosLoopStrips.forEach(setupIOSLightLoop);
     });
   }
 
