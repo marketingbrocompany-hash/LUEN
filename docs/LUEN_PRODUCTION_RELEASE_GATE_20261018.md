@@ -4,7 +4,7 @@
 
 ## 운영 반영 원칙과 시점
 - **1차 운영 반영**은 LUEN 메인·서비스·케이스 페이지의 현재 개발 디자인을 대상으로 한다. 무기한 CSS 미세 최적화를 기다리지 않는다.
-- 아래 필수 게이트 A~D를 충족하고 사용자가 명시적으로 배포를 승인하면 `main` → Vercel Production을 통해 `luenkorea.com`에 반영한다. 승인 없이는 운영 반영하지 않는다.
+- 아래 필수 게이트 A~D를 충족하고 사용자가 명시적으로 배포를 승인하면 `main` → **기존 GitHub Pages 자동 배포**를 통해 `luenkorea.com`에 반영한다. Vercel은 제한 해제 후 별도 검토한다. 승인 없이는 운영 반영하지 않는다.
 - 모바일 Lighthouse 점수만을 기준으로 론칭하지 않는다. 심각한 레이아웃 결함·사용 불가 CTA·문의 실패가 발견되면 출시를 보류한다. 성능 회귀가 심각해 실사용을 저해하면 별도 개선 후 출시한다.
 - 1차 출시 후에도 CSS 중복 제거와 성능 고도화는 `luen-preview`에서 독립 PR로 계속하며 검증 후 별도 운영 반영한다.
 
@@ -16,7 +16,8 @@
 | 코드 차이 | 개발 쪽 123커밋 ahead, 0 behind · 변경 파일 50개 |
 | Cloudflare 개발 사이트 | https://luen-preview.pages.dev/ |
 | 직전 통합 QA | https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39112913273 — 21개 공개 경로·63개 브라우저 조합과 문의 모의 응답 통과 |
-| 상세페이지 폰트 1차 개선 | 6개 페이지 공식 Pretendard 동적 서브셋 도입: https://github.com/marketingbrocompany-hash/LUEN/pull/165 — 자동/실화면 QA 후 개발 브랜치 병합; 최종 Cloudflare 통합 QA 별도 확인 |\n| 직전 Lighthouse | https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39112913257 — 모바일 중앙값 53, LCP 약 5.19초. **성능 개선 완료를 의미하지 않음** |
+| 상세페이지 폰트 1차 개선 | 6개 페이지 공식 Pretendard 동적 서브셋 도입: https://github.com/marketingbrocompany-hash/LUEN/pull/165 — 자동/실화면 QA 후 개발 브랜치 병합 | 
+| 직전 Lighthouse | https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39112913257 — 모바일 중앙값 53, LCP 약 5.19초. **성능 개선 완료를 의미하지 않음** |
 
 > 위 상태는 날짜별 기록이다. 실출시 시 최신 SHA·배포·테스트로 다시 확인해야 한다.
 
@@ -36,8 +37,10 @@
 - [ ] 모바일 로딩이 사용자 경험을 방해하지 않는지 직접 확인; 속도 지표 전/후 기록. 경미한 점수 편차만으로 재설계하지 않음
 
 ### C — 운영 인프라 및 되돌리기
-- [ ] 현재 `main` SHA와 Vercel Production 배포 URL/ID 기록, 문제 발생 시 되돌릴 준비
-- [ ] Vercel 보호 정책과 배포 환경변수·도메인 설정 검증 (프로덕션에서의 보호/접근 문제와 앱 코드 오류를 구분)
+- [ ] 현재 `main` SHA `f2d951d`와 [기존 GitHub Pages 성공 배포](https://github.com/marketingbrocompany-hash/LUEN/actions/runs/38998683560)를 기록하고, 일반 revert PR을 통한 복구 경로 준비
+- [x] 기존 `main` 브랜치에서 GitHub Pages **build → deploy 성공** 확인, `CNAME=luenkorea.com` 확인
+- [x] 고정 후보 `38c4c3a`를 GitHub Pages와 같은 Jekyll 빌더로 검사: 21개 페이지·11개 자산 참조·HTML 원본 일치, 오류 0건 — [QA 실행](https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39118763239)
+- [ ] 카페24 기존 GitHub Pages A/CNAME 값과 관련 이메일 DNS·와일드카드 설정을 백업; 1차 출시는 **DNS를 변경하지 않음**
 - [ ] `luenkorea.com`, `www.luenkorea.com` 도메인/HTTPS/리다이렉트, canonical/robots/sitemap, GA4, 문의 접수 확인 계획
 - [ ] 새 운영 배포 직후 대표 경로 및 문의 폼 스모크 QA 준비
 
@@ -45,14 +48,15 @@
 - [ ] 위 A~C 결과를 최신 링크·미검증 사항과 함께 사용자에게 보고
 - [ ] 사용자가 **운영 배포를 명시 승인**
 - [ ] 검증된 커밋만 PR로 `main`에 통합; `force-push`, 대량 덮어쓰기, DNS 임의 변경 금지
-- [ ] Vercel Production `READY` 및 실제 도메인 실화면/스모크 QA 확인
+- [ ] [GitHub Pages 자동 배포](https://github.com/marketingbrocompany-hash/LUEN/actions) 성공과 `luenkorea.com`/`www` 실화면 및 문의/SEO 스모크 QA 확인. Vercel 상태는 1차 출시의 필수 게이트가 아님.
 - [ ] 오류 발생 시 이전 운영 SHA로 일반 revert PR 또는 검증된 롤백 경로 사용
 - [ ] 배포 완료를 완료/QA/운영 반영 3개 상태로 나누어 보고
 
 ## 배포 전략
-1. **기능·디자인 1차 릴리스**: 현재 개발 버전의 LUEN 메인, 서비스, 케이스와 문의 경로를 공식 도메인에 반영하는 것을 목표로 준비한다.
+1. **기능·디자인 1차 릴리스**: Vercel 제한 해제를 기다리지 않는다. 검증한 독립 릴리스 브랜치 `release/luen-website-rc1-20261018`에서 [운영 PR #166](https://github.com/marketingbrocompany-hash/LUEN/pull/166)을 승인 후 `main`에 병합한다. GitHub Pages는 `main` 변경 시 공식 도메인을 자동 게시할 수 있으므로 **운영 승인 전 병합 금지**. 기존 Cafe24 DNS는 유지한다.
 2. **성능·CSS 후속 릴리스**: 페이지별 폰트 전송·CSS 중복 및 GA4 외부 스크립트 영향 진단 결과에 따라 독립 PR과 A/B 검증으로 나누어 반영한다.
-3. **별도 애플리케이션**인 `content-intelligence-hub`의 인증/클라이언트 대시보드는 이번 마케팅 홈페이지의 릴리스에 섞지 않는다.
+3. **Vercel은 후속 이전 옵션**: 제한이 풀린 후 Vercel 운영 후보의 배포 품질을 별도로 검증하고, 필요한 경우에만 카페24에서 사전 백업한 `@` A와 `www` CNAME을 나중에 전환한다. `send`, `rsend`, MX, TXT, SPF 등 이메일 관련 설정 및 와일드카드는 변경 대상이 아니다.
+4. **별도 애플리케이션**인 `content-intelligence-hub`의 인증/클라이언트 대시보드는 이번 마케팅 홈페이지 릴리스에 섞지 않는다.
 
 ## 즉시 조치해야 할 증거 갭
 - iOS Safari/Android Chrome **실기기** 테스트 기록 부재
@@ -61,3 +65,10 @@
 - 모바일 Lighthouse 변동성이 여전히 큼. 약 69KB 미사용 CSS는 추정치일 뿐; 각 화면/상호작용에서 CSS 사용 여부를 관찰하기 전에는 스타일을 삭제하지 않는다
 
 마지막 원칙: **출시 승인 전에 `luenkorea.com`에 기능 개발 결과가 노출되지 않도록 유지한다.**
+
+## 2026-10-18 GitHub Pages 출시 가능성 검증 (Vercel 독립)
+- [운영 GitHub Pages 배포](https://github.com/marketingbrocompany-hash/LUEN/actions/runs/38998683560): `main` SHA `f2d951d`, 실제 Jekyll 빌드 및 deploy 모두 성공.
+- [고정 RC 빌드 재현](https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39118763239): 운영 후보 SHA `38c4c3a`에서 **21/21 HTML 파일 원본 일치, 11/11 자산 참조 확인, 빌드 오류 0**, `CNAME`은 게시 브랜치 원본에서 확인됨. 시험용 PR #168은 병합 없이 종료.
+- SEO 코드 점검: 공개 경로 21개 모두 title/description/canonical/OG URL/H1/alt 기본 검사 통과. SEO·기사 내용 사실 검증을 모두 완료했다는 의미는 아님.
+- 카페24 현재 `@ A=185.199.108.153`, `www CNAME=marketingbrocompany-hash.github.io`, `send/rsend` 이메일용 CNAME 등 보존. **1차 출시 시 DNS·네임서버 변경 금지**.
+- 남은 필수 확인: 실제 휴대전화 Safari/Chrome, 사용자 승인하의 실제 문의 접수, 최종 운영 게시 승인. WebKit/Pixel 에뮬레이션 16/16 통과는 실기기 검사를 대체하지 않음.
