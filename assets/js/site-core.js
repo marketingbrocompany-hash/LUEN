@@ -169,8 +169,6 @@
 
   const loopControllers=new Map();
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
-  // Keep the MediaQueryList strongly reachable for live OS preference events.
-  window.__luenLoopMotionPreferenceQuery=reducedMotion;
   const startLoop=viewport=>{
     const controller=loopControllers.get(viewport);
     if(!controller||controller.raf||!controller.visible||document.hidden||reducedMotion.matches)return;
@@ -236,27 +234,24 @@
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
   /* Respond to OS reduced-motion changes while the page remains open. */
+  let lastReducedMotion=reducedMotion.matches;
   const syncLoopMotionPreference=()=>{
-    window.__luenMotionPreferenceEvents=(window.__luenMotionPreferenceEvents||0)+1; // temporary test instrumentation
-    // Stop all three moving strips immediately when the OS requests less motion.
-    // A deferred animation frame may not run promptly after the preference
-    // changes (especially in a throttled/background tab), leaving cloned
-    // images and their last translation visible. Clear them synchronously.
+    lastReducedMotion=reducedMotion.matches;
     loopControllers.forEach((_controller,viewport)=>stopLoop(viewport));
-    if(reducedMotion.matches){
-      initLoopStrips();
-      return;
-    }
-    // Normal motion is restored through the original minimal-clone setup.
-    window.requestAnimationFrame(initLoopStrips);
+    // Reduced motion must remove cloned imagery synchronously.
+    if(reducedMotion.matches) initLoopStrips();
+    else window.requestAnimationFrame(initLoopStrips);
   };
-  // Attach after document load: the initial state is handled by initLoopStrips,
-  // and the live OS setting observer stays active for the rest of this session.
-  window.addEventListener('load',()=>{
-    if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
-    else reducedMotion.addListener?.(syncLoopMotionPreference);
-    requestAnimationFrame(initLoopStrips);
-  });
+  if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
+  else reducedMotion.addListener?.(syncLoopMotionPreference);
+  // Some embedded browsers fail to deliver MediaQueryList change events.
+  // A small state-only check restores/reduces motion without extra animation
+  // frames or reflows; no work is done when the preference stays the same.
+  window.setInterval(()=>{
+    if(!document.hidden && reducedMotion.matches!==lastReducedMotion)
+      syncLoopMotionPreference();
+  },250);
+  window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
   });
