@@ -250,9 +250,13 @@
     // Normal motion is restored through the original minimal-clone setup.
     window.requestAnimationFrame(initLoopStrips);
   };
-  if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
-  else reducedMotion.addListener?.(syncLoopMotionPreference);
-  window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
+  // Attach after document load: the initial state is handled by initLoopStrips,
+  // and the live OS setting observer stays active for the rest of this session.
+  window.addEventListener('load',()=>{
+    if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
+    else reducedMotion.addListener?.(syncLoopMotionPreference);
+    requestAnimationFrame(initLoopStrips);
+  });
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
   });
