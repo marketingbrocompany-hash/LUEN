@@ -2641,3 +2641,31 @@
   }
 }
 
+/* Screenshot QA corrections, YouTube long-form page only (2026-10-18).
+   Warm ivory background requires a dark, readable secondary action. */
+.yt-longform-hero .luen-page-actions .btn-secondary{
+  background:rgba(255,249,241,.48);
+  border-color:rgba(43,40,36,.34);
+  color:#2B2824;
+}
+.yt-longform-hero .luen-page-actions .btn-secondary:hover,
+.yt-longform-hero .luen-page-actions .btn-secondary:focus-visible{
+  border-color:var(--luen-orange);
+  color:#A74722;
+}
+/* Existing JCM process rules use dark text; override only inside
+   this specifically dark YouTube service section. */
+.luen-page-section--ink .yt-process-compact h3{
+  color:#F5F3EE;
+}
+.luen-page-section--ink .yt-process-compact p{
+  color:rgba(245,243,238,.82);
+}
+/* LUEN media cards should have softly rounded edges. */
+.yt-selected-work .jcm-creator-card{
+  border-radius:18px;
+}
+.yt-selected-work .jcm-creator-media{
+  border-radius:18px 18px 0 0;
+}
+
