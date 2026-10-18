@@ -73,6 +73,9 @@ try {
         navHeight:nav?.getBoundingClientRect().height,
         images:document.querySelectorAll('img').length,
         selectedCards:document.querySelectorAll('.portfolio-card').length,
+        originalPortfolioCards:document.querySelectorAll('.portfolio-viewport .loop-set:not(.loop-clone) .portfolio-card').length,
+        loopCloneSets:document.querySelectorAll('.loop-clone').length,
+        lazyImages:document.querySelectorAll('img[loading="lazy"]').length,
         htmlScrollBehavior:getComputedStyle(html).scrollBehavior,
         overflowCandidates,
       };
@@ -81,7 +84,9 @@ try {
     if(doc.documentWidth>doc.clientWidth+3)serious(v.name,'Horizontal page overflow '+doc.documentWidth+'px > '+doc.clientWidth+'px');
     if(!doc.heroVisible || !doc.ctaCount)serious(v.name,'Hero or CTA is hidden');
     if(doc.titleCount!==6)serious(v.name,'Expected 6 home section H2 headings; found '+doc.titleCount);
-    if(doc.selectedCards<10)serious(v.name,'Long/short form portfolio rail has only '+doc.selectedCards+' cards');
+    if(doc.originalPortfolioCards!==12)serious(v.name,'12 original Long Form/Reels cards were not preserved: '+doc.originalPortfolioCards);
+    if(doc.loopCloneSets!==0)serious(v.name,'Reduced-motion created '+doc.loopCloneSets+' unnecessary marquee clones');
+    if(doc.images>60)serious(v.name,'Unexpected image DOM bloat under reduced-motion: '+doc.images);
     if(doc.overflowCandidates.length)warn(v.name,'Some layout containers beyond viewport: '+JSON.stringify(doc.overflowCandidates));
     const isMobile=v.width<=820;
     if(isMobile){
@@ -210,7 +215,18 @@ try {
         serious('portfolio-motion',label+' marquee is static with motion enabled: '+first);
       if(mode==='reduce'&&moved)
         serious('portfolio-motion',label+' marquee moves even under reduced-motion: '+first+' → '+second);
-      motionAudit.push({mode,label,moved});
+      const cloneInfo=await strip.evaluate(e=>{
+        const source=e.querySelector('.loop-set:not(.loop-clone)');
+        const baseWidth=source?.getBoundingClientRect().width||0;
+        const clones=e.querySelectorAll('.loop-clone').length;
+        return {clones,baseWidth,viewportWidth:e.clientWidth,
+          needed:Math.max(1,Math.ceil(e.clientWidth/baseWidth||0))};
+      });
+      if(mode==='reduce' && cloneInfo.clones!==0)
+        serious('portfolio-motion',label+' has '+cloneInfo.clones+' unnecessary clones under reduced-motion');
+      if(mode==='no-preference' && cloneInfo.clones!==cloneInfo.needed)
+        serious('portfolio-motion',label+' has '+cloneInfo.clones+' clones but needs '+cloneInfo.needed);
+      motionAudit.push({mode,label,moved,...cloneInfo});
     }
     await motionContext.close();
   }
@@ -226,7 +242,8 @@ try {
   console.log('LUEN_QA_SUMMARY '+JSON.stringify({
     viewports:results.filter(r=>r.viewport).map(r=>({viewport:r.viewport,size:r.size,
       documentWidth:r.documentWidth,clientWidth:r.clientWidth,titleCount:r.titleCount,selectedCards:r.selectedCards,
-      imageAudit:r.imageAudit,loadMs:r.loadMs})),
+      imageAudit:r.imageAudit,originalPortfolioCards:r.originalPortfolioCards,
+      loopCloneSets:r.loopCloneSets,images:r.images,loadMs:r.loadMs})),
     failed:failures.length,warnings:warnings.length,
     internalLinkRoutes:results.find(r=>r.internalLinkRoutes)?.internalLinkRoutes?.length,
   }));
