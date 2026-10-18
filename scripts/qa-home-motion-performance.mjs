@@ -67,6 +67,7 @@ try{
        mediaMatches:matchMedia('(prefers-reduced-motion: reduce)').matches,
        storedMediaMatches:window.__luenReducedQuery?.matches,
        mediaChangeEvents:window.__luenReducedChanges,
+       preferenceHandlerCalls:window.__luenMotionPreferenceEvents||0,
        htmlClass:document.documentElement.className,
        transforms:[...document.querySelectorAll('[data-loop-strip] .loop-track')].map(e=>getComputedStyle(e).transform)
      }));
