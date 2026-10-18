@@ -12,11 +12,11 @@
 | 대상 | SHA / 상태 |
 | --- | --- |
 | 운영 `main` | `f2d951d41050c54e358e6a1106f0f30c82c16952` |
-| 개발 `luen-preview` | `a16bd83dc37ac15f0bf3c83dcf1b185378e60134` |
-| 코드 차이 | 개발 쪽 122커밋 ahead, 0 behind · 변경 파일 50개 |
+| 개발 `luen-preview` | `38c4c3ac28baf45007c2423179ba564ea47e6267` |
+| 코드 차이 | 개발 쪽 123커밋 ahead, 0 behind · 변경 파일 50개 |
 | Cloudflare 개발 사이트 | https://luen-preview.pages.dev/ |
 | 직전 통합 QA | https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39112913273 — 21개 공개 경로·63개 브라우저 조합과 문의 모의 응답 통과 |
-| 직전 Lighthouse | https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39112913257 — 모바일 중앙값 53, LCP 약 5.19초. **성능 개선 완료를 의미하지 않음** |
+| 상세페이지 폰트 1차 개선 | 6개 페이지 공식 Pretendard 동적 서브셋 도입: https://github.com/marketingbrocompany-hash/LUEN/pull/165 — 자동/실화면 QA 후 개발 브랜치 병합; 최종 Cloudflare 통합 QA 별도 확인 |\n| 직전 Lighthouse | https://github.com/marketingbrocompany-hash/LUEN/actions/runs/39112913257 — 모바일 중앙값 53, LCP 약 5.19초. **성능 개선 완료를 의미하지 않음** |
 
 > 위 상태는 날짜별 기록이다. 실출시 시 최신 SHA·배포·테스트로 다시 확인해야 한다.
 
