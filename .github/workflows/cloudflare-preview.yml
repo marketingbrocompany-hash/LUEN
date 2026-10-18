@@ -95,6 +95,11 @@ jobs:
           LUEN_QA_URL: https://luen-preview.pages.dev
         run: node scripts/qa-subpages.mjs
 
+      - name: Simulate inquiry validation and both server response states
+        env:
+          LUEN_QA_URL: https://luen-preview.pages.dev
+        run: node scripts/qa-contact-flow.mjs
+
       - name: Keep screenshots and QA findings
         if: always()
         uses: actions/upload-artifact@v4
