@@ -67,7 +67,6 @@ try{
        mediaMatches:matchMedia('(prefers-reduced-motion: reduce)').matches,
        storedMediaMatches:window.__luenReducedQuery?.matches,
        mediaChangeEvents:window.__luenReducedChanges,
-       preferenceHandlerCalls:window.__luenMotionPreferenceEvents||0,
        htmlClass:document.documentElement.className,
        transforms:[...document.querySelectorAll('[data-loop-strip] .loop-track')].map(e=>getComputedStyle(e).transform)
      }));
@@ -77,6 +76,13 @@ try{
      await page.waitForTimeout(350);
      const restored=await page.locator('.loop-clone').count();
      if(restored<3)failures.push(v.name+': normal motion not restored, '+restored+' clones');
+     const lastRail=strips.nth(2);
+     await lastRail.scrollIntoViewIfNeeded();
+     await page.waitForTimeout(140);
+     const m1=await lastRail.locator('.loop-track').evaluate(el=>getComputedStyle(el).transform);
+     await page.waitForTimeout(350);
+     const m2=await lastRail.locator('.loop-track').evaluate(el=>getComputedStyle(el).transform);
+     if(m1===m2)failures.push(v.name+': reduced-motion was disabled but autoplay did not resume');
      await page.evaluate(()=>window.scrollTo(0,0));
      if(v.name!=='mobile-320')await page.screenshot({
        path:path.join(dir,v.name+'-first-fold.jpg'),type:'jpeg',quality:70,animations:'disabled'
