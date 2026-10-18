@@ -1,0 +1,34 @@
+name: LUEN CORS font preconnect A/B
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'scripts/qa-cors-preconnect-ab.mjs'
+      - '.github/workflows/qa-cors-preconnect-ab.yml'
+permissions:
+  contents: read
+jobs:
+  cors-ab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check static integrity
+        run: node scripts/check-site.mjs
+      - name: Install Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Compare font CDN preconnect in identical local pages
+        run: node scripts/qa-cors-preconnect-ab.mjs
+      - name: Archive comparisons
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-cors-preconnect-ab
+          path: qa-screenshots/cors-preconnect-ab/
+          retention-days: 14
+          if-no-files-found: warn
