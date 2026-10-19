@@ -1,0 +1,137 @@
+name: LUEN one-time postlaunch mobile portal and performance audit
+# Read-only independent QA branch; never submits forms, logs in, or deploys to main.
+on:
+  push:
+    branches:
+      - qa/postlaunch-mobile-portal-perf-20261019
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser engines and Lighthouse
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1 lighthouse@12
+          npx playwright install --with-deps chromium webkit
+      - name: Validate actual production routes in iPhone WebKit and Android Chromium emulations
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium, webkit } from 'playwright';
+          const base='https://luenkorea.com';
+          const routes=['/','/contact/','/services/','/services/youtube-creator-marketing/','/services/instagram-influencer-marketing/','/cases/','/cases/ikeda-edita/','/insights/'];
+          let failed=0;
+          for(const [engine,product,width,height] of [[webkit,'iPhone Safari emulation',390,844],[chromium,'Android Chrome emulation',393,873]]){
+            const browser=await engine.launch({headless:true});
+            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:2,isMobile:true,hasTouch:true,locale:'ko-KR'});
+            await context.route(/google-analytics|googletagmanager/,r=>r.abort());
+            for(const path of routes){
+              const page=await context.newPage();
+              const exceptions=[];
+              page.on('pageerror',e=>exceptions.push(String(e).slice(0,140)));
+              try{
+                const response=await page.goto(base+path,{waitUntil:'domcontentloaded',timeout:35000});
+                await page.waitForTimeout(550);
+                const sizes=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+                const noOverflow=sizes.scroll<=sizes.width+3;
+                const ok=response?.status()===200&&noOverflow&&exceptions.length===0;
+                if(path==='/'){
+                  const menu=page.locator('#hamburger');
+                  if(await menu.count()!==1)throw new Error('mobile hamburger absent');
+                  await menu.click();
+                  if(!(await page.locator('#mobileMenu').evaluate(el=>el.classList.contains('open')))) throw new Error('menu did not open');
+                  const close=page.locator('#mobileClose');
+                  await close.click();
+                  if(await page.locator('#mobileMenu').evaluate(el=>el.classList.contains('open')))throw new Error('menu did not close');
+                  await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight*0.5));
+                  await page.waitForTimeout(650);
+                }
+                console.log('MOBILE_QA '+JSON.stringify({engine:product,path,status:response?.status(),noOverflow,jsErrors:exceptions.length,result:ok?'PASS':'FAIL'}));
+                if(!ok) failed++;
+              }catch(err){
+                failed++;
+                console.log('MOBILE_QA '+JSON.stringify({engine:product,path,result:'FAIL',error:String(err).slice(0,260)}));
+              }finally{await page.close();}
+            }
+            await browser.close();
+          }
+          console.log('MOBILE_QA_SUMMARY '+JSON.stringify({checks:16,failures:failed,emulated:true,realDevice:false}));
+          if(failed)process.exitCode=1;
+          JS
+      - name: Guest access check for client portal and public SEO endpoints
+        if: always()
+        run: |
+          node --input-type=module <<'JS'
+          const base='https://luenkorea.com';
+          for(const path of ['/robots.txt','/sitemap.xml']){
+            try{
+              const resp=await fetch(base+path,{redirect:'manual',signal:AbortSignal.timeout(18000)});
+              console.log('PUBLIC_SEO '+JSON.stringify({path,status:resp.status,contentType:resp.headers.get('content-type')}));
+            }catch(e){console.log('PUBLIC_SEO '+JSON.stringify({path,error:String(e).slice(0,160)}));}
+          }
+          const portal='https://content-intelligence-hub-dusky.vercel.app/client';
+          try{
+            const first=await fetch(portal,{redirect:'manual',signal:AbortSignal.timeout(20000)});
+            const location=first.headers.get('location')||'';
+            const output={http:first.status,redirect:location.slice(0,300)};
+            if(first.status===200){
+              const body=(await first.text()).slice(0,16000);
+              output.luenLogin=body.includes('CAMPAIGN PORTAL')||body.includes('로그인');
+              output.vercelAccessGate=/Vercel Authentication|Authentication Required|Deployment Protection/i.test(body);
+            }
+            if(location&&location.startsWith('/')){
+              const second=await fetch(new URL(location,portal),{redirect:'manual',signal:AbortSignal.timeout(20000)});
+              output.redirectStatus=second.status;
+              output.redirectType=second.headers.get('content-type');
+              if(second.status===200){
+                const body=(await second.text()).slice(0,16000);
+                output.luenLogin=body.includes('CAMPAIGN PORTAL')||body.includes('로그인');
+                output.vercelAccessGate=/Vercel Authentication|Authentication Required|Deployment Protection/i.test(body);
+              }
+            }
+            console.log('PORTAL_GUEST '+JSON.stringify(output));
+          }catch(e){console.log('PORTAL_GUEST '+JSON.stringify({error:String(e).slice(0,400)}));}
+          JS
+      - name: Measure production performance 3 mobile and 2 desktop runs
+        if: always()
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import {spawnSync} from 'node:child_process';
+          import {chromium} from 'playwright';
+          fs.mkdirSync('lighthouse-results',{recursive:true});
+          const binary='./node_modules/.bin/lighthouse';
+          const metrics=[];
+          for(const [i,device] of ['mobile','mobile','mobile','desktop','desktop'].entries()){
+            const out='lighthouse-results/'+device+'-'+i;
+            const args=['https://luenkorea.com/','--quiet','--only-categories=performance','--output=json','--output-path='+out,'--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage','--throttling-method=simulate',device==='desktop'?'--preset=desktop':'--form-factor=mobile'];
+            const p=spawnSync(binary,args,{env:{...process.env,CHROME_PATH:chromium.executablePath()},encoding:'utf8',timeout:180000,maxBuffer:2e6});
+            if(p.status!==0){console.log('LIGHTHOUSE_RUN_ERROR '+JSON.stringify({device,error:(p.stderr||p.stdout||'').slice(-350)}));continue;}
+            const file=out+'.report.json';
+            if(!fs.existsSync(file)){console.log('LIGHTHOUSE_RUN_ERROR report missing '+file);continue;}
+            const result=JSON.parse(fs.readFileSync(file,'utf8'));
+            const audit=result.audits;
+            const record={device,score:Math.round((result.categories.performance?.score||0)*100),LCP_ms:Math.round(audit['largest-contentful-paint']?.numericValue||0),FCP_ms:Math.round(audit['first-contentful-paint']?.numericValue||0),TBT_ms:Math.round(audit['total-blocking-time']?.numericValue||0),CLS:audit['cumulative-layout-shift']?.numericValue??null};
+            metrics.push(record);
+            console.log('LIGHTHOUSE_PRODUCTION '+JSON.stringify(record));
+          }
+          const median=arr=>{const a=arr.filter(Number.isFinite).sort((x,y)=>x-y);return a.length?a[Math.floor(a.length/2)]:null};
+          for(const device of ['mobile','desktop']){
+            const a=metrics.filter(x=>x.device===device);
+            console.log('LIGHTHOUSE_MEDIAN '+JSON.stringify({device,checks:a.length,score:median(a.map(x=>x.score)),LCP_ms:median(a.map(x=>x.LCP_ms)),TBT_ms:median(a.map(x=>x.TBT_ms)),FCP_ms:median(a.map(x=>x.FCP_ms)),CLS:median(a.map(x=>x.CLS))}));
+          }
+          if(metrics.length!==5) process.exitCode=1;
+          JS
+      - name: Archive machine-readable performance files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-live-production-lighthouse-20261019
+          path: lighthouse-results/
+          retention-days: 7
+          if-no-files-found: warn
