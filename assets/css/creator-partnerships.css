@@ -110,3 +110,54 @@ html body .luen-creator-primary:focus-visible,html body .luen-creator-secondary:
 
 /* Anchor targets remain visible beneath LUEN’s fixed navigation. */
 html body #why-luen,html body #partner-creators{scroll-margin-top:clamp(80px,10vw,115px)}
+
+/* Masubuchi partner profile · Korea F&B video reference gallery */
+html body .luen-food-content{scroll-margin-top:clamp(90px,10vw,120px)}
+html body .luen-profile-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+html body .luen-food-content-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.65fr);gap:clamp(20px,5vw,90px);align-items:end;margin-bottom:clamp(30px,5vw,52px)}
+html body .luen-food-content-head h2{margin:0}
+html body .luen-food-content-head>p{font-size:15px;line-height:1.85;color:#68594D;word-break:keep-all;max-width:450px;margin:0}
+html body .luen-food-group-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px;border-bottom:1px solid #D8CFC3;padding-bottom:14px}
+html body .luen-food-group-head--short{margin-top:48px}
+html body .luen-food-group-head h3{font:700 clamp(17px,1.65vw,23px)/1.3 "Inter","Pretendard",sans-serif;margin:0;letter-spacing:-.025em}
+html body .luen-food-group-head>span{font:700 10px/1.4 "Inter",sans-serif;color:#AE6946;letter-spacing:.1em}
+html body .luen-food-video-grid{display:grid;gap:20px;grid-template-columns:repeat(2,minmax(0,1fr))}
+html body .luen-food-video-grid--short{grid-template-columns:repeat(2,minmax(0,290px))}
+html body .luen-food-video-card{display:block;min-width:0;text-decoration:none;color:#2A2521}
+html body .luen-food-video-thumb{position:relative;display:block;overflow:hidden;border-radius:24px;aspect-ratio:16/9;background:linear-gradient(138deg,#E2D2C1,#A67D67);box-shadow:0 7px 23px rgba(72,47,31,.07)}
+html body .luen-food-video-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block;transform:scale(1);transition:transform .6s cubic-bezier(.2,.65,.2,1)}
+html body .luen-food-video-card:hover .luen-food-video-thumb img{transform:scale(1.04)}
+html body .luen-food-video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(245,243,238,.94);color:#B4532E;font-size:17px;line-height:1;box-shadow:0 8px 22px rgba(49,28,14,.18)}
+html body .luen-food-video-copy{display:grid;gap:7px;padding:17px 3px 3px}
+html body .luen-food-video-copy small{font:700 10px/1.4 "Inter",sans-serif;letter-spacing:.11em;color:#A74722}
+html body .luen-food-video-copy strong{font-size:clamp(16px,1.6vw,20px);line-height:1.4;letter-spacing:-.035em;word-break:keep-all}
+html body .luen-food-video-copy>span{font-size:12px;color:#6E5E51}
+html body .luen-food-video-thumb--vertical{aspect-ratio:4/5}
+html body .luen-food-video-thumb--instagram{background:linear-gradient(155deg,#8D534B 0%,#C77354 43%,#E3B788 100%)}
+html body .luen-food-video-platform{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#FFF7EE}
+html body .luen-food-video-platform b{display:grid;place-items:center;width:65px;height:65px;border:2px solid rgba(255,255,255,.75);border-radius:21px;font:800 25px/1 "Inter",sans-serif;letter-spacing:-.06em}
+html body .luen-food-video-platform small{font:700 11px/1.4 "Inter",sans-serif;letter-spacing:.12em}
+html body .luen-food-video-thumb--instagram .luen-food-video-play{left:auto;top:auto;bottom:16px;right:16px;width:34px;height:34px;transform:none;font-size:17px}
+html body .luen-food-video-overlay{position:absolute;bottom:16px;left:15px;background:rgba(245,243,238,.9);border-radius:999px;padding:7px 11px;color:#A74722;font:700 9px/1.3 "Inter",sans-serif;letter-spacing:.1em}
+html body .luen-food-content-note{margin:32px 0 0!important;max-width:790px;font-size:12px!important;line-height:1.85!important;color:#817267!important}
+html body .luen-food-video-card:focus-visible{outline:2px solid #A74722;outline-offset:5px;border-radius:22px}
+@media(max-width:767px){
+  html body .luen-food-content-head{grid-template-columns:1fr;gap:15px}
+  html body .luen-food-video-grid{grid-template-columns:1fr;gap:22px}
+  html body .luen-food-video-grid--short{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+  html body .luen-food-video-grid--short .luen-food-video-thumb{border-radius:16px}
+  html body .luen-food-video-grid--short .luen-food-video-copy strong{font-size:14px}
+  html body .luen-food-video-grid--short .luen-food-video-copy{padding-top:12px}
+  html body .luen-food-video-grid--short .luen-food-video-play{width:39px;height:39px}
+  html body .luen-food-video-platform b{width:50px;height:50px;font-size:19px;border-radius:17px}
+  html body .luen-food-video-platform small{font-size:8px;letter-spacing:.05em}
+  html body .luen-food-video-thumb{border-radius:18px}
+  html body .luen-food-group-head--short{margin-top:36px}
+  html body .luen-profile-hero-actions{align-items:stretch;flex-direction:column}
+  html body .luen-profile-hero-actions a{width:100%;text-align:center}
+}
+@media(max-width:360px){
+  html body .luen-food-video-grid--short{grid-template-columns:1fr}
+  html body .luen-food-video-grid--short .luen-food-video-thumb{max-width:240px}
+}
+@media(prefers-reduced-motion:reduce){html body .luen-food-video-thumb img{transition:none}}
