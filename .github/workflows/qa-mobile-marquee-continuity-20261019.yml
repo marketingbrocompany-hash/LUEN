@@ -1,0 +1,104 @@
+name: LUEN mobile marquee continuity diagnostic
+on:
+  push:
+    branches: [qa/mobile-thumbnail-loop-diagnostics-20261019]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install actual WebKit and Chromium engines
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Inspect live homepage thumbnails at different phone sizes
+        run: |
+          node --input-type=module <<'JS'
+          import {chromium,webkit} from 'playwright';
+          import fs from 'node:fs';
+          fs.mkdirSync('motion-diag',{recursive:true});
+          const UA='Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
+          const variants=[
+            {name:'iphone390',browser:webkit,viewport:{width:390,height:844},ua:UA},
+            {name:'iphone320',browser:webkit,viewport:{width:320,height:690},ua:UA},
+            {name:'android393',browser:chromium,viewport:{width:393,height:873}},
+          ];
+          const out=[];
+          for(const variant of variants){
+            const browser=await variant.browser.launch({headless:true,args:variant.browser===chromium?['--no-sandbox']:[]});
+            const context=await browser.newContext({
+              viewport:variant.viewport,isMobile:true,hasTouch:true,deviceScaleFactor:2,
+              reducedMotion:'no-preference', ...(variant.ua?{userAgent:variant.ua}:{})
+            });
+            await context.route(/(googletagmanager|google-analytics)\.com/,r=>r.abort());
+            const page=await context.newPage();
+            const jsErrors=[];page.on('pageerror',e=>jsErrors.push(e.message));
+            try{
+              await page.goto('https://luenkorea.com/',{waitUntil:'load',timeout:60000});
+              const strips=page.locator('.portfolio-viewport');
+              for(let i=0;i<2;i++){
+                const strip=strips.nth(i);
+                await strip.scrollIntoViewIfNeeded({timeout:20000});
+                await page.waitForTimeout(1000);
+                const frames=[];
+                for(let n=0;n<20;n++){
+                  frames.push(await strip.evaluate(el=>{
+                    const source=el.querySelector('.portfolio-set:not(.loop-clone)');
+                    const clones=[...el.querySelectorAll('.loop-clone')];
+                    const track=el.querySelector('.portfolio-track');
+                    const transforms=getComputedStyle(track).transform;
+                    const matrix=new DOMMatrixReadOnly(transforms==='none'?'matrix(1,0,0,1,0,0)':transforms);
+                    const sx=source?.getBoundingClientRect();
+                    const cx=clones[0]?.getBoundingClientRect();
+                    const img=[...el.querySelectorAll('.portfolio-set:first-child img')];
+                    return {
+                      t:performance.now(), x:matrix.m41,
+                      sourceWidth:sx?.width??0,
+                      viewport:el.clientWidth,
+                      cloneCount:clones.length,
+                      cloneSeamDelta:cx&&sx?(cx.left-sx.left-sx.width):null,
+                      failedImages:img.filter(x=>x.complete&&x.naturalWidth===0).length,
+                      missingImages:img.filter(x=>!x.complete).length,
+                      imageCount:img.length,
+                      imageReady:img.filter(x=>x.naturalWidth>0).length,
+                      sourceChildren:source?.children.length??0,
+                      offsetTop:Math.round(el.getBoundingClientRect().top)
+                    };
+                  }));
+                  await page.waitForTimeout(250);
+                }
+                const moves=frames.slice(1).map((f,n)=>f.x-frames[n].x);
+                const stalls=moves.filter(d=>Math.abs(d)<0.01).length;
+                const jumps=moves.filter(d=>d>20||d< -18).length;
+                const badSeam=frames.some(f=>f.cloneSeamDelta!=null&&Math.abs(f.cloneSeamDelta)>.55);
+                const record={
+                  device:variant.name,rail:i===0?'longform':'shortform',
+                  jsErrors,stalls,jumps,badSeam,
+                  x0:frames[0].x,xLast:frames.at(-1).x,
+                  sourceWidth:frames[0].sourceWidth,cloneCount:frames[0].cloneCount,
+                  imageReady:frames[0].imageReady,missingImages:frames[0].missingImages,
+                  failedImages:frames[0].failedImages,
+                  sampleTransforms:frames.map(f=>Number(f.x.toFixed(2))),
+                  seamDelta:frames[0].cloneSeamDelta,
+                };
+                out.push(record);
+                console.log('MOTION_DIAG '+JSON.stringify(record));
+                await strip.screenshot({path:'motion-diag/'+variant.name+'-'+i+'.png',animations:'allow',timeout:12000});
+              }
+            }catch(e){const record={device:variant.name,error:String(e).slice(0,500),jsErrors};out.push(record);console.log('MOTION_ERROR '+JSON.stringify(record));}
+            await context.close();await browser.close();
+          }
+          fs.writeFileSync('motion-diag/summary.json',JSON.stringify(out,null,2));
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: luen-mobile-marquee-diagnostics
+          path: motion-diag/
+          retention-days: 7
+          if-no-files-found: warn
