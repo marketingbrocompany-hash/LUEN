@@ -1,0 +1,80 @@
+name: LUEN one-time live contact delivery QA
+# Isolated QA-only branch. No production changes, no credentials, one labeled test inquiry.
+on:
+  push:
+    branches:
+      - qa/one-time-contact-receipt-20261019
+permissions:
+  contents: read
+jobs:
+  contact-check:
+    if: ${{ github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Submit exactly one labeled internal QA inquiry via production form
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
+          try {
+            const page = await browser.newPage({
+              viewport: { width: 390, height: 844 },
+              deviceScaleFactor: 3,
+              isMobile: true,
+              hasTouch: true,
+              locale: 'ko-KR'
+            });
+            const formResponses = [];
+            page.on('response', response => {
+              if (response.url().startsWith('https://formspree.io/f/xaewddev')) {
+                formResponses.push(response.status());
+              }
+            });
+            const response = await page.goto('https://luenkorea.com/contact/', {
+              waitUntil: 'domcontentloaded',
+              timeout: 30000
+            });
+            if (!response || response.status() !== 200) throw new Error('Contact page not HTTP 200');
+            const form = page.locator('#contactForm');
+            if (await form.count() !== 1) throw new Error('Contact form missing');
+            await form.locator('#company').fill('[QA TEST] LUEN 2026-10-19');
+            await form.locator('#name').fill('LUEN internal quality test');
+            await form.locator('#email').fill('luen-contact-qa@example.com');
+            await form.locator('#market').selectOption({ label: '일본 시장' });
+            await form.locator('#message').fill('홈페이지 공개 후 문의 폼 정상 접수 확인용 내부 테스트입니다. 실제 고객 문의가 아니며 영업 대응이 필요하지 않습니다. QA reference 2026-10-19.');
+            await form.locator('#privacyConsent').check({ force: true });
+            await form.locator('#overseasConsent').check({ force: true });
+            let posts = 0;
+            page.on('request', request => {
+              if (request.method() === 'POST' && request.url().startsWith('https://formspree.io/f/xaewddev')) posts += 1;
+            });
+            await form.locator('button[type="submit"]').click();
+            await Promise.race([
+              form.locator('.form-success:visible').waitFor({ timeout: 25000 }),
+              form.locator('#copyStatus.is-error:visible').waitFor({ timeout: 25000 })
+            ]).catch(() => {});
+            const success = await form.evaluate(el => el.classList.contains('is-success'));
+            const errorText = await form.locator('#copyStatus').textContent();
+            console.log(JSON.stringify({
+              pageHTTP: response.status(),
+              formPosts: posts,
+              formspreeResponses: formResponses,
+              successUI: success,
+              errorMessage: (errorText || '').slice(0, 180)
+            }));
+            if (!success || posts !== 1 || formResponses.length !== 1 || formResponses[0] < 200 || formResponses[0] >= 300) {
+              throw new Error('Real inquiry did not pass all frontend/backend criteria');
+            }
+          } finally {
+            await browser.close();
+          }
+          JS
