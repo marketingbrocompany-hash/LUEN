@@ -112,7 +112,7 @@ jobs:
             const args=['https://luenkorea.com/','--quiet','--only-categories=performance','--output=json','--output-path='+out,'--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage','--throttling-method=simulate',device==='desktop'?'--preset=desktop':'--form-factor=mobile'];
             const p=spawnSync(binary,args,{env:{...process.env,CHROME_PATH:chromium.executablePath()},encoding:'utf8',timeout:180000,maxBuffer:2e6});
             if(p.status!==0){console.log('LIGHTHOUSE_RUN_ERROR '+JSON.stringify({device,error:(p.stderr||p.stdout||'').slice(-350)}));continue;}
-            const file=out+'.report.json';
+            const file=out;
             if(!fs.existsSync(file)){console.log('LIGHTHOUSE_RUN_ERROR report missing '+file);continue;}
             const result=JSON.parse(fs.readFileSync(file,'utf8'));
             const audit=result.audits;
