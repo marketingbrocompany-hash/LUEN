@@ -1,0 +1,89 @@
+name: LUEN iOS marquee regression
+on:
+  push:
+    branches: [fix/ios-portfolio-loop-measurement-20261019]
+permissions:
+  contents: read
+jobs:
+  iOS-and-Android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source and static tests
+        run: |
+          node --check assets/js/site.js
+          node --check assets/js/site-core.js
+          node scripts/check-site.mjs
+      - name: Install emulated mobile browser engines
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve exact feature-branch source
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/luen-local-qa-server.log 2>&1 &
+          for i in {1..25}; do curl --silent --fail http://127.0.0.1:4173/ > /dev/null && exit 0; sleep .4; done
+          exit 1
+      - name: Check loops remain continuous while scrolling in Safari and Chrome
+        run: |
+          node --input-type=module <<'JS'
+          import {webkit,chromium} from 'playwright';
+          const ua='Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
+          const phones=[
+            {name:'iPhone 390px',engine:webkit,width:390,ua},
+            {name:'iPhone 320px',engine:webkit,width:320,ua},
+            {name:'Android 393px',engine:chromium,width:393}
+          ];
+          let failures=0;
+          for(const phone of phones)for(const mode of ['no-preference','reduce']){
+            const browser=await phone.engine.launch({headless:true,args:phone.engine===chromium?['--no-sandbox']:[]});
+            const context=await browser.newContext({
+              viewport:{width:phone.width,height:844},
+              hasTouch:true,isMobile:true,deviceScaleFactor:2,reducedMotion:mode,
+              ...(phone.ua?{userAgent:phone.ua}:{})
+            });
+            await context.route(/(google-analytics|googletagmanager)\.com/,r=>r.abort());
+            const page=await context.newPage();
+            const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            try{
+              await page.goto('http://127.0.0.1:4173/',{waitUntil:'load',timeout:50000});
+              for(const [i,label] of ['LONGFORM','SHORTFORM'].entries()){
+                const rail=page.locator('.portfolio-viewport').nth(i);
+                await rail.scrollIntoViewIfNeeded();
+                // WebKit can defer layout for lazy thumbnails until they enter view.
+                // Wait for the original set and its first loop copy before sampling.
+                if(mode==='no-preference')await rail.locator('.loop-clone').first().waitFor({state:'attached',timeout:10000});
+                await page.waitForTimeout(400);
+                const samples=[];
+                for(let j=0;j<14;j++){
+                  samples.push(await rail.evaluate(el=>{
+                    const track=el.querySelector('.loop-track');
+                    const raw=getComputedStyle(track).transform;
+                    const mat=new DOMMatrixReadOnly(raw==='none'?'matrix(1,0,0,1,0,0)':raw);
+                    const src=el.querySelector('.loop-set:not(.loop-clone)');
+                    return {x:mat.m41,sourceWidth:src?.getBoundingClientRect().width??0,
+                      copies:el.querySelectorAll('.loop-clone').length,visibleWidth:el.clientWidth};
+                  }));
+                  await page.waitForTimeout(240);
+                }
+                const first=samples[0], last=samples.at(-1);
+                const deltas=samples.slice(1).map((s,n)=>s.x-samples[n].x);
+                const reset=deltas.some(n=>n>12);
+                const moved=Math.abs(first.x-last.x)>2;
+                const expectedCopies=Math.max(1,Math.ceil(last.visibleWidth/last.sourceWidth));
+                const valid=mode==='reduce'
+                  ? !moved && last.copies===0
+                  : moved && !reset && last.sourceWidth>last.visibleWidth*1.5 && last.copies===expectedCopies;
+                const record={phone:phone.name,mode,label,result:valid?'PASS':'FAIL',source:Math.round(last.sourceWidth),copies: last.copies,firstCopies:first.copies,needed:expectedCopies,firstX:+first.x.toFixed(2),lastX:+last.x.toFixed(2),resets:reset,errors};
+                console.log('PORTFOLIO_REGRESSION '+JSON.stringify(record));
+                if(!valid||errors.length)failures++;
+              }
+            }catch(e){console.log('PORTFOLIO_TEST_ERROR '+JSON.stringify({phone:phone.name,mode,error:String(e)}));failures++}
+            await context.close();await browser.close();
+          }
+          console.log('PORTFOLIO_TOTAL_FAILURES',failures);
+          if(failures)process.exitCode=1;
+          JS

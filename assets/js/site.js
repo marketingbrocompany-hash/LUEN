@@ -4,6 +4,14 @@
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const lightLoopControllers=new Map();
+  const pendingIOSMeasurements=new WeakMap();
+  const appendIOSClone=(source,track)=>{
+    const clone=source.cloneNode(true);
+    clone.classList.add('loop-clone','ios-loop-clone');
+    clone.setAttribute('aria-hidden','true');
+    clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
+    track.appendChild(clone);
+  };
   const stopLightLoop=viewport=>{
     const controller=lightLoopControllers.get(viewport);
     if(!controller?.raf)return;
@@ -21,26 +29,41 @@
     const source=viewport.querySelector('.loop-set:not(.ios-loop-clone)');
     if(!track||!source)return;
 
+    const baseWidth=source.getBoundingClientRect().width;
+    // Safari can report a 72px placeholder for an off-screen rail. Wait for
+    // the actual flex-card layout rather than looping over this fake width.
+    if(!reducedMotion.matches && baseWidth<viewport.clientWidth*1.5){
+      if(!pendingIOSMeasurements.has(viewport) && 'ResizeObserver' in window){
+        const pending=new ResizeObserver(()=>{
+          const readyWidth=source.getBoundingClientRect().width;
+          if(readyWidth>viewport.clientWidth*1.5){
+            pending.disconnect();
+            pendingIOSMeasurements.delete(viewport);
+            requestAnimationFrame(()=>setupIOSLightLoop(viewport));
+          }
+        });
+        pendingIOSMeasurements.set(viewport,pending);
+        pending.observe(source);
+      }
+      return;
+    }
+    pendingIOSMeasurements.get(viewport)?.disconnect();
+    pendingIOSMeasurements.delete(viewport);
     const previous=lightLoopControllers.get(viewport);
     previous?.observer?.disconnect();
+    previous?.resizeObserver?.disconnect();
+    previous?.cloneObserver?.disconnect();
     stopLightLoop(viewport);
     track.querySelectorAll('.ios-loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
 
-    const baseWidth=source.getBoundingClientRect().width;
     if(!baseWidth)return;
     if(reducedMotion.matches){
       lightLoopControllers.delete(viewport);
       return; // no duplicate images needed for a stationary strip
     }
-    const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
-    for(let i=0;i<copies;i++){
-      const clone=source.cloneNode(true);
-      clone.classList.add('loop-clone','ios-loop-clone');
-      clone.setAttribute('aria-hidden','true');
-      clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
-      track.appendChild(clone);
-    }
+    const copies=Math.max(1,Math.ceil(Math.min(viewport.clientWidth,document.documentElement.clientWidth)/baseWidth));
+    for(let i=0;i<copies;i++)appendIOSClone(source,track);
     if(reducedMotion.matches)return;
 
     const rawSpeed=Math.max(10,Number(viewport.dataset.iosLoopSpeed||viewport.dataset.speed||45));
@@ -53,6 +76,9 @@
       baseWidth,
       track,
       observer:null,
+      resizeObserver:null,
+      cloneObserver:null,
+      lastCloneCheck:0,
       tick:null
     };
     controller.tick=now=>{
@@ -62,6 +88,12 @@
       if(elapsed<33){controller.raf=requestAnimationFrame(controller.tick);return;}
       const dt=Math.min(.07,elapsed/1000);
       controller.last=now;
+      // iOS occasionally drops a cloned set during late layout changes.
+      // Repair it without resetting the animation position.
+      if(now-controller.lastCloneCheck>1100){
+        controller.lastCloneCheck=now;
+        if(!track.querySelector('.ios-loop-clone'))appendIOSClone(source,track);
+      }
       controller.offset=(controller.offset+controller.speed*dt)%controller.baseWidth;
       controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
       controller.raf=requestAnimationFrame(controller.tick);
@@ -74,6 +106,33 @@
       controller.observer.observe(viewport);
     }
     lightLoopControllers.set(viewport,controller);
+    if('MutationObserver' in window){
+      controller.cloneObserver=new MutationObserver(()=>{
+        if(lightLoopControllers.get(viewport)===controller && !reducedMotion.matches && !track.querySelector('.ios-loop-clone')){
+          appendIOSClone(source,track);
+        }
+      });
+      controller.cloneObserver.observe(track,{childList:true});
+    }
+    // Lazy images can change the measured width in WebKit. Keep the current
+    // pixel offset and update only geometry; restarting the RAF at 0 causes
+    // a visible jump even if all images are present.
+    if('ResizeObserver' in window){
+      controller.resizeObserver=new ResizeObserver(()=>{
+        requestAnimationFrame(()=>{
+          if(lightLoopControllers.get(viewport)!==controller)return;
+          const liveWidth=source.getBoundingClientRect().width;
+          if(liveWidth<=viewport.clientWidth*1.5 || Math.abs(liveWidth-controller.baseWidth)<=1)return;
+          controller.baseWidth=liveWidth;
+          controller.offset%=liveWidth;
+          const desired=Math.max(1,Math.ceil(Math.min(viewport.clientWidth,document.documentElement.clientWidth)/liveWidth));
+          const existing=[...track.querySelectorAll('.ios-loop-clone')];
+          for(let i=desired;i<existing.length;i++)existing[i].remove();
+          for(let i=existing.length;i<desired;i++)appendIOSClone(source,track);
+        });
+      });
+      controller.resizeObserver.observe(source);
+    }
     startLightLoop(viewport);
   };
 
@@ -87,8 +146,34 @@
     });
     /* Decorative SVG motion remains disabled on iOS to preserve Safari GPU headroom. */
     document.querySelectorAll('animateMotion, animate').forEach(el=>el.remove());
-    const initIOSLoops=()=>requestAnimationFrame(()=>iosLoopStrips.forEach(setupIOSLightLoop));
-    window.addEventListener('load',initIOSLoops,{once:true});
+    // Do not measure off-screen rails at page load. In mobile WebKit their
+    // initial width may be only a placeholder, making the loop snap every
+    // few dozen pixels instead of after the full thumbnail set.
+    const isNearScreen=viewport=>{
+      const bounds=viewport.getBoundingClientRect();
+      return bounds.bottom>=-180 && bounds.top<=window.innerHeight+180;
+    };
+    const initIOSLoops=()=>requestAnimationFrame(()=>{
+      iosLoopStrips.filter(isNearScreen).forEach(setupIOSLightLoop);
+    });
+    const revealObserver='IntersectionObserver' in window
+      ?new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(!entry.isIntersecting)return;
+          const viewport=entry.target;
+          const controller=lightLoopControllers.get(viewport);
+          const source=viewport.querySelector('.loop-set:not(.ios-loop-clone)');
+          const liveWidth=source?.getBoundingClientRect().width||0;
+          if(liveWidth>0 && (!controller || Math.abs(controller.baseWidth-liveWidth)>1)){
+            setupIOSLightLoop(viewport);
+          }
+        });
+      },{rootMargin:'180px 0px',threshold:0})
+      :null;
+    window.addEventListener('load',()=>{
+      iosLoopStrips.forEach(viewport=>revealObserver?.observe(viewport));
+      initIOSLoops();
+    },{once:true});
     let lastWidth=document.documentElement.clientWidth;
     window.addEventListener('resize',()=>{
       const nextWidth=document.documentElement.clientWidth;
@@ -104,7 +189,8 @@
     });
     reducedMotion.addEventListener?.('change',()=>{
       // Recreate strips to remove duplicate images when motion is reduced.
-      iosLoopStrips.forEach(setupIOSLightLoop);
+      if(reducedMotion.matches)iosLoopStrips.forEach(setupIOSLightLoop);
+      else initIOSLoops();
     });
   }
 
