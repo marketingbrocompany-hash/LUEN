@@ -1,18 +1,4 @@
 (function(){
-  const isJa=document.documentElement.lang==='ja';
-  const copy=isJa?{
-    contactMethod:'メールアドレスまたは電話番号のいずれかをご入力ください。',
-    submit:'お問い合わせを送信 →',
-    submitting:'送信中...',
-    failed:'送信に失敗しました。しばらくしてから再度お試しください。',
-    network:'ネットワーク接続をご確認のうえ、再度お試しください。'
-  }:{
-    contactMethod:'이메일 또는 연락처 중 하나를 입력해주세요.',
-    submit:'프로젝트 문의하기 →',
-    submitting:'문의 전송 중...',
-    failed:'문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.',
-    network:'네트워크 연결을 확인한 뒤 다시 시도해주세요.'
-  };
   const track=(eventName,params={})=>{
     if(typeof window.gtag==='function'){
       window.gtag('event',eventName,params);
@@ -107,6 +93,15 @@
       lastMenuFocus.focus();
     }
   }
+  /* A menu left open during a responsive transition must not lock desktop scroll. */
+  const desktopMenu=window.matchMedia('(min-width:821px)');
+  const closeOnDesktop=()=>{
+    if(!desktopMenu.matches||!mobileMenu?.classList.contains('open'))return;
+    setMenu(false,{restoreFocus:false});
+    nav?.querySelector('.logo')?.focus();
+  };
+  if(desktopMenu.addEventListener)desktopMenu.addEventListener('change',closeOnDesktop);
+  else desktopMenu.addListener?.(closeOnDesktop);
   hamburger?.addEventListener('click',()=>setMenu(true));
   mobileClose?.addEventListener('click',()=>setMenu(false));
   document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>setMenu(false,{restoreFocus:false})));
@@ -125,18 +120,31 @@
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
   });
 
-  if('IntersectionObserver' in window){
-    const io=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
+  /* Progressive reveal: content is visible by default if JS is blocked.
+     Only switch on hidden-until-in-view styling after the observer works. */
+  const revealTargets=[...document.querySelectorAll('.sr')];
+  const reduceReveal=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  if(!reduceReveal && 'IntersectionObserver' in window){
+    try{
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+      revealTargets.forEach(el=>{
+        /* Keep already visible/above-the-fold content from flashing away. */
+        if(el.getBoundingClientRect().top<=window.innerHeight+40)el.classList.add('in');
+        else io.observe(el);
       });
-    },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-    document.querySelectorAll('.sr').forEach(el=>io.observe(el));
+      document.documentElement.classList.add('js-scroll-reveal');
+    }catch(_error){
+      revealTargets.forEach(el=>el.classList.add('in'));
+    }
   }else{
-    document.querySelectorAll('.sr').forEach(el=>el.classList.add('in'));
+    revealTargets.forEach(el=>el.classList.add('in'));
   }
 
   document.querySelectorAll('.faq-q').forEach(btn=>{
@@ -191,9 +199,26 @@
     track.querySelectorAll('.loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
     const baseWidth=source.getBoundingClientRect().width;if(!baseWidth)return;
-    const copies=Math.max(2,Math.ceil((viewport.clientWidth+baseWidth*2)/baseWidth));
-    for(let i=0;i<copies;i++){const clone=source.cloneNode(true);clone.classList.add('loop-clone');clone.setAttribute('aria-hidden','true');clone.querySelectorAll('img').forEach(img=>{img.loading='eager';img.fetchPriority='low';});track.appendChild(clone);}
-    if(reducedMotion.matches){loopControllers.set(viewport,{raf:0,visible:false});return;}
+    // Respect reduced-motion before creating duplicate cards or decoding images.
+    // The original cards remain visible and accessible without animation.
+    if(reducedMotion.matches){
+      loopControllers.set(viewport,{raf:0,visible:false,track});
+      return;
+    }
+    // One clone is enough when the original strip fills the viewport.
+    // If it is shorter, add only enough copies to cover the visible width
+    // even at the end of a full-loop translation (seamless wrap).
+    const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
+    for(let i=0;i<copies;i++){
+      const clone=source.cloneNode(true);
+      clone.classList.add('loop-clone');
+      clone.setAttribute('aria-hidden','true');
+      clone.querySelectorAll('img').forEach(img=>{
+        img.loading='lazy';
+        img.fetchPriority='low';
+      });
+      track.appendChild(clone);
+    }
     const controller={raf:0,visible:!loopVisibilityObserver,offset:0,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
     controller.tick=now=>{
       controller.raf=0;
@@ -208,6 +233,28 @@
     if(loopVisibilityObserver)loopVisibilityObserver.observe(viewport);else startLoop(viewport);
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
+  /* Respond to OS reduced-motion changes while the page remains open. */
+  let lastReducedMotion=reducedMotion.matches;
+  const syncLoopMotionPreference=()=>{
+    lastReducedMotion=reducedMotion.matches;
+    loopControllers.forEach((_controller,viewport)=>stopLoop(viewport));
+    // Reduced motion must remove cloned imagery synchronously.
+    if(reducedMotion.matches) initLoopStrips();
+    else window.requestAnimationFrame(initLoopStrips);
+  };
+  if(reducedMotion.addEventListener)reducedMotion.addEventListener('change',syncLoopMotionPreference);
+  else reducedMotion.addListener?.(syncLoopMotionPreference);
+  // Some embedded browsers fail to deliver MediaQueryList change events.
+  // A small state-only check restores/reduces motion without extra animation
+  // frames or reflows; no work is done when the preference stays the same.
+  // Only the homepage owns the three motion strips; other LUEN pages
+  // must not pay for an unused fallback preference check.
+  if(document.querySelector('[data-loop-strip]')){
+    window.setInterval(()=>{
+      if(!document.hidden && reducedMotion.matches!==lastReducedMotion)
+        syncLoopMotionPreference();
+    },250);
+  }
   window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
@@ -259,7 +306,7 @@
         field_name:'contact_method',
         page_path:window.location.pathname
       });
-      email?.setCustomValidity(copy.contactMethod);
+      email?.setCustomValidity('이메일 또는 연락처 중 하나를 입력해주세요.');
       email?.reportValidity();
       email?.focus();
       event.preventDefault();
@@ -275,11 +322,11 @@
     form.addEventListener('focusin',markFormStarted,{once:true});
     form.addEventListener('input',markFormStarted,{once:true});
 
-    const defaultSubmitLabel=submitLabel?.textContent || copy.submit;
+    const defaultSubmitLabel=submitLabel?.textContent || '프로젝트 문의하기 →';
     const setSubmitting=(isSubmitting)=>{
       form.classList.toggle('is-submitting',isSubmitting);
       if(submitButton) submitButton.disabled=isSubmitting;
-      if(submitLabel) submitLabel.textContent=isSubmitting?copy.submitting:defaultSubmitLabel;
+      if(submitLabel) submitLabel.textContent=isSubmitting?'문의 전송 중...':defaultSubmitLabel;
     };
 
     form.addEventListener('submit',async e=>{
@@ -292,7 +339,7 @@
 
       const data=new FormData(form);
       const company=(data.get('company')||'프로젝트 문의').toString().trim();
-      data.set('_subject',(isJa?'[LUEN 일본어 홈페이지 문의] ':'[LUEN 홈페이지 문의] ')+company);
+      data.set('_subject','[LUEN 홈페이지 문의] '+company);
       data.set('_replyto',(data.get('email')||'').toString());
       data.set('page_url',window.location.href);
       data.set('submitted_at',new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}));
@@ -322,7 +369,7 @@
             status_code:response.status,
             page_path:window.location.pathname
           });
-          let message=copy.failed;
+          let message='문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
           try{
             const result=await response.json();
             if(result?.errors?.length){message=result.errors.map(err=>err.message).filter(Boolean).join(' ');}
@@ -336,7 +383,7 @@
           stage:'network',
           page_path:window.location.pathname
         });
-        status.textContent=copy.network;
+        status.textContent='네트워크 연결을 확인한 뒤 다시 시도해주세요.';
         status.className='form-feedback is-error';
       }finally{
         setSubmitting(false);

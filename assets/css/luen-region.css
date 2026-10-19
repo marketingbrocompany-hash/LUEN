@@ -178,15 +178,3 @@ html body .region-gate-note{
   html body .region-gate,
   html body .region-gate-option{transition:none!important;}
 }
-
-/* Japanese pages — the shared CSS sets word-break:keep-all for Korean, which never breaks Japanese text. */
-html[lang="ja"] body,
-html[lang="ja"] body *{
-  word-break:normal!important;
-  word-break:auto-phrase!important;
-  line-break:strict!important;
-  overflow-wrap:anywhere;
-}
-html[lang="ja"] body{
-  font-family:"Noto Sans JP","Pretendard Variable","Pretendard",sans-serif;
-}
