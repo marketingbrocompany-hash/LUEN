@@ -170,10 +170,19 @@ try{
           for(let k=0;k<await igCovers.count();k++){
             const el=igCovers.nth(k);
             await el.scrollIntoViewIfNeeded();
-            const decoded=await el.evaluate(async img=>{
-              try{await img.decode()}catch(_err){}
-              return {src:img.currentSrc,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight};
-            });
+            // Images can be pending immediately after scrolling on a throttled
+            // mobile viewport: wait for an actual decoded cover, not a microtask.
+            let decoded;
+            try{
+              const handle=await page.waitForFunction(index=>{
+                const img=document.querySelectorAll('.luen-food-video-grid--short img.luen-instagram-cover')[index];
+                if(!img||!img.complete||img.naturalWidth===0)return false;
+                return {src:img.currentSrc,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight};
+              },k,{timeout:12000});
+              decoded=await handle.jsonValue();
+            }catch(_err){
+              decoded=await el.evaluate(img=>({src:img.currentSrc,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight}));
+            }
             if(!decoded.complete||decoded.width<200||decoded.height<200)
               fail(route,v.name,'Instagram cover '+(k+1)+' did not decode at usable size: '+JSON.stringify(decoded));
           }
