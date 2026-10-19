@@ -53,7 +53,10 @@ jobs:
               for(const [i,label] of ['LONGFORM','SHORTFORM'].entries()){
                 const rail=page.locator('.portfolio-viewport').nth(i);
                 await rail.scrollIntoViewIfNeeded();
-                await page.waitForTimeout(1100);
+                // WebKit can defer layout for lazy thumbnails until they enter view.
+                // Wait for the original set and its first loop copy before sampling.
+                if(mode==='no-preference')await rail.locator('.loop-clone').first().waitFor({state:'attached',timeout:10000});
+                await page.waitForTimeout(400);
                 const samples=[];
                 for(let j=0;j<14;j++){
                   samples.push(await rail.evaluate(el=>{
@@ -70,11 +73,11 @@ jobs:
                 const deltas=samples.slice(1).map((s,n)=>s.x-samples[n].x);
                 const reset=deltas.some(n=>n>12);
                 const moved=Math.abs(first.x-last.x)>2;
-                const expectedCopies=Math.max(1,Math.ceil(first.visibleWidth/first.sourceWidth));
+                const expectedCopies=Math.max(1,Math.ceil(last.visibleWidth/last.sourceWidth));
                 const valid=mode==='reduce'
-                  ? !moved && first.copies===0
-                  : moved && !reset && first.sourceWidth>first.visibleWidth*1.5 && first.copies===expectedCopies;
-                const record={phone:phone.name,mode,label,result:valid?'PASS':'FAIL',source:Math.round(first.sourceWidth),copies:first.copies,needed:expectedCopies,firstX:+first.x.toFixed(2),lastX:+last.x.toFixed(2),resets:reset,errors};
+                  ? !moved && last.copies===0
+                  : moved && !reset && last.sourceWidth>last.visibleWidth*1.5 && last.copies===expectedCopies;
+                const record={phone:phone.name,mode,label,result:valid?'PASS':'FAIL',source:Math.round(last.sourceWidth),copies: last.copies,firstCopies:first.copies,needed:expectedCopies,firstX:+first.x.toFixed(2),lastX:+last.x.toFixed(2),resets:reset,errors};
                 console.log('PORTFOLIO_REGRESSION '+JSON.stringify(record));
                 if(!valid||errors.length)failures++;
               }
