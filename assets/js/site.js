@@ -4,6 +4,7 @@
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const lightLoopControllers=new Map();
+  const pendingIOSMeasurements=new WeakMap();
   const stopLightLoop=viewport=>{
     const controller=lightLoopControllers.get(viewport);
     if(!controller?.raf)return;
@@ -21,6 +22,26 @@
     const source=viewport.querySelector('.loop-set:not(.ios-loop-clone)');
     if(!track||!source)return;
 
+    const baseWidth=source.getBoundingClientRect().width;
+    // Safari can report a 72px placeholder for an off-screen rail. Wait for
+    // the actual flex-card layout rather than looping over this fake width.
+    if(!reducedMotion.matches && baseWidth<viewport.clientWidth*1.5){
+      if(!pendingIOSMeasurements.has(viewport) && 'ResizeObserver' in window){
+        const pending=new ResizeObserver(()=>{
+          const readyWidth=source.getBoundingClientRect().width;
+          if(readyWidth>viewport.clientWidth*1.5){
+            pending.disconnect();
+            pendingIOSMeasurements.delete(viewport);
+            requestAnimationFrame(()=>setupIOSLightLoop(viewport));
+          }
+        });
+        pendingIOSMeasurements.set(viewport,pending);
+        pending.observe(source);
+      }
+      return;
+    }
+    pendingIOSMeasurements.get(viewport)?.disconnect();
+    pendingIOSMeasurements.delete(viewport);
     const previous=lightLoopControllers.get(viewport);
     previous?.observer?.disconnect();
     previous?.resizeObserver?.disconnect();
@@ -28,13 +49,12 @@
     track.querySelectorAll('.ios-loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
 
-    const baseWidth=source.getBoundingClientRect().width;
     if(!baseWidth)return;
     if(reducedMotion.matches){
       lightLoopControllers.delete(viewport);
       return; // no duplicate images needed for a stationary strip
     }
-    const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
+    const copies=Math.max(1,Math.ceil(Math.min(viewport.clientWidth,document.documentElement.clientWidth)/baseWidth));
     for(let i=0;i<copies;i++){
       const clone=source.cloneNode(true);
       clone.classList.add('loop-clone','ios-loop-clone');
@@ -76,16 +96,28 @@
       controller.observer.observe(viewport);
     }
     lightLoopControllers.set(viewport,controller);
-    // A strip below the fold may be measured before WebKit lays out its cards.
-    // Rebuild it if its *real* content width changes after it becomes visible.
+    // Lazy images can change the measured width in WebKit. Keep the current
+    // pixel offset and update only geometry; restarting the RAF at 0 causes
+    // a visible jump even if all images are present.
     if('ResizeObserver' in window){
       controller.resizeObserver=new ResizeObserver(()=>{
-        const liveWidth=source.getBoundingClientRect().width;
-        if(liveWidth>0 && Math.abs(liveWidth-controller.baseWidth)>1){
-          requestAnimationFrame(()=>{
-            if(lightLoopControllers.get(viewport)===controller)setupIOSLightLoop(viewport);
-          });
-        }
+        requestAnimationFrame(()=>{
+          if(lightLoopControllers.get(viewport)!==controller)return;
+          const liveWidth=source.getBoundingClientRect().width;
+          if(liveWidth<=viewport.clientWidth*1.5 || Math.abs(liveWidth-controller.baseWidth)<=1)return;
+          controller.baseWidth=liveWidth;
+          controller.offset%=liveWidth;
+          const desired=Math.max(1,Math.ceil(Math.min(viewport.clientWidth,document.documentElement.clientWidth)/liveWidth));
+          const existing=[...track.querySelectorAll('.ios-loop-clone')];
+          for(let i=desired;i<existing.length;i++)existing[i].remove();
+          for(let i=existing.length;i<desired;i++){
+            const clone=source.cloneNode(true);
+            clone.classList.add('loop-clone','ios-loop-clone');
+            clone.setAttribute('aria-hidden','true');
+            clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
+            track.appendChild(clone);
+          }
+        });
       });
       controller.resizeObserver.observe(source);
     }
