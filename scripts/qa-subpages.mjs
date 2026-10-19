@@ -18,7 +18,7 @@ const routes=[
   '/insights/japan-influencer-marketing-cost/',
   '/insights/japan-youtuber-matching-guide/',
   '/insights/youtube-creator-marketing-metrics/',
-  '/project-guide/', '/contact/'
+  '/project-guide/', '/contact/', '/creators/masubuchi-sachiyo/'
 ];
 // Verify every indexed public route is covered before browser QA starts.
 // Do not silently skip newly added service/case/insight pages.
@@ -160,7 +160,7 @@ try{
           }
         }
         // Screenshot first-fold of all core pages, plus critical detail pages.
-        if(v.name!=='mobile-narrow' && (routes.indexOf(route)<13 || route==='/contact/'||route==='/project-guide/')){
+        if(v.name!=='mobile-narrow' && (routes.indexOf(route)<13 || route==='/contact/'||route==='/project-guide/'||route==='/creators/masubuchi-sachiyo/')){
           const name=safeName(route)+'-'+v.name+'.jpg';
           await page.screenshot({path:path.join(screenshots,name),type:'jpeg',quality:69,animations:'disabled',timeout:16000});
         }
