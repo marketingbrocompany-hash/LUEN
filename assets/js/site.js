@@ -23,6 +23,7 @@
 
     const previous=lightLoopControllers.get(viewport);
     previous?.observer?.disconnect();
+    previous?.resizeObserver?.disconnect();
     stopLightLoop(viewport);
     track.querySelectorAll('.ios-loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
@@ -53,6 +54,7 @@
       baseWidth,
       track,
       observer:null,
+      resizeObserver:null,
       tick:null
     };
     controller.tick=now=>{
@@ -74,6 +76,19 @@
       controller.observer.observe(viewport);
     }
     lightLoopControllers.set(viewport,controller);
+    // A strip below the fold may be measured before WebKit lays out its cards.
+    // Rebuild it if its *real* content width changes after it becomes visible.
+    if('ResizeObserver' in window){
+      controller.resizeObserver=new ResizeObserver(()=>{
+        const liveWidth=source.getBoundingClientRect().width;
+        if(liveWidth>0 && Math.abs(liveWidth-controller.baseWidth)>1){
+          requestAnimationFrame(()=>{
+            if(lightLoopControllers.get(viewport)===controller)setupIOSLightLoop(viewport);
+          });
+        }
+      });
+      controller.resizeObserver.observe(source);
+    }
     startLightLoop(viewport);
   };
 
@@ -87,8 +102,34 @@
     });
     /* Decorative SVG motion remains disabled on iOS to preserve Safari GPU headroom. */
     document.querySelectorAll('animateMotion, animate').forEach(el=>el.remove());
-    const initIOSLoops=()=>requestAnimationFrame(()=>iosLoopStrips.forEach(setupIOSLightLoop));
-    window.addEventListener('load',initIOSLoops,{once:true});
+    // Do not measure off-screen rails at page load. In mobile WebKit their
+    // initial width may be only a placeholder, making the loop snap every
+    // few dozen pixels instead of after the full thumbnail set.
+    const isNearScreen=viewport=>{
+      const bounds=viewport.getBoundingClientRect();
+      return bounds.bottom>=-180 && bounds.top<=window.innerHeight+180;
+    };
+    const initIOSLoops=()=>requestAnimationFrame(()=>{
+      iosLoopStrips.filter(isNearScreen).forEach(setupIOSLightLoop);
+    });
+    const revealObserver='IntersectionObserver' in window
+      ?new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(!entry.isIntersecting)return;
+          const viewport=entry.target;
+          const controller=lightLoopControllers.get(viewport);
+          const source=viewport.querySelector('.loop-set:not(.ios-loop-clone)');
+          const liveWidth=source?.getBoundingClientRect().width||0;
+          if(liveWidth>0 && (!controller || Math.abs(controller.baseWidth-liveWidth)>1)){
+            setupIOSLightLoop(viewport);
+          }
+        });
+      },{rootMargin:'180px 0px',threshold:0})
+      :null;
+    window.addEventListener('load',()=>{
+      iosLoopStrips.forEach(viewport=>revealObserver?.observe(viewport));
+      initIOSLoops();
+    },{once:true});
     let lastWidth=document.documentElement.clientWidth;
     window.addEventListener('resize',()=>{
       const nextWidth=document.documentElement.clientWidth;
@@ -104,7 +145,8 @@
     });
     reducedMotion.addEventListener?.('change',()=>{
       // Recreate strips to remove duplicate images when motion is reduced.
-      iosLoopStrips.forEach(setupIOSLightLoop);
+      if(reducedMotion.matches)iosLoopStrips.forEach(setupIOSLightLoop);
+      else initIOSLoops();
     });
   }
 
