@@ -190,11 +190,15 @@ const checks=[
   ['creator profile contains safe collaboration qualifiers',fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8').includes('전속 소속 또는 독점 매니지먼트를 의미하지 않습니다.')],
   ['contact form supports creator preselection',fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes('name="creator_requested"')&&fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes("new URLSearchParams(window.location.search)")],
   ['creator profile included in sitemap',fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('https://luenkorea.com/creators/masubuchi-sachiyo/')],
-  ['Masubuchi Korea F&B gallery includes 6 requested originals and no autoplay embeds',(()=>{
+  ['Masubuchi LUEN F&B gallery includes 8 originals, 4 Instagram Reels, and no removed Shorts',(()=>{
     const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
     return creator.includes('id="korea-food-content"')
-      &&['n-u1DvcEtoc','_AdGQ49Oc5Y','NYlAk6xwFcE','DWn-bFBARLT','ntho1xxBfW0','Jwtgq2v_2hc'].every(id=>creator.includes(id))
-      &&(creator.match(/class="luen-food-video-card"/g)||[]).length===6
+      &&['n-u1DvcEtoc','_AdGQ49Oc5Y','DWn-bFBARLT','ntho1xxBfW0','Jwtgq2v_2hc','Dc5tHpyhAbX','Ddi5Yc6h_Zu','DaM3mwqhQSI'].every(id=>creator.includes(id))
+      &&!creator.includes('NYlAk6xwFcE')
+      &&!creator.includes('YOUTUBE SHORTS')
+      &&(creator.match(/class="luen-food-video-card"/g)||[]).length===8
+      &&(creator.match(/href="https:\/\/www.instagram.com\/reel\//g)||[]).length===4
+      &&creator.includes('위 영상 8편은 LUEN이 직접 진행한 한국 F&amp;B 협업입니다.')
       &&!creator.includes('<iframe');
   })()]
 ];
