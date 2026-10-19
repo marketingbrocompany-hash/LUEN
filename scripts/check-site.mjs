@@ -189,7 +189,14 @@ const checks=[
   ['partner roster has distinct profile and inquiry links',home.includes('id="partner-creators"')&&home.includes('/creators/masubuchi-sachiyo/')&&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['creator profile contains safe collaboration qualifiers',fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8').includes('전속 소속 또는 독점 매니지먼트를 의미하지 않습니다.')],
   ['contact form supports creator preselection',fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes('name="creator_requested"')&&fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes("new URLSearchParams(window.location.search)")],
-  ['creator profile included in sitemap',fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('https://luenkorea.com/creators/masubuchi-sachiyo/')]
+  ['creator profile included in sitemap',fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('https://luenkorea.com/creators/masubuchi-sachiyo/')],
+  ['Masubuchi Korea F&B gallery includes 6 requested originals and no autoplay embeds',(()=>{
+    const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
+    return creator.includes('id="korea-food-content"')
+      &&['n-u1DvcEtoc','_AdGQ49Oc5Y','NYlAk6xwFcE','DWn-bFBARLT','ntho1xxBfW0','Jwtgq2v_2hc'].every(id=>creator.includes(id))
+      &&(creator.match(/class="luen-food-video-card"/g)||[]).length===6
+      &&!creator.includes('<iframe');
+  })()]
 ];
 for(const [name,pass] of checks)if(!pass)errors.push('Regression check failed: '+name);
 
