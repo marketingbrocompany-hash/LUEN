@@ -159,6 +159,31 @@ try{
               fail(route,v.name,'Mobile navigation did not close: '+JSON.stringify(closed));
           }
         }
+
+        // Featured creator: load each local Instagram cover to catch missing assets,
+        // and check the YouTube cover baseline without assuming every upload has maxres.
+        if(route==='/creators/masubuchi-sachiyo/'){
+          const igCovers=page.locator('.luen-food-video-grid--short img.luen-instagram-cover');
+          const ytCovers=page.locator('.luen-food-video-grid--long img[data-youtube-video]');
+          if(await igCovers.count()!==4)fail(route,v.name,'Expected 4 local Instagram cover images');
+          if(await ytCovers.count()!==4)fail(route,v.name,'Expected 4 YouTube cover images');
+          for(let k=0;k<await igCovers.count();k++){
+            const el=igCovers.nth(k);
+            await el.scrollIntoViewIfNeeded();
+            const decoded=await el.evaluate(async img=>{
+              try{await img.decode()}catch(_err){}
+              return {src:img.currentSrc,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight};
+            });
+            if(!decoded.complete||decoded.width<200||decoded.height<200)
+              fail(route,v.name,'Instagram cover '+(k+1)+' did not decode at usable size: '+JSON.stringify(decoded));
+          }
+          const firstYoutube=ytCovers.first();
+          await firstYoutube.scrollIntoViewIfNeeded();
+          await firstYoutube.evaluate(async img=>{try{await img.decode()}catch(_err){}});
+          const youtubeInfo=await firstYoutube.evaluate(img=>({width:img.naturalWidth,height:img.naturalHeight,quality:img.dataset.imageQuality||'hqdefault'}));
+          if(youtubeInfo.width<320||youtubeInfo.height<180)
+            fail(route,v.name,'YouTube cover too small: '+JSON.stringify(youtubeInfo));
+        }
         // Screenshot first-fold of all core pages, plus critical detail pages.
         if(v.name!=='mobile-narrow' && (routes.indexOf(route)<13 || route==='/contact/'||route==='/project-guide/'||route==='/creators/masubuchi-sachiyo/')){
           const name=safeName(route)+'-'+v.name+'.jpg';
