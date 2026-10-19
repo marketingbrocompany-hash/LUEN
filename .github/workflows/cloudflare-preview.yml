@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          for item in assets about cases contact insights project-guide services; do
+          for item in assets about cases contact creators insights project-guide services; do
             test -d "$item"
             cp -R "$item" _site/
           done
