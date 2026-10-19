@@ -107,3 +107,6 @@ html body .luen-creator-primary:focus-visible,html body .luen-creator-secondary:
 @media(prefers-reduced-motion:reduce){
  html body .luen-why-grid article,html body .luen-creator-feature-media img,html body .luen-creator-primary{transition:none!important}
 }
+
+/* Anchor targets remain visible beneath LUEN’s fixed navigation. */
+html body #why-luen,html body #partner-creators{scroll-margin-top:clamp(80px,10vw,115px)}
