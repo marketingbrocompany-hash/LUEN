@@ -5,6 +5,13 @@
 
   const lightLoopControllers=new Map();
   const pendingIOSMeasurements=new WeakMap();
+  const appendIOSClone=(source,track)=>{
+    const clone=source.cloneNode(true);
+    clone.classList.add('loop-clone','ios-loop-clone');
+    clone.setAttribute('aria-hidden','true');
+    clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
+    track.appendChild(clone);
+  };
   const stopLightLoop=viewport=>{
     const controller=lightLoopControllers.get(viewport);
     if(!controller?.raf)return;
@@ -45,6 +52,7 @@
     const previous=lightLoopControllers.get(viewport);
     previous?.observer?.disconnect();
     previous?.resizeObserver?.disconnect();
+    previous?.cloneObserver?.disconnect();
     stopLightLoop(viewport);
     track.querySelectorAll('.ios-loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
@@ -55,13 +63,7 @@
       return; // no duplicate images needed for a stationary strip
     }
     const copies=Math.max(1,Math.ceil(Math.min(viewport.clientWidth,document.documentElement.clientWidth)/baseWidth));
-    for(let i=0;i<copies;i++){
-      const clone=source.cloneNode(true);
-      clone.classList.add('loop-clone','ios-loop-clone');
-      clone.setAttribute('aria-hidden','true');
-      clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
-      track.appendChild(clone);
-    }
+    for(let i=0;i<copies;i++)appendIOSClone(source,track);
     if(reducedMotion.matches)return;
 
     const rawSpeed=Math.max(10,Number(viewport.dataset.iosLoopSpeed||viewport.dataset.speed||45));
@@ -75,6 +77,8 @@
       track,
       observer:null,
       resizeObserver:null,
+      cloneObserver:null,
+      lastCloneCheck:0,
       tick:null
     };
     controller.tick=now=>{
@@ -84,6 +88,12 @@
       if(elapsed<33){controller.raf=requestAnimationFrame(controller.tick);return;}
       const dt=Math.min(.07,elapsed/1000);
       controller.last=now;
+      // iOS occasionally drops a cloned set during late layout changes.
+      // Repair it without resetting the animation position.
+      if(now-controller.lastCloneCheck>1100){
+        controller.lastCloneCheck=now;
+        if(!track.querySelector('.ios-loop-clone'))appendIOSClone(source,track);
+      }
       controller.offset=(controller.offset+controller.speed*dt)%controller.baseWidth;
       controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
       controller.raf=requestAnimationFrame(controller.tick);
@@ -96,6 +106,14 @@
       controller.observer.observe(viewport);
     }
     lightLoopControllers.set(viewport,controller);
+    if('MutationObserver' in window){
+      controller.cloneObserver=new MutationObserver(()=>{
+        if(lightLoopControllers.get(viewport)===controller && !reducedMotion.matches && !track.querySelector('.ios-loop-clone')){
+          appendIOSClone(source,track);
+        }
+      });
+      controller.cloneObserver.observe(track,{childList:true});
+    }
     // Lazy images can change the measured width in WebKit. Keep the current
     // pixel offset and update only geometry; restarting the RAF at 0 causes
     // a visible jump even if all images are present.
@@ -110,13 +128,7 @@
           const desired=Math.max(1,Math.ceil(Math.min(viewport.clientWidth,document.documentElement.clientWidth)/liveWidth));
           const existing=[...track.querySelectorAll('.ios-loop-clone')];
           for(let i=desired;i<existing.length;i++)existing[i].remove();
-          for(let i=existing.length;i<desired;i++){
-            const clone=source.cloneNode(true);
-            clone.classList.add('loop-clone','ios-loop-clone');
-            clone.setAttribute('aria-hidden','true');
-            clone.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.fetchPriority='low';});
-            track.appendChild(clone);
-          }
+          for(let i=existing.length;i<desired;i++)appendIOSClone(source,track);
         });
       });
       controller.resizeObserver.observe(source);
