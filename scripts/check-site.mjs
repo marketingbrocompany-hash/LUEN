@@ -187,7 +187,7 @@ const checks=[
   ['warm partner-strip override',home.includes('section.brand-wall{background:#EEE6DA!important}')],
   ['curated partner approach visible',home.includes('id="why-luen"')&&home.includes('CREATIVE DIRECTION')],
   ['partner roster has distinct profile and inquiry links',home.includes('id="partner-creators"')&&home.includes('/creators/masubuchi-sachiyo/')&&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
-  ['creator profile contains safe collaboration qualifiers',fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8').includes('전속 소속 또는 독점 매니지먼트를 의미하지 않습니다.')],
+  ['creator profile offers direct collaboration inquiry',fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8').includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['contact form supports creator preselection',fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes('name="creator_requested"')&&fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes("new URLSearchParams(window.location.search)")],
   ['creator profile included in sitemap',fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('https://luenkorea.com/creators/masubuchi-sachiyo/')],
   ['Masubuchi LUEN F&B gallery includes 8 originals, 4 Instagram Reels, and no removed Shorts',(()=>{
@@ -199,7 +199,13 @@ const checks=[
       &&(creator.match(/class="luen-food-video-card"/g)||[]).length===8
       &&(creator.match(/href="https:\/\/www.instagram.com\/reel\//g)||[]).length===4
       &&creator.includes('위 영상 8편은 LUEN이 직접 진행한 한국 F&amp;B 협업입니다.')
-      &&!creator.includes('<iframe');
+      &&!creator.includes('<iframe')
+      &&['DWn-bFBARLT','Dc5tHpyhAbX','Ddi5Yc6h_Zu','DaM3mwqhQSI'].every(id=>creator.includes('/assets/images/creators/masubuchi/'+id+'.jpg'))
+      &&(creator.match(/data-youtube-video=/g)||[]).length===4
+      &&creator.includes('maxresdefault.jpg')
+      &&creator.includes('naturalWidth>=option.min')
+      &&!home.includes('PARTNER ≠ EXCLUSIVE MANAGEMENT')
+      &&!creator.includes('전속 소속 또는 독점 매니지먼트를 의미하지 않습니다.');
   })()]
 ];
 for(const [name,pass] of checks)if(!pass)errors.push('Regression check failed: '+name);
