@@ -37,9 +37,6 @@ html body .luen-creator-primary{background:#C6633B;color:#FFF9F1}
 html body .luen-creator-primary:hover{background:#A74722;transform:translateY(-2px)}
 html body .luen-creator-secondary{color:#4D4037;background:transparent;border:1px solid #CBBBAD}
 html body .luen-creator-secondary:hover{background:#FFF9F1}
-html body .luen-creator-footnote{display:flex;justify-content:space-between;align-items:start;gap:25px;margin-top:22px}
-html body .luen-creator-footnote span{font:700 10px/1.5 "Inter",sans-serif;color:#A74722;letter-spacing:.1em;white-space:nowrap}
-html body .luen-creator-footnote p{max-width:580px;margin:0;font-size:12px;line-height:1.7;color:#796E66}
 /* Creator detail page */
 html body .luen-profile-hero{padding:clamp(72px,8vw,122px) 0 clamp(50px,7vw,105px)}
 html body .luen-profile-kicker{font:700 11px/1.4 "Inter",sans-serif;letter-spacing:.13em;color:#A74722;margin-bottom:20px}
@@ -166,3 +163,10 @@ html body .luen-food-video-card:focus-visible{outline:2px solid #A74722;outline-
 html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(2) .luen-food-video-thumb--instagram{background:linear-gradient(153deg,#8B665E 0%,#B77B61 46%,#EAC4A3 100%)}
 html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(3) .luen-food-video-thumb--instagram{background:linear-gradient(150deg,#775D57 0%,#B87B62 49%,#DFA780 100%)}
 html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(4) .luen-food-video-thumb--instagram{background:linear-gradient(150deg,#825D51 0%,#CC885F 47%,#E9BA91 100%)}
+
+/* Verified locally-hosted Instagram reel cover photographs. */
+html body .luen-food-video-thumb--instagram .luen-instagram-cover{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s cubic-bezier(.2,.65,.2,1)}
+html body .luen-food-video-card:hover .luen-food-video-thumb--instagram .luen-instagram-cover{transform:scale(1.035)}
+html body .luen-food-video-thumb--instagram .luen-food-video-platform{display:none}
+html body .luen-food-video-thumb--instagram .luen-food-video-play{z-index:2;background:rgba(245,243,238,.92)}
+@media(prefers-reduced-motion:reduce){html body .luen-food-video-thumb--instagram .luen-instagram-cover{transition:none}}
