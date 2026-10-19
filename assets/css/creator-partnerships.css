@@ -161,3 +161,8 @@ html body .luen-food-video-card:focus-visible{outline:2px solid #A74722;outline-
   html body .luen-food-video-grid--short .luen-food-video-thumb{max-width:240px}
 }
 @media(prefers-reduced-motion:reduce){html body .luen-food-video-thumb img{transition:none}}
+
+/* Distinguish four LUEN-managed IG collaborations without unverified images. */
+html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(2) .luen-food-video-thumb--instagram{background:linear-gradient(153deg,#8B665E 0%,#B77B61 46%,#EAC4A3 100%)}
+html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(3) .luen-food-video-thumb--instagram{background:linear-gradient(150deg,#775D57 0%,#B87B62 49%,#DFA780 100%)}
+html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(4) .luen-food-video-thumb--instagram{background:linear-gradient(150deg,#825D51 0%,#CC885F 47%,#E9BA91 100%)}
