@@ -5065,8 +5065,6 @@ html body #work .portfolio-set{
 html body #work .portfolio-card{
   position:relative!important;
   flex:0 0 clamp(340px,31vw,470px)!important;
-  /* Safari's auto min-content width must not grow when lazy images decode. */
-  min-width:0!important;
   aspect-ratio:16/9!important;
   overflow:hidden!important;
   border:1px solid rgba(93,76,64,.13)!important;
