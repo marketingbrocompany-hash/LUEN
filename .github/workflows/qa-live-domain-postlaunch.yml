@@ -1,0 +1,29 @@
+name: LUEN production live domain smoke QA
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa-live-domain-postlaunch.mjs'
+      - '.github/workflows/qa-live-domain-postlaunch.yml'
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check source
+        run: node scripts/check-site.mjs
+      - name: Verify public production domain without any form submission
+        run: node scripts/qa-live-domain-postlaunch.mjs
+      - name: Archive HTTP and SEO smoke report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-production-live-smoke
+          path: qa-reports/live-domain-postlaunch.json
+          if-no-files-found: warn
+          retention-days: 14
