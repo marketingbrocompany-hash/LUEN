@@ -174,7 +174,7 @@ try{
                 return img&&img.complete&&img.naturalWidth>0
                   ? {width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}
                   : false;
-              },{timeout:12000});
+              },null,{timeout:12000});
               dimensions=await handle.jsonValue();
             }catch(_err){
               dimensions=await proof.evaluate(img=>({width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}));
