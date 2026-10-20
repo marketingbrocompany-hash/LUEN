@@ -167,10 +167,18 @@ try{
           if(await proof.count()!==1)fail(route,v.name,'Missing 292.5만 Instagram screenshot excerpt');
           else{
             await proof.scrollIntoViewIfNeeded();
-            const dimensions=await proof.evaluate(async img=>{
-              try{await img.decode()}catch(_err){}
-              return {width:img.naturalWidth,height:img.naturalHeight,complete:img.complete};
-            });
+            let dimensions;
+            try{
+              const handle=await page.waitForFunction(()=>{
+                const img=document.querySelector('img[src="/assets/images/cases/masubuchi-bibigo-reels-view-proof.jpg"]');
+                return img&&img.complete&&img.naturalWidth>0
+                  ? {width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}
+                  : false;
+              },{timeout:12000});
+              dimensions=await handle.jsonValue();
+            }catch(_err){
+              dimensions=await proof.evaluate(img=>({width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}));
+            }
             if(!dimensions.complete||dimensions.width<280||dimensions.height<70)
               fail(route,v.name,'Instagram proof image did not decode: '+JSON.stringify(dimensions));
           }
