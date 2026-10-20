@@ -192,7 +192,8 @@ const checks=[
     const sequence=['id="creator-identity"','id="bibigo-feature"','id="korea-food-content"','id="brand-fit"','id="creator-inquiry-title"'];
     return sequence.every(x=>creator.includes(x))
       &&sequence.every((x,i)=>i===0||creator.indexOf(x)>creator.indexOf(sequence[i-1]))
-      &&creator.includes('292.5<em>만</em>')
+      &&creator.includes('masubuchi-bibigo-instagram-full.avif')
+      &&creator.includes('Instagram Reels 화면 캡처 · 292.5만 조회')
       &&creator.includes('bibigo × 爆食ますぶちさちよ')
       &&creator.includes('제공받은 릴스 화면 캡처')
       &&!creator.includes('href="/cases/masubuchi-bibigo/"')
@@ -203,16 +204,20 @@ const checks=[
     const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
     const home=fs.readFileSync(path.join(root,'index.html'),'utf8');
     const cas=fs.readFileSync(path.join(root,'cases/masubuchi-bibigo/index.html'),'utf8');
-    const proof='assets/images/cases/masubuchi-bibigo-reels-view-proof.jpg';
+    const proof='assets/images/cases/masubuchi-bibigo-instagram-full.avif';
     return creator.includes('INSTAGRAM / FOLLOWERS') &&creator.includes('<strong>6.8만</strong>')
       &&creator.includes('YOUTUBE / SUBSCRIBERS')
       &&!creator.includes('LUEN F&amp;B WORKS')
       &&!creator.includes('bibigo / SHORT FORM</span><strong>200만')
-      &&creator.includes('292.5<em>만</em>')
+      &&creator.includes('292.5만 조회')
       &&creator.includes('/'+proof)
+      &&creator.includes('class="luen-bibigo-full-screenshot"')
+      &&!creator.includes('class="luen-bibigo-highlight"')
+      &&!creator.includes('class="luen-bibigo-proof"')
       &&home.includes('Instagram Reels 292.5만 조회')
       &&home.includes('INSTAGRAM</small><strong>6.8만')
       &&cas.includes('/'+proof)
+      &&cas.includes('case-study-view-proof--full')
       &&cas.includes('292.5만 조회')
       &&fs.existsSync(path.join(root,proof));
   })()],

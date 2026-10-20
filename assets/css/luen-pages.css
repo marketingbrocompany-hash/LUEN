@@ -2855,3 +2855,9 @@
 .case-study-view-proof{display:inline-grid;gap:9px;margin:24px 0 0;padding:13px 14px;background:#EFE7DC;border:1px solid #DDCFBF;border-radius:17px;max-width:100%}
 .case-study-view-proof img{display:block;max-width:100%;width:285px;height:auto;aspect-ratio:285/77;border-radius:9px;object-fit:cover}
 .case-study-view-proof figcaption{font-size:11px;line-height:1.65;color:#6B6057;margin:0}
+
+/* Preserve the entire screenshot in the standalone bibigo case, too. */
+.case-study-view-proof--full{max-width:520px;width:min(100%,520px);padding:0;background:transparent;border:0;display:block}
+.case-study-view-proof--full a{display:block;line-height:0;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 12px 28px rgba(70,39,22,.11)}
+.case-study-view-proof--full img{display:block;width:100%;height:auto;aspect-ratio:640/966;object-fit:contain;max-width:100%;border-radius:0}
+.case-study-view-proof--full figcaption{margin:12px 0 0}
