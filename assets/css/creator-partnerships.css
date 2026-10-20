@@ -300,3 +300,6 @@ html body .luen-bibigo-full-screenshot a:focus-visible{outline:2px solid #A74722
  html body .luen-bibigo-editorial{gap:20px}
 }
 @media(prefers-reduced-motion:reduce){html body .luen-bibigo-full-screenshot a{transition:none}}
+
+/* Bibigo editorial: no blank space after the heading when intro copy is removed. */
+html body .luen-bibigo-editorial-copy .luen-bibigo-headline h2{margin-bottom:0}
