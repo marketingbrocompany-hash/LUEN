@@ -221,6 +221,18 @@ const checks=[
       &&cas.includes('292.5만 조회')
       &&fs.existsSync(path.join(root,proof));
   })()],
+  ['Masubuchi supplied portrait is used only for creator profile and featured partner',(()=>{
+    const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
+    const homepage=fs.readFileSync(path.join(root,'index.html'),'utf8');
+    const portrait='assets/images/creators/masubuchi/masubuchi-profile.avif';
+    return fs.existsSync(path.join(root,portrait))
+      &&fs.statSync(path.join(root,portrait)).size>6000
+      &&creator.includes('class="luen-creator-portrait" src="/'+portrait+'"')
+      &&homepage.includes('class="luen-creator-portrait" src="/'+portrait+'"')
+      &&!creator.includes('alt="爆食ますぶちさちよ × bibigo 캠페인 콘텐츠 화면"')
+      &&creator.includes('masubuchi-bibigo-instagram-full.avif')
+      &&homepage.includes('href="/creators/masubuchi-sachiyo/"');
+  })()],
   ['Masubuchi requested captions removed while original media stays',(()=>{
     const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
     return !creator.includes('SELECTED CAMPAIGN / bibigo — 기존 캠페인 콘텐츠 이미지')
@@ -228,7 +240,7 @@ const checks=[
       &&!creator.includes('위 영상 8편은 LUEN이 직접 진행한 한국 F&amp;B 협업입니다.')
       &&creator.includes('masubuchi-bibigo-instagram-full.avif')
       &&creator.includes('원본 릴스 보기 ↗')
-      &&creator.includes('korea-food-marketing-case-04.webp')
+      &&creator.includes('masubuchi-profile.avif')
       &&(creator.match(/class="luen-food-video-card"/g)||[]).length===8;
   })()],
   ['Masubuchi preferred introduction, approximate audience counts and concise bibigo copy',(()=>{
