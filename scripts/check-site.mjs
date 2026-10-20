@@ -197,6 +197,8 @@ const checks=[
       &&!creator.includes('NYlAk6xwFcE')
       &&!creator.includes('YOUTUBE SHORTS')
       &&(creator.match(/class="luen-food-video-card"/g)||[]).length===8
+      &&(creator.match(/class="luen-food-video-copy"/g)||[]).length===8
+      &&!/<span class="luen-food-video-copy">[^]*?<strong>/.test(creator)
       &&(creator.match(/href="https:\/\/www.instagram.com\/reel\//g)||[]).length===4
       &&creator.includes('위 영상 8편은 LUEN이 직접 진행한 한국 F&amp;B 협업입니다.')
       &&!creator.includes('<iframe')
