@@ -170,3 +170,6 @@ html body .luen-food-video-card:hover .luen-food-video-thumb--instagram .luen-in
 html body .luen-food-video-thumb--instagram .luen-food-video-platform{display:none}
 html body .luen-food-video-thumb--instagram .luen-food-video-play{z-index:2;background:rgba(245,243,238,.92)}
 @media(prefers-reduced-motion:reduce){html body .luen-food-video-thumb--instagram .luen-instagram-cover{transition:none}}
+
+/* Video gallery: show only platform/index and original-video link, without per-video titles. */
+html body .luen-food-video-copy{gap:6px;padding-top:12px}
