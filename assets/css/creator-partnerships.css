@@ -269,3 +269,34 @@ html body .luen-bibigo-proof figcaption{font-size:11px;line-height:1.6;color:#D5
 html body .luen-bibigo-proof a:focus-visible{outline:2px solid #ECA988;outline-offset:4px}
 @media(max-width:767px){html body .luen-bibigo-highlight>strong{font-size:clamp(48px,9.2vw,70px)}}
 @media(max-width:370px){html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}html body .luen-profile-data>div:last-child{grid-column:auto}}
+
+/* Full Instagram screenshot is the sole bibigo visual proof. No duplicate counter card. */
+html body .luen-bibigo-editorial{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.88fr);gap:clamp(25px,4vw,60px);align-items:start}
+html body .luen-bibigo-editorial-copy{min-width:0}
+html body .luen-bibigo-editorial-copy .luen-bibigo-headline{padding:0 0 27px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-headline h2{margin-bottom:19px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-story{display:grid;grid-template-columns:1fr;gap:12px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-brief,
+html body .luen-bibigo-editorial-copy .luen-bibigo-approach{border-radius:20px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-brief h3{margin:18px 0 12px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-approach ol{margin-top:13px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-approach li{padding:11px 0}
+html body .luen-bibigo-full-screenshot{width:100%;max-width:520px;min-width:0;margin:0;justify-self:center}
+html body .luen-bibigo-full-screenshot a{display:block;overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 14px 38px rgba(70,39,22,.12);line-height:0;transition:transform .3s}
+html body .luen-bibigo-full-screenshot a:hover{transform:translateY(-3px)}
+html body .luen-bibigo-full-screenshot img{display:block;width:100%;height:auto;aspect-ratio:640/966;object-fit:contain}
+html body .luen-bibigo-full-screenshot figcaption{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 14px;margin:13px 1px 0;font-size:11px;line-height:1.65;color:#705B4B}
+html body .luen-bibigo-full-screenshot figcaption span:last-child{color:#AC5938;font-weight:700}
+html body .luen-bibigo-full-screenshot a:focus-visible{outline:2px solid #A74722;outline-offset:5px}
+@media(max-width:900px){
+ html body .luen-bibigo-editorial{grid-template-columns:1fr;gap:27px}
+ html body .luen-bibigo-editorial-copy .luen-bibigo-story{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html body .luen-bibigo-full-screenshot{max-width:480px}
+}
+@media(max-width:767px){
+ html body .luen-bibigo-editorial-copy .luen-bibigo-story{grid-template-columns:1fr}
+ html body .luen-bibigo-full-screenshot{max-width:min(100%,450px)}
+ html body .luen-bibigo-full-screenshot a{border-radius:18px}
+ html body .luen-bibigo-editorial{gap:20px}
+}
+@media(prefers-reduced-motion:reduce){html body .luen-bibigo-full-screenshot a{transition:none}}
