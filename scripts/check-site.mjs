@@ -192,12 +192,29 @@ const checks=[
     const sequence=['id="creator-identity"','id="bibigo-feature"','id="korea-food-content"','id="brand-fit"','id="creator-inquiry-title"'];
     return sequence.every(x=>creator.includes(x))
       &&sequence.every((x,i)=>i===0||creator.indexOf(x)>creator.indexOf(sequence[i-1]))
-      &&creator.includes('2M<em>+</em>')
+      &&creator.includes('292.5<em>만</em>')
       &&creator.includes('bibigo × 爆食ますぶちさちよ')
-      &&creator.includes('캠페인 공개 지표 기준')
+      &&creator.includes('제공받은 릴스 화면 캡처')
       &&!creator.includes('href="/cases/masubuchi-bibigo/"')
       &&!creator.includes('위 항목은 LUEN의 제안 가능 분야이며')
       &&['#creator-identity','#bibigo-feature','#korea-food-content','#brand-fit'].every(x=>creator.includes('href="'+x+'"'));
+  })()],
+  ['Masubuchi social metrics and bibigo reel screenshot proof stay consistent',(()=>{
+    const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
+    const home=fs.readFileSync(path.join(root,'index.html'),'utf8');
+    const cas=fs.readFileSync(path.join(root,'cases/masubuchi-bibigo/index.html'),'utf8');
+    const proof='assets/images/cases/masubuchi-bibigo-reels-view-proof.jpg';
+    return creator.includes('INSTAGRAM / FOLLOWERS') &&creator.includes('<strong>6.8만</strong>')
+      &&creator.includes('YOUTUBE / SUBSCRIBERS')
+      &&!creator.includes('LUEN F&amp;B WORKS')
+      &&!creator.includes('bibigo / SHORT FORM</span><strong>200만')
+      &&creator.includes('292.5<em>만</em>')
+      &&creator.includes('/'+proof)
+      &&home.includes('Instagram Reels 292.5만 조회')
+      &&home.includes('INSTAGRAM</small><strong>6.8만')
+      &&cas.includes('/'+proof)
+      &&cas.includes('292.5만 조회')
+      &&fs.existsSync(path.join(root,proof));
   })()],
   ['creator profile offers direct collaboration inquiry',fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8').includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['contact form supports creator preselection',fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes('name="creator_requested"')&&fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes("new URLSearchParams(window.location.search)")],
@@ -210,8 +227,8 @@ const checks=[
       &&!creator.includes('YOUTUBE SHORTS')
       &&(creator.match(/class="luen-food-video-card"/g)||[]).length===8
       &&(creator.match(/class="luen-food-video-copy"/g)||[]).length===8
-      &&!/<span class="luen-food-video-copy">[^]*?<strong>/.test(creator)
-      &&(creator.match(/href="https:\/\/www.instagram.com\/reel\//g)||[]).length===4
+      &&![...creator.matchAll(/<span class="luen-food-video-copy">([\s\S]*?)<\/span>/g)].some(m=>m[1].includes("<strong>"))
+      &&(creator.match(/<a class="luen-food-video-card" href="https:\/\/www.instagram.com\/reel\//g)||[]).length===4
       &&creator.includes('위 영상 8편은 LUEN이 직접 진행한 한국 F&amp;B 협업입니다.')
       &&!creator.includes('<iframe')
       &&['DWn-bFBARLT','Dc5tHpyhAbX','Ddi5Yc6h_Zu','DaM3mwqhQSI'].every(id=>creator.includes('/assets/images/creators/masubuchi/'+id+'.jpg'))

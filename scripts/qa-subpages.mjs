@@ -160,6 +160,22 @@ try{
           }
         }
 
+        // The user-provided Instagram view screenshot must be served as real pixels
+        // on both the creator profile and original bibigo case route.
+        if(route==='/creators/masubuchi-sachiyo/'||route==='/cases/masubuchi-bibigo/'){
+          const proof=page.locator('img[src="/assets/images/cases/masubuchi-bibigo-reels-view-proof.jpg"]');
+          if(await proof.count()!==1)fail(route,v.name,'Missing 292.5만 Instagram screenshot excerpt');
+          else{
+            await proof.scrollIntoViewIfNeeded();
+            const dimensions=await proof.evaluate(async img=>{
+              try{await img.decode()}catch(_err){}
+              return {width:img.naturalWidth,height:img.naturalHeight,complete:img.complete};
+            });
+            if(!dimensions.complete||dimensions.width<280||dimensions.height<70)
+              fail(route,v.name,'Instagram proof image did not decode: '+JSON.stringify(dimensions));
+          }
+        }
+
         // Featured creator: load each local Instagram cover to catch missing assets,
         // and check the YouTube cover baseline without assuming every upload has maxres.
         if(route==='/creators/masubuchi-sachiyo/'){
@@ -187,7 +203,7 @@ try{
           });
           if(journey.anchors.some(x=>!x.exists)||journey.anchors.some((x,i)=>i>0 && x.top<=journey.anchors[i-1].top))
             fail(route,v.name,'Inline creator sections missing or out of sequence: '+JSON.stringify(journey.anchors));
-          if(!journey.bibigoMetric?.includes('2M')||journey.oldExternalCaseLink||journey.removedNote)
+          if(!journey.bibigoMetric?.includes('292.5만')||journey.oldExternalCaseLink||journey.removedNote)
             fail(route,v.name,'bibigo one-page integration/regression failed: '+JSON.stringify(journey));
           const igCovers=page.locator('.luen-food-video-grid--short img.luen-instagram-cover');
           const ytCovers=page.locator('.luen-food-video-grid--long img[data-youtube-video]');

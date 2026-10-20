@@ -2850,3 +2850,8 @@
 .luen-page-section--ink .instagram-process-compact h3{color:#F5F3EE;}
 .luen-page-section--ink .instagram-process-compact p{color:rgba(245,243,238,.82);}
 
+
+/* bibigo: small, authentic view count excerpt supplied from Instagram Reel screenshot. */
+.case-study-view-proof{display:inline-grid;gap:9px;margin:24px 0 0;padding:13px 14px;background:#EFE7DC;border:1px solid #DDCFBF;border-radius:17px;max-width:100%}
+.case-study-view-proof img{display:block;max-width:100%;width:285px;height:auto;aspect-ratio:285/77;border-radius:9px;object-fit:cover}
+.case-study-view-proof figcaption{font-size:11px;line-height:1.65;color:#6B6057;margin:0}
