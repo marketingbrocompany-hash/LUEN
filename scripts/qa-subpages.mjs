@@ -184,6 +184,28 @@ try{
           }
         }
 
+        // Supplied partner portrait is real and stays square on desktop / mobile.
+        if(route==='/creators/masubuchi-sachiyo/'){
+          const portrait=page.locator('.luen-profile-media img.luen-creator-portrait');
+          if(await portrait.count()!==1) fail(route,v.name,'Masubuchi profile portrait missing');
+          else{
+            const state=await portrait.evaluate(async img=>{
+              try{await img.decode()}catch(_){}
+              const rect=img.getBoundingClientRect();
+              return {naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,displayWidth:rect.width,displayHeight:rect.height};
+            });
+            if(state.naturalWidth<600||state.naturalHeight<600)
+              fail(route,v.name,'Profile portrait did not load at 640px: '+JSON.stringify(state));
+            if(Math.abs(state.displayWidth-state.displayHeight)>5)
+              fail(route,v.name,'Profile portrait was distorted/cropped outside square: '+JSON.stringify(state));
+          }
+        }
+        // The homepage partner feature also points to the supplied profile photo.
+        if(route==='/'){
+          const homePortrait=page.locator('.luen-creator-feature-media img.luen-creator-portrait');
+          if(await homePortrait.count()!==1)fail(route,v.name,'Homepage partner portrait missing');
+        }
+
         // Featured creator: load each local Instagram cover to catch missing assets,
         // and check the YouTube cover baseline without assuming every upload has maxres.
         if(route==='/creators/masubuchi-sachiyo/'){
