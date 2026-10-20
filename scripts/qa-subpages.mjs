@@ -163,6 +163,18 @@ try{
         // Featured creator: load each local Instagram cover to catch missing assets,
         // and check the YouTube cover baseline without assuming every upload has maxres.
         if(route==='/creators/masubuchi-sachiyo/'){
+          const reelGrid=page.locator('.luen-food-video-grid--short');
+          const layout=await reelGrid.evaluate(grid=>{
+            const cards=[...grid.querySelectorAll('.luen-food-video-card')];
+            const columns=getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
+            const positions=cards.map(card=>({top:card.getBoundingClientRect().top,left:card.getBoundingClientRect().left,width:card.getBoundingClientRect().width}));
+            return {columns,positions};
+          });
+          const expectedColumns=v.width>820?4:2;
+          if(layout.columns!==expectedColumns)
+            fail(route,v.name,'Expected '+expectedColumns+' Instagram columns, found '+layout.columns);
+          if(layout.positions.length===4 && expectedColumns===4 && Math.max(...layout.positions.map(p=>p.top))-Math.min(...layout.positions.map(p=>p.top))>3)
+            fail(route,v.name,'Instagram Reels do not share one row: '+JSON.stringify(layout.positions));
           const igCovers=page.locator('.luen-food-video-grid--short img.luen-instagram-cover');
           const ytCovers=page.locator('.luen-food-video-grid--long img[data-youtube-video]');
           if(await igCovers.count()!==4)fail(route,v.name,'Expected 4 local Instagram cover images');
