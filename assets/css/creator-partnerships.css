@@ -256,3 +256,16 @@ html body .luen-profile-brand-fit .luen-profile-fit p{margin:0}
  html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}
  html body .luen-profile-data>div:last-child{grid-column:1/-1}
 }
+
+/* Two creator social audience numbers and captured Instagram proof. */
+html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}
+html body .luen-profile-data>div{min-width:0}
+html body .luen-bibigo-highlight>strong{font-size:clamp(45px,5vw,74px);letter-spacing:-.072em;white-space:nowrap}
+html body .luen-bibigo-highlight>strong em{font-size:.50em;vertical-align:baseline;margin-left:4px}
+html body .luen-bibigo-proof{margin:22px 0 0;width:100%;max-width:285px}
+html body .luen-bibigo-proof a{display:block;overflow:hidden;border-radius:10px;border:1px solid rgba(255,255,255,.3);line-height:0}
+html body .luen-bibigo-proof img{display:block;width:100%;height:auto;aspect-ratio:285/77;object-fit:cover}
+html body .luen-bibigo-proof figcaption{font-size:11px;line-height:1.6;color:#D5C7BC;margin:9px 0 0}
+html body .luen-bibigo-proof a:focus-visible{outline:2px solid #ECA988;outline-offset:4px}
+@media(max-width:767px){html body .luen-bibigo-highlight>strong{font-size:clamp(48px,9.2vw,70px)}}
+@media(max-width:370px){html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}html body .luen-profile-data>div:last-child{grid-column:auto}}
