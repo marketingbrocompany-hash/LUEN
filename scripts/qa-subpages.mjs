@@ -163,14 +163,14 @@ try{
         // The user-provided Instagram view screenshot must be served as real pixels
         // on both the creator profile and original bibigo case route.
         if(route==='/creators/masubuchi-sachiyo/'||route==='/cases/masubuchi-bibigo/'){
-          const proof=page.locator('img[src="/assets/images/cases/masubuchi-bibigo-reels-view-proof.jpg"]');
-          if(await proof.count()!==1)fail(route,v.name,'Missing 292.5만 Instagram screenshot excerpt');
+          const proof=page.locator('img[src="/assets/images/cases/masubuchi-bibigo-instagram-full.avif"]');
+          if(await proof.count()!==1)fail(route,v.name,'Missing full Instagram Reel screenshot');
           else{
             await proof.scrollIntoViewIfNeeded();
             let dimensions;
             try{
               const handle=await page.waitForFunction(()=>{
-                const img=document.querySelector('img[src="/assets/images/cases/masubuchi-bibigo-reels-view-proof.jpg"]');
+                const img=document.querySelector('img[src="/assets/images/cases/masubuchi-bibigo-instagram-full.avif"]');
                 return img&&img.complete&&img.naturalWidth>0
                   ? {width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}
                   : false;
@@ -179,7 +179,7 @@ try{
             }catch(_err){
               dimensions=await proof.evaluate(img=>({width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}));
             }
-            if(!dimensions.complete||dimensions.width<280||dimensions.height<70)
+            if(!dimensions.complete||dimensions.width<600||dimensions.height<900)
               fail(route,v.name,'Instagram proof image did not decode: '+JSON.stringify(dimensions));
           }
         }
@@ -204,7 +204,7 @@ try{
             const ids=['creator-identity','bibigo-feature','korea-food-content','brand-fit'];
             return {
               anchors:ids.map(id=>({id,exists:!!document.getElementById(id),top:document.getElementById(id)?.getBoundingClientRect().top||0})),
-              bibigoMetric:document.querySelector('.luen-bibigo-highlight strong')?.textContent.trim(),
+              bibigoMetric:document.querySelector('.luen-bibigo-full-screenshot img')?.getAttribute('alt')||'',
               oldExternalCaseLink:!!document.querySelector('a[href="/cases/masubuchi-bibigo/"]'),
               removedNote:document.querySelector('main')?.textContent.includes('위 항목은 LUEN의 제안 가능 분야이며')
             };
