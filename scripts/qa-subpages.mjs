@@ -166,7 +166,7 @@ try{
           const reelGrid=page.locator('.luen-food-video-grid--short');
           const layout=await reelGrid.evaluate(grid=>{
             const cards=[...grid.querySelectorAll('.luen-food-video-card')];
-            const columns=getComputedStyle(grid).gridTemplateColumns.split(/\\s+/).filter(Boolean).length;
+            const columns=getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
             const positions=cards.map(card=>({top:card.getBoundingClientRect().top,left:card.getBoundingClientRect().left,width:card.getBoundingClientRect().width}));
             return {columns,positions};
           });
