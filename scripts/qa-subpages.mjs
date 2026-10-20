@@ -175,6 +175,20 @@ try{
             fail(route,v.name,'Expected '+expectedColumns+' Instagram columns, found '+layout.columns);
           if(layout.positions.length===4 && expectedColumns===4 && Math.max(...layout.positions.map(p=>p.top))-Math.min(...layout.positions.map(p=>p.top))>3)
             fail(route,v.name,'Instagram Reels do not share one row: '+JSON.stringify(layout.positions));
+          // One-page creator journey: inline case proof and in-page story links.
+          const journey=await page.evaluate(()=>{
+            const ids=['creator-identity','bibigo-feature','korea-food-content','brand-fit'];
+            return {
+              anchors:ids.map(id=>({id,exists:!!document.getElementById(id),top:document.getElementById(id)?.getBoundingClientRect().top||0})),
+              bibigoMetric:document.querySelector('.luen-bibigo-highlight strong')?.textContent.trim(),
+              oldExternalCaseLink:!!document.querySelector('a[href="/cases/masubuchi-bibigo/"]'),
+              removedNote:document.querySelector('main')?.textContent.includes('위 항목은 LUEN의 제안 가능 분야이며')
+            };
+          });
+          if(journey.anchors.some(x=>!x.exists)||journey.anchors.some((x,i)=>i>0 && x.top<=journey.anchors[i-1].top))
+            fail(route,v.name,'Inline creator sections missing or out of sequence: '+JSON.stringify(journey.anchors));
+          if(!journey.bibigoMetric?.includes('2M')||journey.oldExternalCaseLink||journey.removedNote)
+            fail(route,v.name,'bibigo one-page integration/regression failed: '+JSON.stringify(journey));
           const igCovers=page.locator('.luen-food-video-grid--short img.luen-instagram-cover');
           const ytCovers=page.locator('.luen-food-video-grid--long img[data-youtube-video]');
           if(await igCovers.count()!==4)fail(route,v.name,'Expected 4 local Instagram cover images');

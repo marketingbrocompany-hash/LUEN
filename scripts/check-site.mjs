@@ -187,6 +187,18 @@ const checks=[
   ['warm partner-strip override',home.includes('section.brand-wall{background:#EEE6DA!important}')],
   ['curated partner approach visible',home.includes('id="why-luen"')&&home.includes('CREATIVE DIRECTION')],
   ['partner roster has distinct profile and inquiry links',home.includes('id="partner-creators"')&&home.includes('/creators/masubuchi-sachiyo/')&&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
+  ['creator one-page storytelling covers bibigo without another page and omits requested disclaimer',(()=>{
+    const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
+    const sequence=['id="creator-identity"','id="bibigo-feature"','id="korea-food-content"','id="brand-fit"','id="creator-inquiry-title"'];
+    return sequence.every(x=>creator.includes(x))
+      &&sequence.every((x,i)=>i===0||creator.indexOf(x)>creator.indexOf(sequence[i-1]))
+      &&creator.includes('2M<em>+</em>')
+      &&creator.includes('bibigo × 爆食ますぶちさちよ')
+      &&creator.includes('캠페인 공개 지표 기준')
+      &&!creator.includes('href="/cases/masubuchi-bibigo/"')
+      &&!creator.includes('위 항목은 LUEN의 제안 가능 분야이며')
+      &&['#creator-identity','#bibigo-feature','#korea-food-content','#brand-fit'].every(x=>creator.includes('href="'+x+'"'));
+  })()],
   ['creator profile offers direct collaboration inquiry',fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8').includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['contact form supports creator preselection',fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes('name="creator_requested"')&&fs.readFileSync(path.join(root,'contact/index.html'),'utf8').includes("new URLSearchParams(window.location.search)")],
   ['creator profile included in sitemap',fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('https://luenkorea.com/creators/masubuchi-sachiyo/')],
