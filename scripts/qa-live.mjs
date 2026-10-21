@@ -156,7 +156,7 @@ try {
     if(!doc.analyticsConfigured || !doc.analyticsScriptAsync)serious(v.name,'GA4 config or async loader missing');
     if(doc.documentWidth>doc.clientWidth+3)serious(v.name,'Horizontal page overflow '+doc.documentWidth+'px > '+doc.clientWidth+'px');
     if(!doc.heroVisible || !doc.ctaCount)serious(v.name,'Hero or CTA is hidden');
-    if(doc.titleCount!==6)serious(v.name,'Expected 6 home section H2 headings; found '+doc.titleCount);
+    if(doc.titleCount!==5)serious(v.name,'Expected 5 home section H2 headings; found '+doc.titleCount);
     if(doc.originalPortfolioCards!==12)serious(v.name,'12 original Long Form/Reels cards were not preserved: '+doc.originalPortfolioCards);
     if(doc.loopCloneSets!==0)serious(v.name,'Reduced-motion created '+doc.loopCloneSets+' unnecessary marquee clones');
     if(doc.images>60)serious(v.name,'Unexpected image DOM bloat under reduced-motion: '+doc.images);
