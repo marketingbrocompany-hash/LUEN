@@ -304,10 +304,12 @@ html body .luen-bibigo-full-screenshot a:focus-visible{outline:2px solid #A74722
 /* Bibigo editorial: no blank space after the heading when intro copy is removed. */
 html body .luen-bibigo-editorial-copy .luen-bibigo-headline h2{margin-bottom:0}
 
-/* 2026-10-20 portrait supplied by the user — profile only, no case assets touched */
-html body .luen-profile-media img.luen-creator-portrait{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:50% 50%;display:block}
-html body .luen-creator-feature-media img.luen-creator-portrait{width:100%;height:100%;object-fit:cover;object-position:center center}
+/* User-provided 2026-10-21 Masubuchi ice cream portrait: keep face and products in view. */
+html body .luen-profile-media:has(img.luen-creator-portrait){aspect-ratio:3/4;border-radius:28px}
+html body .luen-profile-media img.luen-creator-portrait{width:100%;height:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 50%;display:block}
+html body .luen-creator-feature-media:has(img.luen-creator-portrait){min-height:0;aspect-ratio:4/5}
+html body .luen-creator-feature-media img.luen-creator-portrait{width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 @media(max-width:767px){
-  html body .luen-creator-feature-media:has(img.luen-creator-portrait){aspect-ratio:1/1;min-height:0}
-  html body .luen-profile-media:has(img.luen-creator-portrait){aspect-ratio:1/1}
+ html body .luen-profile-media:has(img.luen-creator-portrait){aspect-ratio:3/4;border-radius:20px}
+ html body .luen-creator-feature-media:has(img.luen-creator-portrait){aspect-ratio:4/5;min-height:0}
 }
