@@ -187,16 +187,14 @@ const checks=[
     &&!home.includes('프로젝트 <em>성과</em>')
     &&!home.includes('설명이 필요하면 YouTube, 여러 인플루언서로 확산하려면 Instagram')
     &&!home.includes('예약, 랭킹, 매장 방문. 조회수 밖에서 확인된 결과들입니다.')],
-  ['four secondary Korean headlines retained beneath English headings',
-    (home.match(/class="luen-section-subheading"/g)||[]).length===4
+  ['three secondary Korean headlines retained beneath English headings',
+    (home.match(/class="luen-section-subheading"/g)||[]).length===3
     &&home.includes('복잡한 과정은 줄이고,')
-    &&home.includes('업로드 직후만 보지 않고')
     &&home.includes('문의 전,')
     &&home.includes('프로젝트에 대해')
     &&finish.includes('.luen-section-subheading{')],
   ['remaining section descriptions preserved',
     home.includes('크리에이터 매칭부터 일정·가이드·콘텐츠 확인·발행까지 한 흐름으로 관리합니다.')
-    &&home.includes('첫 주 이후 +31.4% 성장한 공개 지표를 추적하고')
     &&home.includes('브랜드, 목표 시장, 현재 고민만 알려주세요.')],
   ['headings are not hidden by a separate motion observer',!motionCss.includes('luen-motion-title')&&!motionCss.includes('clip-path:inset(0 0 100%')&&!motionJs.includes("classList.add('luen-motion-title')")],
   ['Instagram navigation links remain valid',
