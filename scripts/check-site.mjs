@@ -83,6 +83,28 @@ const designedPages=htmlFiles.filter(filename=>
   fs.readFileSync(path.join(root,filename),'utf8').includes('luen-v3.css?v=')
 );
 const checks=[
+  ['LUEN IN MOTION uses 3 real preview clips, three covers and chosen Quadthera 0s still',(()=>{
+    const clips=['confier','quadthera','clinic'];
+    const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion-hero.js'),'utf8');
+    const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion-hero.css'),'utf8');
+    return home.includes('LUEN IN MOTION')
+      &&home.includes('data-luen-motion')
+      &&(home.match(/data-motion-index="/g)||[]).length===3
+      &&!home.includes('creator-profile-track')
+      &&clips.every(name=>home.includes('/assets/video/luen-motion/'+name+'-preview.mp4'))
+      &&clips.every(name=>home.includes('/assets/images/luen-motion/'+name+'-poster.webp'))
+      &&clips.every(name=>fs.existsSync(path.join(root,'assets/video/luen-motion/'+name+'-preview.mp4')))
+      &&clips.every(name=>fs.existsSync(path.join(root,'assets/images/luen-motion/'+name+'-poster.webp')))
+      &&clips.every(name=>fs.statSync(path.join(root,'assets/video/luen-motion/'+name+'-preview.mp4')).size<120000)
+      &&home.includes('QUADTHERA')&&home.includes('원본 영상 0초 장면')
+      &&motionJs.includes('prefers-reduced-motion')
+      &&motionJs.includes('saveData')
+      &&motionJs.includes('IntersectionObserver')
+      &&motionCss.includes('@media(max-width:767px)')
+      &&home.includes('누구와 함께할지부터,')
+      &&home.includes('id="partner-creators"');
+  })()],
+
   ['mobile nav controls have warm-ivory contrast',
     design.includes('border:1px solid rgba(74,66,60,.38)!important;')
     &&design.includes('background:#2A2521!important;')
