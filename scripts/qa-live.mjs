@@ -85,6 +85,26 @@ try {
         overflowCandidates,
       };
     });
+    const heroMotion=await page.evaluate(()=>{
+      const scene=document.querySelector('[data-luen-motion]');
+      const cards=Array.from(scene?.querySelectorAll('[data-motion-index]')||[]);
+      const videoStates=cards.map(card=>{
+        const v=card.querySelector('video');
+        return {src:v?.getAttribute('src'),dataSrc:v?.getAttribute('data-src'),paused:v?.paused};
+      });
+      return {present:!!scene,cards:cards.length,active:cards.filter(c=>c.classList.contains('is-active')).length,
+        mediaLoaded:videoStates.filter(s=>s.src).length,videoStates,
+        stageOverflow:scene?Math.round(scene.getBoundingClientRect().right-document.documentElement.clientWidth):0,
+        pauseText:scene?.querySelector('[data-motion-toggle]')?.textContent.trim()};
+    });
+    if(!heroMotion.present||heroMotion.cards!==3||heroMotion.active!==1)
+      serious(v.name,'LUEN IN MOTION hero not present or invalid state: '+JSON.stringify(heroMotion));
+    if(heroMotion.mediaLoaded!==0)
+      serious(v.name,'Reduced-motion mode should not fetch hero MP4 automatically: '+JSON.stringify(heroMotion));
+    if(heroMotion.stageOverflow>3)
+      serious(v.name,'LUEN motion hero overflows viewport: '+heroMotion.stageOverflow+'px');
+    if(!heroMotion.pauseText?.includes('재생'))
+      serious(v.name,'Reduced-motion hero should present opt-in playback');
     if(doc.h1Count!==1)serious(v.name,'Expected exactly one H1, got '+doc.h1Count);
     if(!doc.analyticsConfigured || !doc.analyticsScriptAsync)serious(v.name,'GA4 config or async loader missing');
     if(doc.documentWidth>doc.clientWidth+3)serious(v.name,'Horizontal page overflow '+doc.documentWidth+'px > '+doc.clientWidth+'px');
