@@ -184,7 +184,7 @@ try{
           }
         }
 
-        // Supplied partner portrait is real and stays square on desktop / mobile.
+        // Supplied ice cream portrait preserves the intentionally taller 3:4 crop.
         if(route==='/creators/masubuchi-sachiyo/'){
           const portrait=page.locator('.luen-profile-media img.luen-creator-portrait');
           if(await portrait.count()!==1) fail(route,v.name,'Masubuchi profile portrait missing');
@@ -194,10 +194,11 @@ try{
               const rect=img.getBoundingClientRect();
               return {naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,displayWidth:rect.width,displayHeight:rect.height};
             });
-            if(state.naturalWidth<600||state.naturalHeight<600)
-              fail(route,v.name,'Profile portrait did not load at 640px: '+JSON.stringify(state));
-            if(Math.abs(state.displayWidth-state.displayHeight)>5)
-              fail(route,v.name,'Profile portrait was distorted/cropped outside square: '+JSON.stringify(state));
+            if(state.naturalWidth!==640||state.naturalHeight!==1136)
+              fail(route,v.name,'Profile portrait original photo dimensions invalid: '+JSON.stringify(state));
+            const aspect=state.displayWidth/state.displayHeight;
+            if(Math.abs(aspect-3/4)>.025)
+              fail(route,v.name,'Profile portrait should display a 3:4 crop: '+JSON.stringify(state));
           }
         }
         // The homepage partner feature also points to the supplied profile photo.
