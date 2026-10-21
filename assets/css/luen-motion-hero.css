@@ -43,11 +43,11 @@ html body main#top>.hero .luen-motion-card:nth-child(1){
  z-index:3;
 }
 html body main#top>.hero .luen-motion-card:nth-child(2){
- transform:translate(-50%,-50%) translate3d(-158px,-26px,0) scale(.77);
+ transform:translate(-50%,-50%) translate3d(158px,-26px,0) scale(.77);
  z-index:1;opacity:.75;
 }
 html body main#top>.hero .luen-motion-card:nth-child(3){
- transform:translate(-50%,-50%) translate3d(158px,-26px,0) scale(.77);
+ transform:translate(-50%,-50%) translate3d(-158px,-26px,0) scale(.77);
  z-index:1;opacity:.75;
 }
 html body main#top>.hero .luen-motion-card:focus-visible{outline:2px solid #bc562f;outline-offset:5px;border-radius:18px}
