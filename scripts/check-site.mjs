@@ -89,7 +89,7 @@ const checks=[
     const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion-hero.css'),'utf8');
     return home.includes('LUEN IN MOTION')
       &&home.includes('data-luen-motion')
-      &&(home.match(/class="luen-motion-card/g)||[]).length===3
+      &&(home.match(/data-motion-index="/g)||[]).length===3
       &&!home.includes('creator-profile-track')
       &&clips.every(name=>home.includes('/assets/video/luen-motion/'+name+'-preview.mp4'))
       &&clips.every(name=>home.includes('/assets/images/luen-motion/'+name+'-poster.webp'))
