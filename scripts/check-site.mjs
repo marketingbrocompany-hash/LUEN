@@ -166,16 +166,20 @@ const checks=[
     &&finish.includes('#cases.case-studies-v7 .case-feature-v7')
     &&finish.includes('#faq .faq-layout')
     &&finish.includes('#contact .contact-layout')],
-  ['six English section labels are semantic large headings',
+  ['PERFORMANCE graph block removed without affecting homepage flow',
+    !home.includes('id="performance"')&&!home.includes('id="performance-title"')
+    &&!home.includes('class="performance-dashboard')
+    &&home.indexOf('id="content-flow-title"')<home.indexOf('id="faq-title"')
+    &&home.indexOf('id="faq-title"')<home.indexOf('id="contact-title"')],
+  ['five English section labels are semantic large headings',
     [
       ['services-title','SERVICES'],
       ['cases-title','Signature Campaigns'],
       ['content-flow-title','HOW LUEN WORKS'],
-      ['performance-title','PERFORMANCE'],
       ['faq-title','FAQ'],
       ['contact-title','PROJECT INQUIRY']
     ].every(([id,label])=>home.includes('<h2 class="luen-section-primary-title" id="'+id+'">'+label+'</h2>'))
-    &&(home.match(/class="luen-section-primary-title"/g)||[]).length===6
+    &&(home.match(/class="luen-section-primary-title"/g)||[]).length===5
     &&finish.includes('.luen-section-primary-title{')],
   ['numbered section labels and obsolete Korean display titles removed',
     !/0[3-8] · (?:SERVICES|HOW LUEN WORKS|PERFORMANCE|FAQ|PROJECT INQUIRY)/.test(home)
@@ -256,7 +260,7 @@ const checks=[
   ['Masubuchi supplied portrait is used only for creator profile and featured partner',(()=>{
     const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
     const homepage=fs.readFileSync(path.join(root,'index.html'),'utf8');
-    const portrait='assets/images/creators/masubuchi/masubuchi-profile.avif';
+    const portrait='assets/images/creators/masubuchi/masubuchi-icecream-profile.avif';
     return fs.existsSync(path.join(root,portrait))
       &&fs.statSync(path.join(root,portrait)).size>6000
       &&creator.includes('class="luen-creator-portrait" src="/'+portrait+'"')
@@ -272,7 +276,7 @@ const checks=[
       &&!creator.includes('위 영상 8편은 LUEN이 직접 진행한 한국 F&amp;B 협업입니다.')
       &&creator.includes('masubuchi-bibigo-instagram-full.avif')
       &&creator.includes('원본 릴스 보기 ↗')
-      &&creator.includes('masubuchi-profile.avif')
+      &&creator.includes('masubuchi-icecream-profile.avif')
       &&(creator.match(/class="luen-food-video-card"/g)||[]).length===8;
   })()],
   ['Masubuchi preferred introduction, approximate audience counts and concise bibigo copy',(()=>{
