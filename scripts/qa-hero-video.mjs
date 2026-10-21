@@ -13,10 +13,12 @@ try{
   const ctx=await browser.newContext({viewport:{width:w.width,height:w.height},reducedMotion:'no-preference'});
   const page=await ctx.newPage();
   const errors=[];
+  let phase='navigation';
   page.on('pageerror',e=>errors.push(e.message.slice(0,180)));
   try{
    const r=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
    if(r?.status()!==200)throw new Error('Hero page HTTP '+r?.status());
+   phase='hero visibility';
    const section=page.locator('[data-luen-motion]');
    await section.scrollIntoViewIfNeeded();
    const cards=section.locator('[data-motion-index]');
@@ -24,6 +26,7 @@ try{
    for(const name of ['confier','quadthera','clinic']){
     const poster=section.locator('img[src="/assets/images/luen-motion/'+name+'-poster.webp"]');
     if(await poster.count()!==1)throw new Error('Poster missing: '+name);
+    phase='poster '+name;
     await poster.scrollIntoViewIfNeeded();
     await page.waitForFunction(key=>{
       const img=document.querySelector('img[src="/assets/images/luen-motion/'+key+'-poster.webp"]');
@@ -31,6 +34,7 @@ try{
     },name,{timeout:12000});
    }
    // Selecting the Beauty card must load its own real MP4 but not other inactive videos.
+   phase='Quadthera click and playback';
    await cards.nth(1).click({timeout:12000});
    await page.waitForFunction(()=>{
      const card=document.querySelector('[data-motion-index="1"]');
@@ -52,7 +56,28 @@ try{
    if(!await cards.nth(1).locator('video').evaluate(v=>v.paused))throw new Error('Pause control not working');
    await page.screenshot({path:path.join(folder,'hero-motion-'+w.name+'.jpg'),type:'jpeg',quality:75,animations:'disabled'});
    reports.push({viewport:w.name,ok:true,selected});
-  }catch(e){failures.push({viewport:w.name,error:String(e.message).slice(0,380)});}
+  }catch(e){
+    let diagnostic=null,videoHTTP=null;
+    try{
+      diagnostic=await page.evaluate(()=>({
+        visibility:document.visibilityState,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,
+        rootRect:(()=>{const r=document.querySelector('[data-luen-motion]')?.getBoundingClientRect();return r?{top:r.top,bottom:r.bottom,width:r.width}:null})(),
+        cards:[...document.querySelectorAll('[data-motion-index]')].map(card=>{
+          const video=card.querySelector('video'),img=card.querySelector('img');
+          return {name:card.dataset.motionIndex,active:card.classList.contains('is-active'),
+            playing:card.classList.contains('is-playing'),video:{paused:video?.paused,readyState:video?.readyState,
+              networkState:video?.networkState,currentTime:video?.currentTime,src:video?.getAttribute('src'),
+              error:video?.error?.code,videoWidth:video?.videoWidth,videoHeight:video?.videoHeight},
+            img:{complete:img?.complete,naturalWidth:img?.naturalWidth,naturalHeight:img?.naturalHeight,src:img?.currentSrc}};
+        })
+      }));
+    }catch(_err){}
+    try{
+      const head=await page.request.head(base+'/assets/video/luen-motion/quadthera-preview.mp4',{timeout:6000});
+      videoHTTP={status:head.status(),type:head.headers()['content-type'],length:head.headers()['content-length']};
+    }catch(_err){}
+    failures.push({viewport:w.name,phase,error:String(e.message).slice(0,250),diagnostic,videoHTTP});
+  }
   finally{if(errors.length)failures.push({viewport:w.name,jsErrors:errors.slice(0,4)});await ctx.close();}
  }
  console.log('LUEN_HERO_VIDEO_QA '+JSON.stringify({pairs:reports.length,failures}));
