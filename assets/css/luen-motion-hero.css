@@ -10,7 +10,7 @@ html body main#top>.hero .luen-motion-card:not(.is-active){opacity:.87}
 html body main#top>.hero .luen-motion-card.is-active{transform:translateY(-8px) scale(1.025);z-index:2;opacity:1}
 html body main#top>.hero .luen-motion-media{display:block;position:relative;overflow:hidden;width:100%;aspect-ratio:9/16;background:#392a22;border-radius:17px;box-shadow:0 8px 20px rgba(47,33,23,.12);outline:2px solid transparent;outline-offset:1px;transition:outline-color .3s}
 html body main#top>.hero .luen-motion-card.is-active .luen-motion-media{outline-color:#ce6a41;box-shadow:0 12px 25px rgba(64,37,26,.15)}
-html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media{aspect-ratio:4/3;background:#443b34}
+html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media{aspect-ratio:16/9;background:#443b34}
 html body main#top>.hero .luen-motion-media img,html body main#top>.hero .luen-motion-media video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:opacity .35s ease}
 html body main#top>.hero .luen-motion-media img{z-index:1;opacity:1}
 html body main#top>.hero .luen-motion-media video{z-index:2;opacity:0;pointer-events:none}
@@ -46,3 +46,6 @@ html body main#top>.hero .luen-motion-pause:hover{border-color:#b75b37;color:#a8
 }
 @media(max-width:360px){html body main#top>.hero .luen-motion-canvas{padding-left:9px;padding-right:9px;gap:5px}html body main#top>.hero .luen-motion-pause{padding:7px 9px}}
 @media(prefers-reduced-motion:reduce){html body main#top>.hero .luen-motion-card,html body main#top>.hero .luen-motion-media,html body main#top>.hero .luen-motion-progress i{transition:none!important}html body main#top>.hero .luen-motion-card.is-active{transform:none!important}}
+
+/* Full-resolution 16:9 QUADTHERA poster: never crop the creator or product. */
+html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media img{object-fit:contain}

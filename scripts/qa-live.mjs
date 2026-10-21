@@ -101,6 +101,32 @@ try {
       serious(v.name,'LUEN IN MOTION hero not present or invalid state: '+JSON.stringify(heroMotion));
     if(heroMotion.mediaLoaded!==0)
       serious(v.name,'Reduced-motion mode should not fetch hero MP4 automatically: '+JSON.stringify(heroMotion));
+    // User-visible hero video quality: test decoded native dimensions after opt-in.
+    // Reduced-motion remains static by default; selecting a card is an explicit play action.
+    if(v.name==='desktop'||v.name==='mobile'){
+      const expected=[{w:406,h:720},{w:960,h:540},{w:406,h:720}];
+      for(let i=0;i<3;i++){
+        const card=page.locator('[data-motion-index="'+i+'"]');
+        await card.scrollIntoViewIfNeeded();
+        await card.click();
+        let decoded=null;
+        try{
+          const ok=await page.waitForFunction(idx=>{
+            const v=document.querySelector('[data-motion-index="'+idx+'"] video');
+            if(!v||!v.videoWidth||!v.videoHeight)return false;
+            return {w:v.videoWidth,h:v.videoHeight,readyState:v.readyState};
+          },i,{timeout:15000});
+          decoded=await ok.jsonValue();
+        }catch(e){
+          decoded=await card.locator('video').evaluate(v=>({w:v.videoWidth,h:v.videoHeight,readyState:v.readyState}));
+        }
+        if(decoded.w<expected[i].w||decoded.h<expected[i].h)
+          serious(v.name,'Hero video '+i+' decoded at insufficient resolution: '+JSON.stringify(decoded));
+      }
+      // Return hero to its first scene while keeping user-triggered playback paused.
+      await page.locator('[data-motion-toggle]').click();
+    }
+
     if(heroMotion.stageOverflow>3)
       serious(v.name,'LUEN motion hero overflows viewport: '+heroMotion.stageOverflow+'px');
     if(!heroMotion.pauseText?.includes('재생'))
