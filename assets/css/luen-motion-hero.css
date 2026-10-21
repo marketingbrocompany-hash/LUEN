@@ -1,51 +1,146 @@
-/* LUEN IN MOTION — homepage hero only / development preview 2026-10-21 */
-html body main#top>.hero .luen-motion-showcase{width:100%;min-width:0;max-width:100%;overflow:hidden;isolation:isolate;background:#eee7dd;border:1px solid #d8c9b7;border-radius:24px;box-shadow:0 14px 42px rgba(65,44,27,.08)}
-html body main#top>.hero .luen-motion-head{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;padding:13px 18px;background:#e7d9c9;border-bottom:1px solid #d7c8b6}
-html body main#top>.hero .luen-motion-head span{font:800 11px/1.4 "Inter",sans-serif;letter-spacing:.085em;color:#ad4e2c}
-html body main#top>.hero .luen-motion-head strong{font:700 10px/1.4 "Inter",sans-serif;letter-spacing:.055em;color:#765d4c}
-html body main#top>.hero .luen-motion-canvas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);align-items:center;gap:clamp(8px,1.25vw,16px);min-width:0;padding:clamp(17px,3vw,30px) clamp(12px,2.2vw,24px) 10px}
-html body main#top>.hero .luen-motion-card{border:0;padding:0;margin:0;background:transparent;display:grid;grid-template-rows:auto minmax(40px,auto);gap:12px;min-width:0;width:100%;font:inherit;color:#30251d;text-align:left;cursor:pointer;position:relative;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .3s;transform-origin:center}
-html body main#top>.hero .luen-motion-card:focus-visible{outline:2px solid #bc562f;outline-offset:4px;border-radius:18px}
-html body main#top>.hero .luen-motion-card:not(.is-active){opacity:.87}
-html body main#top>.hero .luen-motion-card.is-active{transform:translateY(-8px) scale(1.025);z-index:2;opacity:1}
-html body main#top>.hero .luen-motion-media{display:block;position:relative;overflow:hidden;width:100%;aspect-ratio:9/16;background:#392a22;border-radius:17px;box-shadow:0 8px 20px rgba(47,33,23,.12);outline:2px solid transparent;outline-offset:1px;transition:outline-color .3s}
-html body main#top>.hero .luen-motion-card.is-active .luen-motion-media{outline-color:#ce6a41;box-shadow:0 12px 25px rgba(64,37,26,.15)}
-html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media{aspect-ratio:16/9;background:#443b34}
-html body main#top>.hero .luen-motion-media img,html body main#top>.hero .luen-motion-media video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:opacity .35s ease}
+/* LUEN IN MOTION / elliptical three-card orbit, scoped to home hero only.
+   All cards remain upright: only their positions travel around the curve. */
+html body main#top>.hero .luen-motion-showcase{
+ width:100%;min-width:0;max-width:100%;overflow:hidden;isolation:isolate;
+ background:#eee7dd;border:1px solid #d8c9b7;border-radius:24px;
+ box-shadow:0 14px 42px rgba(65,44,27,.08);
+}
+html body main#top>.hero .luen-motion-head{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;
+ min-height:48px;padding:13px 18px;background:#e7d9c9;
+ border-bottom:1px solid #d7c8b6;
+}
+html body main#top>.hero .luen-motion-head span{
+ font:800 11px/1.4 "Inter",sans-serif;letter-spacing:.085em;color:#ad4e2c;
+}
+html body main#top>.hero .luen-motion-head strong{
+ font:700 10px/1.4 "Inter",sans-serif;letter-spacing:.055em;color:#765d4c;
+}
+html body main#top>.hero .luen-motion-canvas{
+ display:block;position:relative;overflow:hidden;isolation:isolate;
+ height:clamp(320px,31vw,405px);width:100%;min-width:0;
+ background:radial-gradient(ellipse at 50% 67%,#f5efe6 0%,#eee7dd 74%);
+}
+html body main#top>.hero .luen-motion-canvas::before{
+ content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:64%;height:32%;border:1px dashed rgba(160,113,80,.32);
+ border-radius:50%;pointer-events:none;
+}
+html body main#top>.hero .luen-motion-canvas::after{
+ content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;
+ border-radius:50%;transform:translate(-50%,-50%);
+ background:#c47a53;box-shadow:0 0 0 5px rgba(196,122,83,.1);pointer-events:none;
+}
+html body main#top>.hero .luen-motion-card{
+ position:absolute;left:50%;top:50%;width:clamp(110px,32%,220px);
+ box-sizing:border-box;margin:0;padding:0;border:0;background:transparent;
+ display:grid;grid-template-rows:auto minmax(30px,auto);gap:8px;
+ color:#30251d;text-align:left;font:inherit;cursor:pointer;
+ transform-origin:center;will-change:transform;
+}
+html body main#top>.hero .luen-motion-card:nth-child(1){
+ transform:translate(-50%,-50%) translate3d(0,52px,0) scale(1);
+ z-index:3;
+}
+html body main#top>.hero .luen-motion-card:nth-child(2){
+ transform:translate(-50%,-50%) translate3d(-158px,-26px,0) scale(.77);
+ z-index:1;opacity:.75;
+}
+html body main#top>.hero .luen-motion-card:nth-child(3){
+ transform:translate(-50%,-50%) translate3d(158px,-26px,0) scale(.77);
+ z-index:1;opacity:.75;
+}
+html body main#top>.hero .luen-motion-card:focus-visible{outline:2px solid #bc562f;outline-offset:5px;border-radius:18px}
+html body main#top>.hero .luen-motion-media{
+ display:block;position:relative;overflow:hidden;width:100%;aspect-ratio:4/5;
+ background:#392a22;border-radius:17px;
+ box-shadow:0 8px 24px rgba(47,33,23,.16);
+ outline:2px solid transparent;outline-offset:1px;
+}
+html body main#top>.hero .luen-motion-card.is-active .luen-motion-media{
+ outline-color:#ce6a41;box-shadow:0 15px 27px rgba(64,37,26,.19);
+}
+html body main#top>.hero .luen-motion-media img,
+html body main#top>.hero .luen-motion-media video{
+ position:absolute;inset:0;display:block;width:100%;height:100%;
+ object-fit:cover;object-position:center;
+}
 html body main#top>.hero .luen-motion-media img{z-index:1;opacity:1}
 html body main#top>.hero .luen-motion-media video{z-index:2;opacity:0;pointer-events:none}
-html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media video{object-fit:contain}
+html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media{background:linear-gradient(145deg,#4c4039,#292321)}
+html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media img,
+html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media video{
+ object-fit:contain;aspect-ratio:16/9;
+}
 html body main#top>.hero .luen-motion-card.is-playing .luen-motion-media video{opacity:1}
 html body main#top>.hero .luen-motion-card.is-playing .luen-motion-media img{opacity:0}
-html body main#top>.hero .luen-motion-active-dot{position:absolute;z-index:3;right:12px;top:12px;width:7px;height:7px;border-radius:50%;background:#F8F2E8;opacity:0;box-shadow:0 0 0 3px rgba(31,23,18,.24)}
+html body main#top>.hero .luen-motion-active-dot{
+ position:absolute;z-index:3;right:12px;top:12px;width:7px;height:7px;
+ border-radius:50%;background:#F8F2E8;opacity:0;
+ box-shadow:0 0 0 3px rgba(31,23,18,.24);
+}
 html body main#top>.hero .luen-motion-card.is-playing .luen-motion-active-dot{opacity:1}
-html body main#top>.hero .luen-motion-card-meta{display:block;padding:0 3px;min-width:0}
-html body main#top>.hero .luen-motion-card-meta small{display:block;font:800 10px/1.45 "Inter",sans-serif;color:#b75834;letter-spacing:.065em;white-space:nowrap}
-html body main#top>.hero .luen-motion-card-meta strong{display:block;font:800 clamp(11px,1.2vw,14px)/1.45 "Inter",sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere;margin-top:4px}
-html body main#top>.hero .luen-motion-bottom{display:flex;align-items:center;gap:12px;padding:15px 18px 17px;min-width:0}
-html body main#top>.hero .luen-motion-count{color:#af5331;font:800 10px/1.45 "Inter",sans-serif;white-space:nowrap;letter-spacing:.04em}
-html body main#top>.hero .luen-motion-progress{flex:1;height:3px;background:#d4c3b1;overflow:hidden;border-radius:10px;min-width:20px}
-html body main#top>.hero .luen-motion-progress i{display:block;height:100%;width:33%;background:#c35c35;border-radius:10px;transform:translateX(var(--luen-motion-progress-x,0));transition:transform .45s}
-html body main#top>.hero .luen-motion-pause{display:inline-flex;align-items:center;gap:8px;border:1px solid #cdb9a6;border-radius:30px;padding:7px 12px;background:transparent;color:#624e41;white-space:nowrap;font:700 10px/1.2 "Inter",sans-serif;cursor:pointer}
-html body main#top>.hero .luen-motion-pause:focus-visible{outline:2px solid #ad4e2c;outline-offset:3px}
-html body main#top>.hero .luen-motion-pause:hover{border-color:#b75b37;color:#a84827}
-@media(max-width:1120px){html body main#top>.hero .luen-motion-showcase{max-width:780px}}
+html body main#top>.hero .luen-motion-card-meta{
+ display:block;min-width:0;padding:0 4px;
+}
+html body main#top>.hero .luen-motion-card-meta small{
+ display:block;font:800 10px/1.35 "Inter",sans-serif;color:#b75834;
+ letter-spacing:.05em;white-space:nowrap;
+}
+html body main#top>.hero .luen-motion-card-meta strong{
+ display:block;font:800 clamp(11px,1.2vw,14px)/1.4 "Inter",sans-serif;
+ letter-spacing:-.01em;overflow-wrap:anywhere;margin-top:4px;
+}
+html body main#top>.hero .luen-motion-bottom{
+ display:flex;align-items:center;gap:12px;padding:15px 18px 17px;min-width:0;
+}
+html body main#top>.hero .luen-motion-count{
+ color:#af5331;font:800 10px/1.45 "Inter",sans-serif;
+ white-space:nowrap;letter-spacing:.04em;
+}
+html body main#top>.hero .luen-motion-progress{
+ flex:1;height:3px;background:#d4c3b1;overflow:hidden;border-radius:10px;
+ min-width:20px;
+}
+html body main#top>.hero .luen-motion-progress i{
+ display:block;height:100%;width:33.333%;
+ background:#c35c35;border-radius:10px;
+ transform:translateX(var(--luen-motion-progress-x,0));
+ transition:transform .75s cubic-bezier(.2,.8,.2,1);
+}
+html body main#top>.hero .luen-motion-pause{
+ display:inline-flex;align-items:center;gap:8px;border:1px solid #cdb9a6;
+ border-radius:30px;padding:7px 12px;background:transparent;color:#624e41;
+ white-space:nowrap;font:700 10px/1.2 "Inter",sans-serif;cursor:pointer;
+}
+html body main#top>.hero .luen-motion-pause:focus-visible{
+ outline:2px solid #ad4e2c;outline-offset:3px;
+}
+html body main#top>.hero .luen-motion-pause:hover{
+ border-color:#b75b37;color:#a84827;
+}
+@media(max-width:1120px){
+ html body main#top>.hero .luen-motion-showcase{max-width:780px}
+}
 @media(max-width:767px){
  html body main#top>.hero .luen-motion-showcase{border-radius:20px}
  html body main#top>.hero .luen-motion-head{min-height:42px;padding:10px 14px}
  html body main#top>.hero .luen-motion-head span{font-size:10px}
  html body main#top>.hero .luen-motion-head strong{font-size:9px}
- html body main#top>.hero .luen-motion-canvas{gap:clamp(6px,1.9vw,11px);padding:22px 12px 4px;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr)}
- html body main#top>.hero .luen-motion-card{gap:10px}
+ html body main#top>.hero .luen-motion-canvas{height:clamp(280px,85vw,334px)}
+ html body main#top>.hero .luen-motion-canvas::before{height:30%;width:66%}
+ html body main#top>.hero .luen-motion-card{width:clamp(96px,34%,146px);gap:6px}
  html body main#top>.hero .luen-motion-media{border-radius:12px}
- html body main#top>.hero .luen-motion-card.is-active{transform:translateY(-5px) scale(1.02)}
  html body main#top>.hero .luen-motion-card-meta small{font-size:8px;letter-spacing:0}
- html body main#top>.hero .luen-motion-card-meta strong{font-size:clamp(9px,2.65vw,12px);line-height:1.3}
- html body main#top>.hero .luen-motion-bottom{padding:14px 12px;gap:10px}
+ html body main#top>.hero .luen-motion-card-meta strong{font-size:clamp(9px,2.5vw,11px);line-height:1.3}
+ html body main#top>.hero .luen-motion-bottom{padding:13px 12px;gap:10px}
  html body main#top>.hero .luen-motion-count{font-size:9px}
 }
-@media(max-width:360px){html body main#top>.hero .luen-motion-canvas{padding-left:9px;padding-right:9px;gap:5px}html body main#top>.hero .luen-motion-pause{padding:7px 9px}}
-@media(prefers-reduced-motion:reduce){html body main#top>.hero .luen-motion-card,html body main#top>.hero .luen-motion-media,html body main#top>.hero .luen-motion-progress i{transition:none!important}html body main#top>.hero .luen-motion-card.is-active{transform:none!important}}
-
-/* Full-resolution 16:9 QUADTHERA poster: never crop the creator or product. */
-html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media img{object-fit:contain}
+@media(max-width:360px){
+ html body main#top>.hero .luen-motion-canvas{height:286px}
+ html body main#top>.hero .luen-motion-pause{padding:7px 9px}
+}
+@media(prefers-reduced-motion:reduce){
+ html body main#top>.hero .luen-motion-progress i{transition:none!important}
+ html body main#top>.hero .luen-motion-card{will-change:auto!important}
+}
