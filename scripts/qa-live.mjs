@@ -303,6 +303,38 @@ try {
     }
     await motionContext.close();
   }
+  // Orbital hero QA: each clip's ended event rotates three upright cards
+  // along their elliptical path by 120 degrees, instead of using a timer.
+  // Dispatching ended avoids a codec dependency while testing the controller.
+  const orbitContext=await browser.newContext({
+    viewport:{width:1440,height:900},reducedMotion:'no-preference'
+  });
+  const orbitPage=await orbitContext.newPage();
+  try{
+    await orbitPage.goto(BASE,{waitUntil:'domcontentloaded',timeout:60000});
+    await orbitPage.locator('[data-luen-motion]').scrollIntoViewIfNeeded();
+    await orbitPage.locator('[data-motion-index="0"]').click();
+    for(let cycle=0;cycle<3;cycle++){
+      const index=cycle%3;
+      await orbitPage.locator('[data-motion-index="'+index+'"] video')
+        .evaluate(video=>video.dispatchEvent(new Event('ended')));
+      await orbitPage.waitForTimeout(1150);
+      const orbitState=await orbitPage.evaluate(()=>{
+        const cards=[...document.querySelectorAll('[data-luen-motion] [data-motion-index]')];
+        const active=cards.findIndex(card=>card.classList.contains('is-active'));
+        const angles=cards.map(card=>card.style.transform);
+        return {active,angles,status:document.querySelector('[data-motion-status]')?.textContent,
+          stageWidth:document.querySelector('.luen-motion-canvas')?.getBoundingClientRect().width,
+          docWidth:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth};
+      });
+      const expected=(index+1)%3;
+      if(orbitState.active!==expected)
+        serious('hero-orbit','End of clip '+index+' did not rotate to '+expected+': '+JSON.stringify(orbitState));
+      if(new Set(orbitState.angles).size!==3||orbitState.docWidth>orbitState.viewport+3)
+        serious('hero-orbit','Orbital placement missing/overflow: '+JSON.stringify(orbitState));
+    }
+  }catch(e){serious('hero-orbit','Orbit event test threw: '+String(e.message).slice(0,300));}
+  finally{await orbitContext.close();}
   // Chromium user-agent simulation exercises LUEN's separate iOS loop code.
   // This is a JS-path smoke test, not a substitute for physical Safari QA.
   const iosAudit=[];
