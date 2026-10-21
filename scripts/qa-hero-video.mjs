@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 const base=(process.env.LUEN_QA_URL||'https://luen-preview.pages.dev').replace(/\/$/,'');
 const widths=[{name:'desktop',width:1440,height:900},{name:'mobile',width:390,height:844},{name:'mobile-narrow',width:320,height:690}];
-const failures=[],reports=[];
+const failures=[],warnings=[],reports=[];
 const folder=path.resolve('qa-screenshots/hero-motion');
 fs.mkdirSync(folder,{recursive:true});
 const browser=await chromium.launch({headless:true});
@@ -24,12 +24,12 @@ try{
    const cards=section.locator('[data-motion-index]');
    if(await cards.count()!==3)throw new Error('Hero should show 3 campaigns');
    for(const name of ['confier','quadthera','clinic']){
-    const poster=section.locator('img[src="/assets/images/luen-motion/'+name+'-poster.webp"]');
+    const poster=section.locator('img[src^="/assets/images/luen-motion/'+name+'-poster.webp"]');
     if(await poster.count()!==1)throw new Error('Poster missing: '+name);
     phase='poster '+name;
     await poster.scrollIntoViewIfNeeded();
     await page.waitForFunction(key=>{
-      const img=document.querySelector('img[src="/assets/images/luen-motion/'+key+'-poster.webp"]');
+      const img=document.querySelector('img[src^="/assets/images/luen-motion/'+key+'-poster.webp"]');
       return img?.complete && img.naturalWidth>=100 && img.naturalHeight>=80;
     },name,{timeout:12000});
    }
@@ -39,8 +39,27 @@ try{
    await page.waitForFunction(()=>{
      const card=document.querySelector('[data-motion-index="1"]');
      const v=card?.querySelector('video');
-     return card?.classList.contains('is-active')&&v?.readyState>=2&&v.currentTime>.05;
+     return card?.classList.contains('is-active')&&!!v?.getAttribute('src');
    },null,{timeout:12000});
+   // Headless Chromium may have no proprietary H.264 decoder. Verify original
+   // actual MP4 bytes separately rather than falsely treating that as a site bug.
+   const source=await cards.nth(1).locator('video').getAttribute('src');
+   const mediaResponse=await page.request.get(base+source,{timeout:15000});
+   const bytes=await mediaResponse.body();
+   if(mediaResponse.status()!==200||bytes.length<180000||bytes.toString('ascii',4,8)!=='ftyp')
+     throw new Error('Quadthera MP4 missing/invalid: HTTP '+mediaResponse.status()+' bytes='+bytes.length);
+   const codec=await cards.nth(1).locator('video').evaluate(v=>({
+     decoder:v.canPlayType('video/mp4; codecs="avc1.4D401E"'),
+     error:v.error?.code||0
+   }));
+   if(codec.decoder){
+     await page.waitForFunction(()=>{
+       const v=document.querySelector('[data-motion-index="1"] video');
+       return v?.readyState>=2&&v.currentTime>.05;
+     },null,{timeout:12000});
+   }else{
+     warnings.push({viewport:w.name,reason:'H.264 playback cannot be verified in test browser; MP4 bytes and poster verified.'});
+   }
    const selected=await page.evaluate(()=>{
      const tiles=[...document.querySelectorAll('[data-motion-index]')];
      return {active:tiles.map((t,i)=>t.classList.contains('is-active')?i:null).filter(x=>x!==null),
@@ -48,7 +67,8 @@ try{
        overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
    });
    if(selected.active.length!==1||selected.active[0]!==1)throw new Error('Manual Quadthera selection failed');
-   if(selected.videos.filter(v=>v.playing).length!==1)throw new Error('Expected exactly one active clip: '+JSON.stringify(selected.videos));
+   if(codec.decoder&&selected.videos.filter(v=>v.playing).length!==1)
+     throw new Error('Expected exactly one active clip: '+JSON.stringify(selected.videos));
    if(selected.overflow>3)throw new Error('Page has horizontal overflow: '+selected.overflow);
    const pause=section.locator('[data-motion-toggle]');
    await pause.click();
@@ -80,6 +100,6 @@ try{
   }
   finally{if(errors.length)failures.push({viewport:w.name,jsErrors:errors.slice(0,4)});await ctx.close();}
  }
- console.log('LUEN_HERO_VIDEO_QA '+JSON.stringify({pairs:reports.length,failures}));
+ console.log('LUEN_HERO_VIDEO_QA '+JSON.stringify({pairs:reports.length,failures,warnings}));
  if(failures.length)process.exitCode=1;
 }finally{await browser.close();}
