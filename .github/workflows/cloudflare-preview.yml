@@ -90,6 +90,11 @@ jobs:
           LUEN_QA_URL: https://luen-preview.pages.dev
         run: node scripts/qa-live.mjs
 
+      - name: Validate LUEN IN MOTION real video playback on desktop and mobile
+        env:
+          LUEN_QA_URL: https://luen-preview.pages.dev
+        run: node scripts/qa-hero-video.mjs
+
       - name: Verify all public routes before production approval
         env:
           LUEN_QA_URL: https://luen-preview.pages.dev
