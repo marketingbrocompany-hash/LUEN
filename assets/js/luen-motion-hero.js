@@ -24,8 +24,8 @@
     const rect=stage.getBoundingClientRect();
     return {rx:Math.min(205,rect.width*.32),ry:Math.min(65,rect.height*.16)};
   };
-  // 90deg is front (bottom); 210deg is rear-left; 330deg is rear-right.
-  const angleFor=(index,focus)=>Math.PI/2+(index-focus)*Math.PI*2/3;
+  // 90deg is front (bottom); -30deg is next/rear-right; -150deg is previous/rear-left.
+  const angleFor=(index,focus)=>Math.PI/2-(index-focus)*Math.PI*2/3;
   const location=(angle,geo)=>{
     const depth=(Math.sin(angle)+.5)/1.5;
     const scale=.77+.23*depth;
@@ -96,7 +96,7 @@
     const origin=current;
     // Automatically advance by 120deg. Manual card selection takes the short arc.
     const forward=(destination-origin+3)%3===1;
-    const arc=(forward?-1:1)*Math.PI*2/3;
+    const arc=(forward?1:-1)*Math.PI*2/3;
     stopVideos();
     current=destination;
     updateFocus();
