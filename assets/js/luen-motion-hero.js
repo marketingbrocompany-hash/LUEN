@@ -33,8 +33,8 @@
       }
     }
   };
-  const playSelected=()=>{
-    if(paused||!visible||document.hidden||destroyed)return;
+  const playSelected=(forcePlayback=false)=>{
+    if(paused||(!visible&&!forcePlayback)||document.hidden||destroyed)return;
     const video=videos[current],card=cards[current];
     if(!video)return;
     if(!video.getAttribute('src')){
@@ -48,7 +48,7 @@
     const attempt=video.play();
     if(attempt&&typeof attempt.catch==='function')attempt.catch(()=>card.classList.remove('is-playing'));
   };
-  const select=(index)=>{
+  const select=(index,forcePlayback=false)=>{
     if(destroyed)return;
     current=(index+cards.length)%cards.length;
     stopVideos();
@@ -59,7 +59,7 @@
     });
     if(status)status.textContent=names[current];
     if(progress)progress.style.setProperty('--luen-motion-progress-x',String(current*100)+'%');
-    playSelected();
+    playSelected(forcePlayback);
   };
   const pauseInterval=()=>{if(interval!==null){clearInterval(interval);interval=null;}};
   const schedule=()=>{
@@ -88,7 +88,7 @@
   cards.forEach((card,i)=>card.addEventListener('click',()=>{
     paused=false;
     updateButton();
-    select(i);
+    select(i,true); // Explicit user interaction always starts requested clip.
     schedule();
   }));
   toggle?.addEventListener('click',()=>setPaused(!paused));

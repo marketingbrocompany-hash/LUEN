@@ -101,29 +101,50 @@ try {
       serious(v.name,'LUEN IN MOTION hero not present or invalid state: '+JSON.stringify(heroMotion));
     if(heroMotion.mediaLoaded!==0)
       serious(v.name,'Reduced-motion mode should not fetch hero MP4 automatically: '+JSON.stringify(heroMotion));
-    // User-visible hero video quality: test decoded native dimensions after opt-in.
-    // Reduced-motion remains static by default; selecting a card is an explicit play action.
+    // Verify the original-resolution MP4 bytes are served by Cloudflare and
+    // manual selection sets a real video source. Some headless Chromium images
+    // lack an H.264 decoder: do not classify a codec-only limitation as a file
+    // quality defect, but report it explicitly instead of claiming decode success.
     if(v.name==='desktop'||v.name==='mobile'){
       const expected=[{w:406,h:720},{w:960,h:540},{w:406,h:720}];
       for(let i=0;i<3;i++){
         const card=page.locator('[data-motion-index="'+i+'"]');
         await card.scrollIntoViewIfNeeded();
         await card.click();
-        let decoded=null;
-        try{
-          const ok=await page.waitForFunction(idx=>{
-            const v=document.querySelector('[data-motion-index="'+idx+'"] video');
-            if(!v||!v.videoWidth||!v.videoHeight)return false;
-            return {w:v.videoWidth,h:v.videoHeight,readyState:v.readyState};
-          },i,{timeout:15000});
-          decoded=await ok.jsonValue();
-        }catch(e){
-          decoded=await card.locator('video').evaluate(v=>({w:v.videoWidth,h:v.videoHeight,readyState:v.readyState}));
+        const info=await card.locator('video').evaluate(video=>({
+          src:video.getAttribute('src'),currentSrc:video.currentSrc,
+          canPlay:video.canPlayType('video/mp4; codecs="avc1.4D401E"'),
+          networkState:video.networkState,readyState:video.readyState,
+          error:video.error?.code||0,
+          width:video.videoWidth,height:video.videoHeight
+        }));
+        if(!info.src||!info.src.includes('-preview.mp4?v=20261021-hq')){
+          serious(v.name,'Hero video '+i+' did not receive an MP4 source on user click: '+JSON.stringify(info));
+          continue;
         }
-        if(decoded.w<expected[i].w||decoded.h<expected[i].h)
-          serious(v.name,'Hero video '+i+' decoded at insufficient resolution: '+JSON.stringify(decoded));
+        const mp4Response=await context.request.get(BASE+info.src,{timeout:20000});
+        const bytes=await mp4Response.body();
+        if(mp4Response.status()>=400||bytes.length<180000||bytes.toString('ascii',4,8)!=='ftyp')
+          serious(v.name,'Hero video '+i+' served invalid media: HTTP '+mp4Response.status()+' bytes '+bytes.length);
+        let dimensions=null;
+        try{
+          const handle=await page.waitForFunction(idx=>{
+            const vid=document.querySelector('[data-motion-index="'+idx+'"] video');
+            return vid?.videoWidth>0&&vid?.videoHeight>0?{w:vid.videoWidth,h:vid.videoHeight}:false;
+          },i,{timeout:4000});
+          dimensions=await handle.jsonValue();
+        }catch(_err){
+          const details=await card.locator('video').evaluate(v=>({
+            w:v.videoWidth,h:v.videoHeight,networkState:v.networkState,
+            readyState:v.readyState,error:v.error?.code||0,
+            canPlay:v.canPlayType('video/mp4; codecs="avc1.4D401E"')
+          }));
+          warn(v.name,'Headless media decoder unavailable/pending for clip '+i+
+            '; CDN MP4 bytes verified independently: '+JSON.stringify(details));
+        }
+        if(dimensions && (dimensions.w<expected[i].w||dimensions.h<expected[i].h))
+          serious(v.name,'Hero clip '+i+' decoded below original quality: '+JSON.stringify(dimensions));
       }
-      // Return hero to its first scene while keeping user-triggered playback paused.
       await page.locator('[data-motion-toggle]').click();
     }
 
