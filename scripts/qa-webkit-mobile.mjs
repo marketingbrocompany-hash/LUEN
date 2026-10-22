@@ -47,6 +47,17 @@ try{
       for(let i=0;i<2;i++){
         const rail=rails.nth(i);
         await rail.scrollIntoViewIfNeeded();
+        // WebKit may initially report only a 72px offscreen placeholder.
+        // Repeated geometry reads allow the deferred source layout to settle;
+        // the controller must then rebuild to the correct clone count.
+        await page.waitForFunction(index=>{
+          const rail=document.querySelectorAll('#selected-content .portfolio-viewport')[index];
+          const source=rail?.querySelector('.loop-set:not(.ios-loop-clone)');
+          const width=source?.getBoundingClientRect().width||0;
+          const expected=Math.max(1,Math.ceil((rail?.clientWidth||0)/width));
+          return width>(rail?.clientWidth||0) &&
+            rail.querySelectorAll('.ios-loop-clone').length===expected;
+        },i,{timeout:7000});
         await page.waitForTimeout(450);
         const t1=await rail.locator('.loop-track').evaluate(e=>getComputedStyle(e).transform);
         await page.waitForTimeout(650);
