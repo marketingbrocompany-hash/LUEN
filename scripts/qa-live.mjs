@@ -224,7 +224,19 @@ try {
         await page.evaluate(y=>window.scrollTo(0,y),y);
         await page.waitForTimeout(100);
       }
-      await page.waitForTimeout(900);
+      // This is a QA-only check: force offscreen lazy images to fetch before
+      // classifying them as missing. The live website keeps native lazy loading.
+      await page.evaluate(()=>{
+        document.querySelectorAll('img[loading="lazy"]').forEach(img=>{img.loading='eager';});
+      });
+      try{
+        await page.waitForFunction(
+          ()=>[...document.images].every(img=>img.complete),
+          null,{timeout:15000}
+        );
+      }catch(_err){
+        warn(v.name,'Some images still pending 15s after QA-only eager loading');
+      }
       const imageAudit=await page.evaluate(()=>{
         const imgs=[...document.querySelectorAll('img')];
         const failed=imgs.filter(i=>i.complete && i.naturalWidth===0)
