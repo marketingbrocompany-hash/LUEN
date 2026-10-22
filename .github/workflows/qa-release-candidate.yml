@@ -1,0 +1,92 @@
+name: LUEN production release candidate verification (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'sitemap.xml'
+      - 'about/**'
+      - 'cases/**'
+      - 'contact/**'
+      - 'creators/**'
+      - 'insights/**'
+      - 'services/**'
+      - 'project-guide/**'
+      - 'assets/**'
+      - 'scripts/check-site.mjs'
+      - '.github/workflows/qa-release-candidate.yml'
+permissions:
+  contents: read
+jobs:
+  offline-release-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Production preservation guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fxq 'luenkorea.com' CNAME
+          if grep -Eiq '<meta[^>]*name="robots"[^>]*content="noindex' index.html; then
+            echo "::error::Production page must not be noindex"
+            exit 1
+          fi
+          test -s assets/images/luen-motion/clinic-poster.webp
+          test -s assets/video/luen-motion/clinic-preview.mp4
+          test -s assets/js/site-core.js
+          echo "Production CNAME and SEO metadata preserved."
+      - name: Run static integrity and navigation checks
+        run: |
+          node --check assets/js/site.js
+          node --check assets/js/site-core.js
+          node scripts/check-site.mjs
+      - name: Install browser checks
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve candidate checkout (no deployment)
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-release-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/luen-release-http.log
+          exit 1
+      - name: Test iPhone WebKit gallery, layout and reduced motion
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-webkit-mobile.mjs
+      - name: Test desktop/mobile motion and floating inquiry CTA
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-home-motion-performance.mjs
+      - name: Verify full responsive layout and links
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-live.mjs
+      - name: Verify hero video file wiring
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-hero-video.mjs
+      - name: Verify all subpages
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-subpages.mjs
+      - name: Verify contact form with mocked responses only
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-contact-flow.mjs
+      - name: Save non-sensitive QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-production-release-qa
+          path: qa-screenshots/
+          retention-days: 14
+          if-no-files-found: warn

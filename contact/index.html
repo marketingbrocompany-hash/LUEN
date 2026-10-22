@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="/assets/css/site.css?v=20260930-13"/>
 <link rel="stylesheet" href="/assets/css/luen-v3.css?v=20261017-8"/>
 <link rel="stylesheet" href="/assets/css/luen-pages.css?v=20261016-5"/>
+<link rel="stylesheet" href="/assets/css/creator-partnerships.css?v=20261019-1"/>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -137,6 +138,7 @@
         <form action="https://formspree.io/f/xaewddev" class="contact-form" id="contactForm" method="POST">
           <input name="source" type="hidden" value="LUEN Contact Page"/>
           <input name="source_case" type="hidden" value=""/>
+          <input name="creator_requested" id="creatorRequested" type="hidden" value=""/>
           <div aria-hidden="true" class="form-honeypot">
             <label for="website">웹사이트</label>
             <input autocomplete="off" id="website" name="_gotcha" tabindex="-1" type="text"/>
@@ -146,6 +148,17 @@
             <strong>계약 전 단계에서도 상담 가능합니다.</strong>
             <p>예산·크리에이터가 아직 정해지지 않아도 괜찮습니다.</p>
           </aside>
+
+
+          <fieldset class="luen-inquiry-context">
+            <legend style="font-weight:700;font-size:13px;margin-bottom:9px">어떤 협업을 계획하고 계신가요?</legend>
+            <div class="luen-inquiry-type">
+              <label><input type="radio" name="inquiry_type" value="특정 크리에이터 협업" id="inquirySpecific"/> 특정 크리에이터와 협업</label>
+              <label><input type="radio" name="inquiry_type" value="크리에이터 추천"/> 크리에이터 추천 요청</label>
+              <label><input type="radio" name="inquiry_type" value="캠페인 기획 상담" checked/> 캠페인 기획 상담</label>
+            </div>
+            <p id="selectedCreatorNote" hidden>선택된 파트너: <strong>爆食ますぶちさちよ (마스부치 사치요)</strong></p>
+          </fieldset>
 
           <div class="form-grid">
             <div class="field"><label for="company">브랜드 / 회사명</label><input autocomplete="organization" id="company" name="company" placeholder="예: LUEN" required type="text"/></div>
@@ -203,7 +216,7 @@
                   <dl>
                     <div><dt>수집·이용 목적</dt><dd>프로젝트 문의 접수, 상담 및 회신, 캠페인 제안과 관련 업무 협의</dd></div>
                     <div><dt>필수 항목</dt><dd>브랜드/회사명, 담당자명, 목표 시장, 이메일 또는 연락처 중 1개</dd></div>
-                    <div><dt>선택 항목</dt><dd>입력하지 않은 연락 수단, 관심 플랫폼, 예산 범위, 프로젝트 내용</dd></div>
+                    <div><dt>선택 항목</dt><dd>입력하지 않은 연락 수단, 협업 유형·희망 크리에이터, 관심 플랫폼, 예산 범위, 프로젝트 내용</dd></div>
                     <div><dt>보유·이용 기간</dt><dd>문의 처리 및 상담 종료 후 1년. 단, 관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관할 수 있습니다.</dd></div>
                     <div><dt>동의 거부</dt><dd>동의를 거부할 권리가 있으나, 필수 개인정보 수집·이용에 동의하지 않으면 홈페이지 문의폼을 통한 접수가 어렵습니다.</dd></div>
                   </dl>
@@ -275,6 +288,32 @@
     <div class="footer-business-info" aria-label="LUEN 사업자 정보"><span>루엔</span><span>대표 이호규</span><span>사업자등록번호 412-43-01039</span><span>서울특별시 마포구 동교로17안길 10, 3층(서교동)</span><span><a href="/privacy.html">개인정보처리방침</a></span></div>
   </div>
 </footer>
+<script>
+(function(){
+  // Use only known creator keys. Never reflect arbitrary URL input as HTML.
+  const params=new URLSearchParams(window.location.search);
+  const form=document.getElementById('contactForm');
+  if(!form)return;
+  const knownCreators={masubuchi:'爆食ますぶちさちよ (마스부치 사치요)'};
+  const creatorKey=params.get('creator');
+  const creator=Object.prototype.hasOwnProperty.call(knownCreators,creatorKey)?knownCreators[creatorKey]:'';
+  const specific=form.querySelector('#inquirySpecific');
+  const requested=form.querySelector('#creatorRequested');
+  const note=form.querySelector('#selectedCreatorNote');
+  const source=form.querySelector('input[name="source_case"]');
+  const controls=Array.from(form.querySelectorAll('input[name="inquiry_type"]'));
+  function sync(){
+    const isSpecific=Boolean(specific?.checked&&creator);
+    if(requested)requested.value=isSpecific?creator:'';
+    if(note)note.hidden=!isSpecific;
+    if(source)source.value=isSpecific?'creator_masubuchi':'';
+  }
+  if(creator&&params.get('inquiry')==='creator'&&specific){specific.checked=true;}
+  controls.forEach(control=>control.addEventListener('change',sync));
+  form.addEventListener('reset',()=>window.requestAnimationFrame(sync));
+  sync();
+})();
+</script>
 <script src="/assets/js/site.js?v=20260930-13"></script>
 <script src="/assets/js/site-core.js?v=20261017-2"></script>
 </body>
