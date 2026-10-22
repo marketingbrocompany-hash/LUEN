@@ -33,6 +33,28 @@ try{
      if(response?.status()!==200)throw Error('HTTP '+response?.status());
      await page.waitForLoadState('load',{timeout:35000});
      await page.waitForTimeout(450);
+     // Preserve CTA conversion elsewhere, but never cover portfolio video stills
+     // on mobile. Use actual page geometry rather than simulated component state.
+     await page.evaluate(()=>{
+       document.documentElement.style.scrollBehavior='auto';
+       const gallery=document.getElementById('selected-content');
+       if(!gallery)throw Error('Missing selected-content gallery');
+       window.scrollTo(0,window.scrollY+gallery.getBoundingClientRect().top+Math.min(260,gallery.offsetHeight/4));
+     });
+     await page.waitForTimeout(450);
+     const galleryCta=await page.locator('#floatCta').evaluate(el=>el.classList.contains('show'));
+     if(v.width<=700&&galleryCta)failures.push(v.name+': floating CTA covers gallery on mobile');
+     if(v.width>700&&!galleryCta)failures.push(v.name+': desktop floating CTA unexpectedly hidden over gallery');
+     if(v.width<=700)await page.screenshot({
+       path:path.join(dir,v.name+'-selected-content-cta.jpg'),type:'jpeg',quality:72,animations:'disabled'
+     });
+     await page.evaluate(()=>{
+       const gallery=document.getElementById('selected-content');
+       window.scrollTo(0,window.scrollY+gallery.getBoundingClientRect().bottom+140);
+     });
+     await page.waitForTimeout(450);
+     const afterGalleryCta=await page.locator('#floatCta').evaluate(el=>el.classList.contains('show'));
+     if(!afterGalleryCta)failures.push(v.name+': floating CTA failed to return after gallery');
      const strips=page.locator('[data-loop-strip]');
      if(await strips.count()!==3)throw Error('Expected three moving rails, got '+await strips.count());
      const before=await page.locator('.loop-clone').count();
