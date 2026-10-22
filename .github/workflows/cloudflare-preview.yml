@@ -59,6 +59,12 @@ jobs:
         run: |
           set -euo pipefail
           test -s _site/assets/video/luen-motion/clinic-preview.mp4
+          # Hosted runner images can omit FFmpeg. Install only when absent.
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            echo "FFmpeg is missing on the runner; installing for thumbnail extraction."
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ffmpeg
+          fi
           command -v ffmpeg
           command -v ffprobe
           # Build-time derivation, not a re-encode of the hero video.
