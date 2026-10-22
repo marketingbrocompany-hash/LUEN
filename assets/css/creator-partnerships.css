@@ -502,3 +502,25 @@ html body main#top>.luen-home-selected-work .case-selected-work-v10{margin-top:0
   html body main#top>.luen-home-selected-work{padding:46px 0 65px}
   html body main#top>.luen-home-selected-work .case-selected-work-v10{margin-top:0}
 }
+
+/* Reapply the exact portfolio containment used before the carousel moved from
+   #cases to #selected-content. The wide max-content track must never become
+   the grid item's intrinsic width (and alter clone math on iOS/desktop). */
+html body #selected-content #work {
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+html body #selected-content #work .case-portfolio-v10,
+html body #selected-content #work .portfolio-lane,
+html body #selected-content #work .portfolio-viewport {
+  box-sizing:border-box!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #selected-content #work .portfolio-track{
+    will-change:auto!important;
+  }
+}
