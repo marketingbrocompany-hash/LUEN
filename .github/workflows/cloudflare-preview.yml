@@ -54,6 +54,23 @@ jobs:
           # stale asset-manifest.json and CNAME (the live custom domain).
           echo "Prepared isolated Cloudflare Pages site payload."
 
+      - name: Prevent search indexing of Cloudflare development hostname only
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Cloudflare Pages reads _headers from staged static site assets.
+          # Scope this rule to the development hostname; production remains indexable.
+          # Keep robots.txt crawlable so search engines can see noindex.
+          cat > _site/_headers <<'EOF'
+          https://luen-preview.pages.dev/*
+            X-Robots-Tag: noindex, nofollow, noarchive
+          EOF
+          grep -Fx 'https://luen-preview.pages.dev/*' _site/_headers
+          grep -Fx '  X-Robots-Tag: noindex, nofollow, noarchive' _site/_headers
+          # The staging output must not change source HTML canonical/meta tags.
+          grep -q 'name="robots" content="index,follow' _site/index.html
+
+
       - name: Generate clinic hero 00-second thumbnail from approved clip
         shell: bash
         run: |
@@ -103,6 +120,27 @@ jobs:
           # Cloudflare Direct Upload project uses "main" as production branch.
           # This updates luen-preview.pages.dev, NOT luenkorea.com.
           command: pages deploy _site --project-name=luen-preview --branch=main
+
+      - name: Verify staging-only noindex response header
+        shell: bash
+        run: |
+          set -euo pipefail
+          for url in "https://luen-preview.pages.dev/" "https://luen-preview.pages.dev/contact/"; do
+            found=0
+            for attempt in {1..12}; do
+              headers="$(curl -fsSI --max-time 15 -H 'Cache-Control: no-cache' "$url" || true)"
+              if printf '%s\n' "$headers" | grep -Eiq '^x-robots-tag:[[:space:]]*.*noindex'; then
+                echo "PASS: noindex header on $url"
+                found=1
+                break
+              fi
+              sleep 3
+            done
+            if [ "$found" -ne 1 ]; then
+              echo "::error::No noindex header received from $url"
+              exit 1
+            fi
+          done
 
       - name: Install browser test runner
         shell: bash
