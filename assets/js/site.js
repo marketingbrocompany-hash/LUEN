@@ -4,6 +4,9 @@
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const lightLoopControllers=new Map();
+  // WebKit can initially report a placeholder width for offscreen galleries.
+  // Permit two layout corrections when that gallery first becomes visible.
+  const iosLoopLayoutRepairs=new WeakMap();
   const stopLightLoop=viewport=>{
     const controller=lightLoopControllers.get(viewport);
     if(!controller?.raf)return;
@@ -69,7 +72,18 @@
     if('IntersectionObserver' in window){
       controller.observer=new IntersectionObserver(entries=>{
         controller.visible=Boolean(entries[0]?.isIntersecting);
-        if(controller.visible)startLightLoop(viewport);else stopLightLoop(viewport);
+        if(!controller.visible){stopLightLoop(viewport);return;}
+        // The original strip may have been measured before Safari laid out an
+        // offscreen section. Rebuild after entering view, not from a stale width.
+        const actualWidth=source.getBoundingClientRect().width;
+        const repairs=iosLoopLayoutRepairs.get(viewport)||0;
+        if(actualWidth>0&&Math.abs(actualWidth-controller.baseWidth)>Math.max(2,controller.baseWidth*.02)&&repairs<2){
+          iosLoopLayoutRepairs.set(viewport,repairs+1);
+          stopLightLoop(viewport);
+          requestAnimationFrame(()=>setupIOSLightLoop(viewport));
+          return;
+        }
+        startLightLoop(viewport);
       },{rootMargin:'120px 0px',threshold:0});
       controller.observer.observe(viewport);
     }
@@ -94,6 +108,7 @@
       const nextWidth=document.documentElement.clientWidth;
       if(Math.abs(nextWidth-lastWidth)<2)return;
       lastWidth=nextWidth;
+      iosLoopStrips.forEach(viewport=>iosLoopLayoutRepairs.delete(viewport));
       clearTimeout(window.__luenIOSLoopResize);
       window.__luenIOSLoopResize=setTimeout(initIOSLoops,220);
     },{passive:true});
