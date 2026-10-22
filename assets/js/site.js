@@ -38,6 +38,7 @@
     }
     const measuredViewportWidth=viewport.clientWidth;
     const copies=Math.max(1,Math.ceil(measuredViewportWidth/baseWidth));
+    viewport.dataset.iosDebugInit=JSON.stringify({baseWidth,measuredViewportWidth,copies,repairs:iosLoopLayoutRepairs.get(viewport)||0});
     for(let i=0;i<copies;i++){
       const clone=source.cloneNode(true);
       clone.classList.add('loop-clone','ios-loop-clone');
@@ -79,6 +80,7 @@
         // offscreen section. Rebuild after entering view, not from a stale width.
         const actualWidth=source.getBoundingClientRect().width;
         const repairs=iosLoopLayoutRepairs.get(viewport)||0;
+        viewport.dataset.iosDebugVisible=JSON.stringify({actualWidth,viewportWidth:viewport.clientWidth,measuredViewportWidth:controller.measuredViewportWidth,baseWidth:controller.baseWidth,repairs});
         const viewportChanged=Math.abs(viewport.clientWidth-controller.measuredViewportWidth)>2;
         const contentChanged=actualWidth>0&&Math.abs(actualWidth-controller.baseWidth)>Math.max(2,controller.baseWidth*.02);
         if((viewportChanged||contentChanged)&&repairs<2){
