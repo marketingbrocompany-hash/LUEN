@@ -248,7 +248,7 @@ const checks=[
       &&caseBegin<approachBegin
       &&(home.match(/id="work"/g)||[]).length===1
       &&(home.match(/id="selected-content"/g)||[]).length===1
-      &&(home.match(/data-loop-strip=/g)||[]).length===2
+      &&(portfolio.match(/data-loop-strip=/g)||[]).length===2
       &&portfolio.includes('YOUTUBE')&&portfolio.includes('REELS / SHORT FORM')
       &&home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
       &&!home.slice(caseBegin,approachBegin).includes('id="work"')
