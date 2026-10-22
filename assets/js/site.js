@@ -36,7 +36,8 @@
       lightLoopControllers.delete(viewport);
       return; // no duplicate images needed for a stationary strip
     }
-    const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
+    const measuredViewportWidth=viewport.clientWidth;
+    const copies=Math.max(1,Math.ceil(measuredViewportWidth/baseWidth));
     for(let i=0;i<copies;i++){
       const clone=source.cloneNode(true);
       clone.classList.add('loop-clone','ios-loop-clone');
@@ -54,6 +55,7 @@
       last:performance.now(),
       speed:Math.max(14,Math.min(42,rawSpeed*.55)),
       baseWidth,
+      measuredViewportWidth,
       track,
       observer:null,
       tick:null
@@ -77,7 +79,9 @@
         // offscreen section. Rebuild after entering view, not from a stale width.
         const actualWidth=source.getBoundingClientRect().width;
         const repairs=iosLoopLayoutRepairs.get(viewport)||0;
-        if(actualWidth>0&&Math.abs(actualWidth-controller.baseWidth)>Math.max(2,controller.baseWidth*.02)&&repairs<2){
+        const viewportChanged=Math.abs(viewport.clientWidth-controller.measuredViewportWidth)>2;
+        const contentChanged=actualWidth>0&&Math.abs(actualWidth-controller.baseWidth)>Math.max(2,controller.baseWidth*.02);
+        if((viewportChanged||contentChanged)&&repairs<2){
           iosLoopLayoutRepairs.set(viewport,repairs+1);
           stopLightLoop(viewport);
           requestAnimationFrame(()=>setupIOSLightLoop(viewport));
