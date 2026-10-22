@@ -252,7 +252,9 @@ const checks=[
       &&portfolio.includes('YOUTUBE')&&portfolio.includes('REELS / SHORT FORM')
       &&home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
       &&!home.slice(caseBegin,approachBegin).includes('id="work"')
-      &&home.includes('luen-home-selected-work')&&!home.includes('class="case-selected-work-head-v10"');
+      &&home.includes('luen-home-selected-work')&&!home.includes('class="case-selected-work-head-v10"')
+      &&fs.readFileSync(path.join(root,'assets/css/creator-partnerships.css'),'utf8')
+        .includes('html body #selected-content #work .portfolio-viewport');
   })()],
   ['partner roster has distinct profile and inquiry links',home.includes('id="partner-creators"')&&home.includes('/creators/masubuchi-sachiyo/')&&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['creator one-page storytelling covers bibigo without another page and omits requested disclaimer',(()=>{
