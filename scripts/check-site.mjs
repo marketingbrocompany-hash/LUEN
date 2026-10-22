@@ -224,6 +224,19 @@ const checks=[
   ['JavaScript failure visible-content fallback',design.includes('html:not(.js-scroll-reveal) body .sr')],
   ['warm partner-strip override',home.includes('section.brand-wall{background:#EEE6DA!important}')],
   ['curated partner approach visible',home.includes('id="why-luen"')&&home.includes('CREATIVE DIRECTION')],
+  ['featured partner editorial strip keeps portrait and both CTAs without the old oversized card',(()=>{
+    const portrait='masubuchi-icecream-profile.avif';
+    const styles=fs.readFileSync(path.join(root,'assets/css/creator-partnerships.css'),'utf8');
+    return home.includes('luen-partner-creators--editorial')
+      &&home.includes('luen-creator-feature--editorial')
+      &&home.includes(portrait)
+      &&home.includes('프로필 · 협업 영상 보기')
+      &&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')
+      &&styles.includes('grid-template-columns:clamp(214px,23vw,268px)')
+      &&styles.includes('@media(max-width:700px)')
+      &&styles.includes('display:contents;')
+      &&styles.includes('#partner-creators .luen-creator-feature--editorial');
+  })()],
   ['partner roster has distinct profile and inquiry links',home.includes('id="partner-creators"')&&home.includes('/creators/masubuchi-sachiyo/')&&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['creator one-page storytelling covers bibigo without another page and omits requested disclaimer',(()=>{
     const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
