@@ -74,6 +74,10 @@ jobs:
             sleep 1
           done
           exit 1
+      - name: Check iPhone browser engine with WebKit
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-webkit-mobile.mjs
       - name: Run nine-width website and iOS-path QA without real analytics traffic
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
@@ -82,10 +86,6 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-hero-video.mjs
-      - name: Check iPhone browser engine with WebKit
-        env:
-          LUEN_QA_URL: http://127.0.0.1:4173
-        run: node scripts/qa-webkit-mobile.mjs
       - name: Preserve desktop/mobile screenshots and test logs
         if: always()
         uses: actions/upload-artifact@v4
