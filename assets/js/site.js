@@ -4,6 +4,9 @@
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const lightLoopControllers=new Map();
+  // WebKit can initially report a placeholder width for offscreen galleries.
+  // Permit two layout corrections when that gallery first becomes visible.
+  const iosLoopLayoutRepairs=new WeakMap();
   const stopLightLoop=viewport=>{
     const controller=lightLoopControllers.get(viewport);
     if(!controller?.raf)return;
@@ -23,6 +26,7 @@
 
     const previous=lightLoopControllers.get(viewport);
     previous?.observer?.disconnect();
+    previous?.resizeObserver?.disconnect();
     stopLightLoop(viewport);
     track.querySelectorAll('.ios-loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
@@ -33,7 +37,9 @@
       lightLoopControllers.delete(viewport);
       return; // no duplicate images needed for a stationary strip
     }
-    const copies=Math.max(1,Math.ceil(viewport.clientWidth/baseWidth));
+    const measuredViewportWidth=viewport.clientWidth;
+    const copies=Math.max(1,Math.ceil(measuredViewportWidth/baseWidth));
+    viewport.dataset.iosDebugInit=JSON.stringify({baseWidth,measuredViewportWidth,copies,repairs:iosLoopLayoutRepairs.get(viewport)||0});
     for(let i=0;i<copies;i++){
       const clone=source.cloneNode(true);
       clone.classList.add('loop-clone','ios-loop-clone');
@@ -51,8 +57,10 @@
       last:performance.now(),
       speed:Math.max(14,Math.min(42,rawSpeed*.55)),
       baseWidth,
+      measuredViewportWidth,
       track,
       observer:null,
+      resizeObserver:null,
       tick:null
     };
     controller.tick=now=>{
@@ -69,9 +77,35 @@
     if('IntersectionObserver' in window){
       controller.observer=new IntersectionObserver(entries=>{
         controller.visible=Boolean(entries[0]?.isIntersecting);
-        if(controller.visible)startLightLoop(viewport);else stopLightLoop(viewport);
+        if(!controller.visible){stopLightLoop(viewport);return;}
+        // The original strip may have been measured before Safari laid out an
+        // offscreen section. Rebuild after entering view, not from a stale width.
+        const actualWidth=source.getBoundingClientRect().width;
+        const repairs=iosLoopLayoutRepairs.get(viewport)||0;
+        viewport.dataset.iosDebugVisible=JSON.stringify({actualWidth,viewportWidth:viewport.clientWidth,measuredViewportWidth:controller.measuredViewportWidth,baseWidth:controller.baseWidth,repairs});
+        const viewportChanged=Math.abs(viewport.clientWidth-controller.measuredViewportWidth)>2;
+        const contentChanged=actualWidth>0&&Math.abs(actualWidth-controller.baseWidth)>Math.max(2,controller.baseWidth*.02);
+        if((viewportChanged||contentChanged)&&repairs<2){
+          iosLoopLayoutRepairs.set(viewport,repairs+1);
+          stopLightLoop(viewport);
+          requestAnimationFrame(()=>setupIOSLightLoop(viewport));
+          return;
+        }
+        startLightLoop(viewport);
       },{rootMargin:'120px 0px',threshold:0});
       controller.observer.observe(viewport);
+    }
+    if('ResizeObserver' in window){
+      controller.resizeObserver=new ResizeObserver(()=>{
+        const width=source.getBoundingClientRect().width;
+        const repairs=iosLoopLayoutRepairs.get(viewport)||0;
+        if(width>0&&Math.abs(width-controller.baseWidth)>Math.max(2,controller.baseWidth*.02)&&repairs<3){
+          iosLoopLayoutRepairs.set(viewport,repairs+1);
+          stopLightLoop(viewport);
+          requestAnimationFrame(()=>setupIOSLightLoop(viewport));
+        }
+      });
+      controller.resizeObserver.observe(source);
     }
     lightLoopControllers.set(viewport,controller);
     startLightLoop(viewport);
@@ -94,6 +128,7 @@
       const nextWidth=document.documentElement.clientWidth;
       if(Math.abs(nextWidth-lastWidth)<2)return;
       lastWidth=nextWidth;
+      iosLoopStrips.forEach(viewport=>iosLoopLayoutRepairs.delete(viewport));
       clearTimeout(window.__luenIOSLoopResize);
       window.__luenIOSLoopResize=setTimeout(initIOSLoops,220);
     },{passive:true});

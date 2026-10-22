@@ -5,8 +5,12 @@ on:
       - 'scripts/qa-home-motion-performance.mjs'
       - '.github/workflows/qa-home-motion-performance.yml'
       - 'assets/js/site-core.js'
+      - 'assets/js/site.js'
       - 'assets/js/luen-motion.js'
       - 'index.html'
+      - 'scripts/qa-live.mjs'
+      - 'scripts/qa-webkit-mobile.mjs'
+      - 'assets/images/luen-motion/clinic-poster.webp'
 permissions:
   contents: read
 jobs:
@@ -44,5 +48,50 @@ jobs:
         with:
           name: luen-home-motion-font-diagnostics
           path: qa-screenshots/homepage-motion/
+          retention-days: 14
+          if-no-files-found: warn
+
+  full-homepage-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout isolated preview candidate
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate static site
+        run: node scripts/check-site.mjs
+      - name: Install Playwright Chromium and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve only this PR's website locally
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-local-preview.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS -o /dev/null http://127.0.0.1:4173/ && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Check iPhone browser engine with WebKit
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-webkit-mobile.mjs
+      - name: Run nine-width website and iOS-path QA without real analytics traffic
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-live.mjs
+      - name: Validate actual hero media selection and poster loading
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-hero-video.mjs
+      - name: Preserve desktop/mobile screenshots and test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-full-homepage-local-qa
+          path: qa-screenshots/
           retention-days: 14
           if-no-files-found: warn
