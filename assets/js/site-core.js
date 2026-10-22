@@ -37,6 +37,7 @@
   const nav=document.getElementById('nav');
   const floatCta=document.getElementById('floatCta');
   const contactSection=document.getElementById('contact');
+  const gallerySection=document.getElementById('selected-content');
   const scrollProgress=document.getElementById('scrollProgress');
   let contactVisible=false;
   let ticking=false;
@@ -44,7 +45,12 @@
   function syncFloatCta(){
     if(!floatCta)return;
     const pastHero=window.scrollY>window.innerHeight*.72;
-    floatCta.classList.toggle('show',pastHero&&!contactVisible);
+    // Avoid obscuring the YouTube/Reels thumbnails on narrow screens.
+    // Restore the existing orange CTA immediately after the gallery.
+    const rect=gallerySection?.getBoundingClientRect();
+    const galleryVisible=window.matchMedia('(max-width: 700px)').matches
+      &&rect&&rect.top<window.innerHeight-60&&rect.bottom>60;
+    floatCta.classList.toggle('show',pastHero&&!contactVisible&&!galleryVisible);
   }
 
   if(contactSection&&'IntersectionObserver' in window){
@@ -66,6 +72,7 @@
     });
   }
   window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
   onScroll();
 
   const hamburger=document.getElementById('hamburger');

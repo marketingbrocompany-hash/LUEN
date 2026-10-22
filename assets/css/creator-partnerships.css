@@ -1,0 +1,526 @@
+/* LUEN curated creator partnerships · 2026-10-19
+   Scoped additions: preserve existing case imagery, marquee motion and design system. */
+html body .luen-why,html body .luen-partner-creators{background:#F5F3EE;color:#2A2521;position:relative;padding:clamp(78px,8vw,132px) 0}
+html body .luen-why{border-top:1px solid rgba(93,76,64,.12);border-bottom:1px solid rgba(93,76,64,.12)}
+html body .luen-partner-creators{border-top:1px solid rgba(93,76,64,.12)}
+html body .luen-partnership-head{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:12px clamp(32px,7vw,95px);align-items:end;margin-bottom:clamp(32px,4.5vw,62px)}
+html body .luen-partnership-eyebrow{grid-column:1/-1;margin:0 0 12px;font:700 11px/1.35 "Inter","Pretendard",sans-serif;letter-spacing:.13em;color:#A74722}
+html body .luen-partnership-head h2{margin:0;font:680 clamp(32px,3.9vw,57px)/1.19 "Pretendard",sans-serif;letter-spacing:-.05em;word-break:keep-all;text-wrap:balance}
+html body .luen-partnership-head h2 em{color:#BD6138;font-style:normal}
+html body .luen-partnership-head>p:last-child{margin:0;max-width:440px;font-size:clamp(14px,1.1vw,16px);line-height:1.85;color:#675A50;word-break:keep-all}
+html body .luen-why-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+html body .luen-why-grid article{border:1px solid #DED3C5;border-radius:22px;background:#EFE7DC;padding:clamp(22px,2.5vw,36px);min-width:0;transition:transform .3s ease,box-shadow .3s ease}
+html body .luen-why-grid article:hover{transform:translateY(-4px);box-shadow:0 15px 32px rgba(82,51,31,.08)}
+html body .luen-why-grid article>span{font:700 10px/1.4 "Inter","Pretendard",sans-serif;color:#A74722;letter-spacing:.1em}
+html body .luen-why-grid article h3{font-size:clamp(19px,1.6vw,23px);letter-spacing:-.04em;margin:clamp(28px,4vw,45px) 0 13px;line-height:1.36;word-break:keep-all}
+html body .luen-why-grid article p{font-size:14px;line-height:1.84;color:#6B6057;margin:0;word-break:keep-all}
+html body .luen-approach-link{display:inline-flex;align-items:center;gap:25px;border-bottom:1px solid rgba(167,71,34,.45);margin-top:26px;padding:8px 0;text-decoration:none;color:#A74722;font-size:14px;font-weight:600}
+html body .luen-approach-link:hover{border-color:#A74722}
+html body .luen-creator-feature{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);overflow:hidden;border-radius:30px;background:#EEE4D8;border:1px solid #DDD0C2}
+html body .luen-creator-feature-media{display:block;position:relative;min-width:0;min-height:490px;overflow:hidden;background:#C6AF9C}
+html body .luen-creator-feature-media img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+html body .luen-creator-feature-media:hover img{transform:scale(1.035)}
+html body .luen-creator-image-note{position:absolute;left:22px;bottom:22px;padding:10px 15px;border-radius:100px;background:rgba(245,243,238,.94);font:700 10px/1.25 "Inter","Pretendard",sans-serif;letter-spacing:.06em;color:#42362C}
+html body .luen-creator-feature-copy{padding:clamp(30px,4vw,61px);display:flex;flex-direction:column;justify-content:center;min-width:0}
+html body .luen-creator-category{font:700 11px/1.4 "Inter","Pretendard",sans-serif;letter-spacing:.11em;color:#A74722}
+html body .luen-creator-feature-copy h3{font:700 clamp(27px,3vw,44px)/1.24 "Pretendard","Noto Sans JP",sans-serif;letter-spacing:-.048em;margin:24px 0}
+html body .luen-creator-feature-copy h3 small{display:block;font-size:14px;font-weight:500;letter-spacing:-.01em;color:#6B6057;margin-top:9px}
+html body .luen-creator-feature-copy>p{margin:0 0 24px;max-width:520px;font-size:15px;color:#655A51;line-height:1.86;word-break:keep-all}
+html body .luen-creator-data{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:30px}
+html body .luen-creator-data>div{background:#F8F4ED;border:1px solid #E3D9CF;border-radius:16px;padding:18px 15px;min-width:0}
+html body .luen-creator-data small{display:block;font:700 10px/1.3 "Inter",sans-serif;letter-spacing:.1em;color:#A74722}
+html body .luen-creator-data strong{display:block;font:700 clamp(23px,2.2vw,33px)/1.2 "Inter","Pretendard",sans-serif;letter-spacing:-.045em;margin:6px 0}
+html body .luen-creator-data span{display:block;color:#685D55;font-size:11px;line-height:1.45}
+html body .luen-creator-feature-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+html body .luen-creator-primary,html body .luen-creator-secondary{min-height:47px;display:inline-flex;align-items:center;justify-content:center;gap:18px;border-radius:12px;padding:12px 17px;text-decoration:none;font-size:13px;font-weight:650;transition:background .2s,color .2s,transform .2s}
+html body .luen-creator-primary{background:#C6633B;color:#FFF9F1}
+html body .luen-creator-primary:hover{background:#A74722;transform:translateY(-2px)}
+html body .luen-creator-secondary{color:#4D4037;background:transparent;border:1px solid #CBBBAD}
+html body .luen-creator-secondary:hover{background:#FFF9F1}
+/* Creator detail page */
+html body .luen-profile-hero{padding:clamp(72px,8vw,122px) 0 clamp(50px,7vw,105px)}
+html body .luen-profile-kicker{font:700 11px/1.4 "Inter",sans-serif;letter-spacing:.13em;color:#A74722;margin-bottom:20px}
+html body .luen-profile-hero-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,6vw,90px);align-items:center}
+html body .luen-profile-hero-grid h1{font:700 clamp(38px,5vw,70px)/1.13 "Pretendard","Noto Sans JP",sans-serif;letter-spacing:-.055em;word-break:keep-all;margin:0 0 18px}
+html body .luen-profile-hero-grid h1 small{display:block;font-size:clamp(17px,2vw,23px);color:#8C7668;font-weight:500;letter-spacing:-.02em;margin-top:12px}
+html body .luen-profile-hero-grid .luen-profile-intro{font-size:clamp(15px,1.3vw,18px);line-height:1.85;color:#68594D;word-break:keep-all;max-width:560px}
+html body .luen-profile-media{min-width:0;position:relative;margin:0;overflow:hidden;border-radius:28px;background:#DED1C1}
+html body .luen-profile-media img{display:block;width:100%;height:auto;aspect-ratio:5/4;object-fit:cover}
+html body .luen-profile-media figcaption{font-size:12px;line-height:1.5;padding:12px 17px;color:#65594F}
+html body .luen-profile-data{display:flex;flex-wrap:wrap;gap:14px;margin:30px 0}
+html body .luen-profile-data div{border-top:1px solid #CDBFB1;min-width:145px;padding-top:14px}
+html body .luen-profile-data span{display:block;color:#806F63;font:650 10px/1.35 "Inter",sans-serif;letter-spacing:.08em}
+html body .luen-profile-data strong{font-size:clamp(21px,2vw,29px);letter-spacing:-.04em;display:block;margin-top:9px}
+html body .luen-profile-section{padding:clamp(58px,7vw,100px) 0;border-top:1px solid #D8CFC3}
+html body .luen-profile-section h2{font-size:clamp(30px,3.8vw,48px);line-height:1.18;letter-spacing:-.045em;margin:0 0 28px;word-break:keep-all}
+html body .luen-profile-columns{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,5vw,65px)}
+html body .luen-profile-section p{font-size:15px;line-height:1.9;color:#6D6056}
+html body .luen-profile-fit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+html body .luen-profile-fit article{background:#EFE7DC;border-radius:19px;padding:25px}
+html body .luen-profile-fit h3{font-size:17px;line-height:1.35;margin:0 0 10px}
+html body .luen-profile-fit p{font-size:13px;line-height:1.7;margin:0}
+html body .luen-profile-cta{background:#EDE2D5;border-radius:28px;padding:clamp(28px,4vw,58px);display:flex;align-items:center;justify-content:space-between;gap:24px}
+html body .luen-profile-cta h2{margin:0 0 12px;font-size:clamp(25px,3vw,42px)}
+html body .luen-profile-cta p{margin:0;max-width:560px}
+html body .luen-inquiry-context{border:1px solid #D5C8B9;background:#F1E9DF;border-radius:14px;padding:14px 18px;margin:0 0 20px}
+html body .luen-inquiry-context strong{display:block;font-size:13px;letter-spacing:-.01em}
+html body .luen-inquiry-context p{font-size:12px;color:#6D6056;margin:6px 0 0;line-height:1.6}
+html body .luen-inquiry-type{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+html body .luen-inquiry-type label{display:flex;gap:7px;align-items:center;font-size:13px;line-height:1.5;cursor:pointer}
+html body .luen-inquiry-type input{accent-color:#BF6239}
+html body .luen-creator-primary:focus-visible,html body .luen-creator-secondary:focus-visible,html body .luen-creator-feature-media:focus-visible{outline:2px solid #A74722;outline-offset:4px}
+@media(max-width:1000px){
+ html body .luen-partnership-head{grid-template-columns:1fr;gap:16px}
+ html body .luen-creator-feature{grid-template-columns:1fr 1fr}
+ html body .luen-creator-feature-media{min-height:445px}
+ html body .luen-creator-feature-copy{padding:28px}
+ html body .luen-creator-feature-copy h3{font-size:27px}
+ html body .luen-creator-data strong{font-size:23px}
+}
+@media(max-width:767px){
+ html body .luen-why,html body .luen-partner-creators{padding:68px 0}
+ html body .luen-partnership-eyebrow{margin-bottom:4px}
+ html body .luen-partnership-head h2{font-size:clamp(27px,7.4vw,39px)}
+ html body .luen-partnership-head{margin-bottom:30px}
+ html body .luen-why-grid{grid-template-columns:1fr;gap:10px}
+ html body .luen-why-grid article{padding:22px;border-radius:18px}
+ html body .luen-why-grid article h3{margin:16px 0 9px}
+ html body .luen-creator-feature{grid-template-columns:1fr;border-radius:20px}
+ html body .luen-creator-feature-media{min-height:0;aspect-ratio:1.22}
+ html body .luen-creator-feature-copy{padding:25px 21px 27px}
+ html body .luen-creator-feature-copy h3{margin:17px 0}
+ html body .luen-creator-data{gap:8px;margin-bottom:22px}
+ html body .luen-creator-data>div{padding:14px 12px}
+ html body .luen-creator-feature-actions{flex-direction:column;align-items:stretch}
+ html body .luen-creator-footnote{flex-direction:column;gap:7px}
+ html body main#top>.hero h1>span{white-space:normal!important;width:auto!important;max-width:100%!important;word-break:keep-all}
+ html body .luen-profile-hero-grid{grid-template-columns:1fr}
+ html body .luen-profile-media{border-radius:20px}
+ html body .luen-profile-hero-grid h1{font-size:clamp(31px,8.2vw,48px)}
+ html body .luen-profile-fit,html body .luen-profile-columns{grid-template-columns:1fr}
+ html body .luen-profile-cta{flex-direction:column;align-items:stretch;border-radius:20px}
+ html body .luen-profile-section{padding:55px 0}
+}
+@media(prefers-reduced-motion:reduce){
+ html body .luen-why-grid article,html body .luen-creator-feature-media img,html body .luen-creator-primary{transition:none!important}
+}
+
+/* Anchor targets remain visible beneath LUEN’s fixed navigation. */
+html body #why-luen,html body #partner-creators{scroll-margin-top:clamp(80px,10vw,115px)}
+
+/* Masubuchi partner profile · Korea F&B video reference gallery */
+html body .luen-food-content{scroll-margin-top:clamp(90px,10vw,120px)}
+html body .luen-profile-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+html body .luen-food-content-head{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.65fr);gap:clamp(20px,5vw,90px);align-items:end;margin-bottom:clamp(30px,5vw,52px)}
+html body .luen-food-content-head h2{margin:0}
+html body .luen-food-content-head>p{font-size:15px;line-height:1.85;color:#68594D;word-break:keep-all;max-width:450px;margin:0}
+html body .luen-food-group-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px;border-bottom:1px solid #D8CFC3;padding-bottom:14px}
+html body .luen-food-group-head--short{margin-top:48px}
+html body .luen-food-group-head h3{font:700 clamp(17px,1.65vw,23px)/1.3 "Inter","Pretendard",sans-serif;margin:0;letter-spacing:-.025em}
+html body .luen-food-group-head>span{font:700 10px/1.4 "Inter",sans-serif;color:#AE6946;letter-spacing:.1em}
+html body .luen-food-video-grid{display:grid;gap:20px;grid-template-columns:repeat(2,minmax(0,1fr))}
+html body .luen-food-video-grid--short{grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.5vw,20px)}
+html body .luen-food-video-card{display:block;min-width:0;text-decoration:none;color:#2A2521}
+html body .luen-food-video-thumb{position:relative;display:block;overflow:hidden;border-radius:24px;aspect-ratio:16/9;background:linear-gradient(138deg,#E2D2C1,#A67D67);box-shadow:0 7px 23px rgba(72,47,31,.07)}
+html body .luen-food-video-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block;transform:scale(1);transition:transform .6s cubic-bezier(.2,.65,.2,1)}
+html body .luen-food-video-card:hover .luen-food-video-thumb img{transform:scale(1.04)}
+html body .luen-food-video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(245,243,238,.94);color:#B4532E;font-size:17px;line-height:1;box-shadow:0 8px 22px rgba(49,28,14,.18)}
+html body .luen-food-video-copy{display:grid;gap:7px;padding:17px 3px 3px}
+html body .luen-food-video-copy small{font:700 10px/1.4 "Inter",sans-serif;letter-spacing:.11em;color:#A74722}
+html body .luen-food-video-copy strong{font-size:clamp(16px,1.6vw,20px);line-height:1.4;letter-spacing:-.035em;word-break:keep-all}
+html body .luen-food-video-copy>span{font-size:12px;color:#6E5E51}
+html body .luen-food-video-thumb--vertical{aspect-ratio:4/5}
+html body .luen-food-video-thumb--instagram{background:linear-gradient(155deg,#8D534B 0%,#C77354 43%,#E3B788 100%)}
+html body .luen-food-video-platform{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#FFF7EE}
+html body .luen-food-video-platform b{display:grid;place-items:center;width:65px;height:65px;border:2px solid rgba(255,255,255,.75);border-radius:21px;font:800 25px/1 "Inter",sans-serif;letter-spacing:-.06em}
+html body .luen-food-video-platform small{font:700 11px/1.4 "Inter",sans-serif;letter-spacing:.12em}
+html body .luen-food-video-thumb--instagram .luen-food-video-play{left:auto;top:auto;bottom:16px;right:16px;width:34px;height:34px;transform:none;font-size:17px}
+html body .luen-food-video-overlay{position:absolute;bottom:16px;left:15px;background:rgba(245,243,238,.9);border-radius:999px;padding:7px 11px;color:#A74722;font:700 9px/1.3 "Inter",sans-serif;letter-spacing:.1em}
+html body .luen-food-content-note{margin:32px 0 0!important;max-width:790px;font-size:12px!important;line-height:1.85!important;color:#817267!important}
+html body .luen-food-video-card:focus-visible{outline:2px solid #A74722;outline-offset:5px;border-radius:22px}
+@media(max-width:820px){html body .luen-food-video-grid--short{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}}
+@media(max-width:767px){
+  html body .luen-food-content-head{grid-template-columns:1fr;gap:15px}
+  html body .luen-food-video-grid{grid-template-columns:1fr;gap:22px}
+  html body .luen-food-video-grid--short{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+  html body .luen-food-video-grid--short .luen-food-video-thumb{border-radius:16px}
+  html body .luen-food-video-grid--short .luen-food-video-copy strong{font-size:14px}
+  html body .luen-food-video-grid--short .luen-food-video-copy{padding-top:12px}
+  html body .luen-food-video-grid--short .luen-food-video-play{width:39px;height:39px}
+  html body .luen-food-video-platform b{width:50px;height:50px;font-size:19px;border-radius:17px}
+  html body .luen-food-video-platform small{font-size:8px;letter-spacing:.05em}
+  html body .luen-food-video-thumb{border-radius:18px}
+  html body .luen-food-group-head--short{margin-top:36px}
+  html body .luen-profile-hero-actions{align-items:stretch;flex-direction:column}
+  html body .luen-profile-hero-actions a{width:100%;text-align:center}
+}
+@media(max-width:360px){html body .luen-food-video-grid--short .luen-food-video-copy small{font-size:9px;letter-spacing:.04em}}
+@media(prefers-reduced-motion:reduce){html body .luen-food-video-thumb img{transition:none}}
+
+/* Distinguish four LUEN-managed IG collaborations without unverified images. */
+html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(2) .luen-food-video-thumb--instagram{background:linear-gradient(153deg,#8B665E 0%,#B77B61 46%,#EAC4A3 100%)}
+html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(3) .luen-food-video-thumb--instagram{background:linear-gradient(150deg,#775D57 0%,#B87B62 49%,#DFA780 100%)}
+html body .luen-food-video-grid--short>.luen-food-video-card:nth-child(4) .luen-food-video-thumb--instagram{background:linear-gradient(150deg,#825D51 0%,#CC885F 47%,#E9BA91 100%)}
+
+/* Verified locally-hosted Instagram reel cover photographs. */
+html body .luen-food-video-thumb--instagram .luen-instagram-cover{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s cubic-bezier(.2,.65,.2,1)}
+html body .luen-food-video-card:hover .luen-food-video-thumb--instagram .luen-instagram-cover{transform:scale(1.035)}
+html body .luen-food-video-thumb--instagram .luen-food-video-platform{display:none}
+html body .luen-food-video-thumb--instagram .luen-food-video-play{z-index:2;background:rgba(245,243,238,.92)}
+@media(prefers-reduced-motion:reduce){html body .luen-food-video-thumb--instagram .luen-instagram-cover{transition:none}}
+
+/* Video gallery: show only platform/index and original-video link, without per-video titles. */
+html body .luen-food-video-copy{gap:6px;padding-top:12px}
+
+/* 2026-10-20 / Masubuchi complete one-page story
+   Keep this scoped to the creator profile. Do not alter other case study pages. */
+html body .luen-profile-jumpnav{background:#EDE6DB;border-top:1px solid #D9CBBC;border-bottom:1px solid #D9CBBC}
+html body .luen-profile-jumpnav-inner{display:flex;align-items:center;gap:clamp(12px,2vw,26px);padding-top:16px;padding-bottom:16px}
+html body .luen-profile-jumpnav-inner>span{color:#9C684F;font:700 10px/1.4 "Inter",sans-serif;letter-spacing:.1em;white-space:nowrap;margin-right:auto}
+html body .luen-profile-jumpnav-inner>a{font-size:12px;font-weight:650;text-decoration:none;white-space:nowrap;color:#514339;display:inline-flex;align-items:center;gap:9px;transition:color .2s}
+html body .luen-profile-jumpnav-inner>a:hover{color:#B95630}
+html body .luen-profile-jumpnav-inner>a:focus-visible{outline:2px solid #B95630;outline-offset:5px;border-radius:4px}
+html body .luen-profile-data{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:30px 0}
+html body .luen-profile-data>div{min-width:0}
+html body .luen-profile-data strong{font-size:clamp(17px,1.6vw,25px);line-height:1.25;word-break:keep-all}
+html body #creator-identity,html body #bibigo-feature,html body #brand-fit{scroll-margin-top:clamp(90px,10vw,120px)}
+html body .luen-profile-identity-intro{align-items:end}
+html body .luen-profile-identity-intro h2{margin-bottom:0}
+html body .luen-profile-identity-intro p{max-width:560px;margin:0}
+html body .luen-profile-identity-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:35px}
+html body .luen-profile-identity-points>div{padding:clamp(19px,2.5vw,31px);background:#F0E8DD;border:1px solid #E3D8C9;border-radius:21px;min-width:0}
+html body .luen-profile-identity-points>div>span,html body .luen-profile-fit article>span{display:block;color:#A74722;font:700 10px/1.5 "Inter",sans-serif;letter-spacing:.08em}
+html body .luen-profile-identity-points strong{display:block;font-size:clamp(16px,1.55vw,21px);letter-spacing:-.035em;line-height:1.4;margin:18px 0 8px}
+html body .luen-profile-identity-points p{font-size:13px;line-height:1.75;margin:0}
+html body .luen-bibigo-case{background:#EEE4D8}
+html body .luen-bibigo-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(230px,.65fr);align-items:stretch;gap:clamp(20px,4vw,60px);margin-bottom:clamp(22px,3.5vw,42px)}
+html body .luen-bibigo-headline{padding-top:12px;min-width:0}
+html body .luen-bibigo-headline h2{margin:0 0 24px}
+html body .luen-bibigo-headline>p:last-child{margin:0;max-width:630px}
+html body .luen-bibigo-highlight{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0;background:#30251F;color:#F9EADB;border-radius:25px;padding:clamp(24px,3.6vw,46px)}
+html body .luen-bibigo-highlight>span{font:700 10px/1.5 "Inter",sans-serif;color:#E5B89E;letter-spacing:.14em}
+html body .luen-bibigo-highlight>strong{display:block;font:700 clamp(68px,7vw,112px)/1 "Inter",sans-serif;letter-spacing:-.08em;color:#FFF7ED;margin:15px 0 5px}
+html body .luen-bibigo-highlight>strong em{font-style:normal;font-size:.6em;color:#EBA27B;vertical-align:top}
+html body .luen-bibigo-highlight>b{font:700 12px/1.5 "Inter",sans-serif;letter-spacing:.1em;color:#EBA27B}
+html body .luen-bibigo-highlight>p{font-size:12px!important;line-height:1.6!important;color:#D5C7BC!important;margin:16px 0 0!important}
+html body .luen-bibigo-story{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:13px}
+html body .luen-bibigo-brief,html body .luen-bibigo-approach{min-width:0;border:1px solid #E0D2C4;border-radius:21px;background:#F8F4ED;padding:clamp(22px,3vw,38px)}
+html body .luen-bibigo-brief>span,html body .luen-bibigo-approach>span{display:block;color:#A74722;font:700 10px/1.5 "Inter",sans-serif;letter-spacing:.12em}
+html body .luen-bibigo-brief h3{font-size:clamp(22px,2.5vw,31px);letter-spacing:-.04em;line-height:1.35;margin:28px 0 18px;word-break:keep-all}
+html body .luen-bibigo-brief p{font-size:14px;line-height:1.84;max-width:450px;margin:0}
+html body .luen-bibigo-approach ol{list-style:none;margin:22px 0 0;padding:0}
+html body .luen-bibigo-approach li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid #E2D5C8}
+html body .luen-bibigo-approach li:first-child{border-top:0;padding-top:0}
+html body .luen-bibigo-approach li>span{font:700 11px/1.6 "Inter",sans-serif;color:#B86441}
+html body .luen-bibigo-approach li strong{display:block;font-size:16px;line-height:1.5;letter-spacing:-.03em}
+html body .luen-bibigo-approach li p{font-size:13px;line-height:1.65;margin:6px 0 0}
+html body .luen-bibigo-transition{display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid #CCBAA9;margin-top:30px;padding-top:23px}
+html body .luen-bibigo-transition>p{margin:0;font-size:14px;line-height:1.65}
+html body .luen-bibigo-transition strong{color:#A74722}
+html body .luen-bibigo-transition>a{display:inline-flex;align-items:center;gap:18px;color:#A74722;font-weight:650;font-size:13px;text-decoration:none;white-space:nowrap;border-bottom:1px solid #A74722;padding:8px 0}
+html body .luen-bibigo-transition>a:focus-visible{outline:2px solid #A74722;outline-offset:4px}
+html body .luen-bibigo-disclosure{font-size:11px!important;line-height:1.65!important;color:#88776A!important;margin:18px 0 0!important}
+html body .luen-profile-brand-fit-head{align-items:end;margin-bottom:27px}
+html body .luen-profile-brand-fit-head h2{margin:0}
+html body .luen-profile-brand-fit-head>p{margin:0}
+html body .luen-profile-brand-fit .luen-profile-fit article{display:flex;flex-direction:column;gap:12px;padding:clamp(20px,2.6vw,33px)}
+html body .luen-profile-brand-fit .luen-profile-fit h3{margin:8px 0 0;font-size:clamp(18px,1.7vw,22px);letter-spacing:-.035em}
+html body .luen-profile-brand-fit .luen-profile-fit p{margin:0}
+@media(max-width:1100px){
+ html body .luen-profile-jumpnav-inner{flex-wrap:wrap;gap:12px 21px}
+ html body .luen-profile-jumpnav-inner>span{flex-basis:100%}
+}
+@media(max-width:820px){
+ html body .luen-bibigo-head{grid-template-columns:1fr;gap:22px}
+ html body .luen-bibigo-highlight{min-height:230px}
+ html body .luen-bibigo-story{grid-template-columns:1fr}
+ html body .luen-profile-identity-points{grid-template-columns:1fr 1fr}
+}
+@media(max-width:767px){
+ html body .luen-profile-jumpnav-inner{display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;gap:18px;padding-top:15px;padding-bottom:15px}
+ html body .luen-profile-jumpnav-inner::-webkit-scrollbar{display:none}
+ html body .luen-profile-jumpnav-inner>span{display:none}
+ html body .luen-profile-data{gap:9px}
+ html body .luen-profile-data strong{font-size:clamp(16px,4.3vw,20px)}
+ html body .luen-profile-data span{font-size:9px;letter-spacing:.015em}
+ html body .luen-profile-identity-points{grid-template-columns:1fr;margin-top:26px}
+ html body .luen-profile-identity-points>div{padding:22px}
+ html body .luen-profile-identity-points strong{margin:12px 0 6px}
+ html body .luen-bibigo-highlight{min-height:0;padding:30px 27px}
+ html body .luen-bibigo-highlight>strong{font-size:79px}
+ html body .luen-bibigo-brief,html body .luen-bibigo-approach{padding:24px}
+ html body .luen-bibigo-transition{flex-direction:column;align-items:flex-start;gap:9px}
+ html body .luen-profile-brand-fit-head{gap:19px}
+}
+@media(max-width:370px){
+ html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html body .luen-profile-data>div:last-child{grid-column:1/-1}
+}
+
+/* Two creator social audience numbers and captured Instagram proof. */
+html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}
+html body .luen-profile-data>div{min-width:0}
+html body .luen-bibigo-highlight>strong{font-size:clamp(45px,5vw,74px);letter-spacing:-.072em;white-space:nowrap}
+html body .luen-bibigo-highlight>strong em{font-size:.50em;vertical-align:baseline;margin-left:4px}
+html body .luen-bibigo-proof{margin:22px 0 0;width:100%;max-width:285px}
+html body .luen-bibigo-proof a{display:block;overflow:hidden;border-radius:10px;border:1px solid rgba(255,255,255,.3);line-height:0}
+html body .luen-bibigo-proof img{display:block;width:100%;height:auto;aspect-ratio:285/77;object-fit:cover}
+html body .luen-bibigo-proof figcaption{font-size:11px;line-height:1.6;color:#D5C7BC;margin:9px 0 0}
+html body .luen-bibigo-proof a:focus-visible{outline:2px solid #ECA988;outline-offset:4px}
+@media(max-width:767px){html body .luen-bibigo-highlight>strong{font-size:clamp(48px,9.2vw,70px)}}
+@media(max-width:370px){html body .luen-profile-data{grid-template-columns:repeat(2,minmax(0,1fr))}html body .luen-profile-data>div:last-child{grid-column:auto}}
+
+/* Full Instagram screenshot is the sole bibigo visual proof. No duplicate counter card. */
+html body .luen-bibigo-editorial{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.88fr);gap:clamp(25px,4vw,60px);align-items:start}
+html body .luen-bibigo-editorial-copy{min-width:0}
+html body .luen-bibigo-editorial-copy .luen-bibigo-headline{padding:0 0 27px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-headline h2{margin-bottom:19px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-story{display:grid;grid-template-columns:1fr;gap:12px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-brief,
+html body .luen-bibigo-editorial-copy .luen-bibigo-approach{border-radius:20px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-brief h3{margin:18px 0 12px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-approach ol{margin-top:13px}
+html body .luen-bibigo-editorial-copy .luen-bibigo-approach li{padding:11px 0}
+html body .luen-bibigo-full-screenshot{width:100%;max-width:520px;min-width:0;margin:0;justify-self:center}
+html body .luen-bibigo-full-screenshot a{display:block;overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 14px 38px rgba(70,39,22,.12);line-height:0;transition:transform .3s}
+html body .luen-bibigo-full-screenshot a:hover{transform:translateY(-3px)}
+html body .luen-bibigo-full-screenshot img{display:block;width:100%;height:auto;aspect-ratio:640/966;object-fit:contain}
+html body .luen-bibigo-full-screenshot figcaption{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 14px;margin:13px 1px 0;font-size:11px;line-height:1.65;color:#705B4B}
+html body .luen-bibigo-full-screenshot figcaption span:last-child{color:#AC5938;font-weight:700}
+html body .luen-bibigo-full-screenshot a:focus-visible{outline:2px solid #A74722;outline-offset:5px}
+@media(max-width:900px){
+ html body .luen-bibigo-editorial{grid-template-columns:1fr;gap:27px}
+ html body .luen-bibigo-editorial-copy .luen-bibigo-story{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html body .luen-bibigo-full-screenshot{max-width:480px}
+}
+@media(max-width:767px){
+ html body .luen-bibigo-editorial-copy .luen-bibigo-story{grid-template-columns:1fr}
+ html body .luen-bibigo-full-screenshot{max-width:min(100%,450px)}
+ html body .luen-bibigo-full-screenshot a{border-radius:18px}
+ html body .luen-bibigo-editorial{gap:20px}
+}
+@media(prefers-reduced-motion:reduce){html body .luen-bibigo-full-screenshot a{transition:none}}
+
+/* Bibigo editorial: no blank space after the heading when intro copy is removed. */
+html body .luen-bibigo-editorial-copy .luen-bibigo-headline h2{margin-bottom:0}
+
+/* User-provided 2026-10-21 Masubuchi ice cream portrait: keep face and products in view. */
+html body .luen-profile-media:has(img.luen-creator-portrait){aspect-ratio:3/4;border-radius:28px}
+html body .luen-profile-media img.luen-creator-portrait{width:100%;height:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 50%;display:block}
+html body .luen-creator-feature-media:has(img.luen-creator-portrait){min-height:0;aspect-ratio:4/5}
+html body .luen-creator-feature-media img.luen-creator-portrait{width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+@media(max-width:767px){
+ html body .luen-profile-media:has(img.luen-creator-portrait){aspect-ratio:3/4;border-radius:20px}
+ html body .luen-creator-feature-media:has(img.luen-creator-portrait){aspect-ratio:4/5;min-height:0}
+}
+
+
+/* 2026-10-22 — PARTNER CREATORS / editorial spotlight
+   A compact person-first editorial accent between case studies and process.
+   Scoped overrides leave detailed creator profile, campaign imagery and hero unchanged. */
+html body #partner-creators.luen-partner-creators--editorial{
+  padding:clamp(52px,5.6vw,82px) 0 clamp(58px,6vw,88px);
+}
+html body #partner-creators .luen-partnership-head--editorial{
+  gap:10px clamp(22px,5vw,66px);
+  margin-bottom:clamp(22px,3vw,37px);
+  align-items:end;
+}
+html body #partner-creators .luen-partnership-head--editorial .luen-partnership-eyebrow{
+  margin-bottom:5px;
+}
+html body #partner-creators .luen-partnership-head--editorial h2{
+  font-size:clamp(29px,3.15vw,44px);line-height:1.16;
+}
+html body #partner-creators .luen-partnership-head--editorial>p:last-child{
+  font-size:13px;line-height:1.7;max-width:310px;
+}
+html body #partner-creators .luen-creator-feature--editorial{
+  display:grid;grid-template-columns:clamp(214px,23vw,268px) minmax(0,1fr);
+  align-items:center;column-gap:clamp(26px,4.4vw,62px);
+  max-width:1080px;min-width:0;margin:0 auto;
+  border:0;border-top:1px solid #D9CEC1;border-bottom:1px solid #D9CEC1;
+  border-radius:0;background:transparent;overflow:visible;
+  padding:22px 0;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-media{
+  display:block;width:100%;min-height:0;height:auto;
+  aspect-ratio:4/5;border-radius:18px;overflow:hidden;
+  background:#D9C4B1;align-self:center;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-media img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:50% 39%;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-image-note{
+  left:12px;bottom:12px;padding:7px 11px;border-radius:50px;
+  font-size:9px;letter-spacing:.07em;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-copy{
+  padding:4px 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  min-width:0;gap:0;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-category{
+  color:#A94F2B;font-size:10px;letter-spacing:.1em;
+}
+html body #partner-creators .luen-creator-feature--editorial h3{
+  margin:10px 0 11px;
+  font-size:clamp(27px,2.65vw,37px);line-height:1.16;letter-spacing:-.045em;
+}
+html body #partner-creators .luen-creator-feature--editorial h3 small{
+  margin-top:5px;font-size:13px;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-copy>p{
+  margin:0 0 14px;max-width:565px;font-size:13px;
+  line-height:1.72;color:#5E554D;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-data{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 24px;
+  margin:0 0 15px;padding:12px 0 0;width:100%;
+  border-top:1px solid #DFD5CA;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-data>div{
+  display:flex;align-items:baseline;gap:7px;
+  border:0;background:transparent;border-radius:0;padding:0;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-data small{
+  display:inline;font-size:9px;color:#806D5C;letter-spacing:.09em;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-data strong{
+  display:inline;font-size:17px;line-height:1.2;margin:0;
+  color:#2E2620;letter-spacing:-.04em;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-data span{
+  display:none;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions{
+  gap:12px 24px;align-items:center;flex-wrap:wrap;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions a{
+  min-height:36px;padding:5px 0;justify-content:flex-start;gap:12px;
+  border:0;border-radius:0;background:transparent;
+  font-size:12px;font-weight:750;transform:none;
+  border-bottom:1px solid currentColor;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-primary{color:#AE502C}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-secondary{color:#54483E}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions a:hover{
+  color:#D5683E;transform:none;background:transparent;
+}
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions a:focus-visible,
+html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-media:focus-visible{
+  outline:2px solid #A74722;outline-offset:5px;
+}
+@media(max-width:1000px){
+  html body #partner-creators .luen-creator-feature--editorial{
+    grid-template-columns:clamp(190px,26vw,236px) minmax(0,1fr);
+    column-gap:clamp(18px,3.6vw,42px);
+  }
+  html body #partner-creators .luen-partnership-head--editorial{
+    grid-template-columns:minmax(0,1.35fr) minmax(190px,.65fr);gap:10px 22px;
+  }
+}
+@media(max-width:700px){
+  html body #partner-creators.luen-partner-creators--editorial{
+    padding:50px 0 58px;
+  }
+  html body #partner-creators .luen-partnership-head--editorial{
+    grid-template-columns:1fr;gap:8px;margin-bottom:18px;
+  }
+  html body #partner-creators .luen-partnership-head--editorial h2{
+    font-size:clamp(26px,6.4vw,33px);
+  }
+  html body #partner-creators .luen-partnership-head--editorial>p:last-child{
+    max-width:95%;font-size:12px;line-height:1.65;
+  }
+  html body #partner-creators .luen-creator-feature--editorial{
+    display:grid;grid-template-columns:118px minmax(0,1fr);align-items:start;
+    gap:0 15px;padding:18px 0 4px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-media{
+    grid-column:1;grid-row:1/span 2;width:118px;aspect-ratio:3/4;border-radius:13px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-image-note{
+    left:6px;bottom:6px;padding:5px 7px;font-size:7px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-copy{
+    display:contents;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-category{
+    grid-column:2;grid-row:1;align-self:end;padding-top:4px;font-size:9px;
+    letter-spacing:.04em;
+  }
+  html body #partner-creators .luen-creator-feature--editorial h3{
+    grid-column:2;grid-row:2;align-self:start;
+    margin:9px 0 0;font-size:clamp(20px,5vw,26px);line-height:1.24;
+    overflow-wrap:anywhere;
+  }
+  html body #partner-creators .luen-creator-feature--editorial h3 small{
+    margin-top:8px;font-size:11px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-copy>p{
+    grid-column:1/-1;grid-row:3;margin:17px 0 13px;
+    font-size:12px;line-height:1.72;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-data{
+    grid-column:1/-1;grid-row:4;
+    gap:10px 18px;padding-top:11px;margin:0 0 11px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-data>div{
+    padding:0;gap:6px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-data small{font-size:9px}
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-data strong{font-size:15px}
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions{
+    grid-column:1/-1;grid-row:5;flex-direction:row;align-items:center;
+    gap:9px 18px;margin-bottom:6px;
+  }
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions a{
+    min-height:34px;width:auto;padding:4px 0;font-size:11px;
+  }
+}
+@media(max-width:355px){
+  html body #partner-creators .luen-creator-feature--editorial{grid-template-columns:104px minmax(0,1fr);column-gap:12px}
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-media{width:104px}
+  html body #partner-creators .luen-creator-feature--editorial h3{font-size:19px}
+}
+
+
+/* 2026-10-22: Homepage section journey — campaign proof before services,
+   with the unchanged long-form/reels carousel after the service gateway.
+   Preserve all portfolio motion and campaign CTA styles. */
+html body main#top>.luen-home-selected-work {
+  position:relative;overflow:hidden;
+  padding:clamp(54px,6.4vw,84px) 0 clamp(62px,7vw,98px);
+  background:#F5F3EE;
+  border-top:1px solid rgba(93,76,64,.12);
+  color:#2A2521;
+}
+html body main#top>.luen-home-selected-work>.container{min-width:0}
+html body main#top>.luen-home-selected-work .case-selected-work-v10{margin-top:0}
+@media(max-width:767px){
+  html body main#top>.luen-home-selected-work{padding:46px 0 65px}
+  html body main#top>.luen-home-selected-work .case-selected-work-v10{margin-top:0}
+}
+
+/* Reapply the exact portfolio containment used before the carousel moved from
+   #cases to #selected-content. The wide max-content track must never become
+   the grid item's intrinsic width (and alter clone math on iOS/desktop). */
+html body #selected-content #work {
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+html body #selected-content #work .case-portfolio-v10,
+html body #selected-content #work .portfolio-lane,
+html body #selected-content #work .portfolio-viewport {
+  box-sizing:border-box!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #selected-content #work .portfolio-track{
+    will-change:auto!important;
+  }
+}

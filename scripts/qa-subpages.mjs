@@ -18,7 +18,7 @@ const routes=[
   '/insights/japan-influencer-marketing-cost/',
   '/insights/japan-youtuber-matching-guide/',
   '/insights/youtube-creator-marketing-metrics/',
-  '/project-guide/', '/contact/'
+  '/project-guide/', '/contact/', '/creators/masubuchi-sachiyo/'
 ];
 // Verify every indexed public route is covered before browser QA starts.
 // Do not silently skip newly added service/case/insight pages.
@@ -159,8 +159,115 @@ try{
               fail(route,v.name,'Mobile navigation did not close: '+JSON.stringify(closed));
           }
         }
+
+        // The user-provided Instagram view screenshot must be served as real pixels
+        // on both the creator profile and original bibigo case route.
+        if(route==='/creators/masubuchi-sachiyo/'||route==='/cases/masubuchi-bibigo/'){
+          const proof=page.locator('img[src="/assets/images/cases/masubuchi-bibigo-instagram-full.avif"]');
+          if(await proof.count()!==1)fail(route,v.name,'Missing full Instagram Reel screenshot');
+          else{
+            await proof.scrollIntoViewIfNeeded();
+            let dimensions;
+            try{
+              const handle=await page.waitForFunction(()=>{
+                const img=document.querySelector('img[src="/assets/images/cases/masubuchi-bibigo-instagram-full.avif"]');
+                return img&&img.complete&&img.naturalWidth>0
+                  ? {width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}
+                  : false;
+              },null,{timeout:12000});
+              dimensions=await handle.jsonValue();
+            }catch(_err){
+              dimensions=await proof.evaluate(img=>({width:img.naturalWidth,height:img.naturalHeight,complete:img.complete}));
+            }
+            if(!dimensions.complete||dimensions.width<600||dimensions.height<900)
+              fail(route,v.name,'Instagram proof image did not decode: '+JSON.stringify(dimensions));
+          }
+        }
+
+        // Supplied ice cream portrait preserves the intentionally taller 3:4 crop.
+        if(route==='/creators/masubuchi-sachiyo/'){
+          const portrait=page.locator('.luen-profile-media img.luen-creator-portrait');
+          if(await portrait.count()!==1) fail(route,v.name,'Masubuchi profile portrait missing');
+          else{
+            const state=await portrait.evaluate(async img=>{
+              try{await img.decode()}catch(_){}
+              const rect=img.getBoundingClientRect();
+              return {naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,displayWidth:rect.width,displayHeight:rect.height};
+            });
+            if(state.naturalWidth!==640||state.naturalHeight!==1136)
+              fail(route,v.name,'Profile portrait original photo dimensions invalid: '+JSON.stringify(state));
+            const aspect=state.displayWidth/state.displayHeight;
+            if(Math.abs(aspect-3/4)>.025)
+              fail(route,v.name,'Profile portrait should display a 3:4 crop: '+JSON.stringify(state));
+          }
+        }
+        // The homepage partner feature also points to the supplied profile photo.
+        if(route==='/'){
+          const homePortrait=page.locator('.luen-creator-feature-media img.luen-creator-portrait');
+          if(await homePortrait.count()!==1)fail(route,v.name,'Homepage partner portrait missing');
+        }
+
+        // Featured creator: load each local Instagram cover to catch missing assets,
+        // and check the YouTube cover baseline without assuming every upload has maxres.
+        if(route==='/creators/masubuchi-sachiyo/'){
+          const reelGrid=page.locator('.luen-food-video-grid--short');
+          const layout=await reelGrid.evaluate(grid=>{
+            const cards=[...grid.querySelectorAll('.luen-food-video-card')];
+            const columns=getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
+            const positions=cards.map(card=>({top:card.getBoundingClientRect().top,left:card.getBoundingClientRect().left,width:card.getBoundingClientRect().width}));
+            return {columns,positions};
+          });
+          const expectedColumns=v.width>820?4:2;
+          if(layout.columns!==expectedColumns)
+            fail(route,v.name,'Expected '+expectedColumns+' Instagram columns, found '+layout.columns);
+          if(layout.positions.length===4 && expectedColumns===4 && Math.max(...layout.positions.map(p=>p.top))-Math.min(...layout.positions.map(p=>p.top))>3)
+            fail(route,v.name,'Instagram Reels do not share one row: '+JSON.stringify(layout.positions));
+          // One-page creator journey: inline case proof and in-page story links.
+          const journey=await page.evaluate(()=>{
+            const ids=['creator-identity','bibigo-feature','korea-food-content','brand-fit'];
+            return {
+              anchors:ids.map(id=>({id,exists:!!document.getElementById(id),top:document.getElementById(id)?.getBoundingClientRect().top||0})),
+              bibigoMetric:document.querySelector('.luen-bibigo-full-screenshot img')?.getAttribute('alt')||'',
+              oldExternalCaseLink:!!document.querySelector('a[href="/cases/masubuchi-bibigo/"]'),
+              removedNote:document.querySelector('main')?.textContent.includes('위 항목은 LUEN의 제안 가능 분야이며')
+            };
+          });
+          if(journey.anchors.some(x=>!x.exists)||journey.anchors.some((x,i)=>i>0 && x.top<=journey.anchors[i-1].top))
+            fail(route,v.name,'Inline creator sections missing or out of sequence: '+JSON.stringify(journey.anchors));
+          if(!journey.bibigoMetric?.includes('292.5만')||journey.oldExternalCaseLink||journey.removedNote)
+            fail(route,v.name,'bibigo one-page integration/regression failed: '+JSON.stringify(journey));
+          const igCovers=page.locator('.luen-food-video-grid--short img.luen-instagram-cover');
+          const ytCovers=page.locator('.luen-food-video-grid--long img[data-youtube-video]');
+          if(await igCovers.count()!==4)fail(route,v.name,'Expected 4 local Instagram cover images');
+          if(await ytCovers.count()!==4)fail(route,v.name,'Expected 4 YouTube cover images');
+          for(let k=0;k<await igCovers.count();k++){
+            const el=igCovers.nth(k);
+            await el.scrollIntoViewIfNeeded();
+            // Images can be pending immediately after scrolling on a throttled
+            // mobile viewport: wait for an actual decoded cover, not a microtask.
+            let decoded;
+            try{
+              const handle=await page.waitForFunction(index=>{
+                const img=document.querySelectorAll('.luen-food-video-grid--short img.luen-instagram-cover')[index];
+                if(!img||!img.complete||img.naturalWidth===0)return false;
+                return {src:img.currentSrc,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight};
+              },k,{timeout:12000});
+              decoded=await handle.jsonValue();
+            }catch(_err){
+              decoded=await el.evaluate(img=>({src:img.currentSrc,complete:img.complete,width:img.naturalWidth,height:img.naturalHeight}));
+            }
+            if(!decoded.complete||decoded.width<200||decoded.height<200)
+              fail(route,v.name,'Instagram cover '+(k+1)+' did not decode at usable size: '+JSON.stringify(decoded));
+          }
+          const firstYoutube=ytCovers.first();
+          await firstYoutube.scrollIntoViewIfNeeded();
+          await firstYoutube.evaluate(async img=>{try{await img.decode()}catch(_err){}});
+          const youtubeInfo=await firstYoutube.evaluate(img=>({width:img.naturalWidth,height:img.naturalHeight,quality:img.dataset.imageQuality||'hqdefault'}));
+          if(youtubeInfo.width<320||youtubeInfo.height<180)
+            fail(route,v.name,'YouTube cover too small: '+JSON.stringify(youtubeInfo));
+        }
         // Screenshot first-fold of all core pages, plus critical detail pages.
-        if(v.name!=='mobile-narrow' && (routes.indexOf(route)<13 || route==='/contact/'||route==='/project-guide/')){
+        if(v.name!=='mobile-narrow' && (routes.indexOf(route)<13 || route==='/contact/'||route==='/project-guide/'||route==='/creators/masubuchi-sachiyo/')){
           const name=safeName(route)+'-'+v.name+'.jpg';
           await page.screenshot({path:path.join(screenshots,name),type:'jpeg',quality:69,animations:'disabled',timeout:16000});
         }
