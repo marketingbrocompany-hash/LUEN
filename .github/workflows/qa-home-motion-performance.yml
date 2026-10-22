@@ -5,6 +5,7 @@ on:
       - 'scripts/qa-home-motion-performance.mjs'
       - '.github/workflows/qa-home-motion-performance.yml'
       - 'assets/js/site-core.js'
+      - 'assets/js/site.js'
       - 'assets/js/luen-motion.js'
       - 'index.html'
       - 'scripts/qa-live.mjs'
