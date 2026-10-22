@@ -484,3 +484,21 @@ html body #partner-creators .luen-creator-feature--editorial .luen-creator-featu
   html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-media{width:104px}
   html body #partner-creators .luen-creator-feature--editorial h3{font-size:19px}
 }
+
+
+/* 2026-10-22: Homepage section journey — campaign proof before services,
+   with the unchanged long-form/reels carousel after the service gateway.
+   Preserve all portfolio motion and campaign CTA styles. */
+html body main#top>.luen-home-selected-work {
+  position:relative;overflow:hidden;
+  padding:clamp(54px,6.4vw,84px) 0 clamp(62px,7vw,98px);
+  background:#F5F3EE;
+  border-top:1px solid rgba(93,76,64,.12);
+  color:#2A2521;
+}
+html body main#top>.luen-home-selected-work>.container{min-width:0}
+html body main#top>.luen-home-selected-work .case-selected-work-v10{margin-top:0}
+@media(max-width:767px){
+  html body main#top>.luen-home-selected-work{padding:46px 0 65px}
+  html body main#top>.luen-home-selected-work .case-selected-work-v10{margin-top:0}
+}
