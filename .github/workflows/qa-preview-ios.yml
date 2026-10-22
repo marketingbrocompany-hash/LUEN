@@ -1,0 +1,53 @@
+name: LUEN preview Safari gallery QA
+on:
+  pull_request:
+    branches: [luen-preview]
+    paths:
+      - 'assets/js/site.js'
+      - 'scripts/qa-webkit-mobile.mjs'
+      - '.github/workflows/qa-preview-ios.yml'
+permissions:
+  contents: read
+jobs:
+  webkit-gallery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate syntax and static integrity
+        run: |
+          node --check assets/js/site.js
+          node --check scripts/qa-webkit-mobile.mjs
+          node scripts/check-site.mjs
+      - name: Install Chromium and WebKit for local preview QA
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve candidate directly from PR checkout
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-qa-preview.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/luen-qa-preview.log
+          exit 1
+      - name: Test real homepage iPhone WebKit paths
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-webkit-mobile.mjs
+      - name: Verify Chromium motion and reduced-motion regressions
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-home-motion-performance.mjs
+      - name: Preserve QA screenshots and details
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-ios-webkit-qa
+          path: qa-screenshots/
+          retention-days: 14
+          if-no-files-found: warn
