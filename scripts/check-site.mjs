@@ -98,6 +98,7 @@ const checks=[
       &&clips.every(name=>{const size=fs.statSync(path.join(root,'assets/video/luen-motion/'+name+'-preview.mp4')).size;return size>180000&&size<1500000;})
       &&clips.every(name=>fs.statSync(path.join(root,'assets/images/luen-motion/'+name+'-poster.webp')).size>8000)
       &&home.includes('/assets/video/luen-motion/quadthera-preview.mp4?v=20261021-hq')
+      &&home.includes('/assets/video/luen-motion/clinic-preview.mp4?v=20261022-zero')
       &&motionCss.includes('aspect-ratio:16/9')
       &&home.includes('QUADTHERA')&&home.includes('원본 영상 0초 장면')
       &&motionJs.includes("v.addEventListener('ended'")
