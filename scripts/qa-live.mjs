@@ -118,7 +118,8 @@ try {
           error:video.error?.code||0,
           width:video.videoWidth,height:video.videoHeight
         }));
-        if(!info.src||!info.src.includes('-preview.mp4?v=20261021-hq')){
+        const requiredClipUrl=i===2?'clinic-preview.mp4?v=20261022-zero':'-preview.mp4?v=20261021-hq';
+        if(!info.src||!info.src.includes(requiredClipUrl)){
           serious(v.name,'Hero video '+i+' did not receive an MP4 source on user click: '+JSON.stringify(info));
           continue;
         }
