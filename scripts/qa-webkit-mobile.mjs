@@ -67,7 +67,36 @@ try{
       if(!partnerBox || partnerBox.width>width+3)throw Error('Partner block overflows');
       if(errors.length)throw Error('JS errors: '+errors.slice(0,4).join('; '));
       results.push({width,initial,iosRailChecks:2,poster:'406x720 first frame',reducedMotion:true,errors:0,warnings});
-    }catch(e){failures.push({width,error:String(e.message).slice(0,360)});}
+    }catch(e){
+      let diagnostic=null;
+      try{
+        diagnostic=await page.evaluate(()=>({
+          innerWidth:innerWidth,clientWidth:document.documentElement.clientWidth,
+          metaViewport:document.querySelector('meta[name="viewport"]')?.content,
+          rails:[...document.querySelectorAll('#selected-content .portfolio-viewport')].map(el=>{
+            const source=el.querySelector('.loop-set:not(.ios-loop-clone)');
+            const track=el.querySelector('.loop-track');
+            const card=source?.querySelector('.portfolio-card');
+            const css=card?getComputedStyle(card):null;
+            const setCss=source?getComputedStyle(source):null;
+            return {
+              clientWidth:el.clientWidth,sourceRectWidth:source?.getBoundingClientRect().width,
+              trackRectWidth:track?.getBoundingClientRect().width,
+              sourceScrollWidth:source?.scrollWidth,
+              sourceDisplay:setCss?.display,sourceFlex:setCss?.flex,
+              sourceGap:setCss?.gap,sourcePadding:setCss?.paddingRight,
+              cardCount:source?.querySelectorAll('.portfolio-card').length,
+              cardRectWidth:card?.getBoundingClientRect().width,
+              cardFlexBasis:css?.flexBasis,cardDisplay:css?.display,
+              clones:el.querySelectorAll('.ios-loop-clone').length,
+              transform:track?getComputedStyle(track).transform:null
+            };
+          })
+        }));
+        await page.screenshot({path:path.join(out,'failure-'+width+'.jpg'),type:'jpeg',quality:65});
+      }catch(_err){}
+      failures.push({width,error:String(e.message).slice(0,360),diagnostic});
+    }
     finally{await context.close();}
   }
 }finally{await browser.close();}
