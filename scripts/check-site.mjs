@@ -237,6 +237,23 @@ const checks=[
       &&styles.includes('display:contents;')
       &&styles.includes('#partner-creators .luen-creator-feature--editorial');
   })()],
+  ['homepage reader journey: cases before approach and services; selected works after services',(()=>{
+    const sections=['class="hero"','class="brand-wall"','id="cases"','id="why-luen"','id="services"','id="selected-content"','id="partner-creators"','id="content-flow"','id="faq"','id="contact"'];
+    const galleryBegin=home.indexOf('<section class="luen-home-selected-work"');
+    const galleryEnd=home.indexOf('</section>',galleryBegin);
+    const caseBegin=home.indexOf('<section class="case-studies case-studies-v7"');
+    const approachBegin=home.indexOf('<section class="luen-why"');
+    const portfolio=home.slice(galleryBegin,galleryEnd);
+    return sections.every((s,i)=>home.includes(s)&&(i===0||home.indexOf(s)>home.indexOf(sections[i-1])))
+      &&caseBegin<approachBegin
+      &&(home.match(/id="work"/g)||[]).length===1
+      &&(home.match(/id="selected-content"/g)||[]).length===1
+      &&(home.match(/data-loop-strip=/g)||[]).length===2
+      &&portfolio.includes('YOUTUBE')&&portfolio.includes('REELS / SHORT FORM')
+      &&home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
+      &&!home.slice(caseBegin,approachBegin).includes('id="work"')
+      &&home.includes('luen-home-selected-work')&&!home.includes('class="case-selected-work-head-v10"');
+  })()],
   ['partner roster has distinct profile and inquiry links',home.includes('id="partner-creators"')&&home.includes('/creators/masubuchi-sachiyo/')&&home.includes('/contact/?inquiry=creator&amp;creator=masubuchi')],
   ['creator one-page storytelling covers bibigo without another page and omits requested disclaimer',(()=>{
     const creator=fs.readFileSync(path.join(root,'creators/masubuchi-sachiyo/index.html'),'utf8');
