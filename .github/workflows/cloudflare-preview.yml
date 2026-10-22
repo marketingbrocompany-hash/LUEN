@@ -54,6 +54,25 @@ jobs:
           # stale asset-manifest.json and CNAME (the live custom domain).
           echo "Prepared isolated Cloudflare Pages site payload."
 
+      - name: Generate clinic hero 00-second thumbnail from approved clip
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s _site/assets/video/luen-motion/clinic-preview.mp4
+          command -v ffmpeg
+          command -v ffprobe
+          # Build-time derivation, not a re-encode of the hero video.
+          # Guarantees the image exactly matches the first frame of the clip.
+          ffmpeg -hide_banner -nostdin -loglevel error -y \
+            -ss 0 -i _site/assets/video/luen-motion/clinic-preview.mp4 \
+            -frames:v 1 -c:v libwebp -quality 88 \
+            _site/assets/images/luen-motion/clinic-poster.webp
+          test "$(ffprobe -v error -select_streams v:0 \
+            -show_entries stream=width,height -of csv=s=x:p=0 \
+            _site/assets/images/luen-motion/clinic-poster.webp)" = "406x720"
+          test "$(stat -c%s _site/assets/images/luen-motion/clinic-poster.webp)" -gt 8000
+          echo "Clinic poster is now the 00-second frame at original 406x720."
+
       - name: Minify public CSS without removing selectors
         run: |
           npm install --no-save --no-package-lock lightningcss@1.30.2
