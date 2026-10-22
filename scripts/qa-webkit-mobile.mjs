@@ -89,6 +89,8 @@ try{
               cardRectWidth:card?.getBoundingClientRect().width,
               cardFlexBasis:css?.flexBasis,cardDisplay:css?.display,
               clones:el.querySelectorAll('.ios-loop-clone').length,
+              debugInit:el.dataset.iosDebugInit,
+              debugVisible:el.dataset.iosDebugVisible,
               transform:track?getComputedStyle(track).transform:null
             };
           })
