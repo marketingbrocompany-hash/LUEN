@@ -50,6 +50,23 @@ try {
     }
     const status=response?.status()||0;
     if(status!==200)serious(v.name,'Homepage returned HTTP '+status);
+    const journey=await page.evaluate(()=>{
+      const children=[...document.querySelectorAll('main#top > section')];
+      return children.map(el=>el.id||[...el.classList][0]||'unknown');
+    });
+    const expectedJourney=['hero','brand-wall','cases','why-luen','services','selected-content',
+      'partner-creators','content-flow','faq','contact'];
+    if(JSON.stringify(journey)!==JSON.stringify(expectedJourney))
+      serious(v.name,'Homepage decision journey out of order: '+JSON.stringify(journey));
+    const mediaJourney=await page.evaluate(()=>{
+      const work=document.querySelector('#work');
+      return {insideGallery:!!work?.closest('section#selected-content'),
+        clips:work?.querySelectorAll('.portfolio-card').length,
+        reels:work?.querySelectorAll('.portfolio-card.portrait').length,
+        caseCTA:!!document.querySelector('#cases .case-inquiry-v7 a[href="#contact"]')};
+    });
+    if(!mediaJourney.insideGallery||mediaJourney.clips!==12||mediaJourney.reels!==6||!mediaJourney.caseCTA)
+      serious(v.name,'Separated campaign/gallery regression: '+JSON.stringify(mediaJourney));
     const doc=await page.evaluate(()=>{
       const html=document.documentElement, body=document.body, nav=document.querySelector('#nav');
       const logo=document.querySelector('#nav .logo-word');
