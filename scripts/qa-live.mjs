@@ -9,6 +9,12 @@ const failures = [], warnings = [], results = [];
 const screenshots = path.join(process.cwd(), 'qa-screenshots');
 fs.mkdirSync(screenshots, {recursive:true});
 const browser = await chromium.launch({headless:true});
+const blockAnalytics=async context=>{
+  // Local/live QA must never inflate LUEN's real campaign measurement.
+  await context.route(/https:\/\/(?:www\.)?(?:googletagmanager\.com|google-analytics\.com)\//,
+    route=>route.abort());
+};
+
 const widths = [
   {name:'desktop',width:1440,height:900},
   {name:'laptop',width:1280,height:800},
@@ -30,6 +36,7 @@ try {
       deviceScaleFactor:1,
       reducedMotion:'reduce', // stable screenshots while respecting users' preference
     });
+    await blockAnalytics(context);
     const page = await context.newPage();
     const jsErrors = [], badResources = [];
     page.on('pageerror',err=>jsErrors.push(err.message.slice(0,230)));
@@ -238,6 +245,7 @@ try {
   }
   // Check actual internal routes, including case studies and service detail pages.
   const ctx=await browser.newContext();
+  await blockAnalytics(ctx);
   const p=await ctx.newPage();
   await p.goto(BASE,{waitUntil:'domcontentloaded',timeout:60000});
   const links=await p.locator('a[href]').evaluateAll(all=>[...new Set(all.map(a=>a.getAttribute('href'))
@@ -288,6 +296,7 @@ try {
       viewport:{width:390,height:844},
       reducedMotion:mode
     });
+    await blockAnalytics(motionContext);
     const motionPage=await motionContext.newPage();
     await motionPage.goto(BASE,{waitUntil:'load',timeout:60000});
     const strips=motionPage.locator('[data-loop-strip].portfolio-viewport');
@@ -327,6 +336,7 @@ try {
   const orbitContext=await browser.newContext({
     viewport:{width:1440,height:900},reducedMotion:'no-preference'
   });
+  await blockAnalytics(orbitContext);
   const orbitPage=await orbitContext.newPage();
   try{
     await orbitPage.goto(BASE,{waitUntil:'domcontentloaded',timeout:60000});
@@ -365,6 +375,7 @@ try {
       userAgent:iphoneUserAgent,
       reducedMotion:mode
     });
+    await blockAnalytics(iosContext);
     const iosPage=await iosContext.newPage();
     await iosPage.goto(BASE,{waitUntil:'load',timeout:60000});
     const pathEnabled=await iosPage.evaluate(()=>document.documentElement.classList.contains('ios-light-loops'));
