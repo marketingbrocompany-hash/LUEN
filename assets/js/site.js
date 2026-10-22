@@ -26,6 +26,7 @@
 
     const previous=lightLoopControllers.get(viewport);
     previous?.observer?.disconnect();
+    previous?.resizeObserver?.disconnect();
     stopLightLoop(viewport);
     track.querySelectorAll('.ios-loop-clone').forEach(el=>el.remove());
     track.style.transform='translate3d(0,0,0)';
@@ -59,6 +60,7 @@
       measuredViewportWidth,
       track,
       observer:null,
+      resizeObserver:null,
       tick:null
     };
     controller.tick=now=>{
@@ -92,6 +94,18 @@
         startLightLoop(viewport);
       },{rootMargin:'120px 0px',threshold:0});
       controller.observer.observe(viewport);
+    }
+    if('ResizeObserver' in window){
+      controller.resizeObserver=new ResizeObserver(()=>{
+        const width=source.getBoundingClientRect().width;
+        const repairs=iosLoopLayoutRepairs.get(viewport)||0;
+        if(width>0&&Math.abs(width-controller.baseWidth)>Math.max(2,controller.baseWidth*.02)&&repairs<3){
+          iosLoopLayoutRepairs.set(viewport,repairs+1);
+          stopLightLoop(viewport);
+          requestAnimationFrame(()=>setupIOSLightLoop(viewport));
+        }
+      });
+      controller.resizeObserver.observe(source);
     }
     lightLoopControllers.set(viewport,controller);
     startLightLoop(viewport);
