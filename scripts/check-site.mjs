@@ -83,41 +83,17 @@ const designedPages=htmlFiles.filter(filename=>
   fs.readFileSync(path.join(root,filename),'utf8').includes('luen-v3.css?v=')
 );
 const checks=[
-  ['LUEN IN MOTION uses 3 real preview clips, three covers and chosen Quadthera 0s still',(()=>{
-    const clips=['confier','quadthera','clinic'];
-    const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion-hero.js'),'utf8');
-    const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion-hero.css'),'utf8');
-    return home.includes('LUEN IN MOTION')
-      &&home.includes('data-luen-motion')
-      &&(home.match(/data-motion-index="/g)||[]).length===3
-      &&!home.includes('creator-profile-track')
-      &&clips.every(name=>home.includes('/assets/video/luen-motion/'+name+'-preview.mp4'))
-      &&clips.every(name=>home.includes('/assets/images/luen-motion/'+name+'-poster.webp'))
-      &&clips.every(name=>fs.existsSync(path.join(root,'assets/video/luen-motion/'+name+'-preview.mp4')))
-      &&clips.every(name=>fs.existsSync(path.join(root,'assets/images/luen-motion/'+name+'-poster.webp')))
-      &&clips.every(name=>{const size=fs.statSync(path.join(root,'assets/video/luen-motion/'+name+'-preview.mp4')).size;return size>180000&&size<1500000;})
-      &&clips.every(name=>fs.statSync(path.join(root,'assets/images/luen-motion/'+name+'-poster.webp')).size>8000)
-      &&home.includes('/assets/video/luen-motion/quadthera-preview.mp4?v=20261021-hq')
-      &&home.includes('/assets/video/luen-motion/clinic-preview.mp4?v=20261022-zero')
-      &&home.includes('/assets/images/luen-motion/clinic-poster.webp?v=20261022-zero-poster')
-      &&home.includes('alt="한국 클리닉 릴스 원본 영상 00초 장면"')
-      &&fs.existsSync(path.join(root,'assets/images/luen-motion/clinic-poster.webp')) && fs.statSync(path.join(root,'assets/images/luen-motion/clinic-poster.webp')).size>8000
-      &&motionCss.includes('aspect-ratio:16/9')
-      &&home.includes('QUADTHERA')&&home.includes('원본 영상 0초 장면')
-      &&motionJs.includes("v.addEventListener('ended'")
-      &&motionJs.includes('rotateTo((current+1)%3)')
-      &&motionJs.includes('card.animate(frames')
-      &&!motionJs.includes('setInterval')
-      &&motionCss.includes('.luen-motion-canvas::before')
-      &&motionJs.includes('Math.PI*2/3')
-      &&motionJs.includes('ResizeObserver')
-      &&motionJs.includes('prefers-reduced-motion')
-      &&motionJs.includes('saveData')
-      &&motionJs.includes('IntersectionObserver')
-      &&motionCss.includes('@media(max-width:767px)')
-      &&home.includes('누구와 함께할지부터,')
-      &&home.includes('id="partner-creators"');
-  })()],
+  ['Removed showcase stays absent; long-form/reels and creator section remain',
+    !home.includes('LUEN IN MOTION')
+    &&!home.includes('data-luen-motion')
+    &&!home.includes('data-motion-index=')
+    &&!home.includes('luen-motion-hero.css')
+    &&!home.includes('luen-motion-hero.js')
+    &&home.includes('누구와 함께할지부터,')
+    &&home.includes('id="selected-content"')
+    &&home.includes('id="partner-creators"')
+    &&home.includes('YOUTUBE')
+    &&home.includes('REELS / SHORT FORM')],
 
   ['mobile nav controls have warm-ivory contrast',
     design.includes('border:1px solid rgba(74,66,60,.38)!important;')

@@ -342,3 +342,9 @@ html body #cases #work .portfolio-viewport{
     will-change:auto!important;
   }
 }
+
+/* Home hero after intentionally removing LUEN IN MOTION. Keep editorial copy full-width and prevent an empty media column. */
+html body main#top>.hero>.container.hero-layout{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:0!important;
+}

@@ -102,74 +102,10 @@ try {
         overflowCandidates,
       };
     });
-    const heroMotion=await page.evaluate(()=>{
-      const scene=document.querySelector('[data-luen-motion]');
-      const cards=Array.from(scene?.querySelectorAll('[data-motion-index]')||[]);
-      const videoStates=cards.map(card=>{
-        const v=card.querySelector('video');
-        return {src:v?.getAttribute('src'),dataSrc:v?.getAttribute('data-src'),paused:v?.paused};
-      });
-      return {present:!!scene,cards:cards.length,active:cards.filter(c=>c.classList.contains('is-active')).length,
-        mediaLoaded:videoStates.filter(s=>s.src).length,videoStates,
-        stageOverflow:scene?Math.round(scene.getBoundingClientRect().right-document.documentElement.clientWidth):0,
-        pauseText:scene?.querySelector('[data-motion-toggle]')?.textContent.trim()};
-    });
-    if(!heroMotion.present||heroMotion.cards!==3||heroMotion.active!==1)
-      serious(v.name,'LUEN IN MOTION hero not present or invalid state: '+JSON.stringify(heroMotion));
-    if(heroMotion.mediaLoaded!==0)
-      serious(v.name,'Reduced-motion mode should not fetch hero MP4 automatically: '+JSON.stringify(heroMotion));
-    // Verify the original-resolution MP4 bytes are served by Cloudflare and
-    // manual selection sets a real video source. Some headless Chromium images
-    // lack an H.264 decoder: do not classify a codec-only limitation as a file
-    // quality defect, but report it explicitly instead of claiming decode success.
-    if(v.name==='desktop'||v.name==='mobile'){
-      const expected=[{w:406,h:720},{w:960,h:540},{w:406,h:720}];
-      for(let i=0;i<3;i++){
-        const card=page.locator('[data-motion-index="'+i+'"]');
-        await card.scrollIntoViewIfNeeded();
-        await card.click();
-        const info=await card.locator('video').evaluate(video=>({
-          src:video.getAttribute('src'),currentSrc:video.currentSrc,
-          canPlay:video.canPlayType('video/mp4; codecs="avc1.4D401E"'),
-          networkState:video.networkState,readyState:video.readyState,
-          error:video.error?.code||0,
-          width:video.videoWidth,height:video.videoHeight
-        }));
-        const requiredClipUrl=i===2?'clinic-preview.mp4?v=20261022-zero':'-preview.mp4?v=20261021-hq';
-        if(!info.src||!info.src.includes(requiredClipUrl)){
-          serious(v.name,'Hero video '+i+' did not receive an MP4 source on user click: '+JSON.stringify(info));
-          continue;
-        }
-        const mp4Response=await context.request.get(BASE+info.src,{timeout:20000});
-        const bytes=await mp4Response.body();
-        if(mp4Response.status()>=400||bytes.length<180000||bytes.toString('ascii',4,8)!=='ftyp')
-          serious(v.name,'Hero video '+i+' served invalid media: HTTP '+mp4Response.status()+' bytes '+bytes.length);
-        let dimensions=null;
-        try{
-          const handle=await page.waitForFunction(idx=>{
-            const vid=document.querySelector('[data-motion-index="'+idx+'"] video');
-            return vid?.videoWidth>0&&vid?.videoHeight>0?{w:vid.videoWidth,h:vid.videoHeight}:false;
-          },i,{timeout:4000});
-          dimensions=await handle.jsonValue();
-        }catch(_err){
-          const details=await card.locator('video').evaluate(v=>({
-            w:v.videoWidth,h:v.videoHeight,networkState:v.networkState,
-            readyState:v.readyState,error:v.error?.code||0,
-            canPlay:v.canPlayType('video/mp4; codecs="avc1.4D401E"')
-          }));
-          warn(v.name,'Headless media decoder unavailable/pending for clip '+i+
-            '; CDN MP4 bytes verified independently: '+JSON.stringify(details));
-        }
-        if(dimensions && (dimensions.w<expected[i].w||dimensions.h<expected[i].h))
-          serious(v.name,'Hero clip '+i+' decoded below original quality: '+JSON.stringify(dimensions));
-      }
-      await page.locator('[data-motion-toggle]').click();
-    }
-
-    if(heroMotion.stageOverflow>3)
-      serious(v.name,'LUEN motion hero overflows viewport: '+heroMotion.stageOverflow+'px');
-    if(!heroMotion.pauseText?.includes('재생'))
-      serious(v.name,'Reduced-motion hero should present opt-in playback');
+    const removedShowcase=await page.locator('[data-luen-motion],.luen-motion-showcase,.luen-motion-head,.luen-motion-pause').count();
+    if(removedShowcase!==0)serious(v.name,'Removed video showcase still in DOM: '+removedShowcase);
+    if(await page.locator('link[href*="luen-motion-hero.css"],script[src*="luen-motion-hero.js"]').count())
+      serious(v.name,'Removed showcase still loads unnecessary CSS/JS');
     if(doc.h1Count!==1)serious(v.name,'Expected exactly one H1, got '+doc.h1Count);
     if(!doc.analyticsConfigured || !doc.analyticsScriptAsync)serious(v.name,'GA4 config or async loader missing');
     if(doc.documentWidth>doc.clientWidth+3)serious(v.name,'Horizontal page overflow '+doc.documentWidth+'px > '+doc.clientWidth+'px');
@@ -321,38 +257,7 @@ try {
     }
     await motionContext.close();
   }
-  // Orbital hero QA: each clip's ended event rotates three upright cards
-  // along their elliptical path by 120 degrees, instead of using a timer.
-  // Dispatching ended avoids a codec dependency while testing the controller.
-  const orbitContext=await browser.newContext({
-    viewport:{width:1440,height:900},reducedMotion:'no-preference'
-  });
-  const orbitPage=await orbitContext.newPage();
-  try{
-    await orbitPage.goto(BASE,{waitUntil:'domcontentloaded',timeout:60000});
-    await orbitPage.locator('[data-luen-motion]').scrollIntoViewIfNeeded();
-    await orbitPage.locator('[data-motion-index="0"]').click();
-    for(let cycle=0;cycle<3;cycle++){
-      const index=cycle%3;
-      await orbitPage.locator('[data-motion-index="'+index+'"] video')
-        .evaluate(video=>video.dispatchEvent(new Event('ended')));
-      await orbitPage.waitForTimeout(1150);
-      const orbitState=await orbitPage.evaluate(()=>{
-        const cards=[...document.querySelectorAll('[data-luen-motion] [data-motion-index]')];
-        const active=cards.findIndex(card=>card.classList.contains('is-active'));
-        const angles=cards.map(card=>card.style.transform);
-        return {active,angles,status:document.querySelector('[data-motion-status]')?.textContent,
-          stageWidth:document.querySelector('.luen-motion-canvas')?.getBoundingClientRect().width,
-          docWidth:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth};
-      });
-      const expected=(index+1)%3;
-      if(orbitState.active!==expected)
-        serious('hero-orbit','End of clip '+index+' did not rotate to '+expected+': '+JSON.stringify(orbitState));
-      if(new Set(orbitState.angles).size!==3||orbitState.docWidth>orbitState.viewport+3)
-        serious('hero-orbit','Orbital placement missing/overflow: '+JSON.stringify(orbitState));
-    }
-  }catch(e){serious('hero-orbit','Orbit event test threw: '+String(e.message).slice(0,300));}
-  finally{await orbitContext.close();}
+  // The removed showcase is intentionally not tested; preserved long-form/reels loops are checked below.
   // Chromium user-agent simulation exercises LUEN's separate iOS loop code.
   // This is a JS-path smoke test, not a substitute for physical Safari QA.
   const iosAudit=[];
