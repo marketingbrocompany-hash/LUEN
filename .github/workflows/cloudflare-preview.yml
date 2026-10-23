@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          for item in assets about cases contact insights project-guide services; do
+          for item in assets about cases contact creators insights project-guide services; do
             test -d "$item"
             cp -R "$item" _site/
           done
@@ -50,6 +50,7 @@ jobs:
           test -f _site/index.html
           test -f _site/assets/css/luen-finish.css
           test -f _site/assets/js/site-core.js
+          test -f _site/creators/masubuchi-sachiyo/index.html
           # Intentionally excludes .github/, docs/, scripts/, README.txt,
           # stale asset-manifest.json and CNAME (the live custom domain).
           echo "Prepared isolated Cloudflare Pages site payload."
