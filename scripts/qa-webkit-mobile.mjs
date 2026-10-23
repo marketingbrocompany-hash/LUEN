@@ -36,8 +36,12 @@ try{
       if(initial.overflow>3)throw Error('Page horizontal overflow '+initial.overflow);
       if(!initial.ios)throw Error('iOS lightweight loop did not initialize');
       if(initial.cards!==12)throw Error('Expected 12 original portfolio cards, got '+initial.cards);
-      const removedShowcaseCount=await page.locator('[data-luen-motion],[data-motion-index],.luen-motion-head,.luen-motion-pause').count();
-      if(removedShowcaseCount!==0)throw Error('Deleted LUEN IN MOTION showcase still rendered: '+removedShowcaseCount);
+      const poster=page.locator('[data-motion-index="2"] img');
+      await poster.scrollIntoViewIfNeeded();
+      await page.waitForFunction(()=>{
+        const img=document.querySelector('[data-motion-index="2"] img');
+        return img?.complete&&img.naturalWidth===406&&img.naturalHeight===720;
+      },null,{timeout:18000});
       const rails=page.locator('#selected-content .portfolio-viewport');
       if(await rails.count()!==2)throw Error('Missing YouTube or Reels rail');
       for(let i=0;i<2;i++){
@@ -73,7 +77,7 @@ try{
       const partnerBox=await partner.boundingBox();
       if(!partnerBox || partnerBox.width>width+3)throw Error('Partner block overflows');
       if(errors.length)throw Error('JS errors: '+errors.slice(0,4).join('; '));
-      results.push({width,initial,iosRailChecks:2,showcaseRemoved:true,reducedMotion:true,errors:0,warnings});
+      results.push({width,initial,iosRailChecks:2,poster:'406x720 first frame',reducedMotion:true,errors:0,warnings});
     }catch(e){
       let diagnostic=null;
       try{
