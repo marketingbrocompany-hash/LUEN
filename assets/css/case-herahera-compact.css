@@ -147,3 +147,75 @@
   background:#FFF4E9;
   border-color:#A74722;
 }
+
+/* 2026-10-23: show the POP cutout itself, not the gray-circle raster panel.
+   Scope to Herahera only; original legacy POP script skips pre-existing img. */
+.herahera-case-v2 .herahera-offline-layout{
+  grid-template-columns:minmax(0,.77fr) minmax(0,1.23fr);
+  align-items:center;
+  gap:24px;
+}
+.herahera-case-v2 .herahera-pop-feature{
+  position:static;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  align-self:center;
+  overflow:visible;
+  width:100%;
+  min-height:0;
+  padding:8px 10px;
+  aspect-ratio:auto;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.herahera-case-v2 .herahera-pop-feature>img{
+  display:block;
+  width:min(100%,360px);
+  height:auto;
+  max-height:540px;
+  min-height:0;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center;
+  background:transparent;
+  filter:drop-shadow(0 12px 17px rgba(55,38,26,.08));
+}
+.herahera-case-v2 .herahera-pop-feature>figcaption{
+  position:static;
+  display:flex;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  width:auto;
+  margin-top:11px;
+  padding:0;
+  background:none;
+  color:var(--luen-ink);
+  text-align:center;
+}
+.herahera-case-v2 .herahera-pop-feature>figcaption span{
+  color:#A74722;
+  opacity:1;
+}
+.herahera-case-v2 .herahera-pop-feature>figcaption strong{
+  color:var(--luen-ink-soft);
+  font-weight:600;
+  font-size:12px;
+}
+@media(max-width:900px){
+  .herahera-case-v2 .herahera-offline-layout{grid-template-columns:1fr;gap:18px}
+  .herahera-case-v2 .herahera-pop-feature{min-height:0;aspect-ratio:auto;padding:4px}
+  .herahera-case-v2 .herahera-pop-feature>img{width:min(100%,285px);height:auto;max-height:none;min-height:0;aspect-ratio:auto}
+}
+@media(max-width:700px){
+  .herahera-case-v2 .herahera-offline-layout{gap:16px}
+  .herahera-case-v2 .herahera-pop-feature,.herahera-case-v2 .herahera-pop-feature>img{aspect-ratio:auto}
+  .herahera-case-v2 .herahera-pop-feature>img{width:min(100%,250px)}
+  .herahera-case-v2 .herahera-pop-feature>figcaption{margin-top:7px}
+}
