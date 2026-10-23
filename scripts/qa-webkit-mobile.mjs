@@ -76,8 +76,35 @@ try{
       await page.screenshot({path:path.join(out,'partner-creators-'+width+'.jpg'),type:'jpeg',quality:70});
       const partnerBox=await partner.boundingBox();
       if(!partnerBox || partnerBox.width>width+3)throw Error('Partner block overflows');
+      // Herahera detail acceptance in actual WebKit, separate from homepage rails.
+      const detail=await page.goto(base+'/cases/herahera-seoul-fnb/',{waitUntil:'domcontentloaded',timeout:60000});
+      if(detail?.status()!==200)throw Error('Herahera detail HTTP '+detail?.status());
+      const gallery=page.locator('.herahera-visitor-gallery');
+      const photos=gallery.locator('img');
+      if(await photos.count()!==4)throw Error('Herahera must show four visitor photos');
+      const pop=page.locator('.herahera-pop-feature > img');
+      await pop.scrollIntoViewIfNeeded();
+      const popState=await pop.evaluate(async img=>{try{await img.decode()}catch(_){}return {w:img.naturalWidth,h:img.naturalHeight}});
+      if(popState.w<1100||popState.h<1300)throw Error('Herahera HQ POP not loaded '+JSON.stringify(popState));
+      for(let i=0;i<4;i++){
+        const img=photos.nth(i);
+        await img.scrollIntoViewIfNeeded();
+        const state=await img.evaluate(async el=>{try{await el.decode()}catch(_){}return {w:el.naturalWidth,h:el.naturalHeight}});
+        if(state.w<600||state.h<800)throw Error('Herahera photo '+(i+1)+' failed to decode '+JSON.stringify(state));
+      }
+      const swipe=await gallery.evaluate(el=>{
+        el.scrollLeft=0;
+        const before=el.scrollLeft;
+        el.scrollLeft=el.scrollWidth;
+        return {before,after:el.scrollLeft,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,overflowX:getComputedStyle(el).overflowX};
+      });
+      if(swipe.scrollWidth<=swipe.clientWidth+50||swipe.after<25||swipe.overflowX==='hidden')
+        throw Error('Herahera WebKit horizontal gallery cannot scroll '+JSON.stringify(swipe));
+      const detailOverflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+      if(detailOverflow>3)throw Error('Herahera detail document horizontal overflow '+detailOverflow);
+      // Do not screenshot visitor imagery; keep sensitive previews out of QA artifacts.
       if(errors.length)throw Error('JS errors: '+errors.slice(0,4).join('; '));
-      results.push({width,initial,iosRailChecks:2,poster:'406x720 first frame',reducedMotion:true,errors:0,warnings});
+      results.push({width,initial,iosRailChecks:2,poster:'406x720 first frame',reducedMotion:true,heraheraWebKitGallery:true,errors:0,warnings});
     }catch(e){
       let diagnostic=null;
       try{
