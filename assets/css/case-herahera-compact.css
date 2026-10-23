@@ -219,3 +219,27 @@
   .herahera-case-v2 .herahera-pop-feature>img{width:min(100%,250px)}
   .herahera-case-v2 .herahera-pop-feature>figcaption{margin-top:7px}
 }
+
+/* Verified 390/320px fix: preserve four individual photos as non-shrinking
+   manual-swipe flex items. CSS Grid auto-placement previously collapsed the
+   gallery into its client width and hid lateral scroll despite overflow:auto. */
+@media(max-width:700px){
+  .herahera-case-v2 .herahera-visitor-gallery{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    gap:11px;
+    min-width:0;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+  }
+  .herahera-case-v2 .herahera-visitor-gallery figure{
+    flex:0 0 73%;
+    width:73%;
+    min-width:73%;
+    margin:0;
+    scroll-snap-align:start;
+  }
+}
