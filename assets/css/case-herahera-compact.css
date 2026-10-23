@@ -133,3 +133,17 @@
  .herahera-case-v2 .herahera-content-results .herahera-video-metrics .is-primary dd{font-size:30px}
  .herahera-case-v2 .herahera-content-results .herahera-video-metrics dd{font-size:17px}
 }
+
+/* Herahera hero only: legacy .btn-secondary uses cream-on-dark colors,
+   which disappear against this case study's warm ivory background. */
+.herahera-case-v2 .herahera-hero .luen-page-actions .btn-secondary{
+  color:#453D37;
+  background:#FFF9F1;
+  border:1px solid #C8B9A8;
+}
+.herahera-case-v2 .herahera-hero .luen-page-actions .btn-secondary:hover,
+.herahera-case-v2 .herahera-hero .luen-page-actions .btn-secondary:focus-visible{
+  color:#A74722;
+  background:#FFF4E9;
+  border-color:#A74722;
+}
