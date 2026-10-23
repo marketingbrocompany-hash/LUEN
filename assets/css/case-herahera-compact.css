@@ -111,3 +111,25 @@
  .herahera-case-v2 .herahera-offline-footer p{font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.herahera-case-v2 .herahera-visitor-gallery img{transition:none}}
+
+/* Herahera 2026-10-23: combine content, creative rationale and results into
+   a single compact two-column editorial section, no repeat cards/headers. */
+.herahera-case-v2 .herahera-content-results .herahera-video-grid{align-items:stretch}
+.herahera-case-v2 .herahera-content-results .herahera-video-card{display:flex;flex-direction:column}
+.herahera-case-v2 .herahera-content-results .herahera-video-card>a:first-child{display:block}
+.herahera-case-v2 .herahera-content-results .herahera-video-info{display:flex;flex:1;flex-direction:column}
+.herahera-case-v2 .herahera-content-results .herahera-video-info p{margin-bottom:0;min-height:2.7em}
+.herahera-case-v2 .herahera-content-results .herahera-video-metrics{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:0;margin:18px 0 19px;padding:18px 0 0;border-top:1px solid var(--luen-line)}
+.herahera-case-v2 .herahera-content-results .herahera-video-metrics>div{min-width:0;padding-right:10px}
+.herahera-case-v2 .herahera-content-results .herahera-video-metrics>div+div{padding-left:13px;border-left:1px solid var(--luen-line)}
+.herahera-case-v2 .herahera-content-results .herahera-video-metrics dt{margin:0 0 7px;color:var(--luen-muted);font:700 9px/1.25 var(--luen-type-ui);letter-spacing:.09em}
+.herahera-case-v2 .herahera-content-results .herahera-video-metrics dd{margin:0;color:var(--luen-ink);font:700 clamp(16px,1.7vw,21px)/1.25 var(--luen-type-display);letter-spacing:-.04em}
+.herahera-case-v2 .herahera-content-results .herahera-video-metrics .is-primary dd{color:var(--luen-orange);font-size:clamp(27px,2.6vw,35px)}
+.herahera-case-v2 .herahera-content-results .herahera-video-info>a:last-child{margin-top:auto;align-self:flex-start}
+.herahera-case-v2 .herahera-content-results .herahera-reaction-note{margin-top:18px}
+@media(max-width:700px){
+ .herahera-case-v2 .herahera-content-results .herahera-video-info p{min-height:0}
+ .herahera-case-v2 .herahera-content-results .herahera-video-metrics{margin:16px 0 16px;padding-top:15px}
+ .herahera-case-v2 .herahera-content-results .herahera-video-metrics .is-primary dd{font-size:30px}
+ .herahera-case-v2 .herahera-content-results .herahera-video-metrics dd{font-size:17px}
+}
