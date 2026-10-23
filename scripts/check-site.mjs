@@ -83,11 +83,12 @@ const designedPages=htmlFiles.filter(filename=>
   fs.readFileSync(path.join(root,filename),'utf8').includes('luen-v3.css?v=')
 );
 const checks=[
-  ['LUEN IN MOTION uses 3 real preview clips, three covers and chosen Quadthera 0s still',(()=>{
+  ['3 video orbit remains intact without the LUEN IN MOTION header bar',(()=>{
     const clips=['confier','quadthera','clinic'];
     const motionJs=fs.readFileSync(path.join(root,'assets/js/luen-motion-hero.js'),'utf8');
     const motionCss=fs.readFileSync(path.join(root,'assets/css/luen-motion-hero.css'),'utf8');
-    return home.includes('LUEN IN MOTION')
+    return !home.includes('class="luen-motion-head"')
+      &&!home.includes('LUEN IN MOTION')
       &&home.includes('data-luen-motion')
       &&(home.match(/data-motion-index="/g)||[]).length===3
       &&!home.includes('creator-profile-track')
