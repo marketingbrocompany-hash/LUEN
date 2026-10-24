@@ -1,0 +1,45 @@
+name: LUEN production mobile + contact smoke (read-only)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-production-mobile-contact.yml'
+      - 'scripts/qa-webkit-mobile.mjs'
+      - 'scripts/qa-home-motion-performance.mjs'
+      - 'scripts/qa-contact-flow.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-production-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      LUEN_QA_URL: https://luenkorea.com
+    steps:
+      - name: Check out QA scripts only (do not deploy)
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser runner
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Check live production iPhone Safari strips
+        run: node scripts/qa-webkit-mobile.mjs
+      - name: Check live production motion and floating inquiry CTA
+        run: node scripts/qa-home-motion-performance.mjs
+      - name: Check production inquiry UI with intercepted Formspree responses
+        run: node scripts/qa-contact-flow.mjs
+      - name: Save synthetic-only QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-production-mobile-contact-smoke
+          path: qa-screenshots/
+          retention-days: 7
+          if-no-files-found: warn
