@@ -50,9 +50,9 @@ try{
        };
      });
      if(!info.title.includes('롱폼'))errors.push(label+': wrong page title '+info.title);
-     if(info.cards!==3||!info.cardLabels.includes('브랜디드 콘텐츠')||!info.cardLabels.includes('PPL 콘텐츠')||!info.cardLabels.includes('유튜브 체험단'))
+     if(info.cards!==3||!info.cardLabels.includes('브랜디드 콘텐츠')||!info.cardLabels.includes('PPL 콘텐츠')||!info.cardLabels.includes('롱폼 크리에이터 8인 패키지'))
        errors.push(label+': missing product cards '+JSON.stringify(info.cardLabels));
-     if(info.requiredIds.some(x=>!x)||info.compare!==1||info.faq<3||info.inquiry!=='/contact/')
+     if(info.requiredIds.some(x=>!x)||info.compare!==1||info.faq<3||info.inquiry!=='/contact/?service=youtube-longform')
        errors.push(label+': key navigation, FAQ or sections missing');
      if(info.documentWidth>width+2)errors.push(label+': horizontal page overflow '+info.documentWidth+' > '+width);
      if(info.offscreen.length)errors.push(label+': offscreen content '+info.offscreen.join(','));
