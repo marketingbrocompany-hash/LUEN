@@ -160,6 +160,97 @@ try{
           }
         }
 
+        // Herahera case-specific mobile acceptance gate. Do not let homepage-only
+        // WebKit checks stand in for this detail page's actual POP and swipe gallery.
+        if(route==='/cases/herahera-seoul-fnb/'){
+          const caseInfo=await page.evaluate(()=>{
+            const main=document.querySelector('main#top');
+            const pop=document.querySelector('.herahera-pop-feature>img');
+            const gallery=document.querySelector('.herahera-visitor-gallery');
+            const photos=[...document.querySelectorAll('.herahera-visitor-gallery img')];
+            const cards=[...document.querySelectorAll('.herahera-video-card')];
+            const sections=['case-content','case-offline','case-next-title']
+              .map(id=>document.getElementById(id));
+            const primary=document.querySelector('.herahera-hero .luen-page-actions .btn-primary');
+            const secondary=document.querySelector('.herahera-hero .luen-page-actions .btn-secondary');
+            const popRect=pop?.getBoundingClientRect();
+            const galleryRect=gallery?.getBoundingClientRect();
+            return {
+              popSrc:pop?.getAttribute('src'),popWidth:popRect?.width||0,
+              photoSources:photos.map(img=>img.getAttribute('src')),
+              galleryScrollWidth:gallery?.scrollWidth||0,
+              galleryClientWidth:gallery?.clientWidth||0,
+              popTop:popRect?.top||0,galleryTop:galleryRect?.top||0,
+              cards:cards.length,
+              metrics:cards.map(card=>[...card.querySelectorAll('.herahera-video-metrics dd')].map(el=>el.textContent.trim())),
+              videoUrls:cards.map(card=>card.querySelector('.herahera-video-card>a')?.getAttribute('href')||card.querySelector('a[href*="youtu.be"]')?.getAttribute('href')),
+              mainSectionsInOrder:sections.every(Boolean)&&sections[0].compareDocumentPosition(sections[1])&4&&sections[1].compareDocumentPosition(sections[2])&4,
+              primaryText:primary?.textContent.trim(),secondaryText:secondary?.textContent.trim(),
+              oldThreeSectionLabels:/02 · CREATIVE APPROACH|03 · RESULTS|01 · PUBLISHED CONTENT/.test(main?.textContent||''),
+              removedNotice:(main?.textContent||'').includes('방문 인증 사진은 실제 현장 반응을 보여주는 사례이며')
+            };
+          });
+          if(caseInfo.cards!==2 || JSON.stringify(caseInfo.metrics)!==JSON.stringify([['97만','7.9천','351'],['49만','4.8천','181']]))
+            fail(route,v.name,'Video cards / per-video metrics mismatch: '+JSON.stringify(caseInfo.metrics));
+          if(caseInfo.primaryText!=='콘텐츠 보기 ↓' || caseInfo.secondaryText!=='현장 인증 보기 ↓')
+            fail(route,v.name,'Hero CTA labels regressed');
+          if(!caseInfo.mainSectionsInOrder || caseInfo.oldThreeSectionLabels || caseInfo.removedNotice)
+            fail(route,v.name,'Case sections, removed copy or ordering regressed');
+          if(caseInfo.popSrc!=='/assets/images/cases/herahera-pop-cutout-hq.webp' || caseInfo.popWidth<110)
+            fail(route,v.name,'Transparent HQ POP missing or tiny');
+          const expectedPhotoPaths=[1,2,3,4].map(i=>'/assets/images/cases/herahera-visitor-0'+i+'.webp');
+          if(JSON.stringify(caseInfo.photoSources)!==JSON.stringify(expectedPhotoPaths))
+            fail(route,v.name,'Anonymized gallery photo paths mismatch: '+JSON.stringify(caseInfo.photoSources));
+          const popImg=page.locator('.herahera-pop-feature>img');
+          await popImg.scrollIntoViewIfNeeded();
+          const popImage=await popImg.evaluate(async img=>{
+            try{await img.decode()}catch(_e){}
+            return {w:img.naturalWidth,h:img.naturalHeight,complete:img.complete};
+          });
+          if(popImage.w<1100 || popImage.h<1300 || !popImage.complete)
+            fail(route,v.name,'HQ POP failed to decode at intended resolution: '+JSON.stringify(popImage));
+          const photos=page.locator('.herahera-visitor-gallery img');
+          for(let k=0;k<4;k++){
+            const photo=photos.nth(k);
+            await photo.scrollIntoViewIfNeeded();
+            const image=await photo.evaluate(async img=>{
+              try{await img.decode()}catch(_e){}
+              return {w:img.naturalWidth,h:img.naturalHeight,complete:img.complete};
+            });
+            if(image.w<600||image.h<800||!image.complete)
+              fail(route,v.name,'Visitor photo '+(k+1)+' not decoded: '+JSON.stringify(image));
+          }
+          const isMobile=v.width<=700;
+          const gallery=page.locator('.herahera-visitor-gallery');
+          const swipe=await gallery.evaluate(el=>{
+            const computed=getComputedStyle(el);
+            const before=el.scrollLeft;
+            el.scrollLeft=0;
+            el.scrollLeft=el.scrollWidth;
+            const after=el.scrollLeft;
+            return {before,after,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,
+              overflowX:computed.overflowX,gridAutoFlow:computed.gridAutoFlow};
+          });
+          if(isMobile && (swipe.scrollWidth<=swipe.clientWidth+50 || swipe.after<25 || swipe.overflowX==='hidden'))
+            fail(route,v.name,'Mobile 4-photo gallery is not horizontally swipeable: '+JSON.stringify(swipe));
+          if(!isMobile && caseInfo.galleryScrollWidth>caseInfo.galleryClientWidth+4)
+            fail(route,v.name,'Desktop photo gallery horizontally overflows: '+JSON.stringify(swipe));
+          // Privacy gate: exact approved mosaiced bytes, not merely four well-named images.
+          // Prevent an accidentally unblurred image from being committed to future releases.
+          const crypto=await import('node:crypto');
+          const approved=[
+            'f6591d1ad3a279db9ecefd7a487939155ede67b64a11e38e43899d08b6510778',
+            'f4e8d695501383161157d05b4c2ba4dbc48641ff747ae5c5ccbd34e403660897',
+            '19a5310ab640fc477fd6d291c89c441b7e81d283387f404725bbc3c93ac5cf21',
+            'b87cb2b1bd85490c48376a6a9a07b3958eac1a8d2ce14543fbe2e4dcd0e09409'
+          ];
+          for(let i=0;i<4;i++){
+            const bytes=fs.readFileSync(path.resolve('assets/images/cases/herahera-visitor-0'+(i+1)+'.webp'));
+            const digest=crypto.createHash('sha256').update(bytes).digest('hex');
+            if(digest!==approved[i])fail(route,v.name,'Face-mosaiced asset checksum mismatch: photo '+(i+1));
+          }
+        }
+
         // The user-provided Instagram view screenshot must be served as real pixels
         // on both the creator profile and original bibigo case route.
         if(route==='/creators/masubuchi-sachiyo/'||route==='/cases/masubuchi-bibigo/'){
