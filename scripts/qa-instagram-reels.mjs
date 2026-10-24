@@ -56,7 +56,7 @@ try{
      if(tiers.length!==3||!tiers[0].includes('5인')||!tiers[1].includes('10인')||!tiers[2].includes('맞춤 협의'))
        errors.push(label+': package tiers differ from current LUEN website '+JSON.stringify(tiers));
 
-     if(info.requiredIds.some(x=>!x)||info.compare!==1||info.faq<3||info.inquiry!=='/contact/')
+     if(info.requiredIds.some(x=>!x)||info.compare!==1||info.faq<3||info.inquiry!=='/contact/?service=instagram-reels')
        errors.push(label+': key navigation, FAQ or sections missing');
      if(info.documentWidth>width+2)errors.push(label+': horizontal page overflow '+info.documentWidth+' > '+width);
      if(info.offscreen.length)errors.push(label+': offscreen content '+info.offscreen.join(','));

@@ -96,7 +96,15 @@ try{
             .map(i=>(i.currentSrc||i.src).slice(0,130));
           const heroH1=h1[0]?.getBoundingClientRect();
           const titleStyle=h1[0]?getComputedStyle(h1[0]):null;
-          const cta=[...main.querySelectorAll('a[href="/contact/"]')].filter(e=>e.getBoundingClientRect().width>0);
+          const cta=[...main.querySelectorAll('a[href]')].filter(e=>{
+            if(e.getBoundingClientRect().width<=0)return false;
+            const href=e.getAttribute('href')||'';
+            if(href==='#contact'&&document.getElementById('contactForm'))return true;
+            try{
+              const url=new URL(href,location.href);
+              return url.origin===location.origin&&url.pathname==='/contact/';
+            }catch(_error){return false;}
+          });
           return {
             title:document.title,
             h1Count:h1.length,h1Text:h1[0]?.textContent.trim().replace(/\s+/g,' ').slice(0,110),
