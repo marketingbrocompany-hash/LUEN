@@ -1,0 +1,34 @@
+name: LUEN Cloudflare payload QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/cloudflare-preview.yml'
+      - '.github/workflows/qa-cloudflare-payload.yml'
+      - 'creators/**'
+permissions:
+  contents: read
+jobs:
+  verify-staged-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate public content prior to Cloudflare upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          for item in assets about cases contact creators insights project-guide services; do
+            test -d "$item"
+            cp -R "$item" _site/
+          done
+          for item in index.html 404.html privacy.html robots.txt sitemap.xml site.webmanifest naver9690e9bb238369713989a6f11a99c636.html; do
+            test -f "$item"
+            cp "$item" _site/
+          done
+          test -s _site/index.html
+          test -s _site/creators/masubuchi-sachiyo/index.html
+          test -s _site/assets/js/site-core.js
+          test ! -e _site/CNAME
+          test ! -e _site/.github
+          echo 'Cloudflare staged public routes verified (no deploy).'
