@@ -122,6 +122,64 @@ try{
     }catch(e){fail(route,'exception',String(e.message).slice(0,600))}
     await context.close();
   }
+
+  // Verify service CTAs preserve intent and preselect platform on the dedicated inquiry form.
+  // This is navigation-only: never submit real or simulated Formspree messages here.
+  const ctaContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  await ctaContext.route(/^https:\/\/formspree\.io\//,r=>r.abort());
+  const ctaPage=await ctaContext.newPage();
+  const serviceTests=[
+    {label:'YouTube 롱폼 캠페인 상담',key:'youtube-longform',platform:'YouTube',source:'service_youtube_longform',name:'YouTube 롱폼'},
+    {label:'Instagram Reels 캠페인 상담',key:'instagram-reels',platform:'Instagram',source:'service_instagram_reels',name:'Instagram Reels'},
+    {label:'TikTok 시리즈형 숏폼 캠페인 상담',key:'tiktok-series',platform:'TikTok',source:'service_tiktok_series',name:'TikTok 시리즈형 숏폼'}
+  ];
+  try{
+    await ctaPage.goto(BASE+'/',{waitUntil:'domcontentloaded',timeout:45000});
+    for(const item of serviceTests){
+      const link=ctaPage.locator('a[aria-label="'+item.label+'"]');
+      if(await link.count()!==1){fail('/','service-cta','Missing '+item.label);continue;}
+      const href=await link.getAttribute('href');
+      if(href!=='/contact/?service='+item.key)fail('/','service-url','Incorrect deep link '+item.label+': '+href);
+      const inquiry=await ctaContext.newPage();
+      await inquiry.goto(BASE+'/contact/?service='+item.key,{waitUntil:'domcontentloaded',timeout:45000});
+      const selected=await inquiry.locator('#contactForm').evaluate(form=>({
+        platform:form.querySelector('#platform')?.value,
+        source:form.querySelector('input[name="source_case"]')?.value,
+        note:form.querySelector('#selectedServiceNote')?.textContent?.trim(),
+        visible:!form.querySelector('#selectedServiceNote')?.hidden,
+        creatorRequested:form.querySelector('#creatorRequested')?.value
+      }));
+      if(selected.platform!==item.platform||selected.source!==item.source||
+        selected.note!=='선택한 상담 주제: '+item.name||!selected.visible||selected.creatorRequested)
+        fail('/contact/','service-prefill',item.key+': '+JSON.stringify(selected));
+      await inquiry.locator('#platform').selectOption('X');
+      const isHidden=await inquiry.locator('#selectedServiceNote').isHidden();
+      if(!isHidden)fail('/contact/','manual-selection','Service tag not hidden after manual platform change');
+      await inquiry.close();
+      outcomes.push({route:'/contact/?service='+item.key,platformPreselected:selected.platform===item.platform,contextShown:selected.visible,manualChangeWorks:isHidden,formSubmitted:false});
+    }
+    const invalid=await ctaContext.newPage();
+    await invalid.goto(BASE+'/contact/?service='+encodeURIComponent('<script>alert(1)</script>'),{waitUntil:'domcontentloaded',timeout:45000});
+    const unknown=await invalid.locator('#contactForm').evaluate(form=>({
+      platform:form.querySelector('#platform')?.value,
+      source:form.querySelector('input[name="source_case"]')?.value,
+      text:form.querySelector('#selectedServiceNote')?.textContent?.trim(),
+      hidden:form.querySelector('#selectedServiceNote')?.hidden
+    }));
+    if(unknown.platform||unknown.source||unknown.text||!unknown.hidden)fail('/contact/','untrusted-query','Unrecognized service reflected into inquiry: '+JSON.stringify(unknown));
+    await invalid.close();
+    const creator=await ctaContext.newPage();
+    await creator.goto(BASE+'/contact/?inquiry=creator&creator=masubuchi',{waitUntil:'domcontentloaded',timeout:45000});
+    const creatorState=await creator.locator('#contactForm').evaluate(form=>({
+      selected:form.querySelector('#inquirySpecific')?.checked,
+      requested:form.querySelector('#creatorRequested')?.value,
+      source:form.querySelector('input[name="source_case"]')?.value
+    }));
+    if(!creatorState.selected||creatorState.source!=='creator_masubuchi'||!creatorState.requested)
+      fail('/contact/','creator-regression','Existing creator intent lost: '+JSON.stringify(creatorState));
+    await creator.close();
+  }catch(e){fail('/contact/','service-cta-exception',String(e.message).slice(0,400));}
+  await ctaContext.close();
 }finally{
   await browser.close();
 }
