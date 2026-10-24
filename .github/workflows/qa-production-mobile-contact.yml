@@ -7,6 +7,7 @@ on:
       - 'scripts/qa-webkit-mobile.mjs'
       - 'scripts/qa-home-motion-performance.mjs'
       - 'scripts/qa-contact-flow.mjs'
+      - 'scripts/qa-android-mobile-motion.mjs'
   workflow_dispatch:
 
 permissions:
@@ -33,6 +34,8 @@ jobs:
         run: node scripts/qa-webkit-mobile.mjs
       - name: Check live production motion and floating inquiry CTA
         run: node scripts/qa-home-motion-performance.mjs
+      - name: Check Android Chrome emulation mobile long-form and Reels motion
+        run: node scripts/qa-android-mobile-motion.mjs
       - name: Check production inquiry UI with intercepted Formspree responses
         run: node scripts/qa-contact-flow.mjs
       - name: Save synthetic-only QA screenshots
