@@ -1,0 +1,89 @@
+name: LUEN controlled case-image Lighthouse A/B (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-performance-ab-case-images.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  baseline-vs-mobile-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout optimized PR
+        uses: actions/checkout@v4
+        with:
+          path: .
+      - name: Checkout original main separately
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Lighthouse and Chrome once for both variants
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12.8.2 playwright@1.56.1
+          npx playwright install --with-deps chromium
+          ln -s ../node_modules _baseline/node_modules
+      - name: Serve original and optimized checkouts on two localhost ports
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd _baseline && python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-lh-baseline.log 2>&1) &
+          python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/luen-lh-optimized.log 2>&1 &
+          for port in 4173 4174; do
+            for i in {1..30}; do
+              curl -fsS -o /dev/null "http://127.0.0.1:$port/" && break
+              sleep 1
+            done
+            curl -fsS -o /dev/null "http://127.0.0.1:$port/"
+          done
+          curl -fsS http://127.0.0.1:4174/ | grep -q 'herahera-highres-thumbnail-mobile.webp'
+          if curl -fsS http://127.0.0.1:4173/ | grep -q 'herahera-highres-thumbnail-mobile.webp'; then
+            echo "::error::Original main is unexpectedly optimized; comparison invalid"; exit 1
+          fi
+      - name: Measure baseline main — Lighthouse mobile 3 times, desktop 2 times
+        shell: bash
+        env:
+          LUEN_LIGHTHOUSE_URL: http://127.0.0.1:4173/
+        run: |
+          cd _baseline
+          node ../scripts/lighthouse-preview.mjs
+          mkdir -p ../perf-comparison
+          cp -R lighthouse-results ../perf-comparison/baseline
+      - name: Measure optimized candidate — same runner and Lighthouse settings
+        env:
+          LUEN_LIGHTHOUSE_URL: http://127.0.0.1:4174/
+        run: |
+          node scripts/lighthouse-preview.mjs
+          cp -R lighthouse-results perf-comparison/optimized
+      - name: Compare median scores and image byte savings without subjective claims
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const base=JSON.parse(fs.readFileSync('perf-comparison/baseline/summary.json'));
+          const opt=JSON.parse(fs.readFileSync('perf-comparison/optimized/summary.json'));
+          const out={baseline:base.medians,optimized:opt.medians,differences:[]};
+          for(const old of base.medians){
+            const recent=opt.medians.find(x=>x.device===old.device);
+            out.differences.push({device:old.device,scoreDiff:recent.score-old.score,LCP_msDiff:recent.LCP_ms-old.LCP_ms,
+              FCP_msDiff:recent.FCP_ms-old.FCP_ms,TBT_msDiff:recent.TBT_ms-old.TBT_ms,
+              transferredBytesDiff:recent.transferredBytes-old.transferredBytes});
+          }
+          fs.writeFileSync('perf-comparison/comparison.json',JSON.stringify(out,null,2));
+          console.log('LUEN_CASE_IMAGE_AB_LIGHTHOUSE '+JSON.stringify(out));
+          JS
+      - name: Retain exact comparison artifacts for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-case-images-lighthouse-ab
+          path: perf-comparison/
+          if-no-files-found: warn
+          retention-days: 14
