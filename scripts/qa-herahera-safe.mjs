@@ -58,7 +58,29 @@ for(const t of tests){
     if(!state.cta)throw Error(t.name+': offline anchor missing');
     if(errors.length)throw Error(t.name+': JavaScript errors '+errors.join('; '));
     await offline.screenshot({path:out+'/'+t.name+'-offline.jpg',animations:'disabled'});
-    results.push({name:t.name,...state});
+    // Keep an exact, already-public original POP raster solely for local
+    // fidelity review. This is not any visitor-gallery image.
+    if(!t.mobile){
+      const original=await page.evaluate(()=>document.querySelector('[data-herahera-pop-proof] img').src);
+      if(!original.startsWith('data:image/webp;base64,'))throw Error('Original POP source not a WebP data URI');
+      fs.writeFileSync(out+'/existing-public-pop-source.webp',Buffer.from(original.slice(original.indexOf(',')+1),'base64'));
+    }
+    // Simulate a real visitor clicking the hero anchor (rather than screenshot
+    // element.scrollIntoViewIfNeeded which ignores sticky-nav offsets).
+    const anchor=page.locator('.herahera-hero a[href="#case-offline"]');
+    await anchor.click();
+    await page.waitForTimeout(1250);
+    const anchorState=await page.evaluate(()=>{
+      const n=document.querySelector('#nav')?.getBoundingClientRect();
+      const h=document.querySelector('#case-offline-title')?.getBoundingClientRect();
+      const sec=document.querySelector('#case-offline')?.getBoundingClientRect();
+      return {hash:location.hash,navBottom:n?.bottom||0,headingTop:h?.top||0,sectionTop:sec?.top||0};
+    });
+    await page.screenshot({path:out+'/'+t.name+'-anchor-viewport.jpg',animations:'disabled'});
+    if(anchorState.hash!=='#case-offline')throw Error(t.name+': unexpected anchor hash '+anchorState.hash);
+    if(anchorState.headingTop<anchorState.navBottom+6)
+      throw Error(t.name+': sticky navigation obstructs offline heading '+JSON.stringify(anchorState));
+    results.push({name:t.name,...state,anchor:anchorState});
     await context.close();
   }finally{await browser.close();}
 }
