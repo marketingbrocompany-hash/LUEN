@@ -51,6 +51,21 @@ for(const t of tests){
       };
     });
     if(!state.popDecoded||!state.sourceIsExistingDataWebp)throw Error(t.name+': original POP did not decode: '+JSON.stringify(state));
+    // The asset is a white-on-transparent silhouette, not a replacement POP image.
+    // Check both mask support (WebKit/Chromium) and the actual static route.
+    const maskUrl='/assets/images/cases/herahera-pop-source-mask.svg';
+    const maskResponse=await page.request.get(base+maskUrl);
+    if(maskResponse.status()!==200)throw Error(t.name+': mask asset HTTP '+maskResponse.status());
+    const maskText=await maskResponse.text();
+    if(!maskText.includes('<svg')||!maskText.includes('<ellipse'))throw Error(t.name+': mask file incomplete');
+    const maskStyle=await page.locator('[data-herahera-pop-proof] img').evaluate(img=>({
+      standard:getComputedStyle(img).maskImage,
+      webkit:getComputedStyle(img).webkitMaskImage
+    }));
+    if(!String(maskStyle.standard||maskStyle.webkit).includes('herahera-pop-source-mask.svg'))
+      throw Error(t.name+': mask did not apply in computed CSS '+JSON.stringify(maskStyle));
+    const maskDetails={assetBytes:maskText.length,applied:true};
+
     if(state.visitorPhotos!==0||state.recreatedPop!==0)throw Error(t.name+': unsafe image reference in DOM');
     if(state.videoCards!==2||!state.metrics.includes('97만')||!state.metrics.includes('49만'))throw Error(t.name+': expected video count/metrics absent');
     if(state.pageOverflow>3)throw Error(t.name+': horizontal overflow '+state.pageOverflow);
@@ -80,7 +95,7 @@ for(const t of tests){
     if(anchorState.hash!=='#case-offline')throw Error(t.name+': unexpected anchor hash '+anchorState.hash);
     if(anchorState.headingTop<anchorState.navBottom+6)
       throw Error(t.name+': sticky navigation obstructs offline heading '+JSON.stringify(anchorState));
-    results.push({name:t.name,...state,anchor:anchorState});
+    results.push({name:t.name,...state,maskDetails,anchor:anchorState});
     await context.close();
   }finally{await browser.close();}
 }
