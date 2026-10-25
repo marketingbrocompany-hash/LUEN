@@ -69,6 +69,27 @@ for(const [engine,browserType,width,height] of [
           for(const item of state.actions)check(item.height>=43&&item.right<=width+2,
             engine+' '+width+' inaccessible partner action '+JSON.stringify(item));
         }
+        // Audit genuinely visible content after scrolling, not just DOM existence.
+        // Reveal-on-scroll ancestors may have a valid bounding box while opacity=0.
+        for(const selector of ['#selected-content #work','#partner-creators .luen-creator-feature--editorial']){
+          const target=page.locator(selector);
+          await target.scrollIntoViewIfNeeded();
+          await page.waitForTimeout(650);
+          const visibility=await target.evaluate(element=>{
+            const blockers=[];
+            for(let node=element;node;node=node.parentElement){
+              const style=getComputedStyle(node);
+              if(style.display==='none'||style.visibility==='hidden'||Number(style.opacity)<.55){
+                blockers.push({tag:node.tagName,id:node.id,classes:String(node.className).slice(0,120),
+                  display:style.display,visibility:style.visibility,opacity:style.opacity});
+              }
+            }
+            const rect=element.getBoundingClientRect();
+            return {visible:blockers.length===0,blockers,rect:{top:rect.top,bottom:rect.bottom,width:rect.width}};
+          });
+          check(visibility.visible&&visibility.rect.width>80,
+            engine+' '+width+' '+(reduce?'reduced':'normal')+' scroll-reveal invisible '+selector+' '+JSON.stringify(visibility));
+        }
         if(reduce){
           const scroll=await page.locator('#selected-content .portfolio-viewport').first().evaluate(async el=>{
             el.scrollLeft=110;
