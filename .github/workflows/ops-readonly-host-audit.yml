@@ -67,3 +67,33 @@ jobs:
               sys.exit(21)
           print('GITHUB_PAGES_LUEN_MAIN_ROOT_CONFIRMED')
           PY
+
+      - name: Read GitHub Pages latest build and check live release marker (no writes)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.error
+          owner='marketingbrocompany-hash'
+          url=f'https://api.github.com/repos/{owner}/LUEN/pages/builds/latest'
+          req=urllib.request.Request(url,headers={
+             'Authorization':'Bearer '+os.environ['GH_TOKEN'],
+             'Accept':'application/vnd.github+json'})
+          try:
+              with urllib.request.urlopen(req,timeout=20) as res:
+                  b=json.load(res)
+              print('GITHUB_PAGES_LATEST_BUILD',json.dumps({k:b.get(k) for k in ('status','commit','created_at','updated_at','error')},ensure_ascii=False))
+          except urllib.error.HTTPError as exc:
+              print('GITHUB_PAGES_BUILD_QUERY_HTTP',exc.code)
+          req=urllib.request.Request('https://luenkorea.com/?release-probe=7657d043-20261025',headers={'Cache-Control':'no-cache'})
+          with urllib.request.urlopen(req,timeout=25) as res:
+              html=res.read().decode('utf-8')
+              print('PRODUCTION_HOMEPAGE_HTTP',res.status,'bytes',len(html),'server',res.headers.get('server'))
+              print('PRODUCTION_RELEASE_MARKERS',json.dumps({
+               'has_new_longform_name':'롱폼 크리에이터 8인' in html,
+               'has_new_gallery_links':'portfolio-explore-link' in html,
+               'still_has_old_word':'유튜브 체험단' in html,
+               'has_css_v20261025':'20261025-rail-partner-polish' in html
+              },ensure_ascii=False))
+          PY
