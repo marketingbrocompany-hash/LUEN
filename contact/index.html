@@ -158,6 +158,7 @@
               <label><input type="radio" name="inquiry_type" value="캠페인 기획 상담" checked/> 캠페인 기획 상담</label>
             </div>
             <p id="selectedCreatorNote" hidden>선택된 파트너: <strong>爆食ますぶちさちよ (마스부치 사치요)</strong></p>
+            <p id="selectedServiceNote" hidden aria-live="polite"></p>
           </fieldset>
 
           <div class="form-grid">
@@ -290,26 +291,42 @@
 </footer>
 <script>
 (function(){
-  // Use only known creator keys. Never reflect arbitrary URL input as HTML.
+  // Only whitelisted keys from LUEN CTA links may change the inquiry context.
+  // Never reflect arbitrary URL input as HTML or submit it as a hidden value.
   const params=new URLSearchParams(window.location.search);
   const form=document.getElementById('contactForm');
   if(!form)return;
   const knownCreators={masubuchi:'爆食ますぶちさちよ (마스부치 사치요)'};
+  const knownServices={
+    'youtube-longform':{label:'YouTube 롱폼',platform:'YouTube',source:'service_youtube_longform'},
+    'instagram-reels':{label:'Instagram Reels',platform:'Instagram',source:'service_instagram_reels'},
+    'tiktok-series':{label:'TikTok 시리즈형 숏폼',platform:'TikTok',source:'service_tiktok_series'}
+  };
   const creatorKey=params.get('creator');
   const creator=Object.prototype.hasOwnProperty.call(knownCreators,creatorKey)?knownCreators[creatorKey]:'';
+  const serviceKey=params.get('service');
+  const service=Object.prototype.hasOwnProperty.call(knownServices,serviceKey)?knownServices[serviceKey]:null;
   const specific=form.querySelector('#inquirySpecific');
   const requested=form.querySelector('#creatorRequested');
   const note=form.querySelector('#selectedCreatorNote');
+  const serviceNote=form.querySelector('#selectedServiceNote');
+  const platform=form.querySelector('#platform');
   const source=form.querySelector('input[name="source_case"]');
   const controls=Array.from(form.querySelectorAll('input[name="inquiry_type"]'));
+  if(service&&platform){
+    platform.value=service.platform;
+    if(serviceNote)serviceNote.textContent='선택한 상담 주제: '+service.label;
+  }
   function sync(){
     const isSpecific=Boolean(specific?.checked&&creator);
     if(requested)requested.value=isSpecific?creator:'';
     if(note)note.hidden=!isSpecific;
-    if(source)source.value=isSpecific?'creator_masubuchi':'';
+    if(serviceNote)serviceNote.hidden=!service||isSpecific||platform?.value!==service.platform;
+    if(source)source.value=isSpecific?'creator_masubuchi':service?service.source:'';
   }
   if(creator&&params.get('inquiry')==='creator'&&specific){specific.checked=true;}
   controls.forEach(control=>control.addEventListener('change',sync));
+  platform?.addEventListener('change',sync);
   form.addEventListener('reset',()=>window.requestAnimationFrame(sync));
   sync();
 })();

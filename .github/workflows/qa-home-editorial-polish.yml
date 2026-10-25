@@ -1,0 +1,53 @@
+name: LUEN editorial galleries and partner cards QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/css/creator-partnerships.css'
+      - 'scripts/qa-home-editorial-polish.mjs'
+      - '.github/workflows/qa-home-editorial-polish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  editorial-mobile-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout PR candidate
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate static site
+        run: node scripts/check-site.mjs
+      - name: Install browser tests
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve local candidate only
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-editorial-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/luen-editorial-http.log
+          exit 1
+      - name: Chromium and WebKit desktop/mobile/reduced-motion QA
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-home-editorial-polish.mjs
+      - name: Retain screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-home-editorial-qa
+          path: qa-screenshots/editorial-polish/
+          retention-days: 7
+          if-no-files-found: warn
