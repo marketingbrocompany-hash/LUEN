@@ -261,3 +261,16 @@
   .herahera-case-v2 .herahera-offline-copy p{font-size:13px}
   .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature{border-radius:16px}
 }
+
+/* PR #227 review-only: preserve the published POP WebP unmodified.
+   External alpha mask removes its baked-in gray circle while retaining the
+   original pixels, including lettering; no generated POP raster is used.
+   If unsupported, the unchanged original image is the fallback. */
+.herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>img{
+  -webkit-mask-image:url('/assets/images/cases/herahera-pop-source-mask.svg');
+  mask-image:url('/assets/images/cases/herahera-pop-source-mask.svg');
+  -webkit-mask-mode:alpha;mask-mode:alpha;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+}
