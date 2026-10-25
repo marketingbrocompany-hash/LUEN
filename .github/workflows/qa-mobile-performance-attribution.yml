@@ -1,0 +1,43 @@
+name: LUEN mobile GA4 font JS CSS attribution — diagnostics only
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-mobile-performance-attribution.mjs'
+      - '.github/workflows/qa-mobile-performance-attribution.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse-attribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate audit script (no site modifications)
+        run: |
+          node --check scripts/qa-mobile-performance-attribution.mjs
+          node scripts/check-site.mjs
+      - name: Install pinned Lighthouse and Chromium
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12.8.2 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Run nine mobile Lighthouse tests: production main, without GA4 loader, without external fonts
+        run: node scripts/qa-mobile-performance-attribution.mjs
+      - name: Save Lighthouse audits (avoid storing any real user information)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-mobile-performance-attribution
+          path: |
+            perf-attribution/summary.json
+            perf-attribution/*/mobile-*.report.json
+          retention-days: 14
+          if-no-files-found: warn
