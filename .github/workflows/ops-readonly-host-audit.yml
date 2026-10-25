@@ -1,0 +1,37 @@
+name: LUEN read-only production host and rollback audit
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ops-readonly-host-audit.yml'
+      - 'scripts/ops-readonly-host-audit.py'
+
+permissions:
+  contents: read
+
+jobs:
+  discover-only:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'ops/discover-production-host-20261025' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Probe public operating domain DNS + headers (GET/HEAD only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "===== luenkorea.com DNS records ====="
+          dig +short luenkorea.com CNAME || true
+          dig +short luenkorea.com A || true
+          dig +short www.luenkorea.com CNAME || true
+          echo "===== public HTTPS HEAD ====="
+          curl -sSIL --max-time 25 https://luenkorea.com/ |
+            grep -Ei '^(HTTP/|server:|cf-ray:|x-powered-by:|x-vercel-id:|content-type:|location:|x-robots-tag:)' |
+            head -n 26 || true
+      - name: Query Cloudflare Pages domain ownership and previous deployments (READ ONLY)
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python3 scripts/ops-readonly-host-audit.py
