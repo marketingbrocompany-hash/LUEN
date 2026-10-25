@@ -71,8 +71,8 @@ jobs:
             for i in {1..30}; do curl -fsS -o /dev/null "http://127.0.0.1:$port/" && break; sleep 1; done
             curl -fsS -o /dev/null "http://127.0.0.1:$port/"
           done
-          grep -q '20261025-lazy-gallery' index.html
-          if grep -q '20261025-lazy-gallery' _baseline/index.html; then
+          grep -q 'site-core.js?v=20261025-1' index.html
+          if grep -q 'site-core.js?v=20261025-1' _baseline/index.html; then
             echo "::error::Baseline already contains candidate code"; exit 1
           fi
       - name: Lighthouse baseline — 3 mobile + 2 desktop samples
