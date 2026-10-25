@@ -21,7 +21,26 @@ const variants=[
   {name:'without-gtag-loader',html:source.replace(/<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+"><\/script>/,
     '<!-- DIAGNOSTIC ONLY: remove third-party GA loader, preserve inline gtag calls -->'),port:4182},
   {name:'without-external-webfonts',html:source.replace(/<link\b[^>]*(?:cdn\.jsdelivr\.net\/gh\/orioncactus\/pretendard|fonts\.googleapis\.com\/css2)[^>]*>/g,'').replace(/<noscript><\/noscript>/g,''),
-    port:4183}
+    port:4183},
+  {name:'noto-jp-exact-glyphs',html:(()=>{
+    const japanese=[...new Set(source.match(/[\u3040-\u30ff\u3400-\u9fff々〆ヵヶ]/g)||[])].sort().join('');
+    if(japanese.length<5||japanese.length>500)throw Error('Unexpected Japanese glyph count');
+    const previous='https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Noto+Sans+JP:wght@400..700&display=swap';
+    const inter='https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap';
+    const noto='https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..700&display=swap&text='+encodeURIComponent(japanese);
+    let html=source;
+    if(html.split(previous).length!==3)throw Error('Expected original Google Fonts link + noscript to match exactly twice');
+    // Keep the same Inter and Noto Sans JP families/weights; only narrow JP glyph coverage.
+    // This is a local A/B test, never written to the checked-in index.html.
+    html=html.replaceAll(previous,inter);
+    html=html.replace('<link href="'+inter+'" rel="stylesheet" media="print" onload="this.media=\'all\'"/>',
+      '<link href="'+inter+'" rel="stylesheet" media="print" onload="this.media=\'all\'"/>\n'
+      +'<link href="'+noto+'" rel="stylesheet" media="print" onload="this.media=\'all\'"/>');
+    html=html.replace('<noscript><link href="'+inter+'" rel="stylesheet"/></noscript>',
+      '<noscript><link href="'+inter+'" rel="stylesheet"/><link href="'+noto+'" rel="stylesheet"/></noscript>');
+    console.log('LUEN_JP_SUBSET_GLYPHS '+JSON.stringify({count:japanese.length,glyphs:japanese,notoUrlLength:noto.length}));
+    return html;
+  })(),port:4184}
 ];
 if(variants[1].html===source||variants[2].html===source)throw Error('Variant transformation unexpectedly did nothing');
 if(variants[1].html.includes('<script async src="https://www.googletagmanager.com/gtag/js?'))throw Error('GA loader removal failed');
@@ -125,4 +144,4 @@ if(process.env.GITHUB_STEP_SUMMARY){
   md+='\n**Diagnosis only:** No GA4 deletion, font deletion or layout change is recommended from this experiment alone. Different typography changes rendering. Lighthouse simulated lab measurements are variable.\n';
   fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,md);
 }
-if(audits.length!==9||errors.length)process.exitCode=1;
+if(audits.length!==12||errors.length)process.exitCode=1;
