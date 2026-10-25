@@ -60,7 +60,7 @@ try{
     for(let i=0;i<3;i++){
       const out=path.join(reportDir,v.name,'mobile-'+i);
       const args=['http://127.0.0.1:'+v.port+'/', '--quiet','--only-categories=performance',
-        '--output=json','--output-path='+out,'--form-factor=mobile',
+        '--output=json','--output=html','--output-path='+out,'--form-factor=mobile',
         '--throttling-method=simulate','--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage'];
       const run=spawnSync(binary,args,{encoding:'utf8',env:{...process.env,CHROME_PATH:chrome},
         timeout:150000,maxBuffer:3*1024*1024});
