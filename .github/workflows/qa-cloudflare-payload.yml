@@ -1,0 +1,57 @@
+name: LUEN Cloudflare payload QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/cloudflare-preview.yml'
+      - '.github/workflows/qa-cloudflare-payload.yml'
+      - 'creators/**'
+permissions:
+  contents: read
+jobs:
+  verify-staged-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate public content prior to Cloudflare upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          for item in assets about cases contact creators insights project-guide services; do
+            test -d "$item"
+            cp -R "$item" _site/
+          done
+          for item in index.html 404.html privacy.html robots.txt sitemap.xml site.webmanifest naver9690e9bb238369713989a6f11a99c636.html; do
+            test -f "$item"
+            cp "$item" _site/
+          done
+          test -s _site/index.html
+          test -s _site/creators/masubuchi-sachiyo/index.html
+          test -s _site/assets/js/site-core.js
+          test ! -e _site/CNAME
+          test ! -e _site/.github
+          # Every sitemap route must exist in the exact staged payload.
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse, unquote
+          from xml.etree import ElementTree
+          root = Path('_site')
+          tree = ElementTree.parse('sitemap.xml')
+          urls = [elem.text for elem in tree.iter() if elem.tag.endswith('loc') and elem.text]
+          assert urls, 'sitemap has no public URLs'
+          missing = []
+          for url in urls:
+              parsed = urlparse(url)
+              assert parsed.scheme == 'https' and parsed.netloc == 'luenkorea.com', f'unexpected sitemap domain: {url}'
+              route = unquote(parsed.path)
+              assert '..' not in Path(route).parts, f'unsafe sitemap path: {route}'
+              target = root / route.lstrip('/')
+              if route.endswith('/'):
+                  target = target / 'index.html'
+              if not target.is_file():
+                  missing.append(route)
+          assert not missing, f'staged payload missing sitemap routes: {missing}'
+          print(f'Validated {len(urls)} sitemap routes in staged Cloudflare files.')
+          PY
+          echo 'Cloudflare staged public routes verified (no deploy).'
