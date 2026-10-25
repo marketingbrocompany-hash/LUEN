@@ -262,7 +262,7 @@
   .herahera-case-v2 .herahera-offline-copy h3{font-size:29px}
   .herahera-case-v2 .herahera-offline-copy p{font-size:13px}
   .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature{border-radius:0}
-  .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>img{width:min(123%,480px)}
+  .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>img{width:min(108%,calc(100vw - 20px))}
   .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>figcaption{margin-top:-12px}
 }
 
