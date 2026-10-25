@@ -8,7 +8,14 @@ import {chromium} from 'playwright';
 
 const root=process.cwd(), reportDir=path.join(root,'perf-attribution');
 fs.mkdirSync(reportDir,{recursive:true});
-const source=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const originalHtml=fs.readFileSync(path.join(root,'index.html'),'utf8');
+// Keep GA4 loader/scripting cost measurable but suppress synthetic localhost pageview.
+// None of these audit-only variants should pollute real LUEN visitor analytics.
+const source=originalHtml.replace(
+  /gtag\('config',\s*'(G-[A-Z0-9]+)'\);/,
+  "gtag('config', '$1', {send_page_view:false});"
+);
+if(source===originalHtml)throw Error('Expected GA4 pageview suppression anchor was not found');
 const variants=[
   {name:'baseline',html:source,port:4181},
   {name:'without-gtag-loader',html:source.replace(/<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+"><\/script>/,
