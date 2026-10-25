@@ -144,8 +144,29 @@
     });
     /* Decorative SVG motion remains disabled on iOS to preserve Safari GPU headroom. */
     document.querySelectorAll('animateMotion, animate').forEach(el=>el.remove());
-    const initIOSLoops=()=>requestAnimationFrame(()=>iosLoopStrips.forEach(setupIOSLightLoop));
-    window.addEventListener('load',initIOSLoops,{once:true});
+    // iPhone Safari also postpones gallery cloning until the visitor nears
+    // that section. Keep the visible partner/brand rail eager and untouched.
+    const initializedIOSLoops=new Set();
+    const initializeIOSLoop=viewport=>{
+      initializedIOSLoops.add(viewport);
+      setupIOSLightLoop(viewport);
+    };
+    const nearbyIOSObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting)return;
+        nearbyIOSObserver.unobserve(entry.target);
+        initializeIOSLoop(entry.target);
+      });
+    },{rootMargin:'900px 0px',threshold:0}):null;
+    const initIOSLoops=()=>requestAnimationFrame(()=>initializedIOSLoops.forEach(setupIOSLightLoop));
+    window.addEventListener('load',()=>{
+      requestAnimationFrame(()=>{
+        iosLoopStrips.forEach(viewport=>{
+          if(!nearbyIOSObserver||viewport.closest('.brand-wall'))initializeIOSLoop(viewport);
+          else nearbyIOSObserver.observe(viewport);
+        });
+      });
+    },{once:true});
     let lastWidth=document.documentElement.clientWidth;
     window.addEventListener('resize',()=>{
       const nextWidth=document.documentElement.clientWidth;
@@ -161,7 +182,7 @@
     });
     reducedMotion.addEventListener?.('change',()=>{
       // Recreate strips to remove duplicate images when motion is reduced.
-      iosLoopStrips.forEach(setupIOSLightLoop);
+      initializedIOSLoops.forEach(setupIOSLightLoop);
     });
   }
 
