@@ -218,18 +218,20 @@
   align-items:center;gap:clamp(22px,4vw,58px);max-width:1040px;margin:0 auto;
 }
 .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature{
-  position:relative;display:flex;flex-direction:column;overflow:hidden;
-  min-height:0;aspect-ratio:auto;border:1px solid #DCCFBE;
-  border-radius:22px;background:#F2EBE1;padding:0;margin:0;
+  position:relative;display:flex;flex-direction:column;overflow:visible;
+  align-items:center;justify-content:center;
+  min-height:0;aspect-ratio:auto;border:0;
+  border-radius:0;background:transparent;padding:0;margin:0;
   box-shadow:none;
 }
 .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>img{
-  display:block;order:1;width:100%;max-width:100%;height:auto;max-height:none;
+  display:block;order:1;width:min(124%,610px);max-width:none;height:auto;max-height:none;
   min-height:0;aspect-ratio:auto;object-fit:contain;filter:none;background:transparent;
+  margin-inline:auto;
 }
 .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>figcaption{
-  position:static;order:2;width:100%;margin:0;padding:14px 18px;
-  background:#F2EBE1;align-items:flex-start;text-align:left;
+  position:static;order:2;width:100%;margin:-18px 0 0;padding:0 12px;
+  background:transparent;align-items:center;text-align:center;
 }
 .herahera-case-v2 .herahera-offline-copy>span{
   display:block;color:var(--luen-orange);font:700 11px/1.4 var(--luen-type-ui);
@@ -259,7 +261,9 @@
 @media(max-width:700px){
   .herahera-case-v2 .herahera-offline-copy h3{font-size:29px}
   .herahera-case-v2 .herahera-offline-copy p{font-size:13px}
-  .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature{border-radius:16px}
+  .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature{border-radius:0}
+  .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>img{width:min(123%,480px)}
+  .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>figcaption{margin-top:-12px}
 }
 
 /* PR #227 review-only: preserve the published POP WebP unmodified.
