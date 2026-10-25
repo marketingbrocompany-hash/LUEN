@@ -1,0 +1,115 @@
+name: LUEN deferred gallery init & controlled Lighthouse A/B (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/js/site.js'
+      - 'assets/js/site-core.js'
+      - 'index.html'
+      - 'scripts/qa-deferred-gallery-init.mjs'
+      - '.github/workflows/qa-deferred-gallery-performance.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  initial-render-and-mobile-autoplay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and static integrity
+        run: |
+          node --check assets/js/site-core.js
+          node --check assets/js/site.js
+          node scripts/check-site.mjs
+      - name: Install Chromium + WebKit QA
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve local PR candidate
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-lazy-init.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS -o /dev/null http://127.0.0.1:4173/ && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Ensure offscreen gallery clone setup is actually lazy and fully functional
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-deferred-gallery-init.mjs
+
+  original-vs-lazy-performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Lighthouse installation
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12.8.2 playwright@1.56.1
+          npx playwright install --with-deps chromium
+          ln -s ../node_modules _baseline/node_modules
+      - name: Serve 2 read-only local copies simultaneously
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd _baseline && python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-main.log 2>&1) &
+          python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/luen-candidate.log 2>&1 &
+          for port in 4173 4174; do
+            for i in {1..30}; do curl -fsS -o /dev/null "http://127.0.0.1:$port/" && break; sleep 1; done
+            curl -fsS -o /dev/null "http://127.0.0.1:$port/"
+          done
+          grep -q '20261025-lazy-gallery' index.html
+          if grep -q '20261025-lazy-gallery' _baseline/index.html; then
+            echo "::error::Baseline already contains candidate code"; exit 1
+          fi
+      - name: Lighthouse baseline — 3 mobile + 2 desktop samples
+        env:
+          LUEN_LIGHTHOUSE_URL: http://127.0.0.1:4173/
+        run: |
+          cd _baseline
+          node ../scripts/lighthouse-preview.mjs
+          mkdir -p ../perf-comparison
+          cp -R lighthouse-results ../perf-comparison/baseline
+      - name: Lighthouse lazy init candidate — same calibration/samples
+        env:
+          LUEN_LIGHTHOUSE_URL: http://127.0.0.1:4174/
+        run: |
+          node scripts/lighthouse-preview.mjs
+          cp -R lighthouse-results perf-comparison/lazy
+      - name: Compare scores, paint and blocking times without inventing improvements
+        shell: bash
+        run: |
+          node - <<'JS'
+          const fs=require('fs');
+          const baseline=JSON.parse(fs.readFileSync('perf-comparison/baseline/summary.json'));
+          const after=JSON.parse(fs.readFileSync('perf-comparison/lazy/summary.json'));
+          const out=baseline.medians.map(old=>{
+            const now=after.medians.find(x=>x.device===old.device);
+            return {device:old.device,before:old,after:now,deltas:{
+              score:(now.score-old.score),LCP_ms:now.LCP_ms-old.LCP_ms,
+              TBT_ms:now.TBT_ms-old.TBT_ms,FCP_ms:now.FCP_ms-old.FCP_ms,
+              CLS:now.CLS-old.CLS,transferredBytes:now.transferredBytes-old.transferredBytes}};
+          });
+          fs.writeFileSync('perf-comparison/comparison.json',JSON.stringify(out,null,2));
+          console.log('LUEN_LAZY_GALLERY_LIGHTHOUSE_AB '+JSON.stringify(out));
+          JS
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-lazy-gallery-performance-ab
+          path: perf-comparison/
+          retention-days: 14
+          if-no-files-found: warn
