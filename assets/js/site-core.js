@@ -239,7 +239,30 @@
     loopControllers.set(viewport,controller);
     if(loopVisibilityObserver)loopVisibilityObserver.observe(viewport);else startLoop(viewport);
   }
-  function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}
+  // Offscreen portfolio galleries are not needed for the first paint.
+  // Keep the above-the-fold brand rail eager, then set up each gallery
+  // once when it approaches the viewport. Originals remain in the HTML.
+  const allLoopStrips=[...document.querySelectorAll('[data-loop-strip]')];
+  const initializedLoopStrips=new Set();
+  const initializeLoop=viewport=>{
+    initializedLoopStrips.add(viewport);
+    setupLoopStrip(viewport);
+  };
+  const initLoopStrips=()=>initializedLoopStrips.forEach(setupLoopStrip);
+  const lazyLoopObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      lazyLoopObserver.unobserve(entry.target);
+      initializeLoop(entry.target);
+    });
+  },{rootMargin:'900px 0px',threshold:0}):null;
+  const initializeVisibleLoops=()=>{
+    for(const viewport of allLoopStrips){
+      if(initializedLoopStrips.has(viewport))continue;
+      if(!lazyLoopObserver||viewport.closest('.brand-wall'))initializeLoop(viewport);
+      else lazyLoopObserver.observe(viewport);
+    }
+  };
   /* Respond to OS reduced-motion changes while the page remains open. */
   let lastReducedMotion=reducedMotion.matches;
   const syncLoopMotionPreference=()=>{
@@ -262,7 +285,7 @@
         syncLoopMotionPreference();
     },250);
   }
-  window.addEventListener('load',()=>requestAnimationFrame(initLoopStrips));
+  window.addEventListener('load',()=>requestAnimationFrame(initializeVisibleLoops));
   document.addEventListener('visibilitychange',()=>{
     loopControllers.forEach((_controller,viewport)=>{if(document.hidden)stopLoop(viewport);else startLoop(viewport);});
   });
