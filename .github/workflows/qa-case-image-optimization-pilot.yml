@@ -1,0 +1,39 @@
+name: LUEN mobile case-image compression pilot (artifacts only)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/pilot-case-image-optimization.py'
+      - '.github/workflows/qa-case-image-optimization-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compression-study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow for artifact-only WebP study
+        run: pip install pillow==11.3.0
+      - name: Generate four mobile examples WITHOUT editing repo assets
+        run: python scripts/pilot-case-image-optimization.py
+      - name: Validate source files unchanged and every tested image exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s perf-case-study/manifest.json
+          test "$(find perf-case-study -name '*-mobile-test.webp' | wc -l)" -eq 4
+          test "$(find perf-case-study -name '*-comparison.jpg' | wc -l)" -eq 4
+          git diff --exit-code -- assets/images/cases
+          echo 'Source originals untouched and 4 side-by-side comparisons generated.'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: luen-case-image-mobile-pilot
+          path: perf-case-study/
+          retention-days: 14
