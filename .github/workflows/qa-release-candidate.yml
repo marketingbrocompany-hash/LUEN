@@ -78,6 +78,10 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-subpages.mjs
+      - name: Verify Herahera original POP and no visitor imagery
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-herahera-safe.mjs
       - name: Verify contact form with mocked responses only
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
