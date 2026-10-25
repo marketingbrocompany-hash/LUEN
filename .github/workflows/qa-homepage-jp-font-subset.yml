@@ -1,0 +1,54 @@
+name: LUEN homepage Japanese font exact-glyph regression (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'scripts/qa-homepage-jp-font-subset.mjs'
+      - '.github/workflows/qa-homepage-jp-font-subset.yml'
+permissions:
+  contents: read
+jobs:
+  font-glyph-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check static integrity
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-homepage-jp-font-subset.mjs
+      - name: Install Playwright Chromium and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve untouched original and targeted font candidate locally
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd _baseline && python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-font-control.log 2>&1) &
+          python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/luen-font-subset.log 2>&1 &
+          for port in 4173 4174; do
+            for i in {1..30}; do curl -fsS -o /dev/null "http://127.0.0.1:$port/" && break; sleep 1; done
+            curl -fsS -o /dev/null "http://127.0.0.1:$port/"
+          done
+          grep -q 'family=Noto+Sans+JP:wght@400..700&display=swap&text=' index.html
+          if grep -q 'family=Noto+Sans+JP:wght@400..700&display=swap&text=' _baseline/index.html; then
+            echo "::error::Control accidentally contains new font subset"; exit 1
+          fi
+      - name: Compare Japanese headings after fonts load in WebKit and Chromium
+        run: node scripts/qa-homepage-jp-font-subset.mjs
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-japanese-font-original-vs-subset
+          path: qa-screenshots/font-subset/
+          retention-days: 14
+          if-no-files-found: warn
