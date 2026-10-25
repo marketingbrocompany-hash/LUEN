@@ -224,11 +224,11 @@
   box-shadow:none;
 }
 .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>img{
-  display:block;width:100%;max-width:100%;height:auto;max-height:none;
+  display:block;order:1;width:100%;max-width:100%;height:auto;max-height:none;
   min-height:0;aspect-ratio:auto;object-fit:contain;filter:none;background:transparent;
 }
 .herahera-case-v2 .herahera-offline-layout--pop-only .herahera-pop-feature>figcaption{
-  position:static;width:100%;margin:0;padding:14px 18px;
+  position:static;order:2;width:100%;margin:0;padding:14px 18px;
   background:#F2EBE1;align-items:flex-start;text-align:left;
 }
 .herahera-case-v2 .herahera-offline-copy>span{
