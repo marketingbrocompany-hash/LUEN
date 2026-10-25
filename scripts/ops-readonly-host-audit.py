@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Read-only Cloudflare Pages production-host discovery. Never logs credentials or private data."""
-import json, os, urllib.request, urllib.error, sys
+import json, os, urllib.request, urllib.error, urllib.parse, sys
 account = os.environ.get("CLOUDFLARE_ACCOUNT_ID","")
 token = os.environ.get("CLOUDFLARE_API_TOKEN","")
 assert account and token, "Missing Cloudflare credentials"
