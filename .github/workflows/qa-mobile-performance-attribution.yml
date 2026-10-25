@@ -41,3 +41,5 @@ jobs:
             perf-attribution/*/mobile-*.report.json
           retention-days: 14
           if-no-files-found: warn
+
+# Diagnostic workflow only; do not ship GA-off/font-off variants.
