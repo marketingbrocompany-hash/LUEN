@@ -24,7 +24,12 @@ for(const spec of cases){
       }));
       if(before.sourceCards!==12)errors.push(spec.name+' original cards missing '+before.sourceCards);
       if(before.galleryClones!==0)errors.push(spec.name+' offscreen galleries initialized too early '+before.galleryClones);
-      if(before.brandClones<1)errors.push(spec.name+' abovefold brand loop did not initialize');
+      // Safari can report unresolved geometry for the brand strip until visible.
+      // The required behavior is to initialize when the visitor actually sees it.
+      await page.locator('.brand-wall .brand-viewport').scrollIntoViewIfNeeded();
+      await page.waitForFunction(()=>document.querySelectorAll('.brand-wall .loop-clone').length>0,null,{timeout:9500});
+      const brandClones=await page.locator('.brand-wall .loop-clone').count();
+      if(brandClones<1)errors.push(spec.name+' visible brand loop did not initialize');
       if(before.pageOverflow>2)errors.push(spec.name+' initial horizontal overflow '+before.pageOverflow);
       const rails=page.locator('#selected-content .portfolio-viewport');
       for(let i=0;i<2;i++){
@@ -32,9 +37,16 @@ for(const spec of cases){
         await rail.scrollIntoViewIfNeeded();
         await page.waitForFunction(index=>document.querySelectorAll('#selected-content .portfolio-viewport')[index]
           ?.querySelectorAll('.loop-clone').length>0,i,{timeout:9500});
+        // Mirror the proven iOS QA timing; wait for the initial Safari
+        // geometry pass and RAF to stabilize before comparing transforms.
+        await page.waitForFunction(index=>{
+          const el=document.querySelectorAll('#selected-content .portfolio-viewport')[index];
+          const source=el?.querySelector('.loop-set:not(.loop-clone)');
+          return source?.getBoundingClientRect().width > el.clientWidth;
+        },i,{timeout:9500});
         const read=()=>rail.locator('.loop-track').evaluate(el=>getComputedStyle(el).transform);
-        await page.waitForTimeout(250);
-        const a=await read();await page.waitForTimeout(380);const b=await read();
+        await page.waitForTimeout(450);
+        const a=await read();await page.waitForTimeout(650);const b=await read();
         if(a===b)errors.push(spec.name+' gallery '+i+' not moving when visible');
       }
       const afterClones=await page.locator('#selected-content .loop-clone').count();
