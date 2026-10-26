@@ -1,0 +1,46 @@
+name: LUEN Pretendard mobile lab (diagnostic only, no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-pretendard-loading-lab.mjs'
+      - '.github/workflows/qa-pretendard-loading-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  font-ab-lighthouse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 33
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate static website and diagnostic syntax
+        run: |
+          node --check scripts/qa-pretendard-loading-lab.mjs
+          node scripts/check-site.mjs
+      - name: Install pinned lab dependencies
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12.8.2 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Run six alternating Lighthouse mobile measurements and screenshot comparison
+        run: node scripts/qa-pretendard-loading-lab.mjs
+      - name: Archive local-only audits and font geometry
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-pretendard-lab
+          path: |
+            perf-pretendard/summary.json
+            perf-pretendard/*-mobile-390.png
+            perf-pretendard/*/mobile-*.report.json
+          retention-days: 14
+          if-no-files-found: warn
+
+# This workflow never changes production HTML/CSS, files, DNS, Pages or GA4.
