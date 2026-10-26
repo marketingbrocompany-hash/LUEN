@@ -1,0 +1,64 @@
+name: LUEN physical iPhone Safari - BrowserStack Automate (manual only)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/qa-browserstack-real-iphone.mjs'
+      - '.github/workflows/qa-browserstack-real-iphone.yml'
+  workflow_dispatch:
+    inputs:
+      device:
+        description: 'BrowserStack Automate real iPhone model'
+        required: false
+        default: 'iPhone 16'
+      ios:
+        description: 'iOS major version for chosen model'
+        required: false
+        default: '18'
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Safari QA script parses
+        run: node --check scripts/qa-browserstack-real-iphone.mjs
+
+  real-iphone:
+    if: github.event_name == 'workflow_dispatch'
+    needs: syntax
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      BROWSERSTACK_DEVICE: ${{ inputs.device }}
+      BROWSERSTACK_OS_VERSION: ${{ inputs.ios }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check BrowserStack Automate credential configuration
+        run: |
+          if [[ -z "$BROWSERSTACK_USERNAME" || -z "$BROWSERSTACK_ACCESS_KEY" ]]; then
+            echo "::error::Add BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY to repository Actions Secrets; BrowserStack Automate Mobile entitlement is also required."
+            exit 2
+          fi
+      - name: Install mobile WebDriver runner
+        run: npm install --no-save --no-package-lock selenium-webdriver@4.37.0
+      - name: Execute on REAL iPhone Safari (read-only)
+        run: node scripts/qa-browserstack-real-iphone.mjs
+# BrowserStack Automate is a different entitlement from BrowserStack Live Free Trial.
+# Do not enable on push or scheduled jobs: physical device sessions may be metered.
+# No screenshots or identifiable visitor images are collected.
