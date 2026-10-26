@@ -86,25 +86,70 @@ try {
   passed("YouTube and Instagram Reels live motion", { rails: 2, samples: 3 });
 
   await driver.get("https://luenkorea.com/cases/herahera-seoul-fnb/");
-  const detail = await waitFor(() => driver.executeScript(function () {
+  // Inspect the structure first, independently of image network/loading state.
+  // All five images are loading="lazy": waiting for *every* naturalWidth before
+  // scrolling makes offscreen images wait forever on actual iOS Safari.
+  const structure = await waitFor(() => driver.executeScript(function () {
     const pop = document.querySelector(".herahera-pop-feature > img");
     const photos = [...document.querySelectorAll(".herahera-visitor-gallery img")];
-    if (!pop || photos.length !== 4 || !pop.complete || !pop.naturalWidth
-      || !photos.every(p => p.complete && p.naturalWidth >= 550)) return null;
+    if (document.readyState === "loading" || !pop || photos.length !== 4) return null;
     return {
-      popWidth: pop.naturalWidth, popHeight: pop.naturalHeight,
       photoPaths: photos.map(p => p.getAttribute("src")),
       cards: document.querySelectorAll(".herahera-video-card").length,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
     };
-  }), "Herahera approved POP and four visitor images", 30000);
-  assert.equal(detail.cards, 2);
-  assert.ok(detail.popWidth > 1100 && detail.popHeight > 1300);
-  assert.ok(detail.overflow <= 3);
+  }), "Herahera DOM structure", 20000);
+  assert.equal(structure.cards, 2);
+  assert.ok(structure.overflow <= 3, "Herahera horizontal page overflow");
   for (let i = 0; i < 4; i++) {
-    assert.equal(detail.photoPaths[i], "/assets/images/cases/herahera-visitor-0" + (i + 1) + ".webp");
+    assert.equal(structure.photoPaths[i], "/assets/images/cases/herahera-visitor-0" + (i + 1) + ".webp");
   }
-  passed("Herahera real iPhone media decode", { pop: true, mosaicedPhotos: 4, videoCards: 2 });
+
+  // Make each lazy image visible on the actual Safari device BEFORE checking decode.
+  await driver.executeScript(function () {
+    document.querySelector(".herahera-pop-feature > img").scrollIntoView({
+      block: "center", inline: "center", behavior: "instant"
+    });
+  });
+  const pop = await waitFor(() => driver.executeScript(function () {
+    const x = document.querySelector(".herahera-pop-feature > img");
+    return x.complete && x.naturalWidth > 0 ?
+      { w: x.naturalWidth, h: x.naturalHeight } : null;
+  }), "Visible POP image decoding", 18000);
+  assert.ok(pop.w > 1100 && pop.h > 1300, "POP image unexpectedly small");
+
+  const imageDimensions = [];
+  for (let i = 0; i < 4; i++) {
+    await driver.executeScript(function (index) {
+      const imgs = document.querySelectorAll(".herahera-visitor-gallery img");
+      imgs[index].scrollIntoView({
+        block: "center", inline: "center", behavior: "instant"
+      });
+    }, i);
+    try {
+      imageDimensions.push(await waitFor(() => driver.executeScript(function (index) {
+        const x = document.querySelectorAll(".herahera-visitor-gallery img")[index];
+        return x.complete && x.naturalWidth > 0 ?
+          { w: x.naturalWidth, h: x.naturalHeight } : null;
+      }, i), "Visible VISIT 0" + (i + 1) + " image decoding", 15000));
+    } catch (error) {
+      // Only dimensions and loading state; never capture visitor photos/HTML.
+      const status = await driver.executeScript(function (index) {
+        const x = document.querySelectorAll(".herahera-visitor-gallery img")[index];
+        const rect = x.getBoundingClientRect();
+        return {
+          complete: x.complete, width: x.naturalWidth, height: x.naturalHeight,
+          loading: x.loading, inViewport: rect.top < innerHeight && rect.bottom > 0
+        };
+      }, i);
+      throw new Error("VISIT 0" + (i + 1) + " did not load after bringing into view: " + JSON.stringify(status));
+    }
+    assert.ok(imageDimensions[i].w >= 550 && imageDimensions[i].h >= 740,
+      "Visible VISIT 0" + (i + 1) + " image dimensions below minimum");
+  }
+  passed("Herahera real iPhone lazy media decoding", {
+    pop: true, imageCount: 4, validPaths: true, videoCards: 2, dimensionsChecked: true
+  });
   await driver.findElement(By.css('a[href="#case-content"]')).click();
   assert.equal(await driver.executeScript("return location.hash"), "#case-content");
   await driver.findElement(By.css('a[href="#case-offline"]')).click();
@@ -115,10 +160,16 @@ try {
     document.querySelector(".herahera-visitor-gallery").scrollIntoView({ block: "center" });
   });
   const gallery = await driver.findElement(By.css(".herahera-visitor-gallery"));
+  // Image decoding above advanced the horizontal gallery; reset before native swipe QA.
+  await driver.executeScript(function () {
+    document.querySelector(".herahera-visitor-gallery").scrollLeft = 0;
+  });
+  await delay(500);
   const before = await driver.executeScript(function () {
     const e = document.querySelector(".herahera-visitor-gallery");
     return { x: e.scrollLeft, width: e.clientWidth, total: e.scrollWidth };
   });
+  assert.ok(before.x < 4, "Gallery failed to reset before real-device touch test");
   assert.ok(before.total > before.width + 50, "Visitor carousel is not horizontally scrollable");
   // Native Appium/iOS gesture: do not fake touch with JS scrollLeft.
   let maxScrollX = before.x;
