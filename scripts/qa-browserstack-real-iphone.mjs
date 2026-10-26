@@ -2,8 +2,10 @@
 // Requires BrowserStack Automate Mobile, separate from a BrowserStack Live trial.
 import assert from "node:assert/strict";
 import webdriver from "selenium-webdriver";
+import seleniumInput from "selenium-webdriver/lib/input.js";
 
 const { Builder, By } = webdriver;
+const { Pointer } = seleniumInput;
 const userName = process.env.BROWSERSTACK_USERNAME;
 const accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
 const deviceName = process.env.BROWSERSTACK_DEVICE || "iPhone 16";
@@ -159,31 +161,55 @@ try {
   await driver.executeScript(function () {
     document.querySelector(".herahera-visitor-gallery").scrollIntoView({ block: "center" });
   });
-  const gallery = await driver.findElement(By.css(".herahera-visitor-gallery"));
-  // Image decoding above advanced the horizontal gallery; reset before native swipe QA.
+  // The previous Appium "mobile: swipe" passed an element ID from the Safari
+  // web context. BrowserStack then returned "element expired from internal cache".
+  // Use the W3C touch-pointer actions API with coordinates inside the freshly
+  // measured visible gallery. No cached WebElement IDs and no fake JS scrolling.
   await driver.executeScript(function () {
     document.querySelector(".herahera-visitor-gallery").scrollLeft = 0;
   });
-  await delay(500);
+  await delay(400);
   const before = await driver.executeScript(function () {
     const e = document.querySelector(".herahera-visitor-gallery");
     return { x: e.scrollLeft, width: e.clientWidth, total: e.scrollWidth };
   });
-  assert.ok(before.x < 4, "Gallery failed to reset before real-device touch test");
+  assert.ok(before.x < 4, "Gallery failed to reset before native gesture test");
   assert.ok(before.total > before.width + 50, "Visitor carousel is not horizontally scrollable");
-  // Native Appium/iOS gesture: do not fake touch with JS scrollLeft.
+  const maxPossible = before.total - before.width;
   let maxScrollX = before.x;
-  for (let swipe = 0; swipe < 4; swipe++) {
-    await driver.executeScript("mobile: swipe", { element: await gallery.getId(), direction: "left" });
-    await delay(450);
-    const x = await driver.executeScript(function () {
+  for (let swipe = 0; swipe < 5 && maxScrollX < maxPossible - 30; swipe++) {
+    // Re-measure after each gesture in case Safari's visual viewport shifts.
+    const geo = await driver.executeScript(function () {
+      const rect = document.querySelector(".herahera-visitor-gallery").getBoundingClientRect();
+      return {
+        left: rect.left, top: rect.top, width: rect.width, height: rect.height,
+        viewportWidth: innerWidth, viewportHeight: innerHeight
+      };
+    });
+    const startX = Math.round(Math.min(geo.viewportWidth - 25, geo.left + geo.width * 0.83));
+    const endX = Math.round(Math.max(25, geo.left + geo.width * 0.17));
+    const y = Math.round(Math.max(85, Math.min(geo.viewportHeight - 85, geo.top + Math.min(geo.height * 0.38, 160))));
+    assert.ok(startX > endX + 70, "Gallery visible swipe area is too small");
+    assert.ok(y > geo.top && y < geo.top + geo.height,
+      "Swipe position is outside the gallery viewport");
+    const finger = new Pointer("luen-real-iphone-touch-" + swipe, Pointer.Type.TOUCH);
+    const actions = driver.actions({ async: true });
+    actions.insert(finger,
+      finger.move({ origin: "viewport", x: startX, y, duration: 0 }),
+      finger.press(),
+      { type: "pause", duration: 90 },
+      finger.move({ origin: "viewport", x: endX, y, duration: 490 }),
+      finger.release());
+    await actions.perform();
+    await delay(430);
+    const after = await driver.executeScript(function () {
       return document.querySelector(".herahera-visitor-gallery").scrollLeft;
     });
-    maxScrollX = Math.max(maxScrollX, x);
+    maxScrollX = Math.max(maxScrollX, after);
   }
-  assert.ok(maxScrollX > before.x + 25, "Native iPhone visitor swipe did not move the gallery");
-  assert.ok(maxScrollX >= before.total - before.width - 30, "Four native iPhone swipes did not reach last visitor image");
-  passed("Native iPhone swipe to VISIT 04", { nativeTouch: true, swipes: 4, reachedLastPhoto: true });
+  assert.ok(maxScrollX > before.x + 25, "Physical iPhone touch swipe did not move gallery");
+  assert.ok(maxScrollX >= maxPossible - 30, "Physical iPhone touch swipes did not reach VISIT 04");
+  passed("Native iPhone swipe to VISIT 04", { nativeTouch: true, reachedLastPhoto: true, finalScrollReached: true });
   console.log("LUEN_REAL_IPHONE_QA " + JSON.stringify({
     status: "PASS", device: deviceName, iOS: osVersion, results
   }));
