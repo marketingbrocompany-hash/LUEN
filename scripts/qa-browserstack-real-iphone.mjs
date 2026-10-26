@@ -121,13 +121,18 @@ try {
   });
   assert.ok(before.total > before.width + 50, "Visitor carousel is not horizontally scrollable");
   // Native Appium/iOS gesture: do not fake touch with JS scrollLeft.
-  await driver.executeScript("mobile: swipe", { element: await gallery.getId(), direction: "left" });
-  await delay(500);
-  const after = await driver.executeScript(function () {
-    return document.querySelector(".herahera-visitor-gallery").scrollLeft;
-  });
-  assert.ok(after > before.x + 25, "Native iPhone visitor swipe did not move the gallery");
-  passed("Native iPhone swipe", { nativeTouch: true, moved: true });
+  let maxScrollX = before.x;
+  for (let swipe = 0; swipe < 4; swipe++) {
+    await driver.executeScript("mobile: swipe", { element: await gallery.getId(), direction: "left" });
+    await delay(450);
+    const x = await driver.executeScript(function () {
+      return document.querySelector(".herahera-visitor-gallery").scrollLeft;
+    });
+    maxScrollX = Math.max(maxScrollX, x);
+  }
+  assert.ok(maxScrollX > before.x + 25, "Native iPhone visitor swipe did not move the gallery");
+  assert.ok(maxScrollX >= before.total - before.width - 30, "Four native iPhone swipes did not reach last visitor image");
+  passed("Native iPhone swipe to VISIT 04", { nativeTouch: true, swipes: 4, reachedLastPhoto: true });
   console.log("LUEN_REAL_IPHONE_QA " + JSON.stringify({
     status: "PASS", device: deviceName, iOS: osVersion, results
   }));
