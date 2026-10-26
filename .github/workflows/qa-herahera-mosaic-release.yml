@@ -1,0 +1,50 @@
+name: LUEN Herahera approved mosaics release gate (no deployment)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'cases/herahera-seoul-fnb/**'
+      - 'assets/css/case-herahera-compact.css'
+      - 'assets/images/cases/herahera-visitor-*.webp'
+      - 'assets/images/cases/herahera-pop-cutout*.webp'
+      - 'scripts/qa-herahera-mosaic-release.mjs'
+      - '.github/workflows/qa-herahera-mosaic-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-mosaic-gallery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check approved 4-photo case script and site integrity
+        run: |
+          node --check scripts/qa-herahera-mosaic-release.mjs
+          node scripts/check-site.mjs
+          grep -Fxq 'luenkorea.com' CNAME
+      - name: Install Chromium and iPhone WebKit automation
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve branch locally, never publish
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-herahera-http.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/luen-herahera-http.log
+          exit 1
+      - name: Confirm exact masked WebP bytes, 4-photo mobile swipe and original POP
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-herahera-mosaic-release.mjs
+# No visitor photos are included in CI logs or screenshots.
