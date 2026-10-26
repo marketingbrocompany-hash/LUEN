@@ -10,13 +10,15 @@ permissions:
   contents: read
 jobs:
   font-glyph-visual:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          ref: main
+          # Immutable production main before original Noto glyph optimization PR #226.
+          # Comparing today's main to itself would invalidate this visual regression.
+          ref: e79bc12e69dd9ad0c393dabcca573bbcb0fe10b9
           path: _baseline
       - uses: actions/setup-node@v4
         with:
