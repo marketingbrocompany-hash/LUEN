@@ -1,0 +1,39 @@
+name: LUEN responsive case-image browser QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/images/cases/*-mobile.webp'
+      - 'scripts/qa-case-image-responsive.mjs'
+      - '.github/workflows/qa-responsive-case-images.yml'
+permissions:
+  contents: read
+jobs:
+  mobile-visual-and-resource:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate source and assets
+        run: node scripts/check-site.mjs
+      - name: Install browser runner
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Start local immutable PR checkout
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-responsive-http.log 2>&1 &
+          for i in {1..30}; do
+            curl -fsS -o /dev/null http://127.0.0.1:4173/ && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Verify selected image resources and layout on iPhone and Chrome
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-case-image-responsive.mjs
