@@ -221,6 +221,13 @@ const checks=[
   ['deleted More Content heading stays deleted',!home.includes('class="case-selected-work-head-v10"')],
   ['offline POP preserved in case detail',cases.includes('data-herahera-pop-proof')],
   ['main motion asset linked',home.includes('assets/js/luen-motion.js')],
+  ['mobile card reveal stays progressive and reduced-motion safe',
+    motionJs.includes("classList.add('luen-motion-mobile')")
+    &&motionJs.indexOf("classList.add('luen-motion-mobile')")>motionJs.indexOf('cardObserver.observe(trigger)')
+    &&motionJs.includes('beforeprint')
+    &&motionCss.includes('@media (max-width:767px) and (prefers-reduced-motion:no-preference)')
+    &&motionCss.includes('html.luen-motion-enhanced:not(.luen-motion-mobile)')
+    &&/@media \(prefers-reduced-motion:reduce\) \{\s*html\.luen-motion-enhanced \.luen-service-choice-grid/.test(motionCss)],
   ['progressive scroll reveal activation',core.includes("classList.add('js-scroll-reveal')")],
   ['JavaScript failure visible-content fallback',design.includes('html:not(.js-scroll-reveal) body .sr')],
   ['warm partner-strip override',home.includes('section.brand-wall{background:#EEE6DA!important}')],

@@ -58,13 +58,65 @@
   }
 }
 
-/* Small screens show titles immediately; no scroll-driven transforms. */
-@media (max-width:767px), (prefers-reduced-motion:reduce) {
+/* Small screens show titles immediately; no scroll-driven transforms.
+   Without the per-card observer (.luen-motion-mobile) cards stay visible. */
+@media (max-width:767px) {
+  html.luen-motion-enhanced:not(.luen-motion-mobile) .luen-service-choice-grid.sr > .luen-service-choice,
+  html.luen-motion-enhanced:not(.luen-motion-mobile) .case-support-grid-v7.sr > .case-support-card-v7,
+  html.luen-motion-enhanced:not(.luen-motion-mobile) .luen-flow-list-v2.sr > li {
+    opacity:1!important;
+    translate:none!important;
+    transition-delay:0s!important;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
   html.luen-motion-enhanced .luen-service-choice-grid.sr > .luen-service-choice,
   html.luen-motion-enhanced .case-support-grid-v7.sr > .case-support-card-v7,
   html.luen-motion-enhanced .luen-flow-list-v2.sr > li {
     opacity:1!important;
     translate:none!important;
     transition-delay:0s!important;
+  }
+}
+
+/* Mobile card-by-card reveal. The grid wrapper stays visible so a tall
+   stack never waits on one block-level reveal; each card rises on its own
+   and case images settle inside their rounded, clipped frames. */
+@media (max-width:767px) and (prefers-reduced-motion:no-preference) {
+  html.luen-motion-mobile body .luen-service-choice-grid.sr,
+  html.luen-motion-mobile body .case-support-grid-v7.sr,
+  html.luen-motion-mobile body .luen-flow-list-v2.sr {
+    opacity:1!important;
+    transform:none!important;
+  }
+  html.luen-motion-mobile .luen-service-choice-grid.sr > .luen-service-choice,
+  html.luen-motion-mobile .case-support-grid-v7.sr > .case-support-card-v7,
+  html.luen-motion-mobile .luen-flow-list-v2.sr > li {
+    opacity:0;
+    translate:0 22px;
+    transition:opacity .6s cubic-bezier(.22,1,.36,1),
+               translate .75s cubic-bezier(.22,1,.36,1),
+               transform .28s ease,border-color .28s ease,box-shadow .28s ease;
+  }
+  html.luen-motion-mobile .luen-service-choice-grid.sr > .luen-motion-card-in,
+  html.luen-motion-mobile .case-support-grid-v7.sr > .luen-motion-card-in,
+  html.luen-motion-mobile .luen-flow-list-v2.sr > .luen-motion-card-in {
+    opacity:1;
+    translate:0 0;
+  }
+  html.luen-motion-mobile #cases .case-support-card-v7 figure img {
+    scale:1.06;
+    transition:scale 1.1s cubic-bezier(.22,1,.36,1);
+  }
+  html.luen-motion-mobile #cases .case-support-card-v7.luen-motion-card-in figure img {
+    scale:1;
+  }
+  html.luen-motion-mobile .case-support-grid-v7.sr > :nth-child(2),
+  html.luen-motion-mobile .case-support-grid-v7.sr > :nth-child(2) figure img {
+    transition-delay:.09s;
+  }
+  html.luen-motion-mobile .case-support-grid-v7.sr > :nth-child(3),
+  html.luen-motion-mobile .case-support-grid-v7.sr > :nth-child(3) figure img {
+    transition-delay:.18s;
   }
 }

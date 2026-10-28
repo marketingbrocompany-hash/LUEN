@@ -6,6 +6,8 @@ on:
       - '.github/workflows/qa-home-motion-performance.yml'
       - 'assets/js/site-core.js'
       - 'assets/js/luen-motion.js'
+      - 'assets/css/luen-motion.css'
+      - 'scripts/qa-home-mobile-card-motion.mjs'
       - 'index.html'
 permissions:
   contents: read
@@ -38,11 +40,17 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-home-motion-performance.mjs
+      - name: Check mobile card-by-card reveal
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-home-mobile-card-motion.mjs
       - name: Archive screenshots and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: luen-home-motion-font-diagnostics
-          path: qa-screenshots/homepage-motion/
+          path: |
+            qa-screenshots/homepage-motion/
+            qa-screenshots/mobile-card-motion/
           retention-days: 14
           if-no-files-found: warn
