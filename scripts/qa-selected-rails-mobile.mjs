@@ -163,10 +163,16 @@ for(const run of runs){
         let longestStall=0,run0=0;
         for(const m of moves){run0=Math.abs(m)<.05?run0+1:0;longestStall=Math.max(longestStall,run0);}
         const frames=samples.at(-1).frames-samples[0].frames;
+        // Split each 150 ms window without movement by whether the browser
+        // delivered animation frames in it: no frames = browser/CI cadence,
+        // 3+ frames but no movement = the rail itself held still.
+        const stalls=moves.map((m,k)=>({m,f:samples[k+1].frames-samples[k].frames})).filter(w=>Math.abs(w.m)<.05);
         const total=moves.reduce((n,m)=>n+m,0);
         const rail={rail:i,width:Math.round(start.width),contentWidth:Math.round(start.contentWidth),clones:start.clones,pxPerSecond:+(total/2.85).toFixed(1),
-          longestStallMs:longestStall*150,framesDuringSample:frames,backwardSteps:moves.filter(m=>m<-.05).length,
+          longestStallMs:longestStall*150,framesDuringSample:frames,fps:+(frames/2.85).toFixed(1),
+          stallWindowsNoFrames:stalls.filter(w=>w.f===0).length,stallWindowsWithFrames:stalls.filter(w=>w.f>=3).length,backwardSteps:moves.filter(m=>m<-.05).length,
           rebuildsDuringSample:samples.at(-1).rebuilds-samples[0].rebuilds,rebuildsSinceLoad:samples.at(-1).rebuilds};
+        if(rail.stallWindowsWithFrames)warnings.push(label+' load '+load+' rail '+i+': held still in '+rail.stallWindowsWithFrames+' window(s) while frames were delivered');
         if(rail.rebuildsDuringSample)warnings.push(label+' load '+load+' rail '+i+': loop rebuilt '+rail.rebuildsDuringSample+'x while idle');
         if(total<10)failures.push(label+' load '+load+' rail '+i+': rail did not move in 3 s '+JSON.stringify(rail));
         else if(longestStall>=4)warnings.push(label+' load '+load+' rail '+i+': paused '+rail.longestStallMs+'ms then recovered '+JSON.stringify(rail));
