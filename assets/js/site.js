@@ -98,6 +98,10 @@
     };
     viewport.addEventListener('pointerup',release);
     viewport.addEventListener('pointercancel',release);
+    // Never leave the rail paused when the gesture ends without a pointerup
+    // (capture lost, app switch or a system gesture taking focus).
+    viewport.addEventListener('lostpointercapture',release);
+    window.addEventListener('blur',()=>{if(drag)release({pointerId:drag.id});});
   };
   const setupIOSLightLoop=viewport=>{
     const track=viewport.querySelector('.loop-track');

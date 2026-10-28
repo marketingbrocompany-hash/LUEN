@@ -75,6 +75,18 @@ const dispatchPointerDrag=(page,index,dx)=>page.evaluate(async ([i,dx])=>{
   fire('pointerup',x+dx);
 },[index,dx]);
 
+// A gesture that ends without pointerup (pointercancel, or focus lost with
+// no pointer event at all) must not leave the rail paused.
+const interruptedDrag=(page,index,ending)=>page.evaluate(async ([i,ending])=>{
+  const rail=document.querySelectorAll('#selected-content .portfolio-viewport')[i];
+  const r=rail.getBoundingClientRect();
+  const x=r.left+r.width*.7,y=r.top+r.height/2;
+  const fire=(type,cx)=>rail.dispatchEvent(new PointerEvent(type,{pointerId:9,pointerType:'touch',isPrimary:true,bubbles:true,cancelable:true,clientX:cx,clientY:y}));
+  fire('pointerdown',x);
+  for(let s=1;s<=5;s++){fire('pointermove',x-12*s);await new Promise(r=>requestAnimationFrame(r));}
+  if(ending==='blur')window.dispatchEvent(new Event('blur'));else fire('pointercancel',x-60);
+},[index,ending]);
+
 const touchDrag=async(cdp,page,index,dx,dy)=>{
   const box=await page.locator('#selected-content .portfolio-viewport').nth(index).boundingBox();
   const x=Math.round(box.x+box.width*.7),y=Math.round(box.y+box.height/2);
@@ -175,6 +187,18 @@ for(const run of runs){
         const resumed=await railState(page,i);
         rail.resumedPx=+travelled(paused.offset,resumed.offset,before.width).toFixed(1);
         if(rail.resumedPx<5)failures.push(label+' rail '+i+': auto motion did not resume after drag '+rail.resumedPx);
+
+        // 3b. Interrupted gestures resume auto motion (no stuck pause).
+        for(const ending of ['pointercancel','blur']){
+          await interruptedDrag(page,i,ending);
+          await page.waitForTimeout(1700);
+          const a=await railState(page,i);
+          await page.waitForTimeout(600);
+          const b=await railState(page,i);
+          const after=travelled(a.offset,b.offset,a.width);
+          rail['resumeAfter_'+ending]=+after.toFixed(1);
+          if(after<3)failures.push(label+' rail '+i+': rail stayed paused after '+ending+' ('+after.toFixed(1)+'px in 0.6 s)');
+        }
 
         // 4. Vertical swipe over the rail keeps scrolling the page and does not
         //    drag the rail sideways (real touch only; touch-action:pan-y).
