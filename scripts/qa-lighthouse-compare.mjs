@@ -18,7 +18,8 @@ for(const device of ['mobile','desktop'])for(let i=1;i<=(device==='mobile'?3:2);
       '--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage',
       '--throttling-method=simulate',device==='desktop'?'--preset=desktop':'--form-factor=mobile'];
     const r=spawnSync(cli,args,{env:{...process.env,CHROME_PATH:chrome},timeout:150000,encoding:'utf8',maxBuffer:6*1024*1024});
-    const report=prefix+'.report.json';
+    // With a single --output=json, Lighthouse writes exactly --output-path (no suffix).
+    const report=fs.existsSync(prefix)?prefix:prefix+'.report.json';
     if(r.status!==0||!fs.existsSync(report)){
       errors.push(device+'/'+i+'/'+site+': '+String(r.stderr||r.stdout||r.error).slice(-550));continue;
     }
