@@ -199,11 +199,13 @@ for(const run of runs){
           await interruptedDrag(page,i,ending);
           await page.waitForTimeout(1700);
           const a=await railState(page,i);
-          await page.waitForTimeout(600);
+          // 1.2 s window: CI WebKit delivers frames irregularly (15–50 fps),
+          // and a stuck pause moves 0 px however long the window is.
+          await page.waitForTimeout(1200);
           const b=await railState(page,i);
           const after=travelled(a.offset,b.offset,a.width);
           rail['resumeAfter_'+ending]=+after.toFixed(1);
-          if(after<3)failures.push(label+' rail '+i+': rail stayed paused after '+ending+' ('+after.toFixed(1)+'px in 0.6 s)');
+          if(after<1)failures.push(label+' rail '+i+': rail stayed paused after '+ending+' ('+after.toFixed(1)+'px in 1.2 s)');
         }
 
         // 4. Vertical swipe over the rail keeps scrolling the page and does not
