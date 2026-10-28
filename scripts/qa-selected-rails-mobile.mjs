@@ -192,7 +192,10 @@ for(const run of runs){
         await page.waitForTimeout(1500);
         const resumed=await railState(page,i);
         rail.resumedPx=+travelled(paused.offset,resumed.offset,before.width).toFixed(1);
-        if(rail.resumedPx<5)failures.push(label+' rail '+i+': auto motion did not resume after drag '+rail.resumedPx);
+        // Any movement proves the pause ended; with few frames the iOS loop
+        // advances at most 0.07 s of motion per frame (≈2.6 px), so a
+        // distance threshold would measure CI frame supply, not the rail.
+        if(rail.resumedPx<1)failures.push(label+' rail '+i+': auto motion did not resume after drag '+rail.resumedPx);
 
         // 3b. Interrupted gestures resume auto motion (no stuck pause).
         for(const ending of ['pointercancel','blur']){
