@@ -197,6 +197,38 @@
     });
   },{rootMargin:'180px 0px',threshold:0}):null;
 
+  /* Touch drag on the homepage long-form/reels rails: the rail pauses under
+     the finger, follows horizontal drags and resumes where it was left.
+     Vertical page scrolling stays native (touch-action:pan-y in CSS). */
+  const wrapLoopOffset=(offset,width)=>((offset%width)+width)%width;
+  function enableLoopDrag(viewport){
+    if(viewport.dataset.loopDrag||!('PointerEvent' in window))return;
+    viewport.dataset.loopDrag='true';
+    let drag=null;
+    viewport.addEventListener('pointerdown',event=>{
+      const controller=loopControllers.get(viewport);
+      if(event.pointerType==='mouse'||!controller?.baseWidth||reducedMotion.matches)return;
+      clearTimeout(controller.resumeTimer);
+      controller.dragging=true;
+      drag={id:event.pointerId,x:event.clientX,offset:controller.offset,moved:false,controller};
+    });
+    viewport.addEventListener('pointermove',event=>{
+      if(drag?.id!==event.pointerId||reducedMotion.matches)return;
+      const {controller}=drag,dx=event.clientX-drag.x;
+      if(Math.abs(dx)>3)drag.moved=true;
+      controller.offset=wrapLoopOffset(drag.offset-dx,controller.baseWidth);
+      controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
+    });
+    const release=event=>{
+      if(drag?.id!==event.pointerId)return;
+      const {controller}=drag;
+      controller.resumeTimer=setTimeout(()=>{controller.dragging=false;controller.last=performance.now();},drag.moved?1200:0);
+      drag=null;
+    };
+    viewport.addEventListener('pointerup',release);
+    viewport.addEventListener('pointercancel',release);
+  }
+
   function setupLoopStrip(viewport){
     const track=viewport.querySelector('.loop-track');
     const source=viewport.querySelector('.loop-set:not(.loop-clone)');
@@ -230,6 +262,7 @@
     controller.tick=now=>{
       controller.raf=0;
       if(!controller.visible||document.hidden||reducedMotion.matches)return;
+      if(controller.dragging){controller.last=now;controller.raf=requestAnimationFrame(controller.tick);return;}
       const dt=Math.min(.05,(now-controller.last)/1000);controller.last=now;
       controller.offset+=controller.speed*dt;
       if(controller.offset>=controller.baseWidth)controller.offset-=controller.baseWidth;
@@ -237,6 +270,7 @@
       controller.raf=requestAnimationFrame(controller.tick);
     };
     loopControllers.set(viewport,controller);
+    if(viewport.closest('#selected-content'))enableLoopDrag(viewport);
     if(loopVisibilityObserver)loopVisibilityObserver.observe(viewport);else startLoop(viewport);
   }
   function initLoopStrips(){document.querySelectorAll('[data-loop-strip]').forEach(setupLoopStrip);}

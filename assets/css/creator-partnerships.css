@@ -599,6 +599,13 @@ html body #selected-content #work .portfolio-meta b{
     font-size:10.5px!important;
   }
 }
+/* Moving rails follow a horizontal finger drag (site.js / site-core.js);
+   vertical page scrolling over the rail stays with the browser. */
+@media(prefers-reduced-motion:no-preference){
+  html body #selected-content #work .portfolio-viewport{
+    touch-action:pan-y;
+  }
+}
 /* Users requesting reduced motion must still reach thumbnails beyond the
    initially visible cards — allow touch/trackpad horizontal scrolling. */
 @media(prefers-reduced-motion:reduce){
