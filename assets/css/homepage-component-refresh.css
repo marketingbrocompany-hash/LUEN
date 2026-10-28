@@ -1,0 +1,149 @@
+/* Homepage component refresh — 2026-10-28
+   Scope: Why LUEN (box grid -> editorial rows), LUEN Works Archive
+   (adds section title + thumbnail tone overlay, gallery content unchanged),
+   How LUEN Works (box grid -> connected timeline).
+   All classes below are additive; existing classes/markup are kept intact
+   so motion/reveal hooks (.sr, .luen-flow-list-v2) and JS (data-loop-strip)
+   keep working unchanged. */
+
+/* ---------- Why LUEN: editorial rows ---------- */
+.luen-why-rows{
+  display:flex;
+  flex-direction:column;
+}
+.luen-why-row{
+  display:grid;
+  grid-template-columns:140px 1fr;
+  gap:20px;
+  padding-block:26px;
+  border-top:1px solid var(--luen-line);
+}
+.luen-why-rows .luen-why-row:last-child{
+  border-bottom:1px solid var(--luen-line);
+}
+.luen-why-row>span{
+  font:800 11px/1.4 var(--luen-type-ui);
+  letter-spacing:.08em;
+  color:var(--luen-orange);
+}
+.luen-why-row h3{
+  margin:0 0 8px;
+  font:700 19px/1.3 var(--luen-type-display);
+  letter-spacing:-.02em;
+  color:var(--luen-ink);
+}
+.luen-why-row p{
+  margin:0;
+  max-width:58ch;
+  color:var(--luen-muted);
+  font-size:14px;
+  line-height:1.75;
+}
+@media(max-width:720px){
+  .luen-why-row{grid-template-columns:1fr;gap:10px}
+}
+
+/* ---------- LUEN Works Archive: title + thumbnail tone overlay ----------
+   Deliberately NOT using .luen-section-primary-title here: check-site.mjs
+   pins that class to exactly 5 existing section headings as a regression
+   guard, so this new title gets its own class with matching visual weight. */
+.works-archive-title{
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0;
+  padding:0;
+  color:var(--luen-finish-cta,var(--luen-orange));
+  font-family:var(--luen-type-ui);
+  font-size:clamp(40px,4vw,52px);
+  font-weight:700;
+  line-height:1.08;
+  letter-spacing:-.046em;
+  text-wrap:balance;
+}
+.portfolio-card{position:relative}
+.portfolio-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(17,16,14,.62), rgba(17,16,14,0) 46%);
+  pointer-events:none;
+}
+.portfolio-card .portfolio-country{z-index:2}
+.portfolio-card .portfolio-meta{z-index:2}
+
+/* ---------- How LUEN Works: connected timeline ---------- */
+.luen-flow-list-timeline{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0;
+  margin:0;
+  padding:0;
+  list-style:none;
+  border-top:0;
+  position:relative;
+}
+.luen-flow-list-timeline::before{
+  content:"";
+  position:absolute;
+  top:9px;
+  left:0;
+  right:0;
+  height:1px;
+  background:var(--luen-line);
+}
+.luen-flow-list-timeline li{
+  position:relative;
+  min-height:0;
+  padding:28px 18px 0 0;
+  border-right:0;
+}
+.luen-flow-list-timeline li:nth-child(n){
+  /* overrides .luen-flow-list-v2 li:nth-child(n){min-height:250px}, kept for its .sr reveal hook */
+  min-height:0;
+}
+.luen-flow-list-timeline li:first-child{padding-left:0}
+.luen-flow-list-timeline li:last-child{padding-right:0}
+.luen-flow-list-timeline li::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:19px;
+  height:19px;
+  border-radius:50%;
+  background:var(--luen-canvas);
+  border:2px solid var(--luen-orange);
+}
+.luen-flow-list-timeline li>span{
+  display:inline-block;
+  margin:0 6px 8px 0;
+  color:var(--luen-orange);
+  font:800 10px/1 var(--luen-type-ui);
+}
+.luen-flow-list-timeline li>b{
+  display:inline-block;
+  margin:0 0 8px;
+  color:var(--luen-muted-light);
+  font:700 10px/1 var(--luen-type-ui);
+  letter-spacing:.08em;
+}
+.luen-flow-list-timeline li>strong{
+  display:block;
+  margin-bottom:6px;
+  color:var(--luen-ink);
+  font:700 15.5px/1.3 var(--luen-type-display);
+  letter-spacing:-.02em;
+}
+.luen-flow-list-timeline li>p{
+  margin:0;
+  color:var(--luen-muted);
+  font-size:12.5px;
+  line-height:1.65;
+}
+@media(max-width:720px){
+  .luen-flow-list-timeline{grid-template-columns:1fr;gap:26px}
+  .luen-flow-list-timeline::before{top:0;bottom:0;left:9px;right:auto;width:1px;height:auto}
+  .luen-flow-list-timeline li{padding:0 0 0 30px}
+  .luen-flow-list-timeline li::before{left:0;top:1px}
+}
