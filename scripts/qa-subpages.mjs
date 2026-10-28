@@ -144,6 +144,42 @@ try{
           warn(route,v.name,'No obvious path to /contact/');
         if(!info.hamburgerVisible && v.width<=820)fail(route,v.name,'Mobile hamburger not visible');
         if(info.hamburgerVisible && v.width>820)warn(route,v.name,'Unexpected desktop hamburger');
+        // Reserve the correct intrinsic size before the three case cover images load.
+        // Verify the actual decoded WebP dimensions, not just the HTML attributes.
+        if(['/cases/ikeda-edita/','/cases/yuki-clinic/','/cases/masubuchi-bibigo/'].includes(route)){
+          const cover=page.locator('figure.case-study-visual--cinema img');
+          if(await cover.count()!==1)fail(route,v.name,'Expected one case hero cover image');
+          else{
+            const dims=await cover.evaluate(async img=>{
+              try{await img.decode();}catch{}
+              return {
+                width:img.getAttribute('width'),
+                height:img.getAttribute('height'),
+                naturalWidth:img.naturalWidth,
+                naturalHeight:img.naturalHeight
+              };
+            });
+            if(dims.width!=='1280'||dims.height!=='720')
+              fail(route,v.name,'Case hero HTML dimensions incorrect: '+JSON.stringify(dims));
+            if(dims.naturalWidth!==1280||dims.naturalHeight!==720)
+              fail(route,v.name,'Case hero image pixels do not match HTML dimensions: '+JSON.stringify(dims));
+          }
+        }
+        if(route==='/services/'){
+          const structuredUrls=await page.locator('script[type="application/ld+json"]').evaluateAll(scripts=>{
+            return scripts.flatMap(script=>{
+              try{
+                const json=JSON.parse(script.textContent||'{}');
+                return json['@type']==='ItemList'
+                  ? (json.itemListElement||[]).filter(x=>x.name==='Instagram Reels').map(x=>x.url)
+                  : [];
+              }catch{return [];}
+            });
+          });
+          if(structuredUrls.length!==1||
+             structuredUrls[0]!=='https://luenkorea.com/services/instagram-influencer-marketing/')
+            fail(route,v.name,'Instagram schema URL differs from actual service link: '+JSON.stringify(structuredUrls));
+        }
         const key=route+'|'+v.name;
         if(v.width<=820){
           const hamburger=page.locator('#hamburger');
