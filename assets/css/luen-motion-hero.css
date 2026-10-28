@@ -144,3 +144,15 @@ html body main#top>.hero .luen-motion-pause:hover{
  html body main#top>.hero .luen-motion-progress i{transition:none!important}
  html body main#top>.hero .luen-motion-card{will-change:auto!important}
 }
+
+/* CLS font-swap stabilization — Issue #244.
+   At 380–430px, fallback Korean font wraps the hero description to 3 lines
+   but the late-loaded Pretendard subset may use only 2 lines. Reserve those
+   three lines before font swap so CTA and motion showcase cannot jump.
+   This intentionally touches only the hero description, not the font itself. */
+@media (min-width:380px) and (max-width:430px){
+  html body main#top>.hero .hero-desc{
+    min-height:70.56px!important; /* 14px * 1.68 line-height * 3 lines */
+    min-height:3lh!important;
+  }
+}
