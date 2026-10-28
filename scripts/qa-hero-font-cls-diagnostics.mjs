@@ -83,6 +83,13 @@ for(const browserType of [chromium,webkit]){
     }
   }finally{await browser.close();}
 }
+// Regression gate: the former late-font 390/430px jumps must be gone.
+const critical=results.filter(r=>r.delayedStylesheet&&[390,430].includes(r.width));
+if(critical.length!==4)errors.push('critical delayed-font scenarios missing: '+critical.length+'/4');
+for(const r of critical){
+  if(Math.abs(r.copyHeightDelta)>2||Math.abs(r.showcaseTopDelta)>2)
+    errors.push('CLS regression '+r.label+': copy '+r.copyHeightDelta+'px, showcase '+r.showcaseTopDelta+'px');
+}
 const summary={checked:results.length,errors,results};
 fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(summary,null,2));
 console.log('LUEN_HERO_FONT_CLS_SUMMARY '+JSON.stringify({
