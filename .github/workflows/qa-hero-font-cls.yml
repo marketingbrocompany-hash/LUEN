@@ -1,9 +1,10 @@
-name: LUEN hero webfont CLS diagnostics (no deploy)
+name: LUEN hero font CLS regression (no deploy)
 on:
   pull_request:
     branches: [main]
     paths:
       - 'scripts/qa-hero-font-cls-diagnostics.mjs'
+      - 'assets/css/luen-motion-hero.css'
       - '.github/workflows/qa-hero-font-cls.yml'
   workflow_dispatch:
 permissions:
