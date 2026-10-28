@@ -28,10 +28,19 @@ const runs=[
 
 // Count every animation frame so a frozen rail can be told apart from a
 // browser that stopped delivering requestAnimationFrame callbacks.
+// Also count loop rebuilds (each one removes the previous clone sets).
 const frameCounter=()=>{
   window.__luenFrames=0;
+  window.__luenRebuilds=0;
   const count=()=>{window.__luenFrames++;requestAnimationFrame(count);};
   requestAnimationFrame(count);
+  document.addEventListener('DOMContentLoaded',()=>{
+    new MutationObserver(records=>{
+      for(const record of records)for(const node of record.removedNodes){
+        if(node.classList?.contains('loop-clone')&&record.target.closest?.('#selected-content'))window.__luenRebuilds++;
+      }
+    }).observe(document.body,{childList:true,subtree:true});
+  });
 };
 
 const railState=(page,index)=>page.evaluate(i=>{
@@ -41,7 +50,11 @@ const railState=(page,index)=>page.evaluate(i=>{
   const source=sets[0];
   const sourceRect=source.getBoundingClientRect();
   const offset=-new DOMMatrix(getComputedStyle(track).transform).m41;
+  const lastCard=source.lastElementChild.getBoundingClientRect();
+  const contentWidth=lastCard.right-sourceRect.left+parseFloat(getComputedStyle(source).paddingRight);
   return {
+    contentWidth,cardWidth:source.firstElementChild.getBoundingClientRect().width,
+    rebuilds:window.__luenRebuilds,
     offset,width:sourceRect.width,clientWidth:rail.clientWidth,clones:sets.length-1,
     seam:sets[1]?sets[1].getBoundingClientRect().left-sourceRect.left:null,
     touchAction:getComputedStyle(rail).touchAction,overflowX:getComputedStyle(rail).overflowX,
@@ -125,6 +138,10 @@ for(const run of runs){
         // 1. Seamless loop: the first copy starts exactly one source width later.
         const start=await railState(page,i);
         if(Math.abs(start.seam-start.width)>1)failures.push(label+' rail '+i+': loop seam '+start.seam+' vs width '+start.width);
+        // The set must end right after its last card: any extra width is an
+        // empty stretch of rail before the loop repeats.
+        if(Math.abs(start.width-start.contentWidth)>2)failures.push(label+' rail '+i+': '+Math.round(start.width-start.contentWidth)+
+          'px empty after last card (set '+Math.round(start.width)+'px, cards '+Math.round(start.contentWidth)+'px, card '+start.cardWidth.toFixed(1)+'px)');
         if(start.touchAction!=='pan-y')failures.push(label+' rail '+i+': touch-action '+start.touchAction);
 
         // 2. Continuous motion over 3 s, sampled every 150 ms.
@@ -135,8 +152,10 @@ for(const run of runs){
         for(const m of moves){run0=Math.abs(m)<.05?run0+1:0;longestStall=Math.max(longestStall,run0);}
         const frames=samples.at(-1).frames-samples[0].frames;
         const total=moves.reduce((n,m)=>n+m,0);
-        const rail={rail:i,width:Math.round(start.width),clones:start.clones,pxPerSecond:+(total/2.85).toFixed(1),
-          longestStallMs:longestStall*150,framesDuringSample:frames,backwardSteps:moves.filter(m=>m<-.05).length};
+        const rail={rail:i,width:Math.round(start.width),contentWidth:Math.round(start.contentWidth),clones:start.clones,pxPerSecond:+(total/2.85).toFixed(1),
+          longestStallMs:longestStall*150,framesDuringSample:frames,backwardSteps:moves.filter(m=>m<-.05).length,
+          rebuildsDuringSample:samples.at(-1).rebuilds-samples[0].rebuilds,rebuildsSinceLoad:samples.at(-1).rebuilds};
+        if(rail.rebuildsDuringSample)warnings.push(label+' load '+load+' rail '+i+': loop rebuilt '+rail.rebuildsDuringSample+'x while idle');
         if(total<10)failures.push(label+' load '+load+' rail '+i+': rail did not move in 3 s '+JSON.stringify(rail));
         else if(longestStall>=4)warnings.push(label+' load '+load+' rail '+i+': paused '+rail.longestStallMs+'ms then recovered '+JSON.stringify(rail));
         if(rail.backwardSteps)failures.push(label+' rail '+i+': moved backwards without input '+JSON.stringify(moves));

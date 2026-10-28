@@ -198,31 +198,37 @@
   },{rootMargin:'180px 0px',threshold:0}):null;
 
   /* Touch drag on the homepage long-form/reels rails: the rail pauses under
-     the finger, follows horizontal drags and resumes where it was left.
+     the finger, follows horizontal drags and resumes where it was left. The
+     paused state belongs to the rail, so it survives a resize rebuild.
      Vertical page scrolling stays native (touch-action:pan-y in CSS). */
+  const draggedLoops=new Set();
   const wrapLoopOffset=(offset,width)=>((offset%width)+width)%width;
   function enableLoopDrag(viewport){
     if(viewport.dataset.loopDrag||!('PointerEvent' in window))return;
     viewport.dataset.loopDrag='true';
-    let drag=null;
+    let drag=null,resumeTimer=0;
     viewport.addEventListener('pointerdown',event=>{
       const controller=loopControllers.get(viewport);
       if(event.pointerType==='mouse'||!controller?.baseWidth||reducedMotion.matches)return;
-      clearTimeout(controller.resumeTimer);
-      controller.dragging=true;
-      drag={id:event.pointerId,x:event.clientX,offset:controller.offset,moved:false,controller};
+      clearTimeout(resumeTimer);
+      draggedLoops.add(viewport);
+      drag={id:event.pointerId,x:event.clientX,offset:controller.offset,moved:false};
     });
     viewport.addEventListener('pointermove',event=>{
-      if(drag?.id!==event.pointerId||reducedMotion.matches)return;
-      const {controller}=drag,dx=event.clientX-drag.x;
+      const controller=loopControllers.get(viewport);
+      if(drag?.id!==event.pointerId||!controller?.baseWidth||reducedMotion.matches)return;
+      const dx=event.clientX-drag.x;
       if(Math.abs(dx)>3)drag.moved=true;
       controller.offset=wrapLoopOffset(drag.offset-dx,controller.baseWidth);
       controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
     });
     const release=event=>{
       if(drag?.id!==event.pointerId)return;
-      const {controller}=drag;
-      controller.resumeTimer=setTimeout(()=>{controller.dragging=false;controller.last=performance.now();},drag.moved?1200:0);
+      resumeTimer=setTimeout(()=>{
+        draggedLoops.delete(viewport);
+        const controller=loopControllers.get(viewport);
+        if(controller)controller.last=performance.now();
+      },drag.moved?1200:0);
       drag=null;
     };
     viewport.addEventListener('pointerup',release);
@@ -233,6 +239,7 @@
     const track=viewport.querySelector('.loop-track');
     const source=viewport.querySelector('.loop-set:not(.loop-clone)');
     if(!track||!source)return;
+    const previous=loopControllers.get(viewport);
     stopLoop(viewport);
     loopVisibilityObserver?.unobserve(viewport);
     track.querySelectorAll('.loop-clone').forEach(el=>el.remove());
@@ -258,11 +265,15 @@
       });
       track.appendChild(clone);
     }
-    const controller={raf:0,visible:!loopVisibilityObserver,offset:0,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
+    // A resize rebuild continues from the current position instead of
+    // jumping back to the first card.
+    const offset=previous?.baseWidth?previous.offset%baseWidth:0;
+    track.style.transform=`translate3d(${-offset}px,0,0)`;
+    const controller={raf:0,visible:previous?.baseWidth?previous.visible:!loopVisibilityObserver,offset,last:performance.now(),speed:Math.max(10,Number(viewport.dataset.speed||45)),baseWidth,track,tick:null};
     controller.tick=now=>{
       controller.raf=0;
       if(!controller.visible||document.hidden||reducedMotion.matches)return;
-      if(controller.dragging){controller.last=now;controller.raf=requestAnimationFrame(controller.tick);return;}
+      if(draggedLoops.has(viewport)){controller.last=now;controller.raf=requestAnimationFrame(controller.tick);return;}
       const dt=Math.min(.05,(now-controller.last)/1000);controller.last=now;
       controller.offset+=controller.speed*dt;
       if(controller.offset>=controller.baseWidth)controller.offset-=controller.baseWidth;
