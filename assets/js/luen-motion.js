@@ -9,6 +9,36 @@
      Never gate heading visibility on a second IntersectionObserver. */
   document.documentElement.classList.add('luen-motion-enhanced');
 
+  /* Mobile: a tall .sr grid reveals all of its cards at once, so cards below
+     the fold arrive already static. Reveal each card as it reaches the
+     viewport instead. Cards already on screen are revealed before the
+     hidden state is switched on, so nothing flashes away. The case cards
+     form a horizontal swipe rail on mobile, so the rail is observed as one
+     trigger and its cards stagger in from the left (see luen-motion.css). */
+  const stackedCards = [...document.querySelectorAll(
+    '.luen-service-choice-grid.sr > .luen-service-choice,' +
+    '.luen-flow-list-v2.sr > li'
+  )];
+  const caseRail = document.querySelector('.case-support-grid-v7.sr');
+  const revealGroups = new Map(stackedCards.map(card => [card, [card]]));
+  if (caseRail?.children.length) revealGroups.set(caseRail, [...caseRail.children]);
+  if (revealGroups.size && window.matchMedia('(max-width:767px)').matches) {
+    const reveal = trigger => revealGroups.get(trigger)?.forEach(card => card.classList.add('luen-motion-card-in'));
+    const cardObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        reveal(entry.target);
+        cardObserver.unobserve(entry.target);
+      });
+    }, {threshold:0,rootMargin:'0px 0px -8% 0px'});
+    revealGroups.forEach((_cards, trigger) => {
+      if (trigger.getBoundingClientRect().top < window.innerHeight * .92) reveal(trigger);
+      else cardObserver.observe(trigger);
+    });
+    window.addEventListener('beforeprint', () => revealGroups.forEach((_cards, trigger) => reveal(trigger)));
+    document.documentElement.classList.add('luen-motion-mobile');
+  }
+
   const media = document.querySelector('#case-herahera .case-content-media-v7 img');
   const frame = media?.parentElement;
   if (!media || !frame) return;
