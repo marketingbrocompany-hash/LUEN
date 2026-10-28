@@ -221,6 +221,14 @@ const checks=[
   ['deleted More Content heading stays deleted',!home.includes('class="case-selected-work-head-v10"')],
   ['offline POP preserved in case detail',cases.includes('data-herahera-pop-proof')],
   ['main motion asset linked',home.includes('assets/js/luen-motion.js')],
+  ['all decorative subpage SVG icons resolve to unclipped symbols',(()=>{
+    const pages=['about/index.html','services/index.html'].map(file=>fs.readFileSync(path.join(root,file),'utf8'));
+    const sprite=fs.readFileSync(path.join(root,'assets/icons/subpage-icons.svg'),'utf8');
+    const icons=pages.flatMap(page=>[...page.matchAll(/<svg\b[^>]*>\s*<use\s+href="\/assets\/icons\/subpage-icons\.svg#([^"]+)"/g)]);
+    return icons.length===15 && icons.every(([tag,id])=>
+      tag.includes('viewBox="0 0 48 48"') && tag.includes('aria-hidden="true"')
+      && sprite.includes('id="'+id+'"'));
+  })()],
   ['mobile card reveal stays progressive and reduced-motion safe',
     motionJs.includes("classList.add('luen-motion-mobile')")
     &&motionJs.indexOf("classList.add('luen-motion-mobile')")>motionJs.indexOf('cardObserver.observe(trigger)')
