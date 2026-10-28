@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<defs>
+  <g id="ic-target"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="24" cy="24" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="24" cy="24" r="2.6" fill="currentColor"/></g>
+  <g id="ic-scene"><rect x="7" y="11" width="34" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M7 30l9-8 7 6 8-9 11 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="18" r="2.4" fill="currentColor"/></g>
+  <g id="ic-flow"><path d="M9 24h10M29 24h10M19 24a5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="9" cy="24" r="2.4" fill="currentColor"/><circle cx="39" cy="24" r="2.4" fill="currentColor"/></g>
+  <g id="ic-result"><path d="M8 34V20M18 34V12M28 34v9M38 34V18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M8 20l10-8 10 7 10-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <g id="ic-youtube"><rect x="6" y="12" width="36" height="24" rx="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 18.5l11 5.5-11 5.5z" fill="currentColor"/></g>
+  <g id="ic-instagram"><rect x="7" y="7" width="34" height="34" rx="9" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="33.5" cy="14.5" r="1.8" fill="currentColor"/></g>
+  <g id="ic-tiktok"><path d="M26 7v22a6.5 6.5 0 1 1-6.5-6.5c.7 0 1.4.1 2 .3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 7c1 5 4.5 8.5 9.5 9.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></g>
+  <g id="ic-x"><path d="M10 10l28 28M38 10L10 38" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></g>
+  <g id="ic-blog"><path d="M10 38V15a5 5 0 0 1 5-5h18a5 5 0 0 1 5 5v15l-8 8z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M16 17h16M16 24h16M16 31h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>
+  <g id="ic-compass"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M30 18l-4 10-10 4 4-10z" fill="currentColor"/></g>
+  <g id="ic-link"><path d="M18 30l-3.5 3.5a6 6 0 0 1-8.5-8.5L13 18M30 18l3.5-3.5a6 6 0 0 0-8.5-8.5L21.5 9.5M16 32l16-16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <g id="ic-pin"><path d="M24 40s12-11.5 12-20A12 12 0 1 0 12 20c0 8.5 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="24" cy="20" r="4" fill="currentColor"/></g>
+</defs>
+</svg>

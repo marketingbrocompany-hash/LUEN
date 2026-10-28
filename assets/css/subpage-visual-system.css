@@ -1,0 +1,50 @@
+/* Subpage visual system — 2026-10-28
+   Scope: About (bridge diagram, principle/platform icons, quote card),
+   Services hub (service icons), Insights hub (article cover graphics).
+   No photography used anywhere in this file — About/Services/Insights
+   currently ship zero images, and real team/office photography isn't
+   available yet, so every visual here is a code-drawn icon or pattern.
+   Icons come from /assets/icons/subpage-icons.svg via <use>; this file
+   only adds sizing/placement, it never duplicates the icon paths. */
+
+/* ---------- shared icon tile ---------- */
+.lv-icon-tile{
+  width:44px;height:44px;border-radius:12px;background:var(--luen-orange-soft,rgba(217,101,50,.1));
+  display:flex;align-items:center;justify-content:center;color:var(--luen-orange);flex:none;
+}
+.lv-icon-tile svg{width:22px;height:22px}
+.lv-icon-tile--dark{background:rgba(245,243,238,.12);color:var(--luen-orange-bright)}
+
+/* ---------- About: bridge diagram ---------- */
+.about-bridge-arrow{height:auto;background:none}
+.about-bridge-arrow::after{display:none}
+.about-bridge-arrow svg{display:block;width:100%;height:64px;overflow:visible}
+
+/* ---------- About: principle icons ---------- */
+.about-principle .lv-icon-tile{margin-bottom:22px}
+
+/* ---------- About: platform icons ---------- */
+.about-platform .lv-icon-tile{margin:0 auto 14px}
+.about-platform{text-align:center}
+
+/* ---------- About: quote card (no-photo direction) ---------- */
+.lv-quote{
+  background:var(--luen-espresso,#15100D);color:#F5F3EE;border-radius:20px;
+  padding:clamp(28px,4vw,48px);margin-top:4px;
+}
+.lv-quote-mark{font:800 56px/1 Georgia,serif;color:var(--luen-orange-bright);display:block;margin-bottom:4px}
+.lv-quote p{font-size:clamp(18px,2.2vw,23px);line-height:1.5;letter-spacing:-.01em;max-width:36ch;margin:0 0 18px;text-wrap:balance}
+.lv-quote-attrib{font:700 11px/1 var(--luen-type-ui);letter-spacing:.06em;color:#A49C90}
+
+/* ---------- Services hub: icon + number stay in the item's first grid
+   column (.service-hub-item is a strict 4-column grid: number/title/
+   description/link — adding the icon as its own grid child would shift
+   every other column, so it's wrapped into that first cell instead). ---------- */
+.service-hub-lead{display:flex;flex-direction:column;gap:14px}
+
+/* ---------- Insights hub: cover graphics ---------- */
+.insight-card{display:flex;flex-direction:column}
+.insight-card-cover{
+  display:block;aspect-ratio:16/8.5;border-radius:12px;overflow:hidden;margin:0 0 16px;background:var(--luen-espresso,#15100D);
+}
+.insight-card-cover svg{width:100%;height:100%;display:block}
