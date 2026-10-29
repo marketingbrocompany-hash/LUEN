@@ -1,0 +1,59 @@
+name: LUEN integrated design Lighthouse comparison (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-lighthouse-pr243.yml'
+      - 'scripts/qa-lighthouse-compare.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare-lighthouse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact candidate head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Checkout pinned production main baseline
+        uses: actions/checkout@v4
+        with:
+          ref: a339efb58bd1ad89cadb7c6e859db56a8de1a379
+          path: lh-baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser and Lighthouse
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node --check scripts/qa-lighthouse-compare.mjs
+      - name: Serve baseline and integrated candidate on separate local ports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory lh-baseline --bind 127.0.0.1 >/tmp/luen-lh-base.log 2>&1 &
+          python3 -m http.server 4174 --directory . --bind 127.0.0.1 >/tmp/luen-lh-candidate.log 2>&1 &
+          for i in {1..25}; do
+            if curl -fsSo /tmp/luen-lh-base.html http://127.0.0.1:4173/ && curl -fsSo /tmp/luen-lh-candidate.html http://127.0.0.1:4174/; then break; fi
+            sleep 1
+          done
+          test -s /tmp/luen-lh-base.html
+          test -s /tmp/luen-lh-candidate.html
+          grep -q 'id="selected-content"' /tmp/luen-lh-base.html
+          grep -q 'LUEN WORKS ARCHIVE' /tmp/luen-lh-candidate.html
+      - name: Compare Lighthouse mobile 3x and desktop 2x per version
+        env:
+          LUEN_BASE_SHA: a339efb58bd1ad89cadb7c6e859db56a8de1a379
+          LUEN_CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/qa-lighthouse-compare.mjs
+      - name: Save performance reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-pr243-lighthouse-comparison
+          path: qa-screenshots/lighthouse-compare/
+          retention-days: 14
+          if-no-files-found: warn

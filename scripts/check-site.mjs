@@ -221,6 +221,29 @@ const checks=[
   ['deleted More Content heading stays deleted',!home.includes('class="case-selected-work-head-v10"')],
   ['offline POP preserved in case detail',cases.includes('data-herahera-pop-proof')],
   ['main motion asset linked',home.includes('assets/js/luen-motion.js')],
+  ['all decorative subpage SVG icons resolve to unclipped symbols',(()=>{
+    const pages=['about/index.html','services/index.html'].map(file=>fs.readFileSync(path.join(root,file),'utf8'));
+    const sprite=fs.readFileSync(path.join(root,'assets/icons/subpage-icons.svg'),'utf8');
+    const icons=pages.flatMap(page=>[...page.matchAll(/<svg\b[^>]*>\s*<use\s+href="\/assets\/icons\/subpage-icons\.svg#([^"]+)"/g)]);
+    return icons.length===15 && icons.every(([tag,id])=>
+      tag.includes('viewBox="0 0 48 48"') && tag.includes('aria-hidden="true"')
+      && sprite.includes('id="'+id+'"'));
+  })()],
+  ['mobile card reveal stays progressive and reduced-motion safe',
+    motionJs.includes("classList.add('luen-motion-mobile')")
+    &&motionJs.indexOf("classList.add('luen-motion-mobile')")>motionJs.indexOf('cardObserver.observe(trigger)')
+    &&motionJs.includes('beforeprint')
+    &&motionCss.includes('@media (max-width:767px) and (prefers-reduced-motion:no-preference)')
+    &&motionCss.includes('html.luen-motion-enhanced:not(.luen-motion-mobile)')
+    &&/@media \(prefers-reduced-motion:reduce\) \{\s*html\.luen-motion-enhanced \.luen-service-choice-grid/.test(motionCss)],
+  ['moving long-form/reels rails accept touch drag without changing desktop mouse or reduced motion',(()=>{
+    const ios=fs.readFileSync(path.join(root,'assets/js/site.js'),'utf8');
+    const styles=fs.readFileSync(path.join(root,'assets/css/creator-partnerships.css'),'utf8');
+    return core.includes("if(viewport.closest('#selected-content'))enableLoopDrag(viewport);")
+      &&ios.includes("if(viewport.closest('#selected-content'))enableIOSLoopDrag(viewport);")
+      &&[core,ios].every(source=>source.includes("event.pointerType==='mouse'")&&source.includes('reducedMotion.matches)return;')&&source.includes("'pointercancel'"))
+      &&/@media\(prefers-reduced-motion:no-preference\)\{\s*html body #selected-content #work \.portfolio-viewport\{\s*touch-action:pan-y;/.test(styles);
+  })()],
   ['progressive scroll reveal activation',core.includes("classList.add('js-scroll-reveal')")],
   ['JavaScript failure visible-content fallback',design.includes('html:not(.js-scroll-reveal) body .sr')],
   ['warm partner-strip override',home.includes('section.brand-wall{background:#EEE6DA!important}')],

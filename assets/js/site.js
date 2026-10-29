@@ -62,6 +62,47 @@
     document.addEventListener('visibilitychange',pending.visibilityHandler);
     schedule();
   };
+  /* Touch drag on the homepage long-form/reels rails (iOS path): pause under
+     the finger, follow horizontal drags, resume where the rail was left.
+     The paused state belongs to the rail, not to a controller, so it
+     survives a controller rebuild. Vertical page scrolling stays native
+     (touch-action:pan-y in CSS). */
+  const draggedIOSLoops=new Set();
+  const enableIOSLoopDrag=viewport=>{
+    if(viewport.dataset.loopDrag||!('PointerEvent' in window))return;
+    viewport.dataset.loopDrag='true';
+    let drag=null,resumeTimer=0;
+    viewport.addEventListener('pointerdown',event=>{
+      const controller=lightLoopControllers.get(viewport);
+      if(event.pointerType==='mouse'||!controller?.baseWidth||reducedMotion.matches)return;
+      clearTimeout(resumeTimer);
+      draggedIOSLoops.add(viewport);
+      drag={id:event.pointerId,x:event.clientX,offset:controller.offset,moved:false};
+    });
+    viewport.addEventListener('pointermove',event=>{
+      const controller=lightLoopControllers.get(viewport);
+      if(drag?.id!==event.pointerId||!controller?.baseWidth||reducedMotion.matches)return;
+      const dx=event.clientX-drag.x,width=controller.baseWidth;
+      if(Math.abs(dx)>3)drag.moved=true;
+      controller.offset=(((drag.offset-dx)%width)+width)%width;
+      controller.track.style.transform=`translate3d(${-controller.offset}px,0,0)`;
+    });
+    const release=event=>{
+      if(drag?.id!==event.pointerId)return;
+      resumeTimer=setTimeout(()=>{
+        draggedIOSLoops.delete(viewport);
+        const controller=lightLoopControllers.get(viewport);
+        if(controller)controller.last=performance.now();
+      },drag.moved?1200:0);
+      drag=null;
+    };
+    viewport.addEventListener('pointerup',release);
+    viewport.addEventListener('pointercancel',release);
+    // Never leave the rail paused when the gesture ends without a pointerup
+    // (capture lost, app switch or a system gesture taking focus).
+    viewport.addEventListener('lostpointercapture',release);
+    window.addEventListener('blur',()=>{if(drag)release({pointerId:drag.id});});
+  };
   const setupIOSLightLoop=viewport=>{
     const track=viewport.querySelector('.loop-track');
     const source=viewport.querySelector('.loop-set:not(.ios-loop-clone)');
@@ -90,8 +131,12 @@
       track.appendChild(clone);
     }
     const rawSpeed=Math.max(10,Number(viewport.dataset.iosLoopSpeed||viewport.dataset.speed||45));
+    // A rebuild (late image/geometry change) continues from the current
+    // position and visibility instead of jumping back to the first card.
+    const offset=previous?.baseWidth?previous.offset%baseWidth:0;
+    track.style.transform=`translate3d(${-offset}px,0,0)`;
     const controller={
-      raf:0,visible:!('IntersectionObserver' in window),offset:0,
+      raf:0,visible:previous?.baseWidth?previous.visible:!('IntersectionObserver' in window),offset,
       last:performance.now(),speed:Math.max(14,Math.min(42,rawSpeed*.55)),
       baseWidth,track,observer:null,resizeObserver:null,tick:null
     };
@@ -99,7 +144,11 @@
       controller.raf=0;
       if(!controller.visible||document.hidden||reducedMotion.matches)return;
       const elapsed=now-controller.last;
-      if(elapsed<33){controller.raf=requestAnimationFrame(controller.tick);return;}
+      const dragging=draggedIOSLoops.has(viewport);
+      if(elapsed<33||dragging){
+        if(dragging)controller.last=now;
+        controller.raf=requestAnimationFrame(controller.tick);return;
+      }
       const dt=Math.min(.07,elapsed/1000);
       controller.last=now;
       controller.offset=(controller.offset+controller.speed*dt)%controller.baseWidth;
@@ -131,6 +180,7 @@
       if(source.firstElementChild)controller.resizeObserver.observe(source.firstElementChild);
     }
     lightLoopControllers.set(viewport,controller);
+    if(viewport.closest('#selected-content'))enableIOSLoopDrag(viewport);
     startLightLoop(viewport);
   };
 

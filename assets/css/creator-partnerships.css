@@ -599,6 +599,28 @@ html body #selected-content #work .portfolio-meta b{
     font-size:10.5px!important;
   }
 }
+/* WebKit sizes each rail set from the cards' image widths instead of their
+   flex-basis, so the set ran wider than its cards (empty space after the
+   last card) and changed width as lazy images loaded, restarting the loop.
+   An explicit width equal to the existing flex-basis (luen-v3.css) keeps the
+   set exactly as wide as its cards in every engine. */
+html body #selected-content #work .portfolio-card{width:clamp(340px,31vw,470px)!important}
+html body #selected-content #work .portfolio-card.portrait{width:clamp(190px,15.5vw,240px)!important}
+@media(max-width:900px){
+  html body #selected-content #work .portfolio-card{width:min(72vw,420px)!important}
+  html body #selected-content #work .portfolio-card.portrait{width:min(40vw,230px)!important}
+}
+@media(max-width:767px){
+  html body #selected-content #work .portfolio-card{width:min(82vw,330px)!important}
+  html body #selected-content #work .portfolio-card.portrait{width:min(50vw,198px)!important}
+}
+/* Moving rails follow a horizontal finger drag (site.js / site-core.js);
+   vertical page scrolling over the rail stays with the browser. */
+@media(prefers-reduced-motion:no-preference){
+  html body #selected-content #work .portfolio-viewport{
+    touch-action:pan-y;
+  }
+}
 /* Users requesting reduced motion must still reach thumbnails beyond the
    initially visible cards — allow touch/trackpad horizontal scrolling. */
 @media(prefers-reduced-motion:reduce){

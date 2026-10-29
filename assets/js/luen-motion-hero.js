@@ -19,6 +19,31 @@
   const video=cards.map(card=>card.querySelector('video'));
   let current=0,paused=!automaticMotion,visible=true,rotating=false,destroyed=false;
   let activeAnimations=[];
+  let playbackRecoveryTimer=null;
+  const clearPlaybackRecovery=()=>{
+    if(playbackRecoveryTimer!==null){
+      window.clearTimeout(playbackRecoveryTimer);
+      playbackRecoveryTimer=null;
+    }
+  };
+  // On unsupported media, stalled decoding or a failed play() promise, show
+  // the poster and keep the campaign orbit moving instead of freezing forever.
+  // This is only a visual fallback; it never claims the MP4 actually played.
+  const schedulePlaybackRecovery=index=>{
+    if(index!==current||paused||!visible||document.hidden||destroyed||rotating)return;
+    clearPlaybackRecovery();
+    if(!automaticMotion){
+      paused=true;
+      updateButton();
+      return;
+    }
+    playbackRecoveryTimer=window.setTimeout(()=>{
+      playbackRecoveryTimer=null;
+      if(index!==current||paused||!visible||document.hidden||destroyed||rotating)return;
+      cards[index].dataset.videoFallback='poster';
+      rotateTo((index+1)%cards.length);
+    },3800);
+  };
 
   const geometry=()=>{
     const rect=stage.getBoundingClientRect();
@@ -62,6 +87,7 @@
     updateFocus();
   };
   const stopVideos=()=>{
+    clearPlaybackRecovery();
     video.forEach((v,i)=>{
       cards[i].classList.remove('is-playing');
       if(!v)return;
@@ -71,19 +97,33 @@
   };
   const playSelected=(forcePlayback=false)=>{
     if(paused||(!visible&&!forcePlayback)||document.hidden||destroyed||rotating)return;
-    const v=video[current],card=cards[current];
+    const v=video[current],card=cards[current],index=current;
     if(!v)return;
     if(!v.getAttribute('src')){
       const src=v.getAttribute('data-src');
       if(!src)return;
       v.src=src; // Only active clip downloaded, no YouTube/Instagram iframe.
-      v.load();
+      try{v.load();}catch(_err){schedulePlaybackRecovery(index);return;}
     }
     v.muted=true;
     v.playsInline=true;
-    const attempt=v.play();
+    // Guard initial loading too: some browsers neither reject play() nor
+    // emit an error when a media decoder is unavailable.
+    if(automaticMotion)schedulePlaybackRecovery(index);
+    let attempt;
+    try{attempt=v.play();}
+    catch(_err){card.classList.remove('is-playing');schedulePlaybackRecovery(index);return;}
     if(attempt&&typeof attempt.catch==='function')
-      attempt.catch(()=>card.classList.remove('is-playing'));
+      attempt.catch(err=>{
+        if(index!==current||paused||destroyed)return;
+        card.classList.remove('is-playing');
+        if(err?.name==='NotAllowedError'){
+          // A policy block needs a user gesture; don't spin through posters.
+          paused=true;
+          updateButton();
+          stopVideos();
+        }else schedulePlaybackRecovery(index);
+      });
   };
   const rotateTo=(index,forcePlayback=false)=>{
     if(destroyed||rotating)return;
@@ -140,18 +180,27 @@
   video.forEach((v,i)=>{
     if(!v)return;
     v.addEventListener('playing',()=>{
-      if(i===current&&!paused&&visible&&!document.hidden)
+      if(i===current&&!paused&&visible&&!document.hidden){
+        clearPlaybackRecovery();
+        delete cards[i].dataset.videoFallback;
         cards[i].classList.add('is-playing');
+      }
     });
     v.addEventListener('pause',()=>cards[i].classList.remove('is-playing'));
     v.addEventListener('ended',()=>{
+      if(i===current)clearPlaybackRecovery();
       cards[i].classList.remove('is-playing');
       if(i!==current||rotating||destroyed)return;
       if(automaticMotion&&!paused&&visible&&!document.hidden)
         rotateTo((current+1)%3);
       else {paused=true;updateButton();} // Reduced motion / data saver: no auto rotation.
     });
-    v.addEventListener('error',()=>cards[i].classList.remove('is-playing'));
+    v.addEventListener('waiting',()=>{if(i===current)schedulePlaybackRecovery(i);});
+    v.addEventListener('stalled',()=>{if(i===current)schedulePlaybackRecovery(i);});
+    v.addEventListener('error',()=>{
+      cards[i].classList.remove('is-playing');
+      if(i===current)schedulePlaybackRecovery(i);
+    });
   });
   cards.forEach((card,i)=>card.addEventListener('click',()=>{
     if(rotating)return;

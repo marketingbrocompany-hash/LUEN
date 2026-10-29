@@ -14,6 +14,8 @@ on:
       - 'project-guide/**'
       - 'assets/**'
       - 'scripts/check-site.mjs'
+      - 'scripts/qa-selected-rails-mobile.mjs'
+      - 'scripts/qa-integrated-visual-system.mjs'
       - '.github/workflows/qa-release-candidate.yml'
 permissions:
   contents: read
@@ -62,6 +64,11 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-webkit-mobile.mjs
+      - name: Test mobile long-form/reels rails (loop, stalls, touch drag)
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+          LUEN_RAIL_LOADS: '3'
+        run: node scripts/qa-selected-rails-mobile.mjs
       - name: Test desktop/mobile motion and floating inquiry CTA
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
@@ -78,6 +85,10 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-subpages.mjs
+      - name: Verify integrated Claude design icons and tablet/mobile breakpoints
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-integrated-visual-system.mjs
       - name: Verify contact form with mocked responses only
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
