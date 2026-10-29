@@ -38,6 +38,7 @@
   const floatCta=document.getElementById('floatCta');
   const contactSection=document.getElementById('contact');
   const gallerySection=document.getElementById('selected-content');
+  const servicesSection=document.querySelector('#services.luen-services-editorial');
   const scrollProgress=document.getElementById('scrollProgress');
   let contactVisible=false;
   let ticking=false;
@@ -50,7 +51,12 @@
     const rect=gallerySection?.getBoundingClientRect();
     const galleryVisible=window.matchMedia('(max-width: 700px)').matches
       &&rect&&rect.top<window.innerHeight-60&&rect.bottom>60;
-    floatCta.classList.toggle('show',pastHero&&!contactVisible&&!galleryVisible);
+    // The SERVICES editorial row now has one prominent project CTA. Keep
+    // the global floating button out of this section to avoid duplicate CTAs.
+    const serviceRect=servicesSection?.getBoundingClientRect();
+    const servicesVisible=Boolean(serviceRect
+      &&serviceRect.top<window.innerHeight-60&&serviceRect.bottom>60);
+    floatCta.classList.toggle('show',pastHero&&!contactVisible&&!galleryVisible&&!servicesVisible);
   }
 
   if(contactSection&&'IntersectionObserver' in window){
