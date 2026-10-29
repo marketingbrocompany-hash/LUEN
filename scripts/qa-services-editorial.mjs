@@ -25,7 +25,8 @@ for(const engine of [chromium,webkit]){
      const cards=[...section.querySelectorAll('.luen-service-choice')];
      const r=e=>{if(!e)return null;const b=e.getBoundingClientRect();return {x:b.x,y:b.y,width:b.width,height:b.height,right:b.right,bottom:b.bottom}};
      const a=cards.map(c=>({title:c.querySelector('h3')?.textContent?.trim(),
-       sub:c.querySelector('.luen-service-choice-kicker')?.textContent?.trim(),
+       message:c.querySelector('.luen-service-choice-when')?.textContent?.trim(),
+       redundantLabels:c.querySelectorAll('.luen-service-choice-kicker,.luen-service-choice-channel').length,
        height:r(c)?.height,rect:r(c),titleRect:r(c.querySelector('h3')),
        textWidth:c.querySelector('h3')?.scrollWidth,
        textBoxWidth:c.querySelector('h3')?.clientWidth,
@@ -35,10 +36,9 @@ for(const engine of [chromium,webkit]){
        formatRect:r(c.querySelector('.luen-service-choice-formats')),
        formatsScrollWidth:c.querySelector('.luen-service-choice-formats')?.scrollWidth,
        formatsClientWidth:c.querySelector('.luen-service-choice-formats')?.clientWidth,
-       kickerSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-kicker')).fontSize),
        headingSize:parseFloat(getComputedStyle(c.querySelector('h3')).fontSize),
        descriptionSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-when')).fontSize),
-       metadataSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-channel')).fontSize)
+       formatsSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-formats')).fontSize)
      }));
      return {
       viewport:window.innerWidth,documentWidth:document.documentElement.scrollWidth,
@@ -60,20 +60,20 @@ for(const engine of [chromium,webkit]){
     if(sample.header!=='SERVICES'||!sample.intro||!sample.why||!sample.archive)
       errors.push(label+' section structure missing');
     const expected=['YouTube','Instagram','TikTok'];
-    const kinds=[['롱폼','PPL','브랜디드','쇼츠'],['피드','릴스'],['단편 숏폼','시리즈형 숏폼']];
-    const formats=[['LONG FORM','BRANDED','PPL','SHORTS'],['FEED','REELS'],['SINGLE SHORT FORM','SERIES']];
+    const formats=[['롱폼','PPL','브랜디드','쇼츠'],['피드','릴스'],['단편 숏폼','시리즈형 숏폼']];
+    const messages=['브랜드의 이야기를 깊게.','다양한 시선으로 넓게.','하나의 이야기로 이어가다.'];
     for(const [i,c] of sample.cards.entries()){
      if(c.title!==expected[i]||c.cardLinkCount!==0||c.imgs)
        errors.push(label+' card '+i+' missing title, contains unwanted CTA or contains media');
      if(c.textWidth>c.textBoxWidth+3)errors.push(label+' card '+i+' heading overflow '+c.textWidth+'/'+c.textBoxWidth);
-     if(!kinds[i].every(word=>c.sub?.includes(word))||!formats[i].every(word=>c.details?.includes(word)))
-       errors.push(label+' card '+i+' platform content missing: '+JSON.stringify({sub:c.sub,formats:c.details}));
+     if(c.message!==messages[i] || !formats[i].every(word=>c.details?.includes(word)) || c.redundantLabels!==0)
+       errors.push(label+' card '+i+' text structure should be title + tagline + one formats row: '+JSON.stringify({message:c.message,formats:c.details,duplicateCount:c.redundantLabels}));
      if(c.formatsScrollWidth>c.formatsClientWidth+3||c.formatRect?.right>c.rect?.right-8)
        errors.push(label+' card '+i+' formats overflow: '+JSON.stringify({scroll:c.formatsScrollWidth,box:c.formatsClientWidth,right:c.formatRect?.right,cardRight:c.rect?.right}));
-     if(c.headingSize<35||c.headingSize<2.4*c.kickerSize||c.headingSize<2.5*c.metadataSize)
-       errors.push(label+' card '+i+' platform title not primary: '+JSON.stringify({h:c.headingSize,k:c.kickerSize,meta:c.metadataSize}));
-     if(c.kickerSize<13||c.descriptionSize<13)
-       errors.push(label+' card '+i+' text not readable: '+JSON.stringify({k:c.kickerSize,d:c.descriptionSize}));
+     if(c.headingSize<35 || c.headingSize<2.2*c.descriptionSize || c.descriptionSize<=c.formatsSize)
+       errors.push(label+' card '+i+' typography hierarchy not visible: '+JSON.stringify({h:c.headingSize,message:c.descriptionSize,formats:c.formatsSize}));
+     if(c.formatsSize<11.5||c.descriptionSize<14)
+       errors.push(label+' card '+i+' text too small: '+JSON.stringify({formats:c.formatsSize,message:c.descriptionSize}));
      if(c.rect?.right>width+2||c.rect?.x < -2)errors.push(label+' card '+i+' out of viewport');
      const maxHeight=width>1020?390:width>767?315:330;
      if(c.height>maxHeight)errors.push(label+' card '+i+' too tall '+c.height+' > '+maxHeight);
