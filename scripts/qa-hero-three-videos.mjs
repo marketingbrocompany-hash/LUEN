@@ -47,13 +47,52 @@ for(const type of [chromium,webkit]){
   });
   await page.goto(root+'/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.locator('[data-luen-motion]').scrollIntoViewIfNeeded();
-  const first=await page.evaluate(()=>[...document.querySelectorAll('[data-motion-index]')].findIndex(x=>x.classList.contains('is-active')));
-  await page.waitForTimeout(6100);
-  const last=await page.evaluate(()=>[...document.querySelectorAll('[data-motion-index]')].findIndex(x=>x.classList.contains('is-active')));
-  const moved=first!==last;
-  results.push({engine:type.name(),scenario:'play-reject-fallback',first,last,moved});
-  if(!moved)failures.push(type.name()+' video play rejects; carousel stays frozen on same card after 6.1s.');
+  const active=()=>page.evaluate(()=>[...document.querySelectorAll('[data-motion-index]')].findIndex(x=>x.classList.contains('is-active')));
+  const first=await active(),sequence=[first];
+  for(const expected of [1,2,0]){
+   try{
+    await page.waitForFunction(index=>[...document.querySelectorAll('[data-motion-index]')].findIndex(x=>x.classList.contains('is-active'))===index,expected,{timeout:9000});
+    sequence.push(await active());
+   }catch(error){
+    failures.push(type.name()+' rejected-video fallback failed to reach card '+expected+': '+error.message.slice(0,120));
+    break;
+   }
+  }
+  if(sequence.join(',')!=='0,1,2,0')failures.push(type.name()+' poster fallback sequence incomplete: '+sequence.join(','));
+  // Manual pause must stop fallback rotation; resume must restore it.
+  await page.locator('[data-motion-toggle]').click();
+  const pausedAt=await active();
+  await page.waitForTimeout(4400);
+  const pauseHeld=await active()===pausedAt;
+  if(!pauseHeld)failures.push(type.name()+' pause did not hold poster fallback at '+pausedAt);
+  await page.locator('[data-motion-toggle]').click();
+  let resumed=false;
+  try{
+   await page.waitForFunction(index=>[...document.querySelectorAll('[data-motion-index]')].findIndex(x=>x.classList.contains('is-active'))!==index,pausedAt,{timeout:9000});
+   resumed=true;
+  }catch{}
+  if(!resumed)failures.push(type.name()+' poster fallback did not resume after manual play');
+  results.push({engine:type.name(),scenario:'play-reject-3-card-cycle-pause-resume',sequence,pauseHeld,resumed});
   await ctx.close();
+  if(type===webkit){
+   // Separate real H.264 decode/ended path: do not confuse a poster fallback with native autoplay.
+   const nativeCtx=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'no-preference'});
+   const nativePage=await nativeCtx.newPage();
+   await nativePage.goto(root+'/',{waitUntil:'domcontentloaded',timeout:45000});
+   await nativePage.locator('[data-luen-motion]').scrollIntoViewIfNeeded();
+   try{
+    await nativePage.waitForFunction(()=>{
+     const v=document.querySelector('[data-motion-index="0"] video');
+     return v&&v.currentTime>.35&&v.error===null;
+    },null,{timeout:7500});
+    await nativePage.waitForFunction(()=>document.querySelector('[data-motion-index="1"]')?.classList.contains('is-active'),null,{timeout:15000});
+    results.push({engine:'webkit',scenario:'native-h264-ended-rotates',success:true});
+   }catch(error){
+    failures.push('WebKit native H264 autoplay/ended did not progress: '+error.message.slice(0,130));
+    results.push({engine:'webkit',scenario:'native-h264-ended-rotates',success:false});
+   }
+   await nativeCtx.close();
+  }
  }finally{await browser.close();}
 }
 fs.writeFileSync(path.join(out,'report.json'),JSON.stringify({results,failures},null,2));
