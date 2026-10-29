@@ -291,7 +291,7 @@ const checks=[
     const sections=['class="hero"','class="brand-wall"','id="cases"','id="why-luen"','id="services"','id="selected-content"','id="partner-creators"','id="content-flow"','id="faq"','id="contact"'];
     const galleryBegin=home.indexOf('<section class="luen-home-selected-work"');
     const galleryEnd=home.indexOf('</section>',galleryBegin);
-    const caseBegin=home.indexOf('<section class="case-studies case-studies-v7"');
+    const caseBegin=home.indexOf('<section class="case-studies luen-case-index"');
     const approachBegin=home.indexOf('<section class="luen-why"');
     const portfolio=home.slice(galleryBegin,galleryEnd);
     return sections.every((s,i)=>home.includes(s)&&(i===0||home.indexOf(s)>home.indexOf(sections[i-1])))
@@ -300,7 +300,9 @@ const checks=[
       &&(home.match(/id="selected-content"/g)||[]).length===1
       &&(portfolio.match(/data-loop-strip=/g)||[]).length===2
       &&portfolio.includes('YOUTUBE')&&portfolio.includes('REELS / SHORT FORM')
-      &&home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
+      &&home.slice(caseBegin,approachBegin).includes('luen-case-index-grid')
+      &&(home.slice(caseBegin,approachBegin).match(/class="luen-case-entry case-support-card-v7"/g)||[]).length===4
+      &&!home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
       &&!home.slice(caseBegin,approachBegin).includes('id="work"')
       &&home.includes('luen-home-selected-work')&&!home.includes('class="case-selected-work-head-v10"')
       &&fs.readFileSync(path.join(root,'assets/css/creator-partnerships.css'),'utf8')
