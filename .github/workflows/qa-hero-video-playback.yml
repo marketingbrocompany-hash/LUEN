@@ -35,6 +35,7 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
           npx playwright install --with-deps chromium webkit
+          npx playwright install chrome
           node --check scripts/qa-hero-three-videos.mjs
       - name: Serve isolated PR (no deploy)
         shell: bash
@@ -46,6 +47,7 @@ jobs:
       - name: Test all 3 clips and rejected play fallback
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
+          LUEN_QA_REAL_CHROME: '1'
         run: node scripts/qa-hero-three-videos.mjs
       - name: Archive video diagnosis
         if: always()
