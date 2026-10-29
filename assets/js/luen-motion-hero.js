@@ -109,7 +109,7 @@
     v.playsInline=true;
     // Guard initial loading too: some browsers neither reject play() nor
     // emit an error when a media decoder is unavailable.
-    schedulePlaybackRecovery(index);
+    if(automaticMotion)schedulePlaybackRecovery(index);
     let attempt;
     try{attempt=v.play();}
     catch(_err){card.classList.remove('is-playing');schedulePlaybackRecovery(index);return;}
@@ -188,7 +188,7 @@
     });
     v.addEventListener('pause',()=>cards[i].classList.remove('is-playing'));
     v.addEventListener('ended',()=>{
-      clearPlaybackRecovery();
+      if(i===current)clearPlaybackRecovery();
       cards[i].classList.remove('is-playing');
       if(i!==current||rotating||destroyed)return;
       if(automaticMotion&&!paused&&visible&&!document.hidden)
