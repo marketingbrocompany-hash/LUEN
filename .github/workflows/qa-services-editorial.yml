@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'assets/css/services-editorial.css'
       - 'scripts/qa-services-editorial.mjs'
+      - 'scripts/check-site.mjs'
       - '.github/workflows/qa-services-editorial.yml'
   workflow_dispatch:
 permissions:
