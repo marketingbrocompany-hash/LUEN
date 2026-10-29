@@ -183,8 +183,10 @@ const checks=[
       ['content-flow-title','HOW LUEN WORKS'],
       ['faq-title','FAQ'],
       ['contact-title','PROJECT INQUIRY']
-    ].every(([id,label])=>home.includes('<h2 class="luen-section-primary-title" id="'+id+'">'+label+'</h2>'))
-    &&(home.match(/class="luen-section-primary-title"/g)||[]).length===5
+    ].every(([id,label])=>id==='cases-title'
+      ?home.includes('<h2 class="luen-section-primary-title luen-case-index-title" id="cases-title">Signature Campaigns</h2>')
+      :home.includes('<h2 class="luen-section-primary-title" id="'+id+'">'+label+'</h2>'))
+    &&(home.match(/class="luen-section-primary-title(?: luen-case-index-title)?"/g)||[]).length===5
     &&finish.includes('.luen-section-primary-title{')],
   ['numbered section labels and obsolete Korean display titles removed',
     !/0[3-8] · (?:SERVICES|HOW LUEN WORKS|PERFORMANCE|FAQ|PROJECT INQUIRY)/.test(home)
@@ -336,8 +338,9 @@ const checks=[
       &&creator.includes('class="luen-bibigo-full-screenshot"')
       &&!creator.includes('class="luen-bibigo-highlight"')
       &&!creator.includes('class="luen-bibigo-proof"')
-      &&home.includes('<strong>숏폼 292만+ 조회</strong>')
-      &&home.includes('<p>온라인 식품 구매 · 오프라인 맛집 방문 전환</p>')
+      &&home.includes('숏폼 합산 <strong>292만+ 조회</strong>')
+      &&home.includes('<p class="luen-case-note">일본 식품 캠페인 콘텐츠</p>')
+      &&!home.includes('온라인 식품 구매 · 오프라인 맛집 방문 전환')
       &&home.includes('INSTAGRAM</small><strong>약 6.8만')
       &&cas.includes('/'+proof)
       &&cas.includes('case-study-view-proof--full')
