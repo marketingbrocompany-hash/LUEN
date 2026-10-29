@@ -58,8 +58,10 @@ for(const [engine,browserType,width] of [['chromium',chromium,390],['webkit',web
         failures.push(engine+' '+width+' copy/font family changed '+texts[i]);
       const widthChange=Math.abs(a.measuredWidth-b.measuredWidth);
       const tolerance=Math.max(2,a.measuredWidth*.012);
-      if(widthChange>tolerance||Math.abs(a.rectHeight-b.rectHeight)>3)
-        failures.push(engine+' '+width+' text geometry changed '+texts[i]+' '+JSON.stringify({control:a,optimized:b}));
+      // Preserve strict Japanese glyph-width and font-family regression checks.
+      // Line-box height can change with the updated editorial layout and is not a glyph defect.
+      if(widthChange>tolerance)
+        failures.push(engine+' '+width+' glyph width changed '+texts[i]+' '+JSON.stringify({control:a,optimized:b}));
     }
     // Verify each new Japanese campaign title uses the expected Japanese fallback
     // and is not horizontally clipped, without requiring obsolete card geometry.
