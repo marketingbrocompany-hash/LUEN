@@ -1,0 +1,32 @@
+name: LUEN official-domain origin check (read-only)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-production-origin.mjs'
+      - '.github/workflows/qa-production-origin.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  official-origin:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check script syntax
+        run: node --check scripts/qa-production-origin.mjs
+      - name: Verify external DNS and public homepage without modifying either
+        run: node scripts/qa-production-origin.mjs
+
+# This workflow intentionally does not run on main pushes and has no deploy
+# permissions. A planned switch to Vercel requires updating its expectations
+# in a separate reviewed PR, NOT disabling the guard blindly.
