@@ -1,0 +1,56 @@
+name: LUEN moving selected-work thumbnail pixel QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/js/selected-work-image-readiness.js'
+      - 'scripts/qa-selected-work-image-readiness.mjs'
+      - '.github/workflows/qa-selected-work-images.yml'
+      - 'index.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  moving-thumbnail-pixels:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate script syntax and existing site integrity
+        run: |
+          node --check assets/js/selected-work-image-readiness.js
+          node --check scripts/qa-selected-work-image-readiness.mjs
+          node scripts/check-site.mjs
+      - name: Check if existing public production assets return HTTP 200
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in youtube-creator-marketing-seoul-travel-jp-04.webp youtube-creator-marketing-lifestyle-food-kr-05.webp youtube-creator-marketing-lifestyle-product-jp-06.webp; do
+            code=$(curl -L --retry 2 --connect-timeout 8 --max-time 20 -sS -o /dev/null -w '%{http_code}' "https://luenkorea.com/assets/images/selected-work/$file" || true)
+            echo "$file public-HTTP=$code"
+          done
+      - name: Install headless Chrome and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve isolated PR
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/luen-rail-image-qa.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/luen-rail-image-qa.log
+          exit 1
+      - name: Verify original and clone images decode when gallery enters viewport
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-selected-work-image-readiness.mjs
+      - name: Save gallery screenshots and image loading diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-archive-image-readiness
+          path: qa-screenshots/selected-work-images/
+          retention-days: 14
+          if-no-files-found: warn
