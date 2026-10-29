@@ -207,9 +207,10 @@ const checks=[
     &&(services.includes('href="/#instagram-reels"')
       ||(services.includes('href="/services/instagram-influencer-marketing/"')
         &&known.has('services/instagram-influencer-marketing/index.html')))],
-  ['Instagram detailed Premium offer stays consistent with homepage',
+  ['Instagram Premium offer retained on dedicated service page',
     !known.has('services/instagram-influencer-marketing/index.html')
-    ||(home.includes('<strong>Premium</strong>')
+    ||(home.includes('href="/contact/?service=instagram-reels"')
+      &&home.includes('class="luen-services-editorial-intro"')
       &&fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
         .includes('크리에이터 규모 · Reels 편수 맞춤 협의')
       &&!fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
@@ -217,7 +218,11 @@ const checks=[
   ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
   ['Services hub lists all six offerings',(services.match(/class="service-hub-item/g)||[]).length===6],
   ['three moving brand/YouTube/Instagram strips',(home.match(/\bdata-loop-strip\s*=/g)||[]).length===3],
-  ['Instagram Basic / Standard / Premium',['Basic','Standard','Premium'].every(x=>home.includes('<strong>'+x+'</strong>'))],
+  ['Instagram Basic / Standard / Premium are preserved on detail page',
+    !known.has('services/instagram-influencer-marketing/index.html')
+    ||(['01 · BASIC','02 · STANDARD','03 · PREMIUM','5인 · 5 Reels','10인 · 10 Reels']
+      .every(x=>fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8').includes(x))
+      &&!/<strong>(?:Basic|Standard|Premium)<\/strong>/.test(home))],
   ['deleted More Content heading stays deleted',!home.includes('class="case-selected-work-head-v10"')],
   ['offline POP preserved in case detail',cases.includes('data-herahera-pop-proof')],
   ['main motion asset linked',home.includes('assets/js/luen-motion.js')],
