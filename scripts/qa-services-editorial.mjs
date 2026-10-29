@@ -29,8 +29,7 @@ for(const engine of [chromium,webkit]){
        height:r(c)?.height,rect:r(c),titleRect:r(c.querySelector('h3')),
        textWidth:c.querySelector('h3')?.scrollWidth,
        textBoxWidth:c.querySelector('h3')?.clientWidth,
-       link:c.querySelector('.luen-service-choice-bottom>a')?.getAttribute('href'),
-       linkVisible:!!c.querySelector('.luen-service-choice-bottom>a')?.getClientRects().length,
+       cardLinkCount:c.querySelectorAll('a').length,
        imgs:c.querySelectorAll('img,picture,video,iframe,canvas').length,
        details:c.querySelector('.luen-service-choice-formats')?.textContent?.trim(),
        formatRect:r(c.querySelector('.luen-service-choice-formats')),
@@ -39,14 +38,14 @@ for(const engine of [chromium,webkit]){
        kickerSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-kicker')).fontSize),
        headingSize:parseFloat(getComputedStyle(c.querySelector('h3')).fontSize),
        descriptionSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-when')).fontSize),
-       metadataSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-channel')).fontSize),
-       ctaSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-bottom>a')).fontSize)
+       metadataSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-channel')).fontSize)
      }));
      return {
       viewport:window.innerWidth,documentWidth:document.documentElement.scrollWidth,
       section:r(section),header:section.querySelector('h2')?.textContent?.trim(),
       intro:section.querySelector('.luen-services-editorial-intro')?.textContent?.trim(),
-      cards:a,links:[...section.querySelectorAll('.luen-service-help nav a')].map(x=>x.getAttribute('href')),
+      cards:a,links:[...section.querySelectorAll('.luen-service-help a')].map(x=>x.getAttribute('href')),
+      singleCTA:(()=>{const e=section.querySelector('.luen-service-unified-cta');return {visible:!!e?.getClientRects().length,href:e?.getAttribute('href'),label:e?.textContent?.trim(),height:r(e)?.height,rect:r(e),background:e?getComputedStyle(e).backgroundColor:null};})(),
       media:section.querySelectorAll('img,picture,video,iframe,canvas').length,
       why:!!document.querySelector('#why-luen .luen-why-rows'),
       archive:!!document.querySelector('#selected-content .works-archive-title')
@@ -60,12 +59,11 @@ for(const engine of [chromium,webkit]){
     if(sample.header!=='SERVICES'||!sample.intro||!sample.why||!sample.archive)
       errors.push(label+' section structure missing');
     const expected=['YouTube','Instagram','TikTok'];
-    const hrefs=['/contact/?service=youtube','/contact/?service=instagram','/contact/?service=tiktok'];
     const kinds=[['롱폼','PPL','브랜디드','쇼츠'],['피드','릴스'],['단편 숏폼','시리즈형 숏폼']];
     const formats=[['LONG FORM','BRANDED','PPL','SHORTS'],['FEED','REELS'],['SINGLE SHORT FORM','SERIES']];
     for(const [i,c] of sample.cards.entries()){
-     if(c.title!==expected[i]||c.link!==hrefs[i]||!c.linkVisible||c.imgs)
-       errors.push(label+' card '+i+' missing title/link or contains media');
+     if(c.title!==expected[i]||c.cardLinkCount!==0||c.imgs)
+       errors.push(label+' card '+i+' missing title, contains unwanted CTA or contains media');
      if(c.textWidth>c.textBoxWidth+3)errors.push(label+' card '+i+' heading overflow '+c.textWidth+'/'+c.textBoxWidth);
      if(!kinds[i].every(word=>c.sub?.includes(word))||!formats[i].every(word=>c.details?.includes(word)))
        errors.push(label+' card '+i+' platform content missing: '+JSON.stringify({sub:c.sub,formats:c.details}));
@@ -73,13 +71,16 @@ for(const engine of [chromium,webkit]){
        errors.push(label+' card '+i+' formats overflow: '+JSON.stringify({scroll:c.formatsScrollWidth,box:c.formatsClientWidth,right:c.formatRect?.right,cardRight:c.rect?.right}));
      if(c.headingSize<35||c.headingSize<2.4*c.kickerSize||c.headingSize<2.5*c.metadataSize)
        errors.push(label+' card '+i+' platform title not primary: '+JSON.stringify({h:c.headingSize,k:c.kickerSize,meta:c.metadataSize}));
-     if(c.kickerSize<13||c.ctaSize<10.5||c.descriptionSize<13)
-       errors.push(label+' card '+i+' text not readable: '+JSON.stringify({k:c.kickerSize,cta:c.ctaSize,d:c.descriptionSize}));
+     if(c.kickerSize<13||c.descriptionSize<13)
+       errors.push(label+' card '+i+' text not readable: '+JSON.stringify({k:c.kickerSize,d:c.descriptionSize}));
      if(c.rect?.right>width+2||c.rect?.x < -2)errors.push(label+' card '+i+' out of viewport');
      const maxHeight=width>1020?390:width>767?315:330;
      if(c.height>maxHeight)errors.push(label+' card '+i+' too tall '+c.height+' > '+maxHeight);
     }
-    if(sample.links.length!==3)errors.push(label+' missing assistance links');
+    if(sample.links.length!==1||sample.links[0]!=='/contact/'||!sample.singleCTA.visible||sample.singleCTA.height<42||!sample.singleCTA.label.includes('프로젝트 상담하기'))
+      errors.push(label+' expected one accessible project CTA: '+JSON.stringify({links:sample.links,cta:sample.singleCTA}));
+    if(sample.singleCTA.rect?.right>width+2)
+      errors.push(label+' project CTA extends beyond viewport');
     if([320,390,768,1440].includes(width) && engine===chromium || width===390 && engine===webkit){
       const filename=path.join(output,engine.name()+'-'+width+'.jpg');
       await page.locator('#services').screenshot({path:filename,type:'jpeg',quality:85,animations:'disabled'});
