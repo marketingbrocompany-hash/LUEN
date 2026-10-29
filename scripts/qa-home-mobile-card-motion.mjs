@@ -43,7 +43,7 @@ try{
         revealed:document.querySelectorAll(':is('+selector+').luen-motion-card-in').length,
         overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth
       }),cardSelector);
-      if(initial.total!==10)fail(run.name+': expected 10 service/case/flow cards, got '+initial.total);
+      if(initial.total!==11)fail(run.name+': expected 11 service/case/flow cards (3 + 4 + 4), got '+initial.total);
       if(initial.overflow>3)fail(run.name+': horizontal overflow '+initial.overflow);
       const mobileMode=initial.html.includes('luen-motion-mobile');
       if(run.mobile&&!run.reduce&&!mobileMode)fail(run.name+': mobile card motion not enabled');
@@ -70,6 +70,7 @@ try{
           const img=el.querySelector('figure img');
           return {opacity:Number(cs.opacity),translate:cs.translate,blocker,
             imageScale:img?getComputedStyle(img).scale:null,
+            editorialCase:!!el.closest('#cases.luen-case-index'),
             radius:el.querySelector('figure')?parseFloat(getComputedStyle(el.querySelector('figure')).borderTopLeftRadius):null};
         });
         trace.push({i,before,after});
@@ -78,7 +79,7 @@ try{
           fail(run.name+': card '+i+' did not settle '+after.translate);
         if(after.imageScale&&after.imageScale!=='none'&&Math.abs(parseFloat(after.imageScale)-1)>.003)
           fail(run.name+': case image did not settle '+after.imageScale);
-        if(after.radius!==null&&after.radius<12)fail(run.name+': case image lost rounded frame '+after.radius);
+        if(after.radius!==null&&after.radius<(after.editorialCase?9.5:12))fail(run.name+': case image lost rounded frame '+after.radius);
         if(mobileMode&&before.below&&(before.revealed||before.opacity>.05))
           fail(run.name+': card '+i+' was already visible below the fold '+JSON.stringify(before));
         if(!mobileMode&&run.mobile&&before.opacity<.98)
