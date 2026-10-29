@@ -298,6 +298,11 @@
   if(!form)return;
   const knownCreators={masubuchi:'爆食ますぶちさちよ (마스부치 사치요)'};
   const knownServices={
+    // Platform-level entries are used by the homepage. Preserve narrower
+    // legacy service keys for existing deep links and earlier campaigns.
+    youtube:{label:'YouTube 크리에이터 마케팅',platform:'YouTube',source:'service_youtube'},
+    instagram:{label:'Instagram 크리에이터 마케팅',platform:'Instagram',source:'service_instagram'},
+    tiktok:{label:'TikTok 크리에이터 마케팅',platform:'TikTok',source:'service_tiktok'},
     'youtube-longform':{label:'YouTube 롱폼',platform:'YouTube',source:'service_youtube_longform'},
     'instagram-reels':{label:'Instagram Reels',platform:'Instagram',source:'service_instagram_reels'},
     'tiktok-series':{label:'TikTok 시리즈형 숏폼',platform:'TikTok',source:'service_tiktok_series'}
