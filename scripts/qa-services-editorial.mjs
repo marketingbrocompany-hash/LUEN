@@ -33,6 +33,9 @@ for(const engine of [chromium,webkit]){
        linkVisible:!!c.querySelector('.luen-service-choice-bottom>a')?.getClientRects().length,
        imgs:c.querySelectorAll('img,picture,video,iframe,canvas').length,
        details:c.querySelector('.luen-service-choice-formats')?.textContent?.trim(),
+       formatRect:r(c.querySelector('.luen-service-choice-formats')),
+       formatsScrollWidth:c.querySelector('.luen-service-choice-formats')?.scrollWidth,
+       formatsClientWidth:c.querySelector('.luen-service-choice-formats')?.clientWidth,
        kickerSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-kicker')).fontSize),
        headingSize:parseFloat(getComputedStyle(c.querySelector('h3')).fontSize),
        descriptionSize:parseFloat(getComputedStyle(c.querySelector('.luen-service-choice-when')).fontSize),
@@ -57,11 +60,17 @@ for(const engine of [chromium,webkit]){
     if(sample.header!=='SERVICES'||!sample.intro||!sample.why||!sample.archive)
       errors.push(label+' section structure missing');
     const expected=['YouTube','Instagram','TikTok'];
-    const hrefs=['/contact/?service=youtube-longform','/contact/?service=instagram-reels','/contact/?service=tiktok-series'];
+    const hrefs=['/contact/?service=youtube','/contact/?service=instagram','/contact/?service=tiktok'];
+    const kinds=[['롱폼','PPL','브랜디드','쇼츠'],['피드','릴스'],['단편 숏폼','시리즈형 숏폼']];
+    const formats=[['LONG FORM','BRANDED','PPL','SHORTS'],['FEED','REELS'],['SINGLE SHORT FORM','SERIES']];
     for(const [i,c] of sample.cards.entries()){
      if(c.title!==expected[i]||c.link!==hrefs[i]||!c.linkVisible||c.imgs)
        errors.push(label+' card '+i+' missing title/link or contains media');
      if(c.textWidth>c.textBoxWidth+3)errors.push(label+' card '+i+' heading overflow '+c.textWidth+'/'+c.textBoxWidth);
+     if(!kinds[i].every(word=>c.sub?.includes(word))||!formats[i].every(word=>c.details?.includes(word)))
+       errors.push(label+' card '+i+' platform content missing: '+JSON.stringify({sub:c.sub,formats:c.details}));
+     if(c.formatsScrollWidth>c.formatsClientWidth+3||c.formatRect?.right>c.rect?.right-8)
+       errors.push(label+' card '+i+' formats overflow: '+JSON.stringify({scroll:c.formatsScrollWidth,box:c.formatsClientWidth,right:c.formatRect?.right,cardRight:c.rect?.right}));
      if(c.headingSize<35||c.headingSize<2.4*c.kickerSize||c.headingSize<2.5*c.metadataSize)
        errors.push(label+' card '+i+' platform title not primary: '+JSON.stringify({h:c.headingSize,k:c.kickerSize,meta:c.metadataSize}));
      if(c.kickerSize<13||c.ctaSize<10.5||c.descriptionSize<13)
