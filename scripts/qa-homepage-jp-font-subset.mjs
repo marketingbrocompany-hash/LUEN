@@ -10,7 +10,10 @@ for(const link of matches){const url=new URL(link);if(url.searchParams.get('text
 if(html.includes('family=Inter:wght@400..800&family=Noto+Sans+JP'))failures.push('Legacy shared full-CJK stylesheet still included');
 if(!html.includes('family=Inter:wght@400..800&display=swap'))failures.push('Inter missing');
 if(japanese.length!==22)failures.push('Expected 22 production JP characters, observed '+japanese.length);
-const texts=['#herahera-content-title','#case-ikeda h3','#case-yuki h3','#case-masubuchi h3'];
+// Only unchanged partner typography is compared geometrically to main. The case index
+// intentionally uses a different font scale and line wrapping from the old hero/cards.
+const texts=['#masubuchi-name [lang="ja"]'];
+const redesignedCases=['#case-herahera h3','#case-ikeda h3','#case-yuki h3','#case-masubuchi h3'];
 for(const [engine,browserType,width] of [['chromium',chromium,390],['webkit',webkit,390],['chromium',chromium,1440]]){
   const browser=await browserType.launch({headless:true});
   try{
@@ -38,10 +41,15 @@ for(const [engine,browserType,width] of [['chromium',chromium,390],['webkit',web
           fontSize:style.fontSize,measuredWidth:ctx.measureText(el.textContent.trim()).width,
           rectWidth:el.getBoundingClientRect().width,rectHeight:el.getBoundingClientRect().height};
       }),texts);
+      const caseMetrics=port===4174?await page.evaluate(selectors=>selectors.map(selector=>{
+        const el=document.querySelector(selector);if(!el)return null;
+        const cs=getComputedStyle(el);return {selector,text:el.textContent.trim(),font:cs.fontFamily,
+          scrollWidth:el.scrollWidth,clientWidth:el.clientWidth};
+      }),redesignedCases):[];
       const scrollOverflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
       if(scrollOverflow>3)failures.push(engine+' '+width+' port '+port+' horizontal overflow '+scrollOverflow);
       if(errors.length)failures.push(engine+' '+width+' JavaScript '+JSON.stringify(errors));
-      pages.push({page,metrics});
+      pages.push({page,metrics,caseMetrics});
     }
     for(let i=0;i<texts.length;i++){
       const a=pages[0].metrics[i],b=pages[1].metrics[i];
@@ -53,6 +61,13 @@ for(const [engine,browserType,width] of [['chromium',chromium,390],['webkit',web
       if(widthChange>tolerance||Math.abs(a.rectHeight-b.rectHeight)>3)
         failures.push(engine+' '+width+' text geometry changed '+texts[i]+' '+JSON.stringify({control:a,optimized:b}));
     }
+    // Verify each new Japanese campaign title uses the expected Japanese fallback
+    // and is not horizontally clipped, without requiring obsolete card geometry.
+    for(let i=0;i<redesignedCases.length;i++){
+      const c=pages[1].caseMetrics[i];
+      if(!c||!c.text||!c.font.includes('Noto Sans JP')||c.scrollWidth>c.clientWidth+3)
+        failures.push(engine+' '+width+' redesigned case JP font/overflow '+JSON.stringify(c));
+    }
     const outDir='qa-screenshots/font-subset';
     fs.mkdirSync(outDir,{recursive:true});
     if(width===390){
@@ -61,7 +76,7 @@ for(const [engine,browserType,width] of [['chromium',chromium,390],['webkit',web
         await pages[i].page.screenshot({path:outDir+'/'+engine+'-'+(i?'subset':'original')+'.png',animations:'disabled'});
       }
     }
-    out.push({engine,width,glyphCount:japanese.length,textChecks:4,measurements:pages[1].metrics.map(x=>({text:x?.text,width:x?.measuredWidth}))});
+    out.push({engine,width,glyphCount:japanese.length,textChecks:texts.length+redesignedCases.length,measurements:pages[1].metrics.map(x=>({text:x?.text,width:x?.measuredWidth}))});
     for(const {page} of pages)await page.close();
     await context.close();
   }finally{await browser.close();}
