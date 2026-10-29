@@ -1,0 +1,49 @@
+name: LUEN Signature Campaigns compact case index QA (no deploy)
+on:
+  pull_request:
+    branches: [main, design/services-editorial-type-20261029]
+    paths:
+      - 'index.html'
+      - 'assets/css/signature-case-index.css'
+      - 'scripts/qa-signature-case-index.mjs'
+      - 'scripts/check-site.mjs'
+      - '.github/workflows/qa-signature-case-index.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signature-case-index:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check source structure and test syntax
+        run: |
+          test -s assets/css/signature-case-index.css
+          node scripts/check-site.mjs
+          node --check scripts/qa-signature-case-index.mjs
+      - name: Install isolated browser dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve the PR snapshot locally
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/luen-case-index-qa.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/luen-case-index-qa.log
+          exit 1
+      - name: Verify all cases, links and layout at seven viewport widths
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-signature-case-index.mjs
+      - name: Archive desktop and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-signature-case-index-qa-screenshots
+          path: qa-screenshots/signature-case-index/
+          retention-days: 14
+          if-no-files-found: warn
