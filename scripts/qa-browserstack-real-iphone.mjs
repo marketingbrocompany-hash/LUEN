@@ -87,6 +87,61 @@ try {
   }
   passed("YouTube and Instagram Reels live motion", { rails: 2, samples: 3 });
 
+  // 2026-10-29 release: confirm the editorial SERVICES and Signature Campaigns
+  // content in physical Safari. This is read-only; do not submit the contact form.
+  const approvedRelease = await driver.executeScript(function () {
+    const cases = [...document.querySelectorAll("#cases.luen-case-index .luen-case-entry")];
+    const services = [...document.querySelectorAll("#services.luen-services-editorial .luen-service-choice")];
+    const links = cases.map(card => card.querySelector("a.luen-case-link")?.getAttribute("href"));
+    const first = cases[0]?.getBoundingClientRect();
+    const second = cases[1]?.getBoundingClientRect();
+    return {
+      caseCount: cases.length,
+      caseLinks: links,
+      mobileCaseRows: !!first && !!second && second.top > first.top + 20,
+      services: services.length,
+      unifiedCTA: document.querySelectorAll("#services .luen-service-unified-cta").length,
+      duplicateCardCTAs: document.querySelectorAll("#services .luen-service-choice a[href*='/contact']").length,
+      consultationHref: document.querySelector("#services .luen-service-unified-cta")?.getAttribute("href"),
+      noObsoleteCaseBanner: !document.querySelector("#cases .case-inquiry-v7"),
+      hasApprovedCopy: !!document.querySelector("#cases .luen-case-index-aside")?.textContent.includes("한국과 일본에서 진행한"),
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    };
+  });
+  assert.equal(approvedRelease.caseCount, 4, "Expected four editorial cases");
+  assert.deepEqual(approvedRelease.caseLinks, [
+    "/cases/herahera-seoul-fnb/", "/cases/ikeda-edita/",
+    "/cases/yuki-clinic/", "/cases/masubuchi-bibigo/"
+  ], "The four case-study destinations changed");
+  assert.equal(approvedRelease.mobileCaseRows, true, "Editorial cases must stack on iPhone");
+  assert.equal(approvedRelease.services, 3, "Expected three SERVICES platform cards");
+  assert.equal(approvedRelease.unifiedCTA, 1, "Expected one unified SERVICES CTA");
+  assert.equal(approvedRelease.duplicateCardCTAs, 0, "Obsolete platform-card CTAs returned");
+  assert.equal(approvedRelease.consultationHref, "/contact/");
+  assert.equal(approvedRelease.noObsoleteCaseBanner, true);
+  assert.equal(approvedRelease.hasApprovedCopy, true);
+  assert.ok(approvedRelease.overflow <= 3, "Editorial index creates horizontal overflow");
+  passed("Release SERVICES and Signature Campaigns on physical iPhone", approvedRelease);
+
+  await driver.executeScript(function () {
+    document.querySelector("#services .luen-service-unified-cta").scrollIntoView({
+      block: "center", behavior: "instant"
+    });
+  });
+  await driver.findElement(By.css("#services .luen-service-unified-cta")).click();
+  await waitFor(() => driver.executeScript(function () {
+    return location.pathname === "/contact/" && !!document.querySelector("#contactForm");
+  }), "Unified consultation CTA to the real contact page");
+  const contactState = await driver.executeScript(function () {
+    return {
+      path: location.pathname,
+      hasForm: !!document.querySelector("#contactForm"),
+      requiredConsents: document.querySelectorAll("#contactForm input[type='checkbox'][required]").length
+    };
+  });
+  assert.equal(contactState.requiredConsents, 2, "Contact privacy consent controls missing");
+  passed("Physical iPhone consultation navigation (no form submit)", contactState);
+
   await driver.get("https://luenkorea.com/cases/herahera-seoul-fnb/");
   // Inspect the structure first, independently of image network/loading state.
   // All five images are loading="lazy": waiting for *every* naturalWidth before
