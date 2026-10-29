@@ -63,9 +63,10 @@ try {
       return {insideGallery:!!work?.closest('section#selected-content'),
         clips:work?.querySelectorAll('.portfolio-card').length,
         reels:work?.querySelectorAll('.portfolio-card.portrait').length,
-        caseCTA:!!document.querySelector('#cases .case-inquiry-v7 a[href="#contact"]')};
+        caseEntries:document.querySelectorAll('#cases.luen-case-index .luen-case-link[href^="/cases/"]').length,
+        redundantCaseCTA:!!document.querySelector('#cases .case-inquiry-v7')};
     });
-    if(!mediaJourney.insideGallery||mediaJourney.clips!==12||mediaJourney.reels!==6||!mediaJourney.caseCTA)
+    if(!mediaJourney.insideGallery||mediaJourney.clips!==12||mediaJourney.reels!==6||mediaJourney.caseEntries!==4||mediaJourney.redundantCaseCTA)
       serious(v.name,'Separated campaign/gallery regression: '+JSON.stringify(mediaJourney));
     const doc=await page.evaluate(()=>{
       const html=document.documentElement, body=document.body, nav=document.querySelector('#nav');
