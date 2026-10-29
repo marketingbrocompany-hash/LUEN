@@ -38,8 +38,7 @@ const response=await inspect('apexHttp',async()=>{
     cases:(html.match(/class="luen-case-entry case-support-card-v7"/g)||[]).length,
     services:(html.match(/class="luen-service-choice"/g)||[]).length,
     unifiedCTA:(html.match(/class="luen-service-unified-cta"/g)||[]).length,
-    hasCanonical:html.includes('https://luenkorea.com/'),
-    hasExpectedCNAME:Boolean(A?.length)
+    hasCanonical:html.includes('https://luenkorea.com/')
   };
 });
 if(response){
