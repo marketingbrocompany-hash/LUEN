@@ -1,0 +1,53 @@
+name: LUEN 3 hero videos codec and playback QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-hero-three-videos.mjs'
+      - 'assets/js/luen-motion-hero.js'
+      - 'index.html'
+      - '.github/workflows/qa-hero-video-playback.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hero-video-playback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect three encoded MP4 assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in confier quadthera clinic; do
+            test -s "assets/video/luen-motion/${name}-preview.mp4"
+            ffprobe -v error -show_entries format=duration,size:stream=codec_name,profile,width,height,pix_fmt,level -of json "assets/video/luen-motion/${name}-preview.mp4"
+          done
+      - name: Install Playwright browser engines
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+          node --check scripts/qa-hero-three-videos.mjs
+      - name: Serve isolated PR (no deploy)
+        shell: bash
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-video-qa.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/luen-video-qa.log
+          exit 1
+      - name: Test all 3 clips and rejected play fallback
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-hero-three-videos.mjs
+      - name: Archive video diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-hero-three-videos-qa
+          path: qa-screenshots/hero-three-videos/
+          retention-days: 14
+          if-no-files-found: warn
