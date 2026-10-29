@@ -216,9 +216,12 @@ const checks=[
       &&!fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
         .includes('20인 · 20 Reels'))],
   ['Homepage SERVICES promises only confirmed platform formats and maps platform-level inquiries',
-    ['롱폼(PPL·브랜디드) · 쇼츠','피드 · 릴스','단편 숏폼 · 시리즈형 숏폼',
-      'LONG FORM','BRANDED / PPL','SHORTS','FEED','REELS','SINGLE SHORT FORM','SERIES']
+    ['브랜드의 이야기를 깊게.','다양한 시선으로 넓게.','하나의 이야기로 이어가다.',
+      '롱폼(PPL·브랜디드)','쇼츠','피드','릴스','단편 숏폼','시리즈형 숏폼']
       .every(label=>home.includes(label))
+      &&!home.includes('class="luen-service-choice-kicker"')
+      &&!home.includes('class="luen-service-choice-channel"')
+      &&(home.match(/class="luen-service-choice-formats"/g)||[]).length===3
       &&home.includes('class="luen-service-unified-cta" href="/contact/"')
       &&(home.match(/class="luen-service-unified-cta"/g)||[]).length===1
       &&(home.match(/class="luen-service-choice-bottom"/g)||[]).length===3
