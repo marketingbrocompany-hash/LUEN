@@ -128,18 +128,36 @@ try{
   const ctaContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
   await ctaContext.route(/^https:\/\/formspree\.io\//,r=>r.abort());
   const ctaPage=await ctaContext.newPage();
+  // The three platform-card CTAs were intentionally replaced by ONE consultation
+  // link. Direct legacy service deep links remain supported for older campaigns.
   const serviceTests=[
-    {label:'YouTube 롱폼 캠페인 상담',key:'youtube-longform',platform:'YouTube',source:'service_youtube_longform',name:'YouTube 롱폼'},
-    {label:'Instagram Reels 캠페인 상담',key:'instagram-reels',platform:'Instagram',source:'service_instagram_reels',name:'Instagram Reels'},
-    {label:'TikTok 시리즈형 숏폼 캠페인 상담',key:'tiktok-series',platform:'TikTok',source:'service_tiktok_series',name:'TikTok 시리즈형 숏폼'}
+    {key:'youtube-longform',platform:'YouTube',source:'service_youtube_longform',name:'YouTube 롱폼'},
+    {key:'instagram-reels',platform:'Instagram',source:'service_instagram_reels',name:'Instagram Reels'},
+    {key:'tiktok-series',platform:'TikTok',source:'service_tiktok_series',name:'TikTok 시리즈형 숏폼'}
   ];
   try{
     await ctaPage.goto(BASE+'/',{waitUntil:'domcontentloaded',timeout:45000});
+    const unified=ctaPage.locator('#services .luen-service-unified-cta');
+    const unifiedCount=await unified.count();
+    const duplicateCardLinks=await ctaPage.locator('#services .luen-service-choice a[href*="/contact"]').count();
+    if(unifiedCount!==1||duplicateCardLinks!==0)
+      fail('/','service-cta','Expected exactly 1 unified CTA, 0 card CTAs: '+JSON.stringify({unifiedCount,duplicateCardLinks}));
+    else{
+      const href=await unified.getAttribute('href');
+      if(href!=='/contact/')fail('/','service-url','Unified consultation URL incorrect: '+href);
+      await unified.click();
+      await ctaPage.waitForURL('**/contact/',{timeout:15000});
+      const navigation=await ctaPage.locator('#contactForm').evaluate(form=>({
+        configured:!!form.getAttribute('action')?.startsWith('https://formspree.io/'),
+        platform:form.querySelector('#platform')?.value,
+        source:form.querySelector('input[name="source_case"]')?.value,
+        serviceNoteHidden:form.querySelector('#selectedServiceNote')?.hidden
+      }));
+      if(!navigation.configured||navigation.platform||navigation.source||!navigation.serviceNoteHidden)
+        fail('/contact/','unified-cta-navigation','Unified CTA arrived with stale service context: '+JSON.stringify(navigation));
+      outcomes.push({route:'/contact/',singleCTA:true,navigated:true,serviceNotPreselected:!navigation.platform,formSubmitted:false});
+    }
     for(const item of serviceTests){
-      const link=ctaPage.locator('a[aria-label="'+item.label+'"]');
-      if(await link.count()!==1){fail('/','service-cta','Missing '+item.label);continue;}
-      const href=await link.getAttribute('href');
-      if(href!=='/contact/?service='+item.key)fail('/','service-url','Incorrect deep link '+item.label+': '+href);
       const inquiry=await ctaContext.newPage();
       await inquiry.goto(BASE+'/contact/?service='+item.key,{waitUntil:'domcontentloaded',timeout:45000});
       const selected=await inquiry.locator('#contactForm').evaluate(form=>({

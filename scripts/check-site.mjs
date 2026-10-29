@@ -183,8 +183,10 @@ const checks=[
       ['content-flow-title','HOW LUEN WORKS'],
       ['faq-title','FAQ'],
       ['contact-title','PROJECT INQUIRY']
-    ].every(([id,label])=>home.includes('<h2 class="luen-section-primary-title" id="'+id+'">'+label+'</h2>'))
-    &&(home.match(/class="luen-section-primary-title"/g)||[]).length===5
+    ].every(([id,label])=>id==='cases-title'
+      ?home.includes('<h2 class="luen-section-primary-title luen-case-index-title" id="cases-title">Signature Campaigns</h2>')
+      :home.includes('<h2 class="luen-section-primary-title" id="'+id+'">'+label+'</h2>'))
+    &&(home.match(/class="luen-section-primary-title(?: luen-case-index-title)?"/g)||[]).length===5
     &&finish.includes('.luen-section-primary-title{')],
   ['numbered section labels and obsolete Korean display titles removed',
     !/0[3-8] · (?:SERVICES|HOW LUEN WORKS|PERFORMANCE|FAQ|PROJECT INQUIRY)/.test(home)
@@ -207,17 +209,43 @@ const checks=[
     &&(services.includes('href="/#instagram-reels"')
       ||(services.includes('href="/services/instagram-influencer-marketing/"')
         &&known.has('services/instagram-influencer-marketing/index.html')))],
-  ['Instagram detailed Premium offer stays consistent with homepage',
+  ['Instagram Premium offer retained on dedicated service page',
     !known.has('services/instagram-influencer-marketing/index.html')
-    ||(home.includes('<strong>Premium</strong>')
+    ||(home.includes('href="/contact/"')
+      &&home.includes('class="luen-services-editorial-intro"')
       &&fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
         .includes('크리에이터 규모 · Reels 편수 맞춤 협의')
       &&!fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
         .includes('20인 · 20 Reels'))],
+  ['Homepage SERVICES promises only confirmed platform formats and maps platform-level inquiries',
+    ['브랜드의 이야기를 깊게.','다양한 시선으로 넓게.','하나의 이야기로 이어가다.',
+      '롱폼(PPL·브랜디드)','쇼츠','피드','릴스','단편 숏폼','시리즈형 숏폼']
+      .every(label=>home.includes(label))
+      &&!home.includes('class="luen-service-choice-kicker"')
+      &&!home.includes('class="luen-service-choice-channel"')
+      &&(home.match(/class="luen-service-choice-formats"/g)||[]).length===3
+      &&home.includes('class="luen-service-unified-cta" href="/contact/"')
+      &&(home.match(/class="luen-service-unified-cta"/g)||[]).length===1
+      &&(home.match(/class="luen-service-choice-bottom"/g)||[]).length===3
+      &&!home.includes('href="/contact/?service=youtube"')
+      &&!home.includes('href="/contact/?service=instagram"')
+      &&!home.includes('href="/contact/?service=tiktok"')
+      &&!home.includes('href="/services/japan-marketing/">일본 시장 진출')
+      &&!home.includes('href="/services/japan-inbound/">방한 인바운드')
+      &&!home.includes('REELS <span aria-hidden="true">·</span> FEED <span aria-hidden="true">·</span> STORIES')
+      &&(()=>{const contact=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
+        return ['youtube','instagram','tiktok'].every(platform=>
+          contact.includes(platform+":{label:"))
+        &&['youtube-longform','instagram-reels','tiktok-series'].every(key=>
+          contact.includes("'"+key+"':{label:"));})()],
   ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
   ['Services hub lists all six offerings',(services.match(/class="service-hub-item/g)||[]).length===6],
   ['three moving brand/YouTube/Instagram strips',(home.match(/\bdata-loop-strip\s*=/g)||[]).length===3],
-  ['Instagram Basic / Standard / Premium',['Basic','Standard','Premium'].every(x=>home.includes('<strong>'+x+'</strong>'))],
+  ['Instagram Basic / Standard / Premium are preserved on detail page',
+    !known.has('services/instagram-influencer-marketing/index.html')
+    ||(['01 · BASIC','02 · STANDARD','03 · PREMIUM','5인 · 5 Reels','10인 · 10 Reels']
+      .every(x=>fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8').includes(x))
+      &&!/<strong>(?:Basic|Standard|Premium)<\/strong>/.test(home))],
   ['deleted More Content heading stays deleted',!home.includes('class="case-selected-work-head-v10"')],
   ['offline POP preserved in case detail',cases.includes('data-herahera-pop-proof')],
   ['main motion asset linked',home.includes('assets/js/luen-motion.js')],
@@ -265,7 +293,7 @@ const checks=[
     const sections=['class="hero"','class="brand-wall"','id="cases"','id="why-luen"','id="services"','id="selected-content"','id="partner-creators"','id="content-flow"','id="faq"','id="contact"'];
     const galleryBegin=home.indexOf('<section class="luen-home-selected-work"');
     const galleryEnd=home.indexOf('</section>',galleryBegin);
-    const caseBegin=home.indexOf('<section class="case-studies case-studies-v7"');
+    const caseBegin=home.indexOf('<section class="case-studies luen-case-index"');
     const approachBegin=home.indexOf('<section class="luen-why"');
     const portfolio=home.slice(galleryBegin,galleryEnd);
     return sections.every((s,i)=>home.includes(s)&&(i===0||home.indexOf(s)>home.indexOf(sections[i-1])))
@@ -274,7 +302,9 @@ const checks=[
       &&(home.match(/id="selected-content"/g)||[]).length===1
       &&(portfolio.match(/data-loop-strip=/g)||[]).length===2
       &&portfolio.includes('YOUTUBE')&&portfolio.includes('REELS / SHORT FORM')
-      &&home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
+      &&home.slice(caseBegin,approachBegin).includes('luen-case-index-grid')
+      &&(home.slice(caseBegin,approachBegin).match(/class="luen-case-entry case-support-card-v7"/g)||[]).length===4
+      &&!home.slice(caseBegin,approachBegin).includes('case-inquiry-v7')
       &&!home.slice(caseBegin,approachBegin).includes('id="work"')
       &&home.includes('luen-home-selected-work')&&!home.includes('class="case-selected-work-head-v10"')
       &&fs.readFileSync(path.join(root,'assets/css/creator-partnerships.css'),'utf8')
@@ -308,8 +338,9 @@ const checks=[
       &&creator.includes('class="luen-bibigo-full-screenshot"')
       &&!creator.includes('class="luen-bibigo-highlight"')
       &&!creator.includes('class="luen-bibigo-proof"')
-      &&home.includes('<strong>숏폼 292만+ 조회</strong>')
-      &&home.includes('<p>온라인 식품 구매 · 오프라인 맛집 방문 전환</p>')
+      &&home.includes('숏폼 합산 <strong>292만+ 조회</strong>')
+      &&home.includes('<p class="luen-case-note">일본 식품 캠페인 콘텐츠</p>')
+      &&!home.includes('온라인 식품 구매 · 오프라인 맛집 방문 전환')
       &&home.includes('INSTAGRAM</small><strong>약 6.8만')
       &&cas.includes('/'+proof)
       &&cas.includes('case-study-view-proof--full')
