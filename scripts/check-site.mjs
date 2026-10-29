@@ -209,12 +209,24 @@ const checks=[
         &&known.has('services/instagram-influencer-marketing/index.html')))],
   ['Instagram Premium offer retained on dedicated service page',
     !known.has('services/instagram-influencer-marketing/index.html')
-    ||(home.includes('href="/contact/?service=instagram-reels"')
+    ||(home.includes('href="/contact/?service=instagram"')
       &&home.includes('class="luen-services-editorial-intro"')
       &&fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
         .includes('크리에이터 규모 · Reels 편수 맞춤 협의')
       &&!fs.readFileSync(path.join(root,'services/instagram-influencer-marketing/index.html'),'utf8')
         .includes('20인 · 20 Reels'))],
+  ['Homepage SERVICES promises only confirmed platform formats and maps platform-level inquiries',
+    ['롱폼(PPL·브랜디드) · 쇼츠','피드 · 릴스','단편 숏폼 · 시리즈형 숏폼',
+      'LONG FORM','BRANDED / PPL','SHORTS','FEED','REELS','SINGLE SHORT FORM','SERIES']
+      .every(label=>home.includes(label))
+      &&['youtube','instagram','tiktok'].every(platform=>
+        home.includes('href="/contact/?service='+platform+'"'))
+      &&!home.includes('REELS <span aria-hidden="true">·</span> FEED <span aria-hidden="true">·</span> STORIES')
+      &&(()=>{const contact=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
+        return ['youtube','instagram','tiktok'].every(platform=>
+          contact.includes(platform+":{label:"))
+        &&['youtube-longform','instagram-reels','tiktok-series'].every(key=>
+          contact.includes("'"+key+"':{label:"));})()],
   ['TikTok deep-link target',home.includes('id="tiktok-series"')&&services.includes('href="/#tiktok-series"')],
   ['Services hub lists all six offerings',(services.match(/class="service-hub-item/g)||[]).length===6],
   ['three moving brand/YouTube/Instagram strips',(home.match(/\bdata-loop-strip\s*=/g)||[]).length===3],
