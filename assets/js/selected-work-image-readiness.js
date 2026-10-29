@@ -11,7 +11,7 @@
   if(!tracks.length)return;
   let activated=false;
   const markReady=img=>{
-    if(img.dataset.luenRailReady==='1')return;
+    if(img.dataset.luenRailReady==='1' && img.loading==='eager')return;
     img.dataset.luenRailReady='1';
     // Keep initial page loading light until the gallery is near the viewport.
     // A clone may override loading back to "lazy"; observe it and restore eager.
