@@ -1,8 +1,10 @@
-LUEN WEBSITE — CURRENT REPOSITORY NOTES (2026-10-17)
+LUEN WEBSITE — CURRENT REPOSITORY NOTES (2026-10-29)
 
 Repository: marketingbrocompany-hash/LUEN
-Development deployment: luen-preview branch → GitHub Actions integrity → Cloudflare Pages luen-preview.pages.dev. Official luenkorea.com Production remains unchanged; see docs/cloudflare-preview-deployment.md. Existing PRs still require visual QA before any production merge.
-Do not follow the older GitHub Pages copy/deploy instruction.
+Official website: https://luenkorea.com/ — public DNS currently routes to GitHub Pages (Cafe24-managed A/CNAME). Verify the GitHub Pages publish source under Settings > Pages before changing hosting. Vercel luen-homepage independently deploys main, but its READY status is NOT proof that the official domain is served by Vercel.
+Development site: luen-preview branch → Cloudflare Pages luen-preview.pages.dev (isolated preview).
+Hosting/DNS runbook and rollback steps: docs/LUEN_PRODUCTION_ORIGIN_DNS_20261029.md.
+Do not change DNS or customer portal settings as a side effect of a code deployment.
 Static integrity check: node scripts/check-site.mjs
 Detailed code audit: docs/luen-code-audit-20261017.md
 Do not delete historical stylesheets or replace asset-manifest.json without verifying dependencies.
