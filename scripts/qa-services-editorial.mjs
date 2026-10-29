@@ -45,7 +45,8 @@ for(const engine of [chromium,webkit]){
       section:r(section),header:section.querySelector('h2')?.textContent?.trim(),
       intro:section.querySelector('.luen-services-editorial-intro')?.textContent?.trim(),
       cards:a,links:[...section.querySelectorAll('.luen-service-help a')].map(x=>x.getAttribute('href')),
-      singleCTA:(()=>{const e=section.querySelector('.luen-service-unified-cta');return {visible:!!e?.getClientRects().length,href:e?.getAttribute('href'),label:e?.textContent?.trim(),height:r(e)?.height,rect:r(e),background:e?getComputedStyle(e).backgroundColor:null};})(),
+      singleCTA:(()=>{const e=section.querySelector('.luen-service-unified-cta');const arrow=e?.querySelector('span');return {visible:!!e?.getClientRects().length,href:e?.getAttribute('href'),label:e?.textContent?.trim(),height:r(e)?.height,rect:r(e),background:e?getComputedStyle(e).backgroundColor:null,arrowColor:arrow?getComputedStyle(arrow).color:null};})(),
+      floatingCTAInSection:document.getElementById('floatCta')?.classList.contains('show'),
       media:section.querySelectorAll('img,picture,video,iframe,canvas').length,
       why:!!document.querySelector('#why-luen .luen-why-rows'),
       archive:!!document.querySelector('#selected-content .works-archive-title')
@@ -81,6 +82,10 @@ for(const engine of [chromium,webkit]){
       errors.push(label+' expected one accessible project CTA: '+JSON.stringify({links:sample.links,cta:sample.singleCTA}));
     if(sample.singleCTA.rect?.right>width+2)
       errors.push(label+' project CTA extends beyond viewport');
+    if(sample.singleCTA.arrowColor!=='rgb(255, 249, 241)' || sample.singleCTA.background!=='rgb(213, 111, 64)')
+      errors.push(label+' single CTA colors changed unexpectedly: '+JSON.stringify(sample.singleCTA));
+    if(sample.floatingCTAInSection)
+      errors.push(label+' duplicate floating project CTA is visible while the SERVICES section is active');
     if([320,390,768,1440].includes(width) && engine===chromium || width===390 && engine===webkit){
       const filename=path.join(output,engine.name()+'-'+width+'.jpg');
       await page.locator('#services').screenshot({path:filename,type:'jpeg',quality:85,animations:'disabled'});
