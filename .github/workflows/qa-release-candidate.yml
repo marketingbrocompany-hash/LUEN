@@ -16,6 +16,7 @@ on:
       - 'scripts/check-site.mjs'
       - 'scripts/qa-selected-rails-mobile.mjs'
       - 'scripts/qa-integrated-visual-system.mjs'
+      - 'scripts/qa-contact-flow.mjs'
       - '.github/workflows/qa-release-candidate.yml'
 permissions:
   contents: read
