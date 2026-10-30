@@ -85,6 +85,15 @@ font.close()
 FONT.unlink()  # Source font never appears in CI artifacts.
 if not DERIVED.read_bytes().startswith(b"wOF2"):
     raise RuntimeError("Invalid WOFF2 derived file")
+# Explicit unicode-range prevents missing glyphs from shadowing the original
+# official CDN @font-face rules; fallback coverage remains available.
+css = (
+    "@font-face { font-family: 'Pretendard Variable'; font-style: normal; "
+    "font-weight: 45 920; font-display: swap; "
+    "src: url('./pretendard-home-CI-ONLY.woff2') format('woff2-variations'); "
+    "unicode-range: " + ",".join(f"U+{cp:X}" for cp in codepoints) + "; }"
+)
+(OUTPUT / "pretendard-home.css").write_text(css, encoding="utf-8")
 meta = {
     "glyphs_requested": len(codepoints),
     "derived_bytes": DERIVED.stat().st_size,
