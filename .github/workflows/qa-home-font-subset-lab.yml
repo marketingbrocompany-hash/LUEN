@@ -1,0 +1,72 @@
+name: LUEN ephemeral homepage font subset performance trial (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-build-home-font-subset.py'
+      - 'scripts/qa-home-subset-lab.mjs'
+      - '.github/workflows/qa-home-font-subset-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  font-subset-lab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate only controlled experiment scripts and current website
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-home-subset-lab.mjs
+          python -m py_compile scripts/qa-build-home-font-subset.py
+      - name: Build temporary subset in ephemeral runner (never uploaded)
+        run: |
+          python -m pip install --disable-pip-version-check --no-cache-dir fonttools==4.60.1 brotli==1.1.0
+          python scripts/qa-build-home-font-subset.py
+          test -s qa-temp-font-pilot/pretendard-home-CI-ONLY.woff2
+          test -s qa-temp-font-pilot/pretendard-home.css
+      - name: Install Lighthouse browsers
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Host unchanged and subset variants on separate localhost ports
+        shell: bash
+        run: |
+          set -euo pipefail
+          for line in "baseline 4183" "candidate 4184"; do
+            set -- $line
+            root="qa-temp-font-pilot/site-$1"
+            mkdir -p "$root"
+            cp index.html "$root/index.html"
+            ln -s "$PWD/assets" "$root/assets"
+            if [[ "$1" == "candidate" ]]; then
+              sed -i 's@</head>@<link rel="stylesheet" href="/qa-font/pretendard-home.css" data-luen-font-subset-lab="temporary"/>\n</head>@' "$root/index.html"
+              mkdir "$root/qa-font"
+              cp qa-temp-font-pilot/pretendard-home.css qa-temp-font-pilot/pretendard-home-CI-ONLY.woff2 "$root/qa-font/"
+            fi
+            python3 -m http.server "$2" --directory "$root" --bind 127.0.0.1 >"/tmp/luen-font-$1.log" 2>&1 &
+          done
+          for port in 4183 4184; do
+            for i in {1..20}; do if curl -fsS "http://127.0.0.1:$port/" >/dev/null; then break; fi; sleep 1; done
+            curl -fsS "http://127.0.0.1:$port/assets/css/site.css" >/dev/null
+          done
+          curl -fsS http://127.0.0.1:4184/qa-font/pretendard-home.css >/dev/null
+      - name: Compare mobile 3x desktop 2x and Chrome/WebKit typographic geometry
+        run: node scripts/qa-home-subset-lab.mjs
+      - name: Save metrics + screenshots only — never fonts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-home-glyph-subset-measurements-NO-FONTS
+          path: qa-screenshots/home-font-subset-lab/
+          retention-days: 10
+          if-no-files-found: warn
