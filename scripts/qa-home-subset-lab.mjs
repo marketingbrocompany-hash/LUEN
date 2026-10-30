@@ -69,7 +69,18 @@ for(const engine of [chromium,webkit]){
     const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
     const page=await context.newPage();
     await page.goto(urls[variant],{waitUntil:'domcontentloaded',timeout:45000});
-    await page.evaluate(()=>document.fonts.ready);
+    // A media="print" stylesheet can finish AFTER the first document.fonts.ready.
+    // Wait for its onload handler before judging font geometry, then explicitly
+    // request the complete homepage text to force comparable font downloads.
+    await page.waitForFunction(()=>{
+      const link=document.querySelector('link[href*="pretendardvariable-dynamic-subset.min.css"]');
+      return Boolean(link&&link.media==='all');
+    },null,{timeout:30000});
+    await page.evaluate(async()=>{
+      const allText=document.querySelector('main')?.innerText||'브랜드 캠페인 크리에이터';
+      await document.fonts.load('400 16px "Pretendard Variable"',allText);
+      await document.fonts.ready;
+    });
     const data=await page.evaluate(selectors=>selectors.map(selector=>{
       const e=document.querySelector(selector);if(!e)return {selector,missing:true};
       e.scrollIntoView({block:'center',behavior:'instant'});
@@ -98,7 +109,8 @@ for(const engine of [chromium,webkit]){
      subsetRequested:loadsSubset,overflow:over,
      baselineFontFiles:pages.baseline.resources.filter(x=>/woff2/.test(x)).length,
      candidateFontFiles:pages.candidate.resources.filter(x=>/woff2/.test(x)).length};
-   if(!loadsSubset||over>2||bad.length)errors.push('layout '+JSON.stringify(entry));
+   if(!loadsSubset||pages.baseline.resources.filter(x=>/woff2/.test(x)).length<1||over>2||bad.length)
+     errors.push('layout '+JSON.stringify(entry));
    layoutChecks.push(entry);
   }
  }finally{await browser.close();}
