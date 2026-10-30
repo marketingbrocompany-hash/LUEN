@@ -21,7 +21,7 @@ OUTPUT.mkdir(parents=True, exist_ok=True)
 
 URL = (
     "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/"
-    "dist/web/variable/woff2/PretendardVariable.woff2"
+    "packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2"
 )
 FONT = OUTPUT / "pretendard-original-CI-ONLY.woff2"
 with urllib.request.urlopen(
