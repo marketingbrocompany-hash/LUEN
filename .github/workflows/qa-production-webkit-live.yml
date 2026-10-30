@@ -1,0 +1,42 @@
+name: LUEN live production iPhone/WebKit regression check (read only)
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/qa-production-webkit-live.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-webkit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned WebKit and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Verify LIVE homepage rails, hero poster, iOS Safari 320px and 390px
+        env:
+          LUEN_QA_URL: https://luenkorea.com
+        run: node scripts/qa-webkit-mobile.mjs
+      - name: Verify LIVE Herahera gallery POP and four approved masked images
+        env:
+          LUEN_QA_URL: https://luenkorea.com
+        run: node scripts/qa-herahera-mosaic-release.mjs
+      - name: Save homepage-only non-sensitive screenshots and checks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-live-webkit-public-release
+          path: qa-screenshots/webkit-mobile/
+          retention-days: 7
+          if-no-files-found: warn
+# Zero credentials, account logins, form posts, visitor-photo screenshots or deployment actions.
