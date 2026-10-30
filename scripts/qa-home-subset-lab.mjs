@@ -88,12 +88,15 @@ for(const engine of [chromium,webkit]){
       return {selector,text:e.textContent.trim(),fontFamily:cs.fontFamily,
         width:b.width,height:b.height,scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight};
     }),selectors);
+    // ResourceTiming omits CDN WOFF2 in this CI browser despite HTTP 200
+    // responses; FontFaceSet confirms the original font is loaded.
+    const loadedFontFaces=await page.evaluate(()=>[...document.fonts].filter(f=>/Pretendard/i.test(f.family)&&f.status==='loaded').length);
     const resources=await page.evaluate(()=>performance.getEntriesByType('resource').map(x=>x.name));
     const documentWidth=await page.evaluate(()=>document.documentElement.scrollWidth);
     if(engine===chromium&&width===390){
       await page.locator('main .hero').screenshot({path:path.join(reportDir,variant+'-hero-'+width+'.jpg'),type:'jpeg',quality:88,animations:'disabled'});
     }
-    pages[variant]={data,resources,documentWidth};
+    pages[variant]={data,resources,documentWidth,loadedFontFaces};
     await context.close();
    }
    const bad=[];
@@ -107,9 +110,10 @@ for(const engine of [chromium,webkit]){
    const over=pages.candidate.documentWidth-width;
    const entry={engine:engine.name(),width,geometricChanges:bad,
      subsetRequested:loadsSubset,overflow:over,
-     baselineFontFiles:pages.baseline.resources.filter(x=>/woff2/.test(x)).length,
+     baselineLoadedPretendardFaces:pages.baseline.loadedFontFaces,
+     candidateLoadedPretendardFaces:pages.candidate.loadedFontFaces,
      candidateFontFiles:pages.candidate.resources.filter(x=>/woff2/.test(x)).length};
-   if(!loadsSubset||pages.baseline.resources.filter(x=>/woff2/.test(x)).length<1||over>2||bad.length)
+   if(!loadsSubset||pages.baseline.loadedFontFaces<1||pages.candidate.loadedFontFaces<1||over>2||bad.length)
      errors.push('layout '+JSON.stringify(entry));
    layoutChecks.push(entry);
   }
