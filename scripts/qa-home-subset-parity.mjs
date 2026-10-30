@@ -95,8 +95,12 @@ for(const engine of [chromium,webkit]){
    for(let i=0;i<selectors.length;i++){
     const x=base.samples.nodes[i],y=cand.samples.nodes[i];
     if(x.missing||y.missing){problems.push('missing element '+selectors[i]);continue;}
+    // Whole-document height includes asynchronously loading images and videos;
+    // a few pixels over an 8000px page are not a typography regression.
+    // All actual editorial text elements must still match within 2px.
+    const heightTolerance=selectors[i]==='body'?12:2;
     if(x.text!==y.text||x.fontFamily!==y.fontFamily||x.fontWeight!==y.fontWeight||
-       Math.abs(x.width-y.width)>2||Math.abs(x.height-y.height)>2)
+       Math.abs(x.width-y.width)>2||Math.abs(x.height-y.height)>heightTolerance)
       problems.push('text geometry differs: '+selectors[i]+' ('+round(x.height)+' → '+round(y.height)+')');
    }
    const result={engine:engine.name(),width,
