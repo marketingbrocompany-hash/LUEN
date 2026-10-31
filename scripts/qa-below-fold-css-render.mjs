@@ -9,8 +9,7 @@ import {chromium,webkit} from 'playwright';
 
 const root=process.cwd(),html=fs.readFileSync('index.html','utf8');
 const targets=[
-  '/assets/css/services-editorial.css?v=20261029-clean-hierarchy-4',
-  '/assets/css/signature-case-index.css?v=20261029-1'
+  '/assets/css/services-editorial.css?v=20261029-clean-hierarchy-4'
 ];
 let candidate=html;
 for(const href of targets){
@@ -125,7 +124,7 @@ for(const engine of [chromium,webkit]){
    const fail=[];
    for(const name of ['baseline','candidate']){
      const s=sites[name];
-     if(s.pageErrors.length||s.overflow>2||s.cases!==4||s.services!==3||s.unifiedCTA!==1||s.cssResponses.length!==2||s.cssResponses.some(r=>r.status!==200))
+     if(s.pageErrors.length||s.overflow>2||s.cases!==4||s.services!==3||s.unifiedCTA!==1||s.cssResponses.length!==targets.length||s.cssResponses.some(r=>r.status!==200))
        fail.push(name+' unexpected pages/links/render state: '+JSON.stringify(s).slice(0,600));
    }
    for(let k=0;k<sites.baseline.cards.length;k++){
