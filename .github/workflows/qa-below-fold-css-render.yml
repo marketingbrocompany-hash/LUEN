@@ -1,0 +1,74 @@
+name: LUEN below-fold CSS render-path comparison (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-below-fold-css-render.mjs'
+      - '.github/workflows/qa-below-fold-css-render.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 34
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate current site and lab script syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-below-fold-css-render.mjs
+      - name: Install pinned Chromium WebKit Lighthouse
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Prepare identical local assets and HTML-only variant
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e '
+          import fs from "node:fs";
+          const html=fs.readFileSync("index.html","utf8");
+          let candidate=html;
+          const targets=[
+            "/assets/css/services-editorial.css?v=20261029-clean-hierarchy-4",
+            "/assets/css/signature-case-index.css?v=20261029-1"
+          ];
+          for(const href of targets){
+            const tag="<link rel=\"stylesheet\" href=\""+href+"\"/>";
+            if(candidate.split(tag).length!==2)throw Error("Missing unique link "+href);
+            candidate=candidate.replace(tag,
+              "<link rel=\"stylesheet\" href=\""+href+"\" media=\"print\" onload=\"this.onload=null;this.media=\x27all\x27\"/>"+
+              "<noscript><link rel=\"stylesheet\" href=\""+href+"\"/></noscript>");
+          }
+          for(const [name,site] of Object.entries({baseline:html,candidate})){
+            const dir="qa-temp-css-render/"+name;
+            fs.mkdirSync(dir,{recursive:true});
+            fs.writeFileSync(dir+"/index.html",site);
+            fs.symlinkSync(process.cwd()+"/assets",dir+"/assets","dir");
+          }'
+          for tuple in "baseline 4193" "candidate 4194"; do
+            set -- $tuple
+            python3 -m http.server "$2" --directory "qa-temp-css-render/$1" --bind 127.0.0.1 >/tmp/luen-css-$1.log 2>&1 &
+          done
+          for port in 4193 4194; do
+            for i in {1..20}; do if curl -fsS "http://127.0.0.1:$port/" >/dev/null; then break; fi; sleep 1; done
+            curl -fsS "http://127.0.0.1:$port/assets/css/luen-v3.css" >/dev/null
+          done
+      - name: Measure same-runner baseline versus candidate with visual checks
+        env:
+          LUEN_MAIN_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: node scripts/qa-below-fold-css-render.mjs
+      - name: Upload analysis (no public changes)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-below-fold-css-lab
+          path: qa-screenshots/below-fold-css-render/
+          retention-days: 10
+          if-no-files-found: warn
