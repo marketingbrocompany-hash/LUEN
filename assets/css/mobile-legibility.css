@@ -1,10 +1,18 @@
-/* LUEN homepage · mobile legibility (≤767px only)
+/* LUEN homepage · mobile legibility
    Mobile UX audit of main b4fbfde: 129 text runs under 12px (down to 7px),
    small text under 4.5:1 contrast and 19 tap targets under 44px.
    Same palette, only darker steps of it: #A74722 (site link orange),
-   #6E655D / #5E554E (warm greys). The light-orange project buttons keep
-   their colour: qa-services-editorial.mjs pins it (design decision pending).
-   Layout, copy, images and desktop/tablet styles are unchanged. */
+   #6E655D / #5E554E (warm greys). Layout, copy and images are unchanged;
+   everything below the first block applies to ≤767px only. */
+
+/* All widths: the FAQ and SERVICES project buttons used #D56F40 with light
+   text (3.25:1). Use the hero primary button's orange (#B9552A, 4.6:1) and
+   the site link orange on hover, so every project CTA reads the same. */
+html body main#top #services.luen-services-editorial .luen-service-unified-cta{background:#B9552A;border-color:#B9552A}
+html body main#top #services.luen-services-editorial .luen-service-unified-cta:hover{background:#A74722;border-color:#A74722}
+html body #faq .faq-cta{background:#B9552A!important;border-color:#B9552A!important}
+html body #faq .faq-cta:hover{background:#A74722!important;border-color:#A74722!important}
+
 @media(max-width:767px){
   /* ---- Minimum sizes: decorative labels ≥10px, information ≥12px ---- */
   html body main#top>.hero .hero-kicker{font-size:10.5px!important;color:#6E655D!important}

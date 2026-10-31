@@ -12,9 +12,6 @@ const failures=[],results=[];
 // Text drawn on photos (gallery captions, hero video cards, country tags) is
 // excluded from the contrast scan: its background is an image, not a colour.
 const onImage='.portfolio-card,.luen-motion-card,.luen-creator-feature-media';
-// Light-orange project buttons keep their pinned colour (qa-services-editorial.mjs);
-// their 3.25:1 label contrast is a pending design decision, not checked here.
-const pinnedButtons='.luen-service-unified-cta,.faq-cta';
 const browser=await chromium.launch({headless:true});
 try{
   for(const width of [320,360,390,430]){
@@ -29,7 +26,7 @@ try{
       const response=await page.goto(base+'/',{waitUntil:'load',timeout:45000});
       if(response?.status()!==200)throw Error('HTTP '+response?.status());
       await page.evaluate(()=>document.querySelectorAll('.sr').forEach(e=>e.classList.add('in')));
-      const audit=await page.evaluate(([onImage,pinnedButtons])=>{
+      const audit=await page.evaluate(onImage=>{
         const visible=e=>{const s=getComputedStyle(e),b=e.getBoundingClientRect();
           return s.display!=='none'&&s.visibility!=='hidden'&&b.width>0&&b.height>0&&
             !e.closest('[aria-hidden="true"],.loop-clone,.ios-loop-clone,.mobile-menu');};
@@ -52,7 +49,7 @@ try{
           if(e.closest(onImage))continue;
           if(size<10)tiny.push({size,text:label(e)});
           const fg=lum(s.color),bg=background(e);
-          if(bg==null||fg.a<.5||e.closest(pinnedButtons)||!/[\p{L}\p{N}]/u.test(walker.currentNode.textContent))continue;
+          if(bg==null||fg.a<.5||!/[\p{L}\p{N}]/u.test(walker.currentNode.textContent))continue;
           const ratio=(Math.max(fg.L,bg)+.05)/(Math.min(fg.L,bg)+.05);
           const large=size>=24||(size>=18.66&&Number(s.fontWeight)>=700);
           if(ratio<(large?3:4.5))faint.push({ratio:+ratio.toFixed(2),size,text:label(e)});
@@ -61,7 +58,7 @@ try{
           .filter(visible).map(e=>({h:Math.round(e.getBoundingClientRect().height),text:(e.getAttribute('aria-label')||label(e))}))
           .filter(t=>t.h<43);
         return {tiny,faint,shortTaps,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
-      },[onImage,pinnedButtons]);
+      },onImage);
       if(audit.tiny.length)failures.push(width+': text under 10px '+JSON.stringify(audit.tiny));
       if(audit.faint.length)failures.push(width+': text under contrast minimum '+JSON.stringify(audit.faint));
       if(audit.shortTaps.length)failures.push(width+': tap targets under 44px '+JSON.stringify(audit.shortTaps));
