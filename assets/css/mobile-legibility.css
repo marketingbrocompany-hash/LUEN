@@ -1,0 +1,62 @@
+/* LUEN homepage · mobile legibility (≤767px only)
+   Mobile UX audit of main b4fbfde: 129 text runs under 12px (down to 7px),
+   small text under 4.5:1 contrast and 19 tap targets under 44px.
+   Same palette, only darker steps of it: #A74722 (site link orange),
+   #6E655D / #5E554E (warm greys). The light-orange project buttons keep
+   their colour: qa-services-editorial.mjs pins it (design decision pending).
+   Layout, copy, images and desktop/tablet styles are unchanged. */
+@media(max-width:767px){
+  /* ---- Minimum sizes: decorative labels ≥10px, information ≥12px ---- */
+  html body main#top>.hero .hero-kicker{font-size:10.5px!important;color:#6E655D!important}
+  html body .luen-motion-card .luen-motion-card-meta small{font-size:9.5px!important}
+  html body .luen-motion-card .luen-motion-card-meta strong{font-size:11px!important}
+  html body .luen-motion-bottom .luen-motion-count{font-size:10.5px!important;color:#A74722!important}
+
+  html body .luen-case-index-label{font-size:10.5px!important}
+  html body .luen-case-meta,
+  html body .luen-case-meta .luen-case-num{font-size:10px!important}
+  html body .luen-case-meta{color:#8A5A42!important}
+  html body .luen-case-metric strong{color:#A74722!important}
+  html body .luen-case-note{font-size:12px!important;color:#6E655D!important}
+  html body .luen-case-index-foot span{font-size:10.5px!important;color:#6E655D!important}
+
+  html body .luen-why-rows .luen-why-row>span{color:#A74722!important}
+  html body .luen-services-editorial-eyebrow{font-size:10.5px!important}
+
+  html body #selected-content #work .portfolio-meta span{font-size:10px!important}
+  html body #selected-content #work .portfolio-meta b{font-size:11.5px!important}
+
+  html body #partner-creators .luen-creator-image-note{font-size:10px!important}
+  html body #partner-creators .luen-creator-data small{font-size:10.5px!important;color:#6E655D!important}
+
+  html body .luen-flow-list-timeline li>span{font-size:11px!important;color:#A74722!important}
+  html body .luen-flow-list-timeline li>b{font-size:11px!important;color:#6E655D!important}
+
+  html body #faq .faq-a p,
+  html body #faq .faq-conversion>p{color:#5E554E!important}
+  html body #faq .faq-more-toggle{font-size:12px!important}
+  html body #faq .faq-icon{color:#A74722!important}
+
+  html body #contact .inquiry-reassurance>span{font-size:11px!important;color:#A74722!important}
+  html body #contact .privacy-check-copy small,
+  html body #contact .privacy-details summary{font-size:12px!important}
+  html body #contact .privacy-details dt{font-size:11px!important}
+  html body #contact .privacy-details dd{font-size:12px!important}
+  html body #contact .privacy-external{color:#A74722!important}
+
+  /* ---- Tap targets ≥44px: larger hit area, same visual weight ---- */
+  html body #nav .logo{min-height:44px;display:inline-flex!important;align-items:center}
+  html body #nav .hamburger{width:44px!important;height:44px!important}
+  html body main#top>.hero .hero-cta .btn-secondary{min-height:44px!important}
+  html body .luen-motion-bottom .luen-motion-pause{min-height:44px!important}
+  html body #why-luen .luen-approach-link{min-height:44px!important;display:inline-flex!important;align-items:center}
+  html body #selected-content #work .portfolio-explore-link{min-height:44px!important}
+  html body #content-flow .luen-home-flow-cta{min-height:44px;display:inline-flex!important;align-items:center}
+  html body #faq .faq-more-toggle{min-height:44px!important}
+  html body #contact .privacy-external{display:inline-flex!important;align-items:center;min-height:44px}
+  html body #contact .privacy-details summary{min-height:44px;display:flex!important;align-items:center}
+  /* Footer: grow the hit area with padding and cancel it with an equal
+     negative margin, so the visible spacing between rows stays the same. */
+  html body footer .footer-links a{padding-block:12px!important;margin-block:-12px!important}
+  html body footer .footer-business-info a{display:inline-block;padding-block:16px;margin-block:-16px}
+}
