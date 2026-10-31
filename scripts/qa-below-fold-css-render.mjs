@@ -101,7 +101,7 @@ for(const engine of [chromium,webkit]){
     await page.waitForFunction(targets=>{
        return targets.every(h=>{
         const l=[...document.querySelectorAll('link[rel="stylesheet"]')].find(e=>e.href.includes(h));
-        return !!l&&l.media==='all'&&!!l.sheet;
+        return !!l&&(l.media==='all'||l.media==='')&&!!l.sheet;
        });
     },targets,{timeout:40000});
     await page.evaluate(()=>document.fonts.ready);
