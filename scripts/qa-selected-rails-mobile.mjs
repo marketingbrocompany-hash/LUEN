@@ -129,6 +129,18 @@ for(const run of runs){
       record.ios=page0.ios;
       if(page0.rails!==2||page0.originals!==12)failures.push(label+': expected 2 rails / 12 original cards '+JSON.stringify(page0));
       if(page0.overflow>3)failures.push(label+': horizontal overflow '+page0.overflow);
+      // Reels card captions: category stacked over "Instagram Reels", one line
+      // each, inside the card (they used to sit side by side, both wrapping).
+      const captions=await page.evaluate(()=>[...document.querySelectorAll(
+        '#selected-content .loop-set:not(.loop-clone):not(.ios-loop-clone) .portfolio-card.portrait')].map(card=>{
+        const c=card.getBoundingClientRect(),s=card.querySelector('.portfolio-meta span'),b=card.querySelector('.portfolio-meta b');
+        const rs=s.getBoundingClientRect(),rb=b.getBoundingClientRect();
+        const line=e=>parseFloat(getComputedStyle(e).lineHeight)||parseFloat(getComputedStyle(e).fontSize)*1.4;
+        return {text:s.textContent,stacked:rb.top>=rs.bottom-1,
+          oneLine:rs.height<line(s)*1.5&&rb.height<line(b)*1.5,inside:rb.right<=c.right&&rs.right<=c.right};
+      }));
+      const badCaptions=captions.filter(c=>!c.stacked||!c.oneLine||!c.inside);
+      if(captions.length!==6||badCaptions.length)failures.push(label+': reels captions not stacked on one line each '+JSON.stringify(badCaptions));
       if((run.engine==='webkit')!==page0.ios)failures.push(label+': wrong motion path, ios='+page0.ios);
       const cdp=run.engine==='chromium'?await context.newCDPSession(page):null;
 
