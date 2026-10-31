@@ -36,8 +36,7 @@ jobs:
           const html=fs.readFileSync("index.html","utf8");
           let candidate=html;
           const targets=[
-            "/assets/css/services-editorial.css?v=20261029-clean-hierarchy-4",
-            "/assets/css/signature-case-index.css?v=20261029-1"
+            "/assets/css/services-editorial.css?v=20261029-clean-hierarchy-4"
           ];
           for(const href of targets){
             const tag="<link rel=\"stylesheet\" href=\""+href+"\"/>";
