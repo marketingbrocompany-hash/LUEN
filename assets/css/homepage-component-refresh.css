@@ -99,8 +99,10 @@
   border-right:0;
 }
 .luen-flow-list-timeline li:nth-child(n){
-  /* overrides .luen-flow-list-v2 li:nth-child(n){min-height:250px}, kept for its .sr reveal hook */
+  /* overrides .luen-flow-list-v2 li:nth-child(n){min-height:250px}, kept for its .sr reveal hook,
+     and luen-v3.css's li:nth-child(3){padding-left:46px} at 721-767px */
   min-height:0;
+  padding-left:0;
 }
 .luen-flow-list-timeline li:first-child{padding-left:0}
 .luen-flow-list-timeline li:last-child{padding-right:0}
@@ -144,6 +146,10 @@
 @media(max-width:720px){
   .luen-flow-list-timeline{grid-template-columns:1fr;gap:26px}
   .luen-flow-list-timeline::before{top:0;bottom:0;left:9px;right:auto;width:1px;height:auto}
-  .luen-flow-list-timeline li{padding:0 0 0 30px}
+  /* :nth-child(n) outranks the desktop first-child reset above and
+     luen-v3.css's mobile li:nth-child(3){padding-left:46px}, which left
+     step 01 on top of the timeline dot and steps 02-04 misaligned. */
+  .luen-flow-list-timeline li,
+  .luen-flow-list-timeline li:nth-child(n){padding:0 0 0 30px}
   .luen-flow-list-timeline li::before{left:0;top:1px}
 }

@@ -39,6 +39,7 @@
   const contactSection=document.getElementById('contact');
   const gallerySection=document.getElementById('selected-content');
   const servicesSection=document.querySelector('#services.luen-services-editorial');
+  const faqCta=document.querySelector('#faq .faq-cta');
   const scrollProgress=document.getElementById('scrollProgress');
   let contactVisible=false;
   let ticking=false;
@@ -56,7 +57,11 @@
     const serviceRect=servicesSection?.getBoundingClientRect();
     const servicesVisible=Boolean(serviceRect
       &&serviceRect.top<window.innerHeight-60&&serviceRect.bottom>60);
-    floatCta.classList.toggle('show',pastHero&&!contactVisible&&!galleryVisible&&!servicesVisible);
+    // FAQ ends with its own project CTA; the floating copy sat on top of it.
+    const faqCtaRect=faqCta?.getBoundingClientRect();
+    const faqCtaVisible=Boolean(faqCtaRect&&faqCtaRect.width
+      &&faqCtaRect.top<window.innerHeight&&faqCtaRect.bottom>0);
+    floatCta.classList.toggle('show',pastHero&&!contactVisible&&!galleryVisible&&!servicesVisible&&!faqCtaVisible);
   }
 
   if(contactSection&&'IntersectionObserver' in window){
