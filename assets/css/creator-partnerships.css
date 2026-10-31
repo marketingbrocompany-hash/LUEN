@@ -598,6 +598,14 @@ html body #selected-content #work .portfolio-meta b{
   html body #selected-content #work .portfolio-meta b{
     font-size:10.5px!important;
   }
+  /* Reels cards are only 160-198px wide: side by side, the category and
+     "Instagram Reels" each wrapped to two lines. Stack them instead. */
+  html body #selected-content #work .portfolio-card.portrait .portfolio-meta{
+    flex-direction:column!important;align-items:flex-start!important;gap:2px!important;
+  }
+  html body #selected-content #work .portfolio-card.portrait .portfolio-meta b{
+    margin-top:0!important;
+  }
 }
 /* WebKit sizes each rail set from the cards' image widths instead of their
    flex-basis, so the set ran wider than its cards (empty space after the
