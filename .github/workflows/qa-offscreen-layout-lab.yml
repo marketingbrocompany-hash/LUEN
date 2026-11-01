@@ -1,0 +1,65 @@
+name: LUEN offscreen layout containment A/B - no deploy
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-offscreen-layout-lab.mjs'
+      - '.github/workflows/qa-offscreen-layout-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check site and pilot code
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-offscreen-layout-lab.mjs
+      - name: Install controlled Chromium WebKit and Lighthouse
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Generate two localhost sites from unchanged source files
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e '
+          import fs from "node:fs";
+          const src=fs.readFileSync("index.html","utf8");
+          const ids=["why-luen","services","partner-creators","content-flow","faq","contact"];
+          if(ids.some(id=>!src.includes("id=\""+id+"\"")))process.exit(1);
+          const selectors=ids.map(id=>"html body main#top > #"+id).join(",");
+          const injection="<style id=\"luen-offscreen-layout-experiment\">@supports (content-visibility:auto){"+
+            selectors+"{content-visibility:auto;contain-intrinsic-size:auto 750px}}</style>";
+          for(const [name,html] of Object.entries({baseline:src,candidate:src.replace("</head>",injection+"\n</head>")})){
+            const dir="qa-temp-offscreen-site/"+name;
+            fs.mkdirSync(dir,{recursive:true});
+            fs.writeFileSync(dir+"/index.html",html);
+            fs.symlinkSync(process.cwd()+"/assets",dir+"/assets","dir");
+          }'
+          for tuple in "baseline 4203" "candidate 4204"; do
+            set -- $tuple
+            python3 -m http.server "$2" --directory "qa-temp-offscreen-site/$1" --bind 127.0.0.1 >"/tmp/luen-offscreen-$1.log" 2>&1 &
+          done
+          for port in 4203 4204; do
+            for i in {1..20}; do if curl -fsS -o /dev/null "http://127.0.0.1:$port/"; then break; fi; sleep 1; done
+            curl -fsS "http://127.0.0.1:$port/assets/css/luen-v3.css" > /dev/null
+          done
+      - name: Compare mobile 3 and desktop 2 Lighthouse runs, then Chrome/WebKit scroll QA
+        run: node scripts/qa-offscreen-layout-lab.mjs
+      - name: Save numerical QA reports only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-offscreen-layout-lab
+          path: qa-screenshots/offscreen-layout-lab/
+          retention-days: 10
+          if-no-files-found: warn
