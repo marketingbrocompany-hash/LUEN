@@ -14,7 +14,7 @@ const failures=[],results=[];
 const onImage='.portfolio-card,.luen-motion-card,.luen-creator-feature-media';
 const browser=await chromium.launch({headless:true});
 try{
-  for(const width of [320,360,390,430]){
+  for(const width of [320,360,390,430,740,767]){
     const context=await browser.newContext({
       viewport:{width,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1,reducedMotion:'reduce'
     });
@@ -54,18 +54,32 @@ try{
           const large=size>=24||(size>=18.66&&Number(s.fontWeight)>=700);
           if(ratio<(large?3:4.5))faint.push({ratio:+ratio.toFixed(2),size,text:label(e)});
         }
-        const shortTaps=[...document.querySelectorAll('main a[href],main button,#nav a[href],#nav button,footer a[href]')]
-          .filter(visible).map(e=>({h:Math.round(e.getBoundingClientRect().height),text:(e.getAttribute('aria-label')||label(e))}))
-          .filter(t=>t.h<43);
-        return {tiny,faint,shortTaps,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
+        const taps=[...document.querySelectorAll('main a[href],main button,#nav a[href],#nav button,footer a[href]')].filter(visible);
+        const tapLabel=e=>e.getAttribute('aria-label')||label(e);
+        // Unrounded height: 42.84px must fail (rounding hid it before).
+        const shortTaps=taps.map(e=>({h:+e.getBoundingClientRect().height.toFixed(2),text:tapLabel(e)}))
+          .filter(t=>t.h<43.5);
+        // Two different tap targets must not share hit area (nested ones excepted).
+        const overlaps=[];
+        for(let i=0;i<taps.length;i++)for(let j=i+1;j<taps.length;j++){
+          const a=taps[i],b=taps[j];
+          if(a.contains(b)||b.contains(a))continue;
+          // Hero video cards are stacked on purpose (front card on top takes the tap).
+          if(a.matches('.luen-motion-card')&&b.matches('.luen-motion-card'))continue;
+          const r=a.getBoundingClientRect(),q=b.getBoundingClientRect();
+          const x=Math.min(r.right,q.right)-Math.max(r.left,q.left),y=Math.min(r.bottom,q.bottom)-Math.max(r.top,q.top);
+          if(x>1&&y>1)overlaps.push({a:tapLabel(a),b:tapLabel(b),y:+y.toFixed(1)});
+        }
+        return {tiny,faint,shortTaps,overlaps,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
       },onImage);
       if(audit.tiny.length)failures.push(width+': text under 10px '+JSON.stringify(audit.tiny));
       if(audit.faint.length)failures.push(width+': text under contrast minimum '+JSON.stringify(audit.faint));
       if(audit.shortTaps.length)failures.push(width+': tap targets under 44px '+JSON.stringify(audit.shortTaps));
+      if(audit.overlaps.length)failures.push(width+': overlapping tap targets '+JSON.stringify(audit.overlaps));
       if(audit.overflow>3)failures.push(width+': horizontal overflow '+audit.overflow);
       if(errors.length)failures.push(width+': JS errors '+errors.join(';'));
       if(width===390)await page.screenshot({path:path.join(dir,'home-390.jpg'),type:'jpeg',quality:60,fullPage:true});
-      results.push({width,tiny:audit.tiny.length,faint:audit.faint.length,shortTaps:audit.shortTaps.length});
+      results.push({width,tiny:audit.tiny.length,faint:audit.faint.length,shortTaps:audit.shortTaps.length,overlaps:audit.overlaps.length});
     }catch(e){failures.push(width+': '+String(e.message).slice(0,280));}
     await context.close();
   }
