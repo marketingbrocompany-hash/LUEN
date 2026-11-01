@@ -82,7 +82,7 @@ for(const engine of [chromium,webkit]){
       errors.push(label+' expected one accessible project CTA: '+JSON.stringify({links:sample.links,cta:sample.singleCTA}));
     if(sample.singleCTA.rect?.right>width+2)
       errors.push(label+' project CTA extends beyond viewport');
-    if(sample.singleCTA.arrowColor!=='rgb(255, 249, 241)' || sample.singleCTA.background!=='rgb(213, 111, 64)')
+    if(sample.singleCTA.arrowColor!=='rgb(255, 249, 241)' || sample.singleCTA.background!=='rgb(185, 85, 42)')
       errors.push(label+' single CTA colors changed unexpectedly: '+JSON.stringify(sample.singleCTA));
     if(sample.floatingCTAInSection)
       errors.push(label+' duplicate floating project CTA is visible while the SERVICES section is active');
