@@ -16,8 +16,6 @@ html body #faq .faq-cta:hover{background:#A74722!important;border-color:#A74722!
 @media(max-width:767px){
   /* ---- Minimum sizes: decorative labels ≥10px, information ≥12px ---- */
   html body main#top>.hero .hero-kicker{font-size:10.5px!important;color:#6E655D!important}
-  html body .luen-motion-card .luen-motion-card-meta small{font-size:9.5px!important}
-  html body .luen-motion-card .luen-motion-card-meta strong{font-size:11px!important}
   html body .luen-motion-bottom .luen-motion-count{font-size:10.5px!important;color:#A74722!important}
 
   html body .luen-case-index-label{font-size:10.5px!important}
