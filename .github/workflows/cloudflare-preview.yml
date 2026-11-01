@@ -54,10 +54,13 @@ jobs:
           # stale asset-manifest.json and CNAME (the live custom domain).
           echo "Prepared isolated Cloudflare Pages site payload."
 
-      - name: Minify public CSS without removing selectors
+      - name: Build AST-equivalent lossless CSS only in staged preview files
         run: |
-          npm install --no-save --no-package-lock lightningcss@1.30.2
-          node scripts/minify-preview-css.mjs
+          npm install --no-save --no-package-lock postcss@8.5.31
+          node scripts/build-css-staged-lossless.mjs --stage _site
+          # Assert production-readable CSS was not modified by the preview stage.
+          git diff --exit-code -- assets/css/site.css assets/css/luen-v3.css
+          test -s qa-screenshots/css-lossless-staging-report.json
 
       - name: Confirm deployment credentials exist
         shell: bash
