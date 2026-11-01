@@ -1,0 +1,49 @@
+name: LUEN read-only LCP / CSS coverage diagnosis (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-lcp-css-render-audit.mjs'
+      - '.github/workflows/qa-lcp-css-render-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify current homepage and audit syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-lcp-css-render-audit.mjs
+      - name: Install Chromium browser without production deployment
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve exact PR candidate at localhost only
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-css-audit.log 2>&1 &
+          for n in {1..20}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Measure poster response versus LCP and per-file CSS rule use
+        env:
+          LUEN_MAIN_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: node scripts/qa-lcp-css-render-audit.mjs
+      - name: Retain numerical diagnostics only (no private data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-lcp-css-render-diagnostic
+          path: qa-screenshots/lcp-critical-css/audit.json
+          retention-days: 14
+          if-no-files-found: warn
