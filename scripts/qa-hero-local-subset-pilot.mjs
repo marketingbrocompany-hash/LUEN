@@ -16,7 +16,7 @@ for(const [name,html] of Object.entries({
  const root=path.resolve('qa-temp-hero-site',name);
  fs.mkdirSync(root,{recursive:true});
  fs.writeFileSync(path.join(root,'index.html'),html);
- fs.symlinkSync(path.resolve('assets'),path.join(root,'assets'),'dir');
+ if(!fs.existsSync(path.join(root,'assets')))fs.symlinkSync(path.resolve('assets'),path.join(root,'assets'),'dir');
  if(name==='candidate'){
   const dest=path.join(root,'qa-font');fs.mkdirSync(dest,{recursive:true});
   fs.copyFileSync('qa-temp-hero-font/pretendard-hero-ci-only.woff2',
