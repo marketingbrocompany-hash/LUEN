@@ -1,0 +1,35 @@
+/* LUEN homepage · desktop/tablet legibility (≥768px)
+   Desktop audit of main 35f7a63 (1024/1440px): key information text under
+   4.5:1 contrast (case metrics 3.9:1, FAQ answers 4.0:1, step labels
+   3.1-3.2:1) and three 9-10px labels. Selective fix approved by the owner:
+   colours move to the darker steps of the same palette already used on
+   mobile (mobile-legibility.css): #A74722 site link orange, #6E655D /
+   #5E554E warm greys. Only the 9-10px labels grow (to 10.5-11px).
+   Layout, spacing and the 10-10.5px uppercase eyebrows are unchanged.
+   Loaded before signature-case-index.css, so selectors carry #ids to win. */
+@media(min-width:768px){
+  html body main#top>.hero .hero-kicker{color:#6E655D!important}
+  html body main#top .luen-motion-bottom .luen-motion-count{color:#A74722!important}
+
+  html body main#top #cases .luen-case-meta{color:#8A5A42!important}
+  /* 9px at 768-1279px; 10px is what 1280px+ (and mobile) already use. */
+  html body main#top #cases .luen-case-meta,
+  html body main#top #cases .luen-case-meta .luen-case-num{font-size:10px!important}
+  html body main#top #cases .luen-case-metric strong{color:#A74722!important}
+  html body main#top #cases .luen-case-note{color:#6E655D!important}
+  html body main#top #cases .luen-case-index-foot span{color:#6E655D!important}
+
+  html body main#top #why-luen .luen-why-row>span{color:#A74722!important}
+
+  html body main#top #selected-content .portfolio-head-actions small{font-size:10.5px!important;color:#6E655D!important}
+  html body main#top #partner-creators .luen-creator-data small{font-size:10.5px!important;color:#6E655D!important}
+
+  html body main#top #content-flow .luen-flow-list-timeline li>span{font-size:11px!important;color:#A74722!important}
+  html body main#top #content-flow .luen-flow-list-timeline li>b{font-size:11px!important;color:#6E655D!important}
+
+  html body main#top #faq .faq-a p,
+  html body main#top #faq .faq-conversion>p{color:#5E554E!important}
+  html body main#top #faq .faq-icon{color:#A74722!important}
+
+  html body main#top #contact .inquiry-reassurance>span{color:#A74722!important}
+}
