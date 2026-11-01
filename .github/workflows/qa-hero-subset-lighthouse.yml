@@ -1,0 +1,63 @@
+name: LUEN hero glyph preloading Lighthouse A/B (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-hero-subset-lighthouse.mjs'
+      - '.github/workflows/qa-hero-subset-lighthouse.yml'
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 36
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static site and test code checks
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-hero-subset-lighthouse.mjs
+          python -m py_compile scripts/qa-build-hero-glyph-font.py
+      - name: Generate temporary licensed hero glyph subset
+        run: |
+          python -m pip install --disable-pip-version-check --no-cache-dir fonttools==4.60.1 brotli==1.1.0
+          python scripts/qa-build-hero-glyph-font.py
+      - name: Install Lighthouse and Chrome
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Prepare identical static sites with 1 tiny font on candidate only
+        run: node scripts/qa-hero-subset-lighthouse.mjs --prepare
+      - name: Start local HTTP servers (never deploy)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tuple in "baseline 4293" "candidate 4294"; do
+            set -- $tuple
+            python3 -m http.server "$2" --directory "qa-temp-hero-lh/$1" --bind 127.0.0.1 >"/tmp/luen-hero-lh-$1.log" 2>&1 &
+          done
+          for p in 4293 4294; do
+            for i in {1..20}; do
+              if curl -fsS -o /dev/null "http://127.0.0.1:$p/"; then break; fi
+              sleep 1
+            done
+          done
+          curl -fsS -o /dev/null http://127.0.0.1:4294/qa-font/pretendard-hero-ci-only.woff2
+      - name: Same-runner 3 mobile and 2 desktop Lighthouse repetitions
+        run: node scripts/qa-hero-subset-lighthouse.mjs
+      - name: Save only metrics, never font binaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-hero-preloaded-font-lighthouse-json-only
+          path: qa-screenshots/hero-font-lighthouse/
+          retention-days: 10
+          if-no-files-found: warn
