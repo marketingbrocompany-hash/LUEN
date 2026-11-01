@@ -1,0 +1,53 @@
+name: LUEN integrated Claude mobile UX — browser/touch QA (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/css/mobile-legibility.css'
+      - 'assets/css/homepage-component-refresh.css'
+      - 'assets/css/creator-partnerships.css'
+      - 'assets/js/site-core.js'
+      - 'scripts/qa-claude-mobile-ux-integrated.mjs'
+      - '.github/workflows/qa-claude-mobile-ux-integrated.yml'
+permissions:
+  contents: read
+jobs:
+  integrate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate static site and integrated mobile QA syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-claude-mobile-ux-integrated.mjs
+      - name: Install Chromium and Safari WebKit simulators
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Start local website for read-only browser tests
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-claude-integrated.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Assert desktop/mobile FAQ/timeline/cards, orange CTA and touch hit areas
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-claude-mobile-ux-integrated.mjs
+      - name: Retain diagnosis without user data or form submissions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-claude-integrated-qa-json
+          path: qa-screenshots/claude-mobile-ux-integrated/summary.json
+          retention-days: 10
+          if-no-files-found: warn
