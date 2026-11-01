@@ -1,0 +1,54 @@
+name: LUEN lossless CSS mobile CLS attribution (read-only)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-css-minify-cls-trace.mjs'
+      - '.github/workflows/qa-css-minify-cls-trace.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  trace:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check source and script syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-css-lossless-minify-lab.mjs
+          node --check scripts/qa-css-minify-cls-trace.mjs
+      - name: Install PostCSS and Chromium
+        run: |
+          npm install --no-save --no-package-lock postcss@8.5.31 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Generate AST-equivalent CSS locally
+        run: node scripts/qa-css-lossless-minify-lab.mjs --prepare
+      - name: Serve exact baseline and lossless compressed candidate without deploying
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tuple in "baseline 4213" "candidate 4214"; do
+            set -- $tuple
+            python3 -m http.server "$2" --directory "qa-temp-css-lossless/$1" --bind 127.0.0.1 >/tmp/luen-cls-$1.log 2>&1 &
+          done
+          for port in 4213 4214; do
+            for i in {1..20}; do if curl -fsS -o /dev/null "http://127.0.0.1:$port/"; then break; fi; sleep 1; done
+            curl -fsS "http://127.0.0.1:$port/assets/css/site.css" >/dev/null
+          done
+      - name: Capture mobile CLS DOM-node source at 4x CPU and throttled network
+        run: node scripts/qa-css-minify-cls-trace.mjs
+      - name: Upload numeric CLS element traces only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-lossless-css-mobile-cls-dom-traces
+          path: qa-screenshots/css-cls-trace/summary.json
+          retention-days: 10
+          if-no-files-found: warn
