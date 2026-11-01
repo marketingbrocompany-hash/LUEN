@@ -1,0 +1,46 @@
+name: LUEN hero Pretendard swap / CLS controlled diagnostic (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-hero-pretendard-cls-trace.mjs'
+      - '.github/workflows/qa-hero-pretendard-cls-trace.yml'
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate read-only test code
+        run: |
+          node --check scripts/qa-hero-pretendard-cls-trace.mjs
+          node scripts/check-site.mjs
+      - name: Install Chromium and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve unchanged LUEN current homepage only on localhost
+        run: |
+          python3 -m http.server 4273 --directory . --bind 127.0.0.1 >/tmp/luen-font-cls.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4273/; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Compare real CDN font loading with blocked-file diagnostic arm
+        run: node scripts/qa-hero-pretendard-cls-trace.mjs
+      - name: Upload numerical traces, no font files or screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-hero-font-cls-event-traces
+          path: qa-screenshots/hero-font-cls-trace/report.json
+          retention-days: 10
+          if-no-files-found: warn
