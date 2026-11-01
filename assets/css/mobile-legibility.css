@@ -63,8 +63,14 @@ html body #faq .faq-cta:hover{background:#A74722!important;border-color:#A74722!
   html body #faq .faq-more-toggle{min-height:44px!important}
   html body #contact .privacy-external{display:inline-flex!important;align-items:center;min-height:44px}
   html body #contact .privacy-details summary{min-height:44px;display:flex!important;align-items:center}
-  /* Footer: grow the hit area with padding and cancel it with an equal
-     negative margin, so the visible spacing between rows stays the same. */
-  html body footer .footer-links a{padding-block:12px!important;margin-block:-12px!important}
-  html body footer .footer-business-info a{display:inline-block;padding-block:16px;margin-block:-16px}
+  /* Footer links: real 44px hit height, no negative margin. A -12px block
+     margin kept the old row spacing but left the hit area at ~42.8px and
+     made links on wrapped rows overlap by ~9px at 320/390px (found in the
+     ChatGPT integration QA, PR #259). Same values as that branch. */
+  html body footer .footer-links{row-gap:6px!important}
+  html body footer .footer-links a{padding-block:13px!important;margin-block:0!important;min-height:44px!important}
+  /* Privacy policy link: grow the hit area downward only (it is the last
+     line of the page), so it never reaches the contact privacy link above. */
+  html body footer .footer-business-info a{display:inline-block;padding-block:0 28px;margin-block:0 -28px}
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions a{min-height:44px!important}
 }
