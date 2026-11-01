@@ -1,0 +1,51 @@
+name: LUEN PR259 real iPhone Safari candidate test (one time only)
+on:
+  pull_request:
+    types: [synchronize]
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-pr259-real-iphone-once.yml'
+permissions:
+  contents: read
+concurrency:
+  group: luen-pr259-real-iphone-candidate-once
+  cancel-in-progress: false
+jobs:
+  browserstack-local:
+    if: ${{ github.event.pull_request.number == 259 && github.head_ref == 'qa/integrate-claude-mobile-ux-20261101' && github.event.pull_request.head.repo.full_name == 'marketingbrocompany-hash/LUEN' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify branch, code and configured BrowserStack credentials
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_HEAD_REF" = 'qa/integrate-claude-mobile-ux-20261101'
+          node --check scripts/qa-claude-pr259-real-iphone.mjs
+          test -n "$BROWSERSTACK_USERNAME"
+          test -n "$BROWSERSTACK_ACCESS_KEY"
+      - name: Install iPhone WebDriver and BrowserStack local tunnel runner
+        run: npm install --no-save --no-package-lock selenium-webdriver@4.37.0 browserstack-local
+      - name: Start candidate localhost server (no deployment)
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/pr259-real-iphone-local-http.log 2>&1 &
+          for n in {1..20}; do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Read-only REAL iPhone 16 / iOS 18 Safari QA of local PR
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: node scripts/qa-claude-pr259-real-iphone.mjs
+# This temporary workflow must be DELETED from the PR branch after one run.
+# No cookies, screenshots, contact form submits, customer portal or DNS changes.
