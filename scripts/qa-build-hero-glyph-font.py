@@ -21,9 +21,17 @@ class Text(HTMLParser):
         self.parts = []
     def handle_data(self, data):
         self.parts.append(data)
-parser = Text()
-parser.feed(match.group(1))
-text = " ".join(parser.parts) + " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ↔ · → ↓ / ×"
+texts = []
+for pattern in (r"<h1>(.+?)</h1>", r'<p class="hero-desc">(.+?)</p>'):
+    el = re.search(pattern, match.group(1), re.S)
+    if not el:
+        raise RuntimeError("Missing hero title or description")
+    parser = Text()
+    parser.feed(el.group(1))
+    texts.extend(parser.parts)
+# Only actual glyphs in hero headline/description. Other homepage text uses
+# official CDN subsets as before, never a heavy duplicate full-font load.
+text = " ".join(texts)
 points = sorted({ord(c) for c in text if ord(c) >= 32})
 out = root / "qa-temp-hero-font"
 out.mkdir(exist_ok=True)
@@ -55,12 +63,10 @@ if target.stat().st_size > 150_000:
     raise RuntimeError("Hero subset too large for low-risk mobile test")
 range_css = ",".join(f"U+{p:X}" for p in points)
 css = (
- "@font-face{font-family:'LUEN Hero Pretendard';font-style:normal;"
+ "@font-face{font-family:'Pretendard Variable';font-style:normal;"
  "font-weight:45 920;font-display:swap;"
  "src:url('/qa-font/pretendard-hero-ci-only.woff2') format('woff2-variations');"
  f"unicode-range:{range_css};}}"
- "html body main#top>.hero h1,html body main#top>.hero .hero-desc"
- "{font-family:'LUEN Hero Pretendard',var(--luen-type-display)!important}"
 )
 (out / "hero.css").write_text(css,encoding="utf-8")
 report = {"glyphs":len(points),"bytes":target.stat().st_size,
