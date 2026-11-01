@@ -8,6 +8,8 @@ on:
       - 'assets/js/luen-motion.js'
       - 'assets/css/luen-motion.css'
       - 'scripts/qa-home-mobile-card-motion.mjs'
+      - 'scripts/qa-home-flow-timeline-float-cta.mjs'
+      - 'assets/css/homepage-component-refresh.css'
       - 'index.html'
 permissions:
   contents: read
@@ -44,6 +46,10 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-home-mobile-card-motion.mjs
+      - name: Check timeline alignment and floating CTA overlap
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-home-flow-timeline-float-cta.mjs
       - name: Archive screenshots and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,5 +58,6 @@ jobs:
           path: |
             qa-screenshots/homepage-motion/
             qa-screenshots/mobile-card-motion/
+            qa-screenshots/flow-timeline-float-cta/
           retention-days: 14
           if-no-files-found: warn
