@@ -67,4 +67,14 @@ html body #faq .faq-cta:hover{background:#A74722!important;border-color:#A74722!
      negative margin, so the visible spacing between rows stays the same. */
   html body footer .footer-links a{padding-block:12px!important;margin-block:-12px!important}
   html body footer .footer-business-info a{display:inline-block;padding-block:16px;margin-block:-16px}
+
+  /* Integrated P1/P2/P3 touch QA: the original -12px block margins made
+     wrapped footer links overlap by ~9px. Keep at least 44px actual hit
+     height and separate interactive rectangles at 320/390px. */
+  html body footer .footer-links{row-gap:6px!important}
+  html body footer .footer-links a{
+    padding-block:13px!important;
+    margin-block:0!important;
+    min-height:44px!important;
+  }
 }
