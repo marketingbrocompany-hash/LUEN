@@ -66,7 +66,12 @@ html body #faq .faq-cta:hover{background:#A74722!important;border-color:#A74722!
   /* Footer: grow the hit area with padding and cancel it with an equal
      negative margin, so the visible spacing between rows stays the same. */
   html body footer .footer-links a{padding-block:12px!important;margin-block:-12px!important}
-  html body footer .footer-business-info a{display:inline-block;padding-block:16px;margin-block:-16px}
+  /* Privacy policy link: grow the hit area downward only (it is the last
+     line of the page). The 16px upward growth reached the contact Formspree
+     link at 320px (2.8px overlap). 17.6px text + 28px = 45.6px. */
+  html body footer .footer-business-info a{display:inline-block;padding-block:0 28px;margin-block:0 -28px}
+  /* PARTNER CREATORS text links are 36px tall at 701-767px. */
+  html body #partner-creators .luen-creator-feature--editorial .luen-creator-feature-actions a{min-height:44px!important}
 
   /* Integrated P1/P2/P3 touch QA: the original -12px block margins made
      wrapped footer links overlap by ~9px. Keep at least 44px actual hit
