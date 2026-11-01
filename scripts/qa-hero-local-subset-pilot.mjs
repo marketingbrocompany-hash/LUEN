@@ -58,7 +58,7 @@ for(const engine of [chromium,webkit]){
          font:getComputedStyle(e).fontFamily};};
       return {CLS:window.__heroShift.reduce((s,x)=>s+x.value,0),
         h1:rect('.hero h1'),desc:rect('.hero-desc'),
-        fontFaces:[...document.fonts].filter(f=>/LUEN Hero Pretendard/.test(f.family)&&f.status==='loaded').length,
+        fontFaces:[...document.fonts].filter(f=>/Pretendard Variable/.test(f.family)&&f.status==='loaded').length,
         overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,
         cases:document.querySelectorAll('#cases .luen-case-entry').length,
         services:document.querySelectorAll('#services .luen-service-choice').length
@@ -67,6 +67,7 @@ for(const engine of [chromium,webkit]){
     const row={engine:engine.name(),width,variant:name,
       CLS:+state.CLS.toFixed(5),h1:state.h1,desc:state.desc,
       subsetResponses:fontNetwork.filter(r=>r.status===200&&r.url.includes('pretendard-hero-ci-only')).length,
+      officialCDNFontResponses:fontNetwork.filter(r=>r.status===200&&r.url.includes('cdn.jsdelivr.net')).length,
       loadedSubsetFaces:state.fontFaces,overflow:state.overflow,
       cases:state.cases,services:state.services};
     if(name==='candidate'&&(!row.subsetResponses||!row.loadedSubsetFaces))
