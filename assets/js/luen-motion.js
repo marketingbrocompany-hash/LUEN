@@ -39,6 +39,32 @@
     document.documentElement.classList.add('luen-motion-mobile');
   }
 
+  /* Editorial reveal for the two sections that had no entry motion:
+     THE LUEN APPROACH rows draw their hairline rule and rise one by one,
+     and the PARTNER CREATORS portrait opens inside its rounded frame.
+     Anything already on screen is revealed before the hidden state is
+     switched on, so nothing flashes away; print shows everything. */
+  const editorialTargets = [...document.querySelectorAll(
+    '#why-luen .luen-partnership-head, #why-luen .luen-why-row, #why-luen .luen-approach-link,' +
+    '#partner-creators .luen-partnership-head, #partner-creators .luen-creator-feature'
+  )];
+  if (editorialTargets.length) {
+    const show = el => el.classList.add('luen-editorial-in');
+    const editorialObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        show(entry.target);
+        editorialObserver.unobserve(entry.target);
+      });
+    }, {threshold:0,rootMargin:'0px 0px -10% 0px'});
+    editorialTargets.forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight * .9) show(el);
+      else editorialObserver.observe(el);
+    });
+    window.addEventListener('beforeprint', () => editorialTargets.forEach(show));
+    document.documentElement.classList.add('luen-editorial-motion');
+  }
+
   const media = document.querySelector('#case-herahera .case-content-media-v7 img');
   const frame = media?.parentElement;
   if (!media || !frame) return;
