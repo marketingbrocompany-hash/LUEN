@@ -1,0 +1,45 @@
+name: LUEN homepage mobile legibility
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'assets/css/**'
+      - 'scripts/qa-home-mobile-legibility.mjs'
+      - '.github/workflows/qa-home-mobile-legibility.yml'
+permissions:
+  contents: read
+jobs:
+  mobile-legibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve candidate locally without deploying
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/luen-legibility.log 2>&1 &
+          for i in {1..20}; do
+            curl -fsS -o /dev/null http://127.0.0.1:4173/ && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Check mobile text size, contrast and tap targets
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-home-mobile-legibility.mjs
+      - name: Archive screenshots and summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-home-mobile-legibility
+          path: qa-screenshots/mobile-legibility/
+          retention-days: 14
+          if-no-files-found: warn
