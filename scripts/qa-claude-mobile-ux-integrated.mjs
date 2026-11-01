@@ -45,8 +45,9 @@ for(const engine of [chromium,webkit]){
        if(!s||!b)return null;
        const x=s.getBoundingClientRect(),y=b.getBoundingClientRect();
        const cs=getComputedStyle(s),cb=getComputedStyle(b);
+       const line=style=>parseFloat(style.lineHeight)||parseFloat(style.fontSize)*1.4;
        return {stacked:y.top>=x.bottom-1,
-         single:x.height<parseFloat(cs.lineHeight)*1.5&&y.height<parseFloat(cb.lineHeight)*1.5};
+         single:x.height<line(cs)*1.5&&y.height<line(cb)*1.5};
       })
     };
   });
