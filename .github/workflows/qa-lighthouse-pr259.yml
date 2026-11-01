@@ -1,0 +1,61 @@
+name: LUEN PR259 Lighthouse main versus Claude integration (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-lighthouse-pr259.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  same-runner-lighthouse:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 259 }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact PR candidate
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Checkout exact base main for apples-to-apples A/B
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.base.sha || 'b4fbfdeb27e873dbfbd47d3927ec0f68549002d9' }}
+          path: lh-baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chrome Lighthouse and check existing benchmark
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node --check scripts/qa-lighthouse-compare.mjs
+      - name: Serve both exact sites locally, never deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory lh-baseline --bind 127.0.0.1 >/tmp/luen-lh-pr259-base.log 2>&1 &
+          python3 -m http.server 4174 --directory . --bind 127.0.0.1 >/tmp/luen-lh-pr259-candidate.log 2>&1 &
+          for i in {1..25}; do
+            if curl -fsSo /tmp/luen-lh-base.html http://127.0.0.1:4173/ && curl -fsSo /tmp/luen-lh-candidate.html http://127.0.0.1:4174/; then break; fi
+            sleep 1
+          done
+          test -s /tmp/luen-lh-base.html
+          test -s /tmp/luen-lh-candidate.html
+          grep -q 'LUEN WORKS ARCHIVE' /tmp/luen-lh-base.html
+          grep -q 'mobile-legibility.css' /tmp/luen-lh-candidate.html
+      - name: Compare 3x mobile and 2x desktop Lighthouse samples
+        env:
+          LUEN_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          LUEN_CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/qa-lighthouse-compare.mjs
+      - name: Retain A/B simulated Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-pr259-lighthouse-main-vs-candidate
+          path: qa-screenshots/lighthouse-compare/
+          retention-days: 10
+          if-no-files-found: warn
