@@ -49,9 +49,12 @@ const prepare=()=>{
  const cssDir=path.join(candidate,'assets/css');fs.mkdirSync(cssDir,{recursive:true});
  for(const name of fs.readdirSync(path.join(ROOT,'assets'))){
   if(name==='css')continue;
-  const link=path.join(candidate,'assets',name);
-  if(!fs.existsSync(link))fs.symlinkSync(path.join(ROOT,'assets',name),link,
-    fs.statSync(path.join(ROOT,'assets',name)).isDirectory()?'dir':'file');
+  const real=path.join(ROOT,'assets',name);
+  for(const dir of [base,candidate]){
+   const link=path.join(dir,'assets',name);
+   if(!fs.existsSync(link))
+    fs.symlinkSync(real,link,fs.statSync(real).isDirectory()?'dir':'file');
+  }
  }
  const minPaths=new Set(cssPaths.map(p=>path.basename(p)));
  for(const name of fs.readdirSync(path.join(ROOT,'assets/css'))){
