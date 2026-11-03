@@ -14,7 +14,11 @@
   const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   const dataSaver=Boolean(connection&&connection.saveData);
   const automaticMotion=!reduced&&!dataSaver;
-  const names=['01 / CONFIER','02 / QUADTHERA','03 / CLINIC'];
+  const names=['CONFIER','QUADTHERA','KOREA CLINIC'];
+  const categories=['F&B','BEAUTY','CLINIC'];
+  const number=status?.querySelector('[data-motion-number]');
+  const category=status?.querySelector('[data-motion-category]');
+  const brand=status?.querySelector('[data-motion-brand]');
   const rotationDuration=960;
   const video=cards.map(card=>card.querySelector('video'));
   let current=0,paused=!automaticMotion,visible=true,rotating=false,destroyed=false;
@@ -72,7 +76,9 @@
       card.classList.toggle('is-active',active);
       card.setAttribute('aria-pressed',String(active));
     });
-    if(status)status.textContent=names[current];
+    if(number)number.textContent=String(current+1).padStart(2,'0')+' / 03';
+    if(category)category.textContent=categories[current];
+    if(brand)brand.textContent=names[current];
     if(progress)progress.style.setProperty('--luen-motion-progress-x',(current*100)+'%');
   };
   const render=()=>{

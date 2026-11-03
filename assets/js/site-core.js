@@ -36,6 +36,7 @@
 
   const nav=document.getElementById('nav');
   const floatCta=document.getElementById('floatCta');
+  const heroCta=document.querySelector('main#top>.hero .hero-cta');
   const contactSection=document.getElementById('contact');
   const gallerySection=document.getElementById('selected-content');
   const servicesSection=document.querySelector('#services.luen-services-editorial');
@@ -47,6 +48,11 @@
   function syncFloatCta(){
     if(!floatCta)return;
     const pastHero=window.scrollY>window.innerHeight*.72;
+    // Never show the fixed project CTA while the hero's own CTA is visible.
+    // Keep the existing threshold and gallery/services/FAQ exclusions intact.
+    const heroCtaRect=heroCta?.getBoundingClientRect();
+    const heroCtaVisible=Boolean(heroCtaRect&&heroCtaRect.width
+      &&heroCtaRect.top<window.innerHeight&&heroCtaRect.bottom>0);
     // Avoid obscuring the YouTube/Reels thumbnails on narrow screens.
     // Restore the existing orange CTA immediately after the gallery.
     const rect=gallerySection?.getBoundingClientRect();
@@ -61,7 +67,7 @@
     const faqCtaRect=faqCta?.getBoundingClientRect();
     const faqCtaVisible=Boolean(faqCtaRect&&faqCtaRect.width
       &&faqCtaRect.top<window.innerHeight&&faqCtaRect.bottom>0);
-    floatCta.classList.toggle('show',pastHero&&!contactVisible&&!galleryVisible&&!servicesVisible&&!faqCtaVisible);
+    floatCta.classList.toggle('show',pastHero&&!heroCtaVisible&&!contactVisible&&!galleryVisible&&!servicesVisible&&!faqCtaVisible);
   }
 
   if(contactSection&&'IntersectionObserver' in window){

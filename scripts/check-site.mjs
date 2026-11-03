@@ -144,8 +144,13 @@ const checks=[
     designedPages.length>=20
     &&designedPages.every(filename=>{
       const content=fs.readFileSync(path.join(root,filename),'utf8');
-      return content.includes('luen-v3.css?v=20261017-8')
-        &&/site-core\.js\?v=\d{8}-\d+/.test(content);
+      const isHomepage=filename==='index.html';
+      return content.includes(isHomepage
+        ? 'luen-v3.css?v=20261103-hero-rhythm'
+        : 'luen-v3.css?v=20261017-8')
+        &&(isHomepage
+          ? content.includes('site-core.js?v=20261103-cta-visibility')
+          : /site-core\.js\?v=\d{8}-\d+/.test(content));
     })],
   ['LUEN wordmark has accessible dark contrast on ivory navigation and footer',
     design.includes('html body #nav .logo .logo-word,')
@@ -154,8 +159,12 @@ const checks=[
     &&design.includes('background:#D56F40!important;')],
   ['all styled pages load the refreshed logo stylesheet',
     designedPages.length>=20
-    &&designedPages.every(filename=>fs.readFileSync(path.join(root,filename),'utf8')
-      .includes('luen-v3.css?v=20261017-8'))],
+    &&designedPages.every(filename=>{
+      const version=filename==='index.html'
+        ? 'luen-v3.css?v=20261103-hero-rhythm'
+        : 'luen-v3.css?v=20261017-8';
+      return fs.readFileSync(path.join(root,filename),'utf8').includes(version);
+    })],
   ['all six section headlines share LUEN orange',
     finish.includes('html body main#top .luen-section-primary-title{')
     &&finish.includes('color:var(--luen-finish-cta)!important;')

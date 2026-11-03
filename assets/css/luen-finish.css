@@ -381,3 +381,52 @@ html body #cases.case-studies-v7 #case-herahera .case-feature-metric-v11 p{
 html body #cases.case-studies-v7 #case-herahera .case-detail-link-v7{
   margin-top:18px;
 }
+
+
+/* Homepage final lower-section balance — 2026-11-03
+   Keep single creator spotlight and contact form completely unchanged.
+   Only moderate the four-step process and FAQ typography/outer rhythm. */
+@media(min-width:768px){
+  html body main#top>#content-flow.luen-home-flow-v2{
+    padding:clamp(78px,7.4vw,108px) 0!important;
+  }
+  html body main#top #content-flow .luen-section-primary-title,
+  html body main#top #faq .luen-section-primary-title{
+    font-size:clamp(36px,3.4vw,46px)!important;
+    line-height:1.1!important;
+  }
+  html body main#top #content-flow .luen-home-section-head{
+    margin-bottom:clamp(34px,3.5vw,44px)!important;
+  }
+  html body main#top>#faq.faq{
+    padding:88px 0 84px!important;
+  }
+}
+@media(max-width:767px){
+  html body main#top>#content-flow.luen-home-flow-v2{
+    padding:64px 0!important;
+  }
+  html body main#top #content-flow .luen-section-primary-title,
+  html body main#top #faq .luen-section-primary-title{
+    font-size:clamp(29px,7.8vw,32px)!important;
+    line-height:1.1!important;
+  }
+  html body main#top #content-flow .luen-home-section-head{
+    margin-bottom:26px!important;
+  }
+  html body main#top>#faq.faq{
+    padding:64px 0!important;
+  }
+  html body #faq .faq-q{
+    min-height:64px!important;
+  }
+  html body #faq .faq-conversion{
+    margin-top:26px!important;
+    padding-top:24px!important;
+  }
+}
+@media(max-width:380px){
+  html body main#top>#content-flow.luen-home-flow-v2{
+    padding:60px 0!important;
+  }
+}

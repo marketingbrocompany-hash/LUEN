@@ -23,6 +23,8 @@ try{
    await section.scrollIntoViewIfNeeded();
    const cards=section.locator('[data-motion-index]');
    if(await cards.count()!==3)throw new Error('Hero should show 3 campaigns');
+   if(await section.locator('.luen-motion-card-meta').count()!==0)throw new Error('Obsolete card labels were not removed');
+   if(await section.locator('[data-motion-status] [data-motion-brand]').count()!==1)throw new Error('Bottom status must contain only one active brand');
    for(const name of ['confier','quadthera','clinic']){
     const poster=section.locator('img[src^="/assets/images/luen-motion/'+name+'-poster.webp"]');
     if(await poster.count()!==1)throw new Error('Poster missing: '+name);
@@ -41,6 +43,13 @@ try{
      const v=card?.querySelector('video');
      return card?.classList.contains('is-active')&&!!v?.getAttribute('src');
    },null,{timeout:12000});
+   const selectedInfo=await section.locator('[data-motion-status]').evaluate(el=>({
+     number:el.querySelector('[data-motion-number]')?.textContent.trim(),
+     category:el.querySelector('[data-motion-category]')?.textContent.trim(),
+     brand:el.querySelector('[data-motion-brand]')?.textContent.trim()
+   }));
+   if(selectedInfo.number!=='02 / 03'||selectedInfo.category!=='BEAUTY'||selectedInfo.brand!=='QUADTHERA')
+     throw new Error('Active campaign label not synchronized: '+JSON.stringify(selectedInfo));
    // Headless Chromium may have no proprietary H.264 decoder. Verify original
    // actual MP4 bytes separately rather than falsely treating that as a site bug.
    const source=await cards.nth(1).locator('video').getAttribute('src');

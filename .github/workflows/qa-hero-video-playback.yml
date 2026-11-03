@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/qa-hero-three-videos.mjs'
+      - 'scripts/qa-hero-metadata-responsive.mjs'
+      - 'assets/css/luen-motion-hero.css'
       - 'assets/js/luen-motion-hero.js'
       - 'index.html'
       - '.github/workflows/qa-hero-video-playback.yml'
@@ -37,6 +39,7 @@ jobs:
           npx playwright install --with-deps chromium webkit
           npx playwright install chrome
           node --check scripts/qa-hero-three-videos.mjs
+          node --check scripts/qa-hero-metadata-responsive.mjs
       - name: Serve isolated PR (no deploy)
         shell: bash
         run: |
@@ -49,6 +52,10 @@ jobs:
           LUEN_QA_URL: http://127.0.0.1:4173
           LUEN_QA_REAL_CHROME: '1'
         run: node scripts/qa-hero-three-videos.mjs
+      - name: Verify hero footer labels and layout at 7 widths in Chromium and WebKit
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-hero-metadata-responsive.mjs
       - name: Archive video diagnosis
         if: always()
         uses: actions/upload-artifact@v4
