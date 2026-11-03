@@ -36,7 +36,8 @@ for(const engine of [{name:'chromium',type:chromium},{name:'webkit',type:webkit}
       overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
     });
     const ratio=metrics.lineHeight/metrics.titleFont;
-    if(Math.abs(ratio-1.10)>.015)failures.push(engine.name+'/'+width+': headline line-height ratio '+ratio);
+    const targetRatio=width<=380?1.035:1.10;
+    if(Math.abs(ratio-targetRatio)>.015)failures.push(engine.name+'/'+width+': headline line-height ratio '+ratio+' expected '+targetRatio);
     if(metrics.spans.length!==3)failures.push(engine.name+'/'+width+': expected three headline lines');
     for(let i=1;i<metrics.spans.length;i++){
       if(metrics.spans[i].top<metrics.spans[i-1].bottom-1)

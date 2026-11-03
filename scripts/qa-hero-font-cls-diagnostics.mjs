@@ -83,9 +83,9 @@ for(const browserType of [chromium,webkit]){
     }
   }finally{await browser.close();}
 }
-// Regression gate: the former late-font 390/430px jumps must be gone.
-const critical=results.filter(r=>r.delayedStylesheet&&[390,430].includes(r.width));
-if(critical.length!==4)errors.push('critical delayed-font scenarios missing: '+critical.length+'/4');
+// Regression gate: catch narrow 320px font shifts as well as the former 390/430px jumps.
+const critical=results.filter(r=>r.delayedStylesheet&&[320,390,430].includes(r.width));
+if(critical.length!==6)errors.push('critical delayed-font scenarios missing: '+critical.length+'/6');
 for(const r of critical){
   if(Math.abs(r.copyHeightDelta)>2||Math.abs(r.showcaseTopDelta)>2)
     errors.push('CLS regression '+r.label+': copy '+r.copyHeightDelta+'px, showcase '+r.showcaseTopDelta+'px');

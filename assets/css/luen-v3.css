@@ -7324,6 +7324,8 @@ html body .scroll-progress{
   }
 }
 @media(max-width:380px){
+  /* Preserve the stable compact-title fit on very narrow iPhones. */
+  html body main#top>.hero h1{line-height:1.035!important;}
   html body main#top>.hero .creator-profile-card,
   html body main#top>.hero .creator-profile-card:nth-child(3n+2),
   html body main#top>.hero .creator-profile-card:nth-child(3n){
