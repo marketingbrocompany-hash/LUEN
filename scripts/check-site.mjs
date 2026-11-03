@@ -100,7 +100,7 @@ const checks=[
       &&clips.every(name=>fs.statSync(path.join(root,'assets/images/luen-motion/'+name+'-poster.webp')).size>8000)
       &&home.includes('/assets/video/luen-motion/quadthera-preview.mp4?v=20261021-hq')
       &&home.includes('/assets/video/luen-motion/clinic-preview.mp4?v=20261022-zero')
-      &&home.includes('/assets/images/luen-motion/clinic-poster.webp?v=20261022-zero-poster')
+      &&home.includes('/assets/images/luen-motion/clinic-poster.webp?v=20261103-hero-safe')
       &&home.includes('alt="한국 클리닉 릴스 원본 영상 00초 장면"')
       &&fs.existsSync(path.join(root,'assets/images/luen-motion/clinic-poster.webp')) && fs.statSync(path.join(root,'assets/images/luen-motion/clinic-poster.webp')).size>8000
       &&motionCss.includes('aspect-ratio:16/9')

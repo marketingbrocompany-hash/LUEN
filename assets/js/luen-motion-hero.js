@@ -21,6 +21,26 @@
   const brand=status?.querySelector('[data-motion-brand]');
   const rotationDuration=960;
   const video=cards.map(card=>card.querySelector('video'));
+  // All three poster assets are small enough to fetch eagerly. Retry a failed
+  // CDN request once with a distinct cache key, then show a clean brand label
+  // instead of the browser's broken-image glyph if the origin is unavailable.
+  cards.forEach(card=>{
+    const img=card.querySelector('.luen-motion-media img');
+    if(!img)return;
+    const loaded=()=>{card.classList.remove('is-poster-failed');};
+    const failed=()=>{
+      if(img.dataset.posterRetry!=='1'){
+        img.dataset.posterRetry='1';
+        const url=new URL(img.getAttribute('src'),document.baseURI);
+        url.searchParams.set('luen_retry','1');
+        img.src=url.href;
+      }else card.classList.add('is-poster-failed');
+    };
+    img.addEventListener('load',loaded);
+    img.addEventListener('error',failed);
+    // Handle an image that failed before the deferred script initialized.
+    if(img.complete&&img.naturalWidth===0)failed();
+  });
   let current=0,paused=!automaticMotion,visible=true,rotating=false,destroyed=false;
   let activeAnimations=[];
   let playbackRecoveryTimer=null;

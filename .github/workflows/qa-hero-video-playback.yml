@@ -2,8 +2,20 @@ name: LUEN 3 hero videos codec and playback QA (no deploy)
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/images/luen-motion/*.webp'
+      - 'assets/css/luen-motion-hero.css'
+      - 'assets/js/luen-motion-hero.js'
+      - 'scripts/qa-hero-poster-resilience.mjs'
+      - 'scripts/qa-production-hero-assets.mjs'
     paths:
       - 'scripts/qa-hero-three-videos.mjs'
+      - 'scripts/qa-hero-poster-resilience.mjs'
+      - 'scripts/qa-production-hero-assets.mjs'
+      - 'assets/images/luen-motion/*.webp'
       - 'scripts/qa-hero-metadata-responsive.mjs'
       - 'assets/css/luen-motion-hero.css'
       - 'assets/js/luen-motion-hero.js'
@@ -39,6 +51,8 @@ jobs:
           npx playwright install --with-deps chromium webkit
           npx playwright install chrome
           node --check scripts/qa-hero-three-videos.mjs
+          node --check scripts/qa-hero-poster-resilience.mjs
+          node --check scripts/qa-production-hero-assets.mjs
           node --check scripts/qa-hero-metadata-responsive.mjs
       - name: Serve isolated PR (no deploy)
         shell: bash
@@ -56,6 +70,13 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-hero-metadata-responsive.mjs
+      - name: Verify poster images load, retry, and fall back gracefully in Chromium and WebKit
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-hero-poster-resilience.mjs
+      - name: Verify published image URLs after official deployment (read only)
+        if: github.event_name == 'push'
+        run: node scripts/qa-production-hero-assets.mjs
       - name: Archive video diagnosis
         if: always()
         uses: actions/upload-artifact@v4
