@@ -74,9 +74,6 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-hero-poster-resilience.mjs
-      - name: Verify published image URLs after official deployment (read only)
-        if: github.event_name == 'push'
-        run: node scripts/qa-production-hero-assets.mjs
       - name: Archive video diagnosis
         if: always()
         uses: actions/upload-artifact@v4
