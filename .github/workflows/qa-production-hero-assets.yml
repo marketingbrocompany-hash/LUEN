@@ -12,6 +12,8 @@ on:
       - 'index.html'
       - 'assets/images/luen-motion/*.webp'
       - 'scripts/qa-production-hero-assets.mjs'
+  schedule:
+    - cron: '15 0 * * *' # Every day 09:15 Asia/Seoul
   workflow_dispatch:
 permissions:
   contents: read
