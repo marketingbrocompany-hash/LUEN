@@ -81,3 +81,12 @@ html body #faq .faq-cta:hover{background:#A74722!important;border-color:#A74722!
     min-height:44px!important;
   }
 }
+
+/* 320px eyebrow: keep the full bilingual-market label on one line while
+   the delayed Inter font swaps; prevents a 12px hero/showcase vertical jump. */
+@media(max-width:340px){
+  html body main#top>.hero .hero-kicker{
+    white-space:nowrap!important;
+    letter-spacing:.01em!important;
+  }
+}

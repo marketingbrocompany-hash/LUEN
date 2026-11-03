@@ -23,18 +23,24 @@ for(const engine of [{name:'chromium',type:chromium},{name:'webkit',type:webkit}
     if(response?.status()!==200)throw Error('HTTP '+response?.status());
     await page.waitForTimeout(220);
     const metrics=await page.evaluate(()=>{
+     const kicker=document.querySelector('main#top>.hero .hero-kicker');
      const h=document.querySelector('main#top>.hero h1');
      const desc=document.querySelector('main#top>.hero .hero-desc');
      const heroCta=document.querySelector('main#top>.hero .hero-cta');
      const floatCta=document.getElementById('floatCta');
      const r=e=>{const x=e.getBoundingClientRect();return {top:x.top,bottom:x.bottom,left:x.left,right:x.right,width:x.width,height:x.height};};
-     return {titleFont:parseFloat(getComputedStyle(h).fontSize),
+     return {eyebrowWrap:getComputedStyle(kicker).whiteSpace,
+      eyebrowOverflow:kicker.scrollWidth-kicker.clientWidth,
+      titleFont:parseFloat(getComputedStyle(h).fontSize),
       lineHeight:parseFloat(getComputedStyle(h).lineHeight),
       descMargin:parseFloat(getComputedStyle(desc).marginTop),
       spans:[...h.children].map(r),floatShown:floatCta.classList.contains('show'),
       title:r(h),desc:r(desc),cta:r(heroCta),
       overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
     });
+    if(width<=340&&metrics.eyebrowWrap!=='nowrap')
+      failures.push(engine.name+'/'+width+': hero eyebrow must not wrap');
+    if(metrics.eyebrowOverflow>2)failures.push(engine.name+'/'+width+': eyebrow overflow '+metrics.eyebrowOverflow);
     const ratio=metrics.lineHeight/metrics.titleFont;
     const targetRatio=width<=380?1.035:1.10;
     if(Math.abs(ratio-targetRatio)>.015)failures.push(engine.name+'/'+width+': headline line-height ratio '+ratio+' expected '+targetRatio);
