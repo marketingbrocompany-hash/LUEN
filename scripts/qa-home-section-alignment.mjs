@@ -55,9 +55,31 @@ try{
         failures.push(width+': WORKS ARCHIVE heading remains oversized '+density.worksHeading);
       if(width<=767 && density.serviceHeadings.some(sz=>sz>38))
         failures.push(width+': mobile service heading too large '+JSON.stringify(density.serviceHeadings));
-      results.push({width,rows,density});
+      const lower=await page.evaluate(()=>{
+        const flow=document.getElementById('content-flow');
+        const faq=document.getElementById('faq');
+        const contact=document.getElementById('contact');
+        const mainTitle=flow?.querySelector('.luen-section-primary-title');
+        const faqTitle=faq?.querySelector('.luen-section-primary-title');
+        const process=flow?.querySelectorAll('.luen-flow-list-timeline li');
+        const faqQuestions=faq?.querySelectorAll('.faq-item');
+        const getSize=el=>el?parseFloat(getComputedStyle(el).fontSize):null;
+        const getPad=el=>el?parseFloat(getComputedStyle(el).paddingTop):null;
+        return {processCount:process?.length,faqCount:faqQuestions?.length,
+          flowTitle:getSize(mainTitle),faqTitle:getSize(faqTitle),
+          flowPadding:getPad(flow),faqPadding:getPad(faq),
+          contactFields:contact?.querySelectorAll('input,select,textarea').length,
+          submitCount:contact?.querySelectorAll('button[type=submit],input[type=submit]').length};
+      });
+      if(lower.processCount!==4||lower.faqCount<3||lower.contactFields<7||lower.submitCount!==1)
+        failures.push(width+': lower-section content or contact form changed '+JSON.stringify(lower));
+      if(lower.flowTitle>(width<=767?33:47)||lower.faqTitle>(width<=767?33:47))
+        failures.push(width+': lower headings exceed restrained hierarchy '+JSON.stringify(lower));
+      if(lower.flowPadding>(width<=767?66:110)||lower.faqPadding>(width<=767?66:90))
+        failures.push(width+': lower sections still too spacious '+JSON.stringify(lower));
+      results.push({width,rows,density,lower});
       if([390,1440].includes(width)){
-        for(const id of ['why-luen','services','selected-content']){
+        for(const id of ['why-luen','services','selected-content','partner-creators','content-flow','faq','contact']){
           await page.locator('#'+id).screenshot({path:path.join(dir,id+'-'+width+'.jpg'),type:'jpeg',quality:72,animations:'disabled'});
         }
       }
