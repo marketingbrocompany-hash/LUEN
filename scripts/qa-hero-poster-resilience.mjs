@@ -3,7 +3,7 @@
 import {chromium,webkit} from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
-const base=(process.env.LUEN_QA_URL||'http://127.0.0.1:4173').replace(/\\/$/,'');
+const base=(process.env.LUEN_QA_URL||'http://127.0.0.1:4173').replace(/\/$/,'');
 const folder=path.resolve('qa-screenshots/hero-poster-resilience');
 fs.mkdirSync(folder,{recursive:true});
 const checks=[],failures=[];
@@ -30,7 +30,7 @@ for(const engine of [{name:'chromium',type:chromium},{name:'webkit',type:webkit}
     for(const mode of ['recover-after-one-failure','permanently-unavailable']){
       const ctx=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
       const page=await ctx.newPage();let attempts=0;
-      await page.route(/\\/assets\\/images\\/luen-motion\\/clinic-poster\\.webp/,async route=>{
+      await page.route(/\/assets\/images\/luen-motion\/clinic-poster\.webp/,async route=>{
         attempts++;
         if(mode==='permanently-unavailable'||attempts===1)await route.abort('failed');
         else await route.continue();

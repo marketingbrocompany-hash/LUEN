@@ -2,6 +2,16 @@ name: LUEN 3 hero videos codec and playback QA (no deploy)
 on:
   pull_request:
     branches: [main]
+    paths:
+      - 'scripts/qa-hero-three-videos.mjs'
+      - 'scripts/qa-hero-metadata-responsive.mjs'
+      - 'scripts/qa-hero-poster-resilience.mjs'
+      - 'scripts/qa-production-hero-assets.mjs'
+      - 'assets/images/luen-motion/*.webp'
+      - 'assets/css/luen-motion-hero.css'
+      - 'assets/js/luen-motion-hero.js'
+      - 'index.html'
+      - '.github/workflows/qa-hero-video-playback.yml'
   push:
     branches: [main]
     paths:
@@ -11,16 +21,6 @@ on:
       - 'assets/js/luen-motion-hero.js'
       - 'scripts/qa-hero-poster-resilience.mjs'
       - 'scripts/qa-production-hero-assets.mjs'
-    paths:
-      - 'scripts/qa-hero-three-videos.mjs'
-      - 'scripts/qa-hero-poster-resilience.mjs'
-      - 'scripts/qa-production-hero-assets.mjs'
-      - 'assets/images/luen-motion/*.webp'
-      - 'scripts/qa-hero-metadata-responsive.mjs'
-      - 'assets/css/luen-motion-hero.css'
-      - 'assets/js/luen-motion-hero.js'
-      - 'index.html'
-      - '.github/workflows/qa-hero-video-playback.yml'
   workflow_dispatch:
 permissions:
   contents: read
