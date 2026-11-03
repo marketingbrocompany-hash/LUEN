@@ -1,0 +1,32 @@
+name: LUEN production hero poster URL integrity (read only)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'scripts/qa-production-hero-assets.mjs'
+      - '.github/workflows/qa-production-hero-assets.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/images/luen-motion/*.webp'
+      - 'scripts/qa-production-hero-assets.mjs'
+  schedule:
+    - cron: '15 0 * * *' # Every day 09:15 Asia/Seoul
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-poster-http:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Ensure production probe is syntactically valid
+        run: node --check scripts/qa-production-hero-assets.mjs
+      - name: Verify all 3 official GitHub Pages poster URLs
+        run: node scripts/qa-production-hero-assets.mjs

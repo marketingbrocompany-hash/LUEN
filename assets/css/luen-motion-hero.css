@@ -66,6 +66,18 @@ html body main#top>.hero .luen-motion-media video{
  object-fit:cover;object-position:center;
 }
 html body main#top>.hero .luen-motion-media img{z-index:1;opacity:1}
+/* No missing-image icon, even if a transient Pages/CDN request fails twice. */
+html body main#top>.hero .luen-motion-card.is-poster-failed .luen-motion-media img{
+ visibility:hidden;
+}
+html body main#top>.hero .luen-motion-card.is-poster-failed .luen-motion-media::after{
+ content:attr(data-poster-label);
+ position:absolute;inset:0;z-index:1;
+ display:grid;place-items:center;text-align:center;padding:12px;
+ background:linear-gradient(155deg,#66544a,#43342e);
+ color:#f2e5d8;font:700 clamp(9px,1.15vw,12px)/1.4 "Inter",sans-serif;
+ letter-spacing:.1em;
+}
 html body main#top>.hero .luen-motion-media video{z-index:2;opacity:0;pointer-events:none}
 html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media{background:linear-gradient(145deg,#4c4039,#292321)}
 html body main#top>.hero .luen-motion-card:nth-child(2) .luen-motion-media img,
