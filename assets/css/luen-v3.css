@@ -6933,7 +6933,7 @@ html body main#top>.hero h1{
   font-family:var(--luen-type-display)!important;
   font-size:var(--luen-display-title)!important;
   font-weight:720!important;
-  line-height:1.015!important;
+  line-height:1.10!important;
   letter-spacing:-.052em!important;
 }
 html body main#top>.hero h1>span{
@@ -6965,7 +6965,7 @@ html body main#top>.hero h1 .line-3 em{
 }
 html body main#top>.hero .hero-desc{
   max-width:590px!important;
-  margin:27px 0 0!important;
+  margin:25px 0 0!important;
   color:#6F655C!important;
   font:450 16px/1.72 var(--luen-type-body)!important;
   letter-spacing:-.014em!important;
@@ -7267,7 +7267,7 @@ html body .scroll-progress{
     max-width:none!important;
     font-size:var(--luen-display-title)!important;
     font-weight:720!important;
-    line-height:1.035!important;
+    line-height:1.10!important;
     letter-spacing:-.05em!important;
   }
   html body main#top>.hero h1>span{
@@ -7276,7 +7276,7 @@ html body .scroll-progress{
   }
   html body main#top>.hero .hero-desc{
     max-width:31em!important;
-    margin-top:18px!important;
+    margin-top:19px!important;
     font-size:14px!important;
     line-height:1.68!important;
   }

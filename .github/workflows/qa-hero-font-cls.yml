@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - 'scripts/qa-hero-font-cls-diagnostics.mjs'
+      - 'scripts/qa-hero-editorial-rhythm.mjs'
+      - 'assets/js/site-core.js'
+      - 'assets/css/luen-v3.css'
       - 'assets/css/luen-motion-hero.css'
       - '.github/workflows/qa-hero-font-cls.yml'
   workflow_dispatch:
@@ -23,6 +26,7 @@ jobs:
           npm install --no-save --no-package-lock playwright@1.56.1
           npx playwright install --with-deps chromium webkit
           node --check scripts/qa-hero-font-cls-diagnostics.mjs
+          node --check scripts/qa-hero-editorial-rhythm.mjs
           node scripts/check-site.mjs
       - name: Serve unchanged main checkout without deployment
         run: |
@@ -34,11 +38,17 @@ jobs:
         env:
           LUEN_QA_URL: http://127.0.0.1:4173
         run: node scripts/qa-hero-font-cls-diagnostics.mjs
+      - name: Test hero typography, mobile fit, and duplicate CTA guard
+        env:
+          LUEN_QA_URL: http://127.0.0.1:4173
+        run: node scripts/qa-hero-editorial-rhythm.mjs
       - name: Save diagnostic reports and screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: luen-hero-font-cls-diagnostics
-          path: qa-screenshots/hero-font-cls-diagnostics/
+          path: |
+            qa-screenshots/hero-font-cls-diagnostics/
+            qa-screenshots/hero-editorial-rhythm/
           retention-days: 14
           if-no-files-found: warn
