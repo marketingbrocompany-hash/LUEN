@@ -70,8 +70,12 @@ for(const engine of [chromium,webkit]){
        errors.push(label+' card '+i+' text structure should be title + tagline + one formats row: '+JSON.stringify({message:c.message,formats:c.details,duplicateCount:c.redundantLabels}));
      if(c.formatsScrollWidth>c.formatsClientWidth+3||c.formatRect?.right>c.rect?.right-8)
        errors.push(label+' card '+i+' formats overflow: '+JSON.stringify({scroll:c.formatsScrollWidth,box:c.formatsClientWidth,right:c.formatRect?.right,cardRight:c.rect?.right}));
-     if(c.headingSize<35 || c.headingSize<2.2*c.descriptionSize || c.descriptionSize<=c.formatsSize)
-       errors.push(label+' card '+i+' typography hierarchy not visible: '+JSON.stringify({h:c.headingSize,message:c.descriptionSize,formats:c.formatsSize}));
+     const minHeading=width<=767?32:33;
+     const maxHeading=width<=767?38:43;
+     if(c.headingSize<minHeading || c.headingSize>maxHeading || c.headingSize<2.1*c.descriptionSize || c.descriptionSize<=c.formatsSize)
+       errors.push(label+' card '+i+' editorial hierarchy outside approved range: '+JSON.stringify({h:c.headingSize,message:c.descriptionSize,formats:c.formatsSize}));
+     if(width>=360 && width<=767 && c.height>195)
+       errors.push(label+' mobile service card exceeds restrained height 195px: '+c.height);
      if(c.formatsSize<11.5||c.descriptionSize<14)
        errors.push(label+' card '+i+' text too small: '+JSON.stringify({formats:c.formatsSize,message:c.descriptionSize}));
      if(c.rect?.right>width+2||c.rect?.x < -2)errors.push(label+' card '+i+' out of viewport');

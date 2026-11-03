@@ -34,7 +34,33 @@ try{
         if(r.missing){failures.push(width+' #'+r.id+': section container or title not found');continue;}
         if(Math.abs(r.title-r.container)>2)failures.push(width+' #'+r.id+': title starts at '+r.title+'px, container at '+r.container+'px');
       }
-      results.push({width,rows});
+      const density=await page.evaluate(()=>{
+        const why=document.querySelector('#why-luen .luen-partnership-head h2');
+        const works=document.querySelector('#selected-content .works-archive-title');
+        const services=[...document.querySelectorAll('#services .luen-service-choice')];
+        const size=el=>el?+parseFloat(getComputedStyle(el).fontSize).toFixed(1):null;
+        return {whyHeading:size(why),worksHeading:size(works),
+          serviceHeadings:services.map(el=>size(el.querySelector('h3'))),
+          serviceHeights:services.map(el=>+el.getBoundingClientRect().height.toFixed(1)),
+          serviceCount:services.length,
+          railCount:document.querySelectorAll('#selected-content [data-loop-strip]').length,
+          horizontalOverflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
+      });
+      if(density.horizontalOverflow>2)failures.push(width+': horizontal document overflow '+density.horizontalOverflow);
+      if(density.serviceCount!==3||density.railCount!==2)
+        failures.push(width+': services/works markup regression '+JSON.stringify(density));
+      if(width>=768 && density.whyHeading>47)
+        failures.push(width+': Why LUEN heading remains oversized '+density.whyHeading);
+      if(density.worksHeading>(width<=767?35:47))
+        failures.push(width+': WORKS ARCHIVE heading remains oversized '+density.worksHeading);
+      if(width<=767 && density.serviceHeadings.some(sz=>sz>38))
+        failures.push(width+': mobile service heading too large '+JSON.stringify(density.serviceHeadings));
+      results.push({width,rows,density});
+      if([390,1440].includes(width)){
+        for(const id of ['why-luen','services','selected-content']){
+          await page.locator('#'+id).screenshot({path:path.join(dir,id+'-'+width+'.jpg'),type:'jpeg',quality:72,animations:'disabled'});
+        }
+      }
       if(width===1440)await page.locator('#selected-content').screenshot({path:path.join(dir,'selected-content-1440.jpg'),type:'jpeg',quality:60});
     }catch(e){failures.push(width+': '+String(e.message).slice(0,280));}
     await context.close();
