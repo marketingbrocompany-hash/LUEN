@@ -1,0 +1,59 @@
+name: LUEN AST-lossless CSS minification A/B (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-css-lossless-minify-lab.mjs'
+      - '.github/workflows/qa-css-lossless-minify-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static site and experiment syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-css-lossless-minify-lab.mjs
+      - name: Install parser, pinned Lighthouse, Chrome and WebKit
+        run: |
+          npm install --no-save --no-package-lock postcss@8.5.31 lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Prepare exact CSS cascade with only lossless whitespace/comment stripping
+        run: |
+          node scripts/qa-css-lossless-minify-lab.mjs --prepare
+          test -s qa-temp-css-lossless/candidate/assets/css/site.css
+          test -s qa-temp-css-lossless/candidate/assets/css/luen-v3.css
+          test -s qa-temp-css-lossless/baseline/assets/css/site.css
+      - name: Start identical HTML and assets, differing by only two CSS bodies
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tuple in "baseline 4213" "candidate 4214"; do
+            set -- $tuple
+            python3 -m http.server "$2" --directory "qa-temp-css-lossless/$1" --bind 127.0.0.1 >"/tmp/luen-css-minify-$1.log" 2>&1 &
+          done
+          for port in 4213 4214; do
+            for i in {1..20}; do if curl -fsS -o /dev/null "http://127.0.0.1:$port/"; then break; fi; sleep 1; done
+            curl -fsS "http://127.0.0.1:$port/assets/css/site.css" >/dev/null
+            curl -fsS "http://127.0.0.1:$port/assets/css/luen-v3.css" >/dev/null
+            curl -fsS "http://127.0.0.1:$port/assets/images/luen-motion/confier-poster.webp" >/dev/null
+          done
+      - name: Same-runner mobile 3x desktop 2x Lighthouse and Chrome/WebKit geometry
+        run: node scripts/qa-css-lossless-minify-lab.mjs
+      - name: Save synthetic reports only — no deploy, no changed source CSS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-lossless-css-compression-lab
+          path: qa-screenshots/css-lossless-minify-lab/
+          retention-days: 10
+          if-no-files-found: warn
