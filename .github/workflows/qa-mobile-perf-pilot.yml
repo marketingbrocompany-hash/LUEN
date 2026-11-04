@@ -1,0 +1,70 @@
+name: LUEN controlled mobile LCP font priority pilot (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-mobile-perf-pilot.mjs'
+      - '.github/workflows/qa-mobile-perf-pilot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  performance-lab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check site and pilot syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-mobile-perf-pilot.mjs
+      - name: Install measured Chrome + Lighthouse
+        run: |
+          npm install --no-save --no-package-lock lighthouse@12 playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start 3 isolated local variants on separate ports
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e '
+          import fs from "node:fs";
+          const src=fs.readFileSync("index.html","utf8");
+          const dynamic="/variable/pretendardvariable-dynamic-subset.min.css";
+          const stylesheet="<link rel=\"stylesheet\" href=\"assets/css/site.css?v=20260930-13\"/>";
+          if(src.split(dynamic).length!==3 || src.split(stylesheet).length!==2)process.exit(1);
+          const variants={
+            baseline:src,
+            fullfont:src.replaceAll(dynamic,"/variable/pretendardvariable.min.css"),
+            posterpreload:src.replace(stylesheet,"<link rel=\"preload\" as=\"image\" href=\"/assets/images/luen-motion/confier-poster.webp?v=20261021-hq\" fetchpriority=\"high\"/>\n"+stylesheet)
+          };
+          for(const [name,html] of Object.entries(variants)){
+            const dir="qa-screenshots/mobile-lcp-font-pilot-site/"+name;
+            fs.mkdirSync(dir,{recursive:true});
+            fs.writeFileSync(dir+"/index.html",html);
+            fs.symlinkSync(process.cwd()+"/assets",dir+"/assets","dir");
+          }'
+          for tuple in "baseline 4173" "fullfont 4174" "posterpreload 4175"; do
+            set -- $tuple
+            python3 -m http.server "$2" --directory "qa-screenshots/mobile-lcp-font-pilot-site/$1" --bind 127.0.0.1 >"/tmp/luen-pilot-$1.log" 2>&1 &
+          done
+          for port in 4173 4174 4175; do
+            for n in {1..20}; do if curl -fsS "http://127.0.0.1:$port/" >/dev/null; then break; fi; sleep 1; done
+            curl -fsS "http://127.0.0.1:$port/assets/css/site.css" >/dev/null
+          done
+      - name: Compare 3 mobile and 2 desktop Lighthouse samples per variant
+        env:
+          LUEN_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: node scripts/qa-mobile-perf-pilot.mjs
+      - name: Retain lab reports (no screenshots or user info)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-mobile-lcp-font-pilot
+          path: qa-screenshots/mobile-lcp-font-pilot/
+          retention-days: 10
+          if-no-files-found: warn

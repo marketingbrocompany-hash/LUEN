@@ -1,0 +1,45 @@
+name: LUEN font-loading root cause diagnostic (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-font-load-diagnostic.mjs'
+      - '.github/workflows/qa-font-load-diagnostic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  font-diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browsers, never download font artifacts
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+          node --check scripts/qa-font-load-diagnostic.mjs
+      - name: Serve official homepage unchanged on localhost
+        shell: bash
+        run: |
+          python3 -m http.server 4183 --directory . --bind 127.0.0.1 >/tmp/luen-font-diagnostic-http.log 2>&1 &
+          for n in {1..20}; do
+            if curl -fsSo /tmp/font-diagnostic-index.html http://127.0.0.1:4183/; then break; fi
+            sleep 1
+          done
+          test -s /tmp/font-diagnostic-index.html
+      - name: Inspect computed font faces and actual CDN requests in Chromium and WebKit
+        run: node scripts/qa-font-load-diagnostic.mjs
+      - name: Upload metrics only (no font binaries)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-pretendard-loading-diagnostic
+          path: qa-screenshots/font-diagnostic/result.json
+          retention-days: 7
+          if-no-files-found: warn

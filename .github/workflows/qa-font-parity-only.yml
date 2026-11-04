@@ -1,0 +1,72 @@
+name: LUEN actual-font-response parity check (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-font-parity-only.yml'
+      - 'scripts/qa-home-subset-parity.mjs'
+      - 'scripts/qa-build-home-font-subset.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  font-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check syntax
+        run: |
+          node --check scripts/qa-home-subset-parity.mjs
+          python -m py_compile scripts/qa-build-home-font-subset.py
+          node scripts/check-site.mjs
+      - name: Generate temporary private experiment font in runner
+        run: |
+          python -m pip install --disable-pip-version-check --no-cache-dir fonttools==4.60.1 brotli==1.1.0
+          python scripts/qa-build-home-font-subset.py
+      - name: Install Chromium and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Host exact official HTML and one temporary subset variant
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tuple in "baseline 4183" "candidate 4184"; do
+            set -- $tuple
+            root="qa-temp-font-pilot/site-$1"
+            mkdir -p "$root"
+            cp index.html "$root/index.html"
+            ln -s "$PWD/assets" "$root/assets"
+            if [[ "$1" == "candidate" ]]; then
+              sed -i 's@</head>@<link rel="stylesheet" href="/qa-font/pretendard-home.css" data-luen-font-subset-lab="temporary"/>\n</head>@' "$root/index.html"
+              mkdir -p "$root/qa-font"
+              cp qa-temp-font-pilot/pretendard-home.css qa-temp-font-pilot/pretendard-home-CI-ONLY.woff2 "$root/qa-font/"
+            fi
+            python3 -m http.server "$2" --directory "$root" --bind 127.0.0.1 >"/tmp/luen-parity-$1.log" 2>&1 &
+          done
+          for port in 4183 4184; do
+            for n in {1..20}; do
+              if curl -fsS "http://127.0.0.1:$port/" >/dev/null; then break; fi
+              sleep 1
+            done
+            curl -fsS "http://127.0.0.1:$port/assets/css/site.css" >/dev/null
+          done
+      - name: Assert actual font loading and text metrics with both browser engines
+        run: node scripts/qa-home-subset-parity.mjs
+      - name: Save JSON diagnosis only — never any WOFF or WOFF2
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-font-response-parity-json
+          path: qa-screenshots/font-parity/result.json
+          retention-days: 7
+          if-no-files-found: warn
