@@ -1,0 +1,75 @@
+name: LUEN hero-only ephemeral Pretendard preload pilot (no deploy)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa-build-hero-glyph-font.py'
+      - 'scripts/qa-hero-local-subset-pilot.mjs'
+      - '.github/workflows/qa-hero-local-subset-pilot.yml'
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate source and CI-only candidate syntax
+        run: |
+          node scripts/check-site.mjs
+          node --check scripts/qa-hero-local-subset-pilot.mjs
+          python -m py_compile scripts/qa-build-hero-glyph-font.py
+      - name: Generate temporary official Pretendard hero glyph subset under OFL
+        run: |
+          python -m pip install --disable-pip-version-check --no-cache-dir fonttools==4.60.1 brotli==1.1.0
+          python scripts/qa-build-hero-glyph-font.py
+          test -s qa-temp-hero-font/pretendard-hero-ci-only.woff2
+      - name: Install local Chromium/WebKit browsers
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Prepare localhost source and injected-font candidate with no source edits
+        run: node --input-type=module -e '
+          import fs from "node:fs";import path from "node:path";
+          const src=fs.readFileSync("index.html","utf8");
+          const css="<link rel=\"preload\" href=\"/qa-font/pretendard-hero-ci-only.woff2\" as=\"font\" type=\"font/woff2\" crossorigin/>"+
+            "<link rel=\"stylesheet\" href=\"/qa-font/hero.css\"/>";
+          for(const [name,html] of Object.entries({baseline:src,candidate:src.replace("</head>",css+"</head>")})){
+            const root="qa-temp-hero-site/"+name;
+            fs.mkdirSync(root,{recursive:true});
+            fs.writeFileSync(root+"/index.html",html);
+            fs.symlinkSync(process.cwd()+"/assets",root+"/assets","dir");
+            if(name==="candidate"){
+              fs.mkdirSync(root+"/qa-font",{recursive:true});
+              fs.copyFileSync("qa-temp-hero-font/pretendard-hero-ci-only.woff2",root+"/qa-font/pretendard-hero-ci-only.woff2");
+              fs.copyFileSync("qa-temp-hero-font/hero.css",root+"/qa-font/hero.css");
+            }
+          }'
+      - name: Serve two isolated ephemeral versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4283 --directory qa-temp-hero-site/baseline --bind 127.0.0.1 >/tmp/luen-hero-base.log 2>&1 &
+          python3 -m http.server 4284 --directory qa-temp-hero-site/candidate --bind 127.0.0.1 >/tmp/luen-hero-candidate.log 2>&1 &
+          for port in 4283 4284; do
+            for i in {1..20}; do if curl -fsS -o /dev/null "http://127.0.0.1:$port/"; then break; fi; sleep 1; done
+          done
+          curl -fsS -o /dev/null http://127.0.0.1:4284/qa-font/pretendard-hero-ci-only.woff2
+      - name: Compare original and preloaded font layout in Chromium and WebKit
+        run: node scripts/qa-hero-local-subset-pilot.mjs
+      - name: Upload measurements only; NEVER upload font binaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: luen-hero-preloaded-subset-diagnostic-json-only
+          path: qa-screenshots/hero-local-subset-pilot/summary.json
+          retention-days: 7
+          if-no-files-found: warn
